@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Página Principal del Sistema de Gestión Escolar";
+}
+
+<div class="jumbotron">
+    <h1>Bienvenido al Sistema de Gestión Escolar</h1>
+    <p class="lead">Un sistema para la gestión académica y el control de recursos alimenticios en colegios públicos.</p>
+    <p><a href="@Url.Action("Features", "Home")" class="btn btn-primary btn-lg">Conocer más &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Gestión de Docentes</h2>
+        <p>Administra de manera eficiente los registros de los docentes, incluyendo su especialidad, horarios y más.</p>
+        @*<p><a class="btn btn-default" href="@Url.Action("Gestionar", "Maestros")">Ver detalles &raquo;</a></p>*@
+    </div>
+    <div class="col-md-4">
+        <h2>Gestión de Estudiantes</h2>
+        <p>Controla la información de los estudiantes, desde su registro hasta el seguimiento de su rendimiento académico.</p>
+        @*<p><a class="btn btn-default" href="@Url.Action("Gestionar", "Estudiantes")">Ver detalles &raquo;</a></p>*@
+    </div>
+    <div class="col-md-4">
+        <h2>Control de Recursos Alimenticios</h2>
+        <p>Monitorea la distribución de recursos alimenticios y gestiona eficientemente la merienda escolar.</p>
+        @*<p><a class="btn btn-default" href="@Url.Action("Gestionar", "RecursosAlimenticios")">Ver detalles &raquo;</a></p>*@
+    </div>
+</div>

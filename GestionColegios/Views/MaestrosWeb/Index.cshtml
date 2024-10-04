@@ -1,0 +1,177 @@
+﻿@model GestionColegios.ViewModels.VMMaestros
+
+@{
+    ViewBag.Title = "Gestionar Maestros";
+}
+
+<h2>Gestionar Maestros</h2>
+
+<div class="container mt-1">
+
+    <!-- Navegación de Tabs -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="crear-editar-tab" data-bs-toggle="tab" data-bs-target="#crear-editar" type="button" role="tab" aria-controls="crear-editar" aria-selected="true">Crear/Editar Maestro</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="false">Listar Maestros</button>
+        </li>
+    </ul>
+
+    <!-- Contenido de las Tabs -->
+    <div class="tab-content" id="myTabContent">
+        <!-- Tab Crear/Editar -->
+        <div class="tab-pane fade show active" id="crear-editar" role="tabpanel" aria-labelledby="crear-editar-tab">
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    @using (Html.BeginForm("Create", "MaestrosWeb", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                    <div class="row">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <!-- Información Personal -->
+                        <div class="col-md-5 card">
+                            <div class="row card" style="background-color: #001c7d">
+                                <label class="m-md-1" style="color:white">
+                                    <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información Personal
+                                </label>
+                            </div>
+
+                            <!-- Cédula -->
+                            <div class="form-group mb-3">
+                                <label for="Cedula">Cédula</label>
+                                @Html.TextBoxFor(model => model.Maestro.Cedula, new { @class = "form-control", placeholder = "Ingrese la cédula" })
+                                @Html.ValidationMessageFor(model => model.Maestro.Cedula, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Nombres -->
+                            <div class="form-group mb-3">
+                                <label for="Nombres">Nombres</label>
+                                @Html.TextBoxFor(model => model.Maestro.Nombres, new { @class = "form-control", placeholder = "Ingrese los nombres" })
+                                @Html.ValidationMessageFor(model => model.Maestro.Nombres, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Apellidos -->
+                            <div class="form-group mb-3">
+                                <label for="Apellidos">Apellidos</label>
+                                @Html.TextBoxFor(model => model.Maestro.Apellidos, new { @class = "form-control", placeholder = "Ingrese los apellidos" })
+                                @Html.ValidationMessageFor(model => model.Maestro.Apellidos, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Sexo -->
+                            <div class="form-group mb-3">
+                                <label for="Sexo">Sexo</label>
+                                @Html.DropDownListFor(model => model.Maestro.Sexo, new SelectList(new List<string> { "Masculino", "Femenino" }), "Seleccione el sexo", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Maestro.Sexo, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Sexo -->
+                            <div class="form-group mb-3">
+                                <label for="Direccion">Direccion</label>
+                                @Html.TextAreaFor(model => model.Maestro.Direccion, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Maestro.Direccion, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Celular -->
+                            <div class="form-group mb-3">
+                                <label for="Celular">Celular</label>
+                                @Html.TextBoxFor(model => model.Maestro.Celular, new { @class = "form-control", placeholder = "Ingrese el celular" })
+                                @Html.ValidationMessageFor(model => model.Maestro.Celular, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <!-- Información Profesional -->
+                        <div class="col-md-5 card">
+                            <div class="row card" style="background-color: #001c7d">
+                                <label class="m-md-1" style="color:white">
+                                    <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información Profesional
+                                </label>
+                            </div>
+
+                            <!-- Especialidad -->
+                            <div class="form-group mb-3">
+                                <label for="Especialidad">Especialidad</label>
+                                @Html.TextBoxFor(model => model.Maestro.Especialidad, new { @class = "form-control", placeholder = "Ingrese la especialidad" })
+                                @Html.ValidationMessageFor(model => model.Maestro.Especialidad, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Fecha de Contratación -->
+                            <div class="form-group mb-3">
+                                <label for="FechaContratacion">Fecha de Contratación</label>
+                                @Html.TextBoxFor(model => model.Maestro.FechaContratacion, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                @Html.ValidationMessageFor(model => model.Maestro.FechaContratacion, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Horario de Trabajo -->
+                            <div class="form-group mb-3">
+                                <label for="HorarioTrabajo">Horario de Trabajo</label>
+                                @Html.TextBoxFor(model => model.Maestro.HorarioTrabajo, new { @class = "form-control", placeholder = "Ingrese el horario de trabajo" })
+                                @Html.ValidationMessageFor(model => model.Maestro.HorarioTrabajo, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Nivel -->
+                            <div class="form-group mb-3">
+                                <label for="Nivel">Nivel</label>
+                                @Html.TextBoxFor(model => model.Maestro.Nivel, new { @class = "form-control", placeholder = "Ingrese el nivel" })
+                                @Html.ValidationMessageFor(model => model.Maestro.Nivel, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <!-- Botón para registrar o editar -->
+                        <div class="form-group col-md-2  mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                @(Model.Maestro.Id == 0 ? "Registrar" : "Guardar Cambios")
+                            </button>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Listar Maestros -->
+        <div class="tab-pane fade" id="listar" role="tabpanel" aria-labelledby="listar-tab">
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h3>Lista de Maestros</h3>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Cédula</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Especialidad</th>
+                                <th>Fecha de Contratación</th>
+                                <th>Nivel</th>
+                                <th>Activo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var maestro in Model.Maestros)
+                            {
+                                <tr>
+                                    <td>@maestro.Codigo</td>
+                                    <td>@maestro.Cedula</td>
+                                    <td>@maestro.Nombres</td>
+                                    <td>@maestro.Apellidos</td>
+                                    <td>@maestro.Especialidad</td>
+                                    <td>@maestro.FechaContratacion.ToString("yyyy-MM-dd")</td>
+                                    <td>@maestro.Nivel</td>
+                                    <td>@(maestro.Activo ? "Sí" : "No")</td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "MaestrosWeb", new { id = maestro.Id })" class="btn btn-sm btn-warning">Editar</a>
+                                        <a href="@Url.Action("Delete", "MaestrosWeb", new { id = maestro.Id })" class="btn btn-sm btn-danger">Eliminar</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

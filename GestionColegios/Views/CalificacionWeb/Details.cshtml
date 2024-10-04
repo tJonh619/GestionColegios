@@ -1,0 +1,106 @@
+﻿@model GestionColegios.Models.Calificacion
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Calificacion</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NParcial1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NParcial1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NCualitativa1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NCualitativa1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NParcial2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NParcial2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NCualitativa2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NCualitativa2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NParcial3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NParcial3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NCualitativa3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NCualitativa3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NParcial4)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NParcial4)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NCualitativa4)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NCualitativa4)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Activo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Activo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estudiante.CodigoEstudiante)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estudiante.CodigoEstudiante)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Materia.CodigoMateria)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Materia.CodigoMateria)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

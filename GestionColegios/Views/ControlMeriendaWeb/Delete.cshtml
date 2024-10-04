@@ -1,0 +1,224 @@
+﻿@model GestionColegios.Models.ControlMerienda
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ControlMerienda</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Codigo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Codigo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaEntrega)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaEntrega)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Grado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Grado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AsistenciaEsperadaMujeres)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AsistenciaEsperadaMujeres)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AsistenciaEsperadaTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AsistenciaEsperadaTotal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AsistenciaRealMujeres)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AsistenciaRealMujeres)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AsistenciaRealTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AsistenciaRealTotal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EAceite)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EAceite)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EArroz)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EArroz)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ECereal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ECereal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EFrijoles)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EFrijoles)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EMaiz)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EMaiz)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreEstudiante)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreEstudiante)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirmaDocente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirmaDocente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CedulaTutor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CedulaTutor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirmaTutor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirmaTutor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaModificacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaModificacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Activo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Activo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InventarioAlimentoId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InventarioAlimentoId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CursoAcademico.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CursoAcademico.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RAceite.Codigo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RAceite.Codigo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RArroz.Codigo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RArroz.Codigo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RCereal.Codigo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RCereal.Codigo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RFrijoles.Codigo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RFrijoles.Codigo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RMaiz.Codigo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RMaiz.Codigo)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

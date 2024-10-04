@@ -1,0 +1,109 @@
+﻿@model GestionColegios.Models.Maestro
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="row">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <!-- Información Personal -->
+    <div class="col-md-5 card">
+        <div class="row card" style="background-color: #001c7d">
+            <label class="m-md-1" style="color:white">
+                <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información Personal
+            </label>
+        </div>
+
+        <!-- Cédula -->
+        <div class="form-group mb-3">
+            <label for="Cedula">Cédula</label>
+            @Html.TextBoxFor(model => model.Cedula, new { @class = "form-control", placeholder = "Ingrese la cédula" })
+            @Html.ValidationMessageFor(model => model.Cedula, "", new { @class = "text-danger" })
+        </div>
+
+        <!-- Nombres -->
+        <div class="form-group mb-3">
+            <label for="Nombres">Nombres</label>
+            @Html.TextBoxFor(model => model.Nombres, new { @class = "form-control", placeholder = "Ingrese los nombres" })
+            @Html.ValidationMessageFor(model => model.Nombres, "", new { @class = "text-danger" })
+        </div>
+
+        <!-- Apellidos -->
+        <div class="form-group mb-3">
+            <label for="Apellidos">Apellidos</label>
+            @Html.TextBoxFor(model => model.Apellidos, new { @class = "form-control", placeholder = "Ingrese los apellidos" })
+            @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger" })
+        </div>
+
+        <!-- Sexo -->
+        <div class="form-group mb-3">
+            <label for="Sexo">Sexo</label>
+            @Html.DropDownListFor(model => model.Sexo, new SelectList(new List<string> { "Masculino", "Femenino" }), "Seleccione el sexo", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Sexo, "", new { @class = "text-danger" })
+        </div>
+
+        <!-- Celular -->
+        <div class="form-group mb-3">
+            <label for="Celular">Celular</label>
+            @Html.TextBoxFor(model => model.Celular, new { @class = "form-control", placeholder = "Ingrese el celular" })
+            @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <!-- Información Profesional -->
+    <div class="col-md-5 card">
+        <div class="row card" style="background-color: #001c7d">
+            <label class="m-md-1" style="color:white">
+                <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información Profesional
+            </label>
+        </div>
+
+        <!-- Especialidad -->
+        <div class="form-group mb-3">
+            <label for="Especialidad">Especialidad</label>
+            @Html.TextBoxFor(model => model.Especialidad, new { @class = "form-control", placeholder = "Ingrese la especialidad" })
+            @Html.ValidationMessageFor(model => model.Especialidad, "", new { @class = "text-danger" })
+        </div>
+
+        <!-- Fecha de Contratación -->
+        <div class="form-group mb-3">
+            <label for="FechaContratacion">Fecha de Contratación</label>
+            @Html.TextBoxFor(model => model.FechaContratacion, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+            @Html.ValidationMessageFor(model => model.FechaContratacion, "", new { @class = "text-danger" })
+        </div>
+
+        <!-- Horario de Trabajo -->
+        <div class="form-group mb-3">
+            <label for="HorarioTrabajo">Horario de Trabajo</label>
+            @Html.TextBoxFor(model => model.HorarioTrabajo, new { @class = "form-control", placeholder = "Ingrese el horario de trabajo" })
+            @Html.ValidationMessageFor(model => model.HorarioTrabajo, "", new { @class = "text-danger" })
+        </div>
+
+        <!-- Nivel -->
+        <div class="form-group mb-3">
+            <label for="Nivel">Nivel</label>
+            @Html.TextBoxFor(model => model.Nivel, new { @class = "form-control", placeholder = "Ingrese el nivel" })
+            @Html.ValidationMessageFor(model => model.Nivel, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <!-- Botón para registrar o editar -->
+    <div class="form-group col-md-2 mt-4">
+        <input type="submit" value="Create" class="btn btn-default" />
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,2222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BDColegio.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="BDColegioStoreContainer">
+    <EntitySet Name="Roles" EntityType="BDColegio.Store.Roles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Permisos" EntityType="BDColegio.Store.Permisos" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Usuarios" EntityType="BDColegio.Store.Usuarios" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Maestros" EntityType="BDColegio.Store.Maestros" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CursosAcademicos" EntityType="BDColegio.Store.CursosAcademicos" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EficienciasFisicas" EntityType="BDColegio.Store.EficienciasFisicas" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EficienciasFisicasEstudiantes" EntityType="BDColegio.Store.EficienciasFisicasEstudiantes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CursosAcademicosEstudiantes" EntityType="BDColegio.Store.CursosAcademicosEstudiantes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AñosAcademicos" EntityType="BDColegio.Store.AñosAcademicos" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Calificaciones" EntityType="BDColegio.Store.Calificaciones" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Estudiantes" EntityType="BDColegio.Store.Estudiantes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Materias" EntityType="BDColegio.Store.Materias" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Secciones" EntityType="BDColegio.Store.Secciones" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ConsolidadosEficienciasFisicas" EntityType="BDColegio.Store.ConsolidadosEficienciasFisicas" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="InventariosAlimentos" EntityType="BDColegio.Store.InventariosAlimentos" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ControlesMeriendas" EntityType="BDColegio.Store.ControlesMeriendas" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Matriculas" EntityType="BDColegio.Store.Matriculas" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Tutores" EntityType="BDColegio.Store.Tutores" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Periodos" EntityType="BDColegio.Store.Periodos" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Parciales" EntityType="BDColegio.Store.Parciales" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Semestres" EntityType="BDColegio.Store.Semestres" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Años" EntityType="BDColegio.Store.Años" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="RolPermiso" Association="BDColegio.Store.RolPermiso">
+      <End Role="Rol" EntitySet="Roles" />
+      <End Role="Permiso" EntitySet="Permisos" />
+    </AssociationSet>
+    <AssociationSet Name="RolUsuario" Association="BDColegio.Store.RolUsuario">
+      <End Role="Rol" EntitySet="Roles" />
+      <End Role="Usuario" EntitySet="Usuarios" />
+    </AssociationSet>
+    <AssociationSet Name="MaestroCursoAcademico" Association="BDColegio.Store.MaestroCursoAcademico">
+      <End Role="Maestro" EntitySet="Maestros" />
+      <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+    </AssociationSet>
+    <AssociationSet Name="SeccionCursoAcademico" Association="BDColegio.Store.SeccionCursoAcademico">
+      <End Role="Seccion" EntitySet="Secciones" />
+      <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+    </AssociationSet>
+    <AssociationSet Name="CursoAcademicoEficienciaFisica" Association="BDColegio.Store.CursoAcademicoEficienciaFisica">
+      <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+      <End Role="EficienciaFisica" EntitySet="EficienciasFisicas" />
+    </AssociationSet>
+    <AssociationSet Name="EficienciaFisicaEficienciaFisicaEstudiante" Association="BDColegio.Store.EficienciaFisicaEficienciaFisicaEstudiante">
+      <End Role="EficienciaFisica" EntitySet="EficienciasFisicas" />
+      <End Role="EficienciaFisicaEstudiante" EntitySet="EficienciasFisicasEstudiantes" />
+    </AssociationSet>
+    <AssociationSet Name="ConsolidadoEficienciaFisicaEficienciaFisica" Association="BDColegio.Store.ConsolidadoEficienciaFisicaEficienciaFisica">
+      <End Role="ConsolidadoEficienciaFisica" EntitySet="ConsolidadosEficienciasFisicas" />
+      <End Role="EficienciaFisica" EntitySet="EficienciasFisicas" />
+    </AssociationSet>
+    <AssociationSet Name="CursoAcademicoCursoAcademicoEstudiante" Association="BDColegio.Store.CursoAcademicoCursoAcademicoEstudiante">
+      <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+      <End Role="CursoAcademicoEstudiante" EntitySet="CursosAcademicosEstudiantes" />
+    </AssociationSet>
+    <AssociationSet Name="EstudianteCursoAcademicoEstudiante" Association="BDColegio.Store.EstudianteCursoAcademicoEstudiante">
+      <End Role="Estudiante" EntitySet="Estudiantes" />
+      <End Role="CursoAcademicoEstudiante" EntitySet="CursosAcademicosEstudiantes" />
+    </AssociationSet>
+    <AssociationSet Name="EstudianteCalificacion" Association="BDColegio.Store.EstudianteCalificacion">
+      <End Role="Estudiante" EntitySet="Estudiantes" />
+      <End Role="Calificacion" EntitySet="Calificaciones" />
+    </AssociationSet>
+    <AssociationSet Name="MateriaCalificacion" Association="BDColegio.Store.MateriaCalificacion">
+      <End Role="Materia" EntitySet="Materias" />
+      <End Role="Calificacion" EntitySet="Calificaciones" />
+    </AssociationSet>
+    <AssociationSet Name="AñoAcademicoMateria" Association="BDColegio.Store.AñoAcademicoMateria">
+      <End Role="AñoAcademico" EntitySet="AñosAcademicos" />
+      <End Role="Materia" EntitySet="Materias" />
+    </AssociationSet>
+    <AssociationSet Name="AñoAcademicoCursoAcademico" Association="BDColegio.Store.AñoAcademicoCursoAcademico">
+      <End Role="AñoAcademico" EntitySet="AñosAcademicos" />
+      <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+    </AssociationSet>
+    <AssociationSet Name="EstudianteEficienciaFisicaEstudiante" Association="BDColegio.Store.EstudianteEficienciaFisicaEstudiante">
+      <End Role="Estudiante" EntitySet="Estudiantes" />
+      <End Role="EficienciaFisicaEstudiante" EntitySet="EficienciasFisicasEstudiantes" />
+    </AssociationSet>
+    <AssociationSet Name="CursoAcademicoControlMerienda" Association="BDColegio.Store.CursoAcademicoControlMerienda">
+      <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+      <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+    </AssociationSet>
+    <AssociationSet Name="InventarioAlimentoControlMerienda" Association="BDColegio.Store.InventarioAlimentoControlMerienda">
+      <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+      <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+    </AssociationSet>
+    <AssociationSet Name="InventarioAlimentoControlMerienda1" Association="BDColegio.Store.InventarioAlimentoControlMerienda1">
+      <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+      <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+    </AssociationSet>
+    <AssociationSet Name="InventarioAlimentoControlMerienda2" Association="BDColegio.Store.InventarioAlimentoControlMerienda2">
+      <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+      <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+    </AssociationSet>
+    <AssociationSet Name="InventarioAlimentoControlMerienda3" Association="BDColegio.Store.InventarioAlimentoControlMerienda3">
+      <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+      <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+    </AssociationSet>
+    <AssociationSet Name="InventarioAlimentoControlMerienda4" Association="BDColegio.Store.InventarioAlimentoControlMerienda4">
+      <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+      <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+    </AssociationSet>
+    <AssociationSet Name="EstudianteMatricula" Association="BDColegio.Store.EstudianteMatricula">
+      <End Role="Estudiante" EntitySet="Estudiantes" />
+      <End Role="Matricula" EntitySet="Matriculas" />
+    </AssociationSet>
+    <AssociationSet Name="TutorMatricula" Association="BDColegio.Store.TutorMatricula">
+      <End Role="Tutor" EntitySet="Tutores" />
+      <End Role="Matricula" EntitySet="Matriculas" />
+    </AssociationSet>
+    <AssociationSet Name="PeriodosMatricula" Association="BDColegio.Store.PeriodosMatricula">
+      <End Role="Periodos" EntitySet="Periodos" />
+      <End Role="Matricula" EntitySet="Matriculas" />
+    </AssociationSet>
+    <AssociationSet Name="ParcialCalificacion" Association="BDColegio.Store.ParcialCalificacion">
+      <End Role="Parcial" EntitySet="Parciales" />
+      <End Role="Calificacion" EntitySet="Calificaciones" />
+    </AssociationSet>
+    <AssociationSet Name="SemestreParcial" Association="BDColegio.Store.SemestreParcial">
+      <End Role="Semestre" EntitySet="Semestres" />
+      <End Role="Parcial" EntitySet="Parciales" />
+    </AssociationSet>
+    <AssociationSet Name="SemestreConsolidadoEficienciaFisica" Association="BDColegio.Store.SemestreConsolidadoEficienciaFisica">
+      <End Role="Semestre" EntitySet="Semestres" />
+      <End Role="ConsolidadoEficienciaFisica" EntitySet="ConsolidadosEficienciasFisicas" />
+    </AssociationSet>
+    <AssociationSet Name="SemestreEficienciaFisica" Association="BDColegio.Store.SemestreEficienciaFisica">
+      <End Role="Semestre" EntitySet="Semestres" />
+      <End Role="EficienciaFisica" EntitySet="EficienciasFisicas" />
+    </AssociationSet>
+    <AssociationSet Name="AñoCursoAcademico" Association="BDColegio.Store.AñoCursoAcademico">
+      <End Role="Año" EntitySet="Años" />
+      <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+    </AssociationSet>
+    <AssociationSet Name="AñoEficienciaFisica" Association="BDColegio.Store.AñoEficienciaFisica">
+      <End Role="Año" EntitySet="Años" />
+      <End Role="EficienciaFisica" EntitySet="EficienciasFisicas" />
+    </AssociationSet>
+    <AssociationSet Name="AñoConsolidadoEficienciaFisica" Association="BDColegio.Store.AñoConsolidadoEficienciaFisica">
+      <End Role="Año" EntitySet="Años" />
+      <End Role="ConsolidadoEficienciaFisica" EntitySet="ConsolidadosEficienciasFisicas" />
+    </AssociationSet>
+    <AssociationSet Name="AñoPeriodos" Association="BDColegio.Store.AñoPeriodos">
+      <End Role="Año" EntitySet="Años" />
+      <End Role="Periodos" EntitySet="Periodos" />
+    </AssociationSet>
+    <AssociationSet Name="EstudianteControlMerienda" Association="BDColegio.Store.EstudianteControlMerienda">
+      <End Role="Estudiante" EntitySet="Estudiantes" />
+      <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+    </AssociationSet>
+    <AssociationSet Name="AñoAcademicoMatricula" Association="BDColegio.Store.AñoAcademicoMatricula">
+      <End Role="AñoAcademico" EntitySet="AñosAcademicos" />
+      <End Role="Matricula" EntitySet="Matriculas" />
+    </AssociationSet>
+    <AssociationSet Name="TutorEstudiante" Association="BDColegio.Store.TutorEstudiante">
+      <End Role="Tutor" EntitySet="Tutores" />
+      <End Role="Estudiante" EntitySet="Estudiantes" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Codigo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Descripcion" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Permisos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Descripcion" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="RolId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Usuarios">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="CodigoUsuario" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NombreUsuario" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ClaveHash" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CorreoRecuperacion" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="RolId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Maestros">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Codigo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Cedula" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Nombres" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Apellidos" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Sexo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Celular" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Direccion" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Especialidad" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaContratacion" Type="datetime" Nullable="false" />
+    <Property Name="HorarioTrabajo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Nivel" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CursosAcademicos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="MaestroId" Type="int" Nullable="false" />
+    <Property Name="SeccionId" Type="int" Nullable="false" />
+    <Property Name="AñoAcademicoId" Type="int" Nullable="false" />
+    <Property Name="AñoId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EficienciasFisicas">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="CursoAcademicoId" Type="int" Nullable="false" />
+    <Property Name="ConsolidadoEficienciaFisicaId" Type="int" Nullable="false" />
+    <Property Name="SemestreId" Type="int" Nullable="false" />
+    <Property Name="AñoId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EficienciasFisicasEstudiantes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NombresApellidos" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Edad" Type="int" Nullable="false" />
+    <Property Name="Genero" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Peso_lb" Type="decimal" Nullable="true" Precision="18" Scale="0" />
+    <Property Name="Talla_cm" Type="int" Nullable="true" />
+    <Property Name="Velocidad_seg" Type="decimal" Nullable="true" Precision="18" Scale="0" />
+    <Property Name="Resistencia_min_seg" Type="decimal" Nullable="true" Precision="18" Scale="0" />
+    <Property Name="Salto_cm" Type="int" Nullable="true" />
+    <Property Name="Pechadas_repet" Type="int" Nullable="true" />
+    <Property Name="Abdominales_repet" Type="int" Nullable="true" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="EficienciaFisicaId" Type="int" Nullable="false" />
+    <Property Name="EstudianteId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CursosAcademicosEstudiantes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Promedio" Type="decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="Aprobado" Type="bit" Nullable="false" />
+    <Property Name="Estado" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="CursoAcademicoId" Type="int" Nullable="false" />
+    <Property Name="EstudianteId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AñosAcademicos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Descripcion" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Nivel" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Calificaciones">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NCuantitativa" Type="decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="NCualitativa" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="EstudianteId" Type="int" Nullable="false" />
+    <Property Name="MateriaId" Type="int" Nullable="false" />
+    <Property Name="ParcialId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Estudiantes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CodigoEstudiante" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Nombres" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Apellidos" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaNacimiento" Type="datetime" Nullable="false" />
+    <Property Name="Edad" Type="int" Nullable="false" />
+    <Property Name="Sexo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Direccion" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="TutorId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Materias">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CodigoMateria" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Descripcion" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="AñoAcademicoId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Secciones">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CapacidadEstudiantes" Type="int" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ConsolidadosEficienciasFisicas">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Edad" Type="int" Nullable="false" />
+    <Property Name="Genero" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CantidadAlumnos" Type="int" Nullable="false" />
+    <Property Name="PromedioPeso" Type="decimal" Nullable="true" Precision="18" Scale="0" />
+    <Property Name="PromedioTalla" Type="int" Nullable="true" />
+    <Property Name="PromedioVelocidad" Type="decimal" Nullable="true" Precision="18" Scale="0" />
+    <Property Name="PromedioResistencia" Type="decimal" Nullable="true" Precision="18" Scale="0" />
+    <Property Name="PromedioSalto" Type="int" Nullable="true" />
+    <Property Name="PromedioPechadas" Type="int" Nullable="true" />
+    <Property Name="PromedioAbdominales" Type="int" Nullable="true" />
+    <Property Name="Observaciones" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaConsolidado" Type="datetime" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="SemestreId" Type="int" Nullable="false" />
+    <Property Name="AñoId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="InventariosAlimentos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Codigo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="NombreAlimento" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Stock" Type="decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="UnidadDeMedida" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaReabastecimiento" Type="datetime" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ControlesMeriendas">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="AsistenciaRealTotal" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Codigo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaEntrega" Type="datetime" Nullable="false" />
+    <Property Name="AsistenciaEsperadaMujeres" Type="int" Nullable="false" />
+    <Property Name="AsistenciaEsperadaTotal" Type="int" Nullable="false" />
+    <Property Name="AsistenciaRealMujeres" Type="int" Nullable="true" />
+    <Property Name="AsistenciaRealTotal" Type="int" Nullable="false" />
+    <Property Name="EAceite" Type="decimal" Nullable="false" />
+    <Property Name="EArroz" Type="decimal" Nullable="false" />
+    <Property Name="ECereal" Type="decimal" Nullable="false" />
+    <Property Name="EFrijoles" Type="decimal" Nullable="false" />
+    <Property Name="EMaiz" Type="decimal" Nullable="false" />
+    <Property Name="FirmaDocente" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CedulaTutor" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FirmaTutor" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="CursoAcademicoId" Type="int" Nullable="false" />
+    <Property Name="InventarioAlimentoId" Type="int" Nullable="false" />
+    <Property Name="InventarioAlimentoId2" Type="int" Nullable="false" />
+    <Property Name="InventarioAlimentoId1" Type="int" Nullable="false" />
+    <Property Name="InventarioAlimentoId3" Type="int" Nullable="false" />
+    <Property Name="InventarioAlimentoId4" Type="int" Nullable="false" />
+    <Property Name="InventarioAlimentoId5" Type="int" Nullable="false" />
+    <Property Name="EstudianteId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Matriculas">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Codigo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Descripcion" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Continuidad" Type="bit" Nullable="false" />
+    <Property Name="Traslado" Type="bit" Nullable="false" />
+    <Property Name="Repitente" Type="bit" Nullable="false" />
+    <Property Name="FechaMatricula" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="EstudianteId" Type="int" Nullable="false" />
+    <Property Name="TutorId" Type="int" Nullable="false" />
+    <Property Name="PeriodosId" Type="int" Nullable="false" />
+    <Property Name="AñoId" Type="int" Nullable="false" />
+    <Property Name="AñoAcademicoId" Type="int" Nullable="false" />
+    <Property Name="Aprobado" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Tutores">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombres" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Apellidos" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Cedula" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="RelacionConElEstudiante" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Direccion" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Celular" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Periodos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Numero" Type="int" Nullable="false" />
+    <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="AñoId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Parciales">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="SemestreId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Semestres">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Años">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="RolPermiso">
+    <End Role="Rol" Type="BDColegio.Store.Roles" Multiplicity="1" />
+    <End Role="Permiso" Type="BDColegio.Store.Permisos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rol">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Permiso">
+        <PropertyRef Name="RolId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RolUsuario">
+    <End Role="Rol" Type="BDColegio.Store.Roles" Multiplicity="1" />
+    <End Role="Usuario" Type="BDColegio.Store.Usuarios" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rol">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Usuario">
+        <PropertyRef Name="RolId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="MaestroCursoAcademico">
+    <End Role="Maestro" Type="BDColegio.Store.Maestros" Multiplicity="1" />
+    <End Role="CursoAcademico" Type="BDColegio.Store.CursosAcademicos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Maestro">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CursoAcademico">
+        <PropertyRef Name="MaestroId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SeccionCursoAcademico">
+    <End Role="Seccion" Type="BDColegio.Store.Secciones" Multiplicity="1" />
+    <End Role="CursoAcademico" Type="BDColegio.Store.CursosAcademicos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Seccion">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CursoAcademico">
+        <PropertyRef Name="SeccionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CursoAcademicoEficienciaFisica">
+    <End Role="CursoAcademico" Type="BDColegio.Store.CursosAcademicos" Multiplicity="1" />
+    <End Role="EficienciaFisica" Type="BDColegio.Store.EficienciasFisicas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CursoAcademico">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EficienciaFisica">
+        <PropertyRef Name="CursoAcademicoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EficienciaFisicaEficienciaFisicaEstudiante">
+    <End Role="EficienciaFisica" Type="BDColegio.Store.EficienciasFisicas" Multiplicity="1" />
+    <End Role="EficienciaFisicaEstudiante" Type="BDColegio.Store.EficienciasFisicasEstudiantes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EficienciaFisica">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EficienciaFisicaEstudiante">
+        <PropertyRef Name="EficienciaFisicaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ConsolidadoEficienciaFisicaEficienciaFisica">
+    <End Role="ConsolidadoEficienciaFisica" Type="BDColegio.Store.ConsolidadosEficienciasFisicas" Multiplicity="1" />
+    <End Role="EficienciaFisica" Type="BDColegio.Store.EficienciasFisicas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ConsolidadoEficienciaFisica">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EficienciaFisica">
+        <PropertyRef Name="ConsolidadoEficienciaFisicaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CursoAcademicoCursoAcademicoEstudiante">
+    <End Role="CursoAcademico" Type="BDColegio.Store.CursosAcademicos" Multiplicity="1" />
+    <End Role="CursoAcademicoEstudiante" Type="BDColegio.Store.CursosAcademicosEstudiantes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CursoAcademico">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CursoAcademicoEstudiante">
+        <PropertyRef Name="CursoAcademicoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EstudianteCursoAcademicoEstudiante">
+    <End Role="Estudiante" Type="BDColegio.Store.Estudiantes" Multiplicity="1" />
+    <End Role="CursoAcademicoEstudiante" Type="BDColegio.Store.CursosAcademicosEstudiantes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Estudiante">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CursoAcademicoEstudiante">
+        <PropertyRef Name="EstudianteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EstudianteCalificacion">
+    <End Role="Estudiante" Type="BDColegio.Store.Estudiantes" Multiplicity="1" />
+    <End Role="Calificacion" Type="BDColegio.Store.Calificaciones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Estudiante">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Calificacion">
+        <PropertyRef Name="EstudianteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="MateriaCalificacion">
+    <End Role="Materia" Type="BDColegio.Store.Materias" Multiplicity="1" />
+    <End Role="Calificacion" Type="BDColegio.Store.Calificaciones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Materia">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Calificacion">
+        <PropertyRef Name="MateriaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AñoAcademicoMateria">
+    <End Role="AñoAcademico" Type="BDColegio.Store.AñosAcademicos" Multiplicity="1" />
+    <End Role="Materia" Type="BDColegio.Store.Materias" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AñoAcademico">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Materia">
+        <PropertyRef Name="AñoAcademicoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AñoAcademicoCursoAcademico">
+    <End Role="AñoAcademico" Type="BDColegio.Store.AñosAcademicos" Multiplicity="1" />
+    <End Role="CursoAcademico" Type="BDColegio.Store.CursosAcademicos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AñoAcademico">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CursoAcademico">
+        <PropertyRef Name="AñoAcademicoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EstudianteEficienciaFisicaEstudiante">
+    <End Role="Estudiante" Type="BDColegio.Store.Estudiantes" Multiplicity="1" />
+    <End Role="EficienciaFisicaEstudiante" Type="BDColegio.Store.EficienciasFisicasEstudiantes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Estudiante">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EficienciaFisicaEstudiante">
+        <PropertyRef Name="EstudianteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CursoAcademicoControlMerienda">
+    <End Role="CursoAcademico" Type="BDColegio.Store.CursosAcademicos" Multiplicity="1" />
+    <End Role="ControlMerienda" Type="BDColegio.Store.ControlesMeriendas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CursoAcademico">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlMerienda">
+        <PropertyRef Name="CursoAcademicoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="InventarioAlimentoControlMerienda">
+    <End Role="InventarioAlimento" Type="BDColegio.Store.InventariosAlimentos" Multiplicity="1" />
+    <End Role="ControlMerienda" Type="BDColegio.Store.ControlesMeriendas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InventarioAlimento">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlMerienda">
+        <PropertyRef Name="InventarioAlimentoId1" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="InventarioAlimentoControlMerienda1">
+    <End Role="InventarioAlimento" Type="BDColegio.Store.InventariosAlimentos" Multiplicity="1" />
+    <End Role="ControlMerienda" Type="BDColegio.Store.ControlesMeriendas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InventarioAlimento">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlMerienda">
+        <PropertyRef Name="InventarioAlimentoId2" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="InventarioAlimentoControlMerienda2">
+    <End Role="InventarioAlimento" Type="BDColegio.Store.InventariosAlimentos" Multiplicity="1" />
+    <End Role="ControlMerienda" Type="BDColegio.Store.ControlesMeriendas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InventarioAlimento">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlMerienda">
+        <PropertyRef Name="InventarioAlimentoId3" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="InventarioAlimentoControlMerienda3">
+    <End Role="InventarioAlimento" Type="BDColegio.Store.InventariosAlimentos" Multiplicity="1" />
+    <End Role="ControlMerienda" Type="BDColegio.Store.ControlesMeriendas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InventarioAlimento">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlMerienda">
+        <PropertyRef Name="InventarioAlimentoId4" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="InventarioAlimentoControlMerienda4">
+    <End Role="InventarioAlimento" Type="BDColegio.Store.InventariosAlimentos" Multiplicity="1" />
+    <End Role="ControlMerienda" Type="BDColegio.Store.ControlesMeriendas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InventarioAlimento">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlMerienda">
+        <PropertyRef Name="InventarioAlimentoId5" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EstudianteMatricula">
+    <End Role="Estudiante" Type="BDColegio.Store.Estudiantes" Multiplicity="1" />
+    <End Role="Matricula" Type="BDColegio.Store.Matriculas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Estudiante">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Matricula">
+        <PropertyRef Name="EstudianteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TutorMatricula">
+    <End Role="Tutor" Type="BDColegio.Store.Tutores" Multiplicity="1" />
+    <End Role="Matricula" Type="BDColegio.Store.Matriculas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tutor">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Matricula">
+        <PropertyRef Name="TutorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PeriodosMatricula">
+    <End Role="Periodos" Type="BDColegio.Store.Periodos" Multiplicity="1" />
+    <End Role="Matricula" Type="BDColegio.Store.Matriculas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Periodos">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Matricula">
+        <PropertyRef Name="PeriodosId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ParcialCalificacion">
+    <End Role="Parcial" Type="BDColegio.Store.Parciales" Multiplicity="1" />
+    <End Role="Calificacion" Type="BDColegio.Store.Calificaciones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Parcial">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Calificacion">
+        <PropertyRef Name="ParcialId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SemestreParcial">
+    <End Role="Semestre" Type="BDColegio.Store.Semestres" Multiplicity="1" />
+    <End Role="Parcial" Type="BDColegio.Store.Parciales" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Semestre">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Parcial">
+        <PropertyRef Name="SemestreId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SemestreConsolidadoEficienciaFisica">
+    <End Role="Semestre" Type="BDColegio.Store.Semestres" Multiplicity="1" />
+    <End Role="ConsolidadoEficienciaFisica" Type="BDColegio.Store.ConsolidadosEficienciasFisicas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Semestre">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ConsolidadoEficienciaFisica">
+        <PropertyRef Name="SemestreId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SemestreEficienciaFisica">
+    <End Role="Semestre" Type="BDColegio.Store.Semestres" Multiplicity="1" />
+    <End Role="EficienciaFisica" Type="BDColegio.Store.EficienciasFisicas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Semestre">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EficienciaFisica">
+        <PropertyRef Name="SemestreId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AñoCursoAcademico">
+    <End Role="Año" Type="BDColegio.Store.Años" Multiplicity="1" />
+    <End Role="CursoAcademico" Type="BDColegio.Store.CursosAcademicos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Año">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CursoAcademico">
+        <PropertyRef Name="AñoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AñoEficienciaFisica">
+    <End Role="Año" Type="BDColegio.Store.Años" Multiplicity="1" />
+    <End Role="EficienciaFisica" Type="BDColegio.Store.EficienciasFisicas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Año">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EficienciaFisica">
+        <PropertyRef Name="AñoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AñoConsolidadoEficienciaFisica">
+    <End Role="Año" Type="BDColegio.Store.Años" Multiplicity="1" />
+    <End Role="ConsolidadoEficienciaFisica" Type="BDColegio.Store.ConsolidadosEficienciasFisicas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Año">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ConsolidadoEficienciaFisica">
+        <PropertyRef Name="AñoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AñoPeriodos">
+    <End Role="Año" Type="BDColegio.Store.Años" Multiplicity="1" />
+    <End Role="Periodos" Type="BDColegio.Store.Periodos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Año">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Periodos">
+        <PropertyRef Name="AñoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EstudianteControlMerienda">
+    <End Role="Estudiante" Type="BDColegio.Store.Estudiantes" Multiplicity="1" />
+    <End Role="ControlMerienda" Type="BDColegio.Store.ControlesMeriendas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Estudiante">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlMerienda">
+        <PropertyRef Name="EstudianteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AñoAcademicoMatricula">
+    <End Role="AñoAcademico" Type="BDColegio.Store.AñosAcademicos" Multiplicity="1" />
+    <End Role="Matricula" Type="BDColegio.Store.Matriculas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AñoAcademico">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Matricula">
+        <PropertyRef Name="AñoAcademicoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TutorEstudiante">
+    <End Role="Tutor" Type="BDColegio.Store.Tutores" Multiplicity="1" />
+    <End Role="Estudiante" Type="BDColegio.Store.Estudiantes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tutor">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Estudiante">
+        <PropertyRef Name="TutorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="BDColegio" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="BDColegioContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Roles" EntityType="BDColegio.Rol" />
+          <EntitySet Name="Permisos" EntityType="BDColegio.Permiso" />
+          <AssociationSet Name="RolPermiso" Association="BDColegio.RolPermiso">
+            <End Role="Rol" EntitySet="Roles" />
+            <End Role="Permiso" EntitySet="Permisos" />
+          </AssociationSet>
+          <EntitySet Name="Usuarios" EntityType="BDColegio.Usuario" />
+          <AssociationSet Name="RolUsuario" Association="BDColegio.RolUsuario">
+            <End Role="Rol" EntitySet="Roles" />
+            <End Role="Usuario" EntitySet="Usuarios" />
+          </AssociationSet>
+          <EntitySet Name="Maestros" EntityType="BDColegio.Maestro" />
+          <EntitySet Name="CursosAcademicos" EntityType="BDColegio.CursoAcademico" />
+          <EntitySet Name="EficienciasFisicas" EntityType="BDColegio.EficienciaFisica" />
+          <EntitySet Name="EficienciasFisicasEstudiantes" EntityType="BDColegio.EficienciaFisicaEstudiante" />
+          <EntitySet Name="CursosAcademicosEstudiantes" EntityType="BDColegio.CursoAcademicoEstudiante" />
+          <EntitySet Name="AñosAcademicos" EntityType="BDColegio.AñoAcademico" />
+          <EntitySet Name="Calificaciones" EntityType="BDColegio.Calificacion" />
+          <EntitySet Name="Estudiantes" EntityType="BDColegio.Estudiante" />
+          <EntitySet Name="Materias" EntityType="BDColegio.Materia" />
+          <AssociationSet Name="MaestroCursoAcademico" Association="BDColegio.MaestroCursoAcademico">
+            <End Role="Maestro" EntitySet="Maestros" />
+            <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+          </AssociationSet>
+          <EntitySet Name="Secciones" EntityType="BDColegio.Seccion" />
+          <AssociationSet Name="SeccionCursoAcademico" Association="BDColegio.SeccionCursoAcademico">
+            <End Role="Seccion" EntitySet="Secciones" />
+            <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+          </AssociationSet>
+          <AssociationSet Name="CursoAcademicoEficienciaFisica" Association="BDColegio.CursoAcademicoEficienciaFisica">
+            <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+            <End Role="EficienciaFisica" EntitySet="EficienciasFisicas" />
+          </AssociationSet>
+          <AssociationSet Name="EficienciaFisicaEficienciaFisicaEstudiante" Association="BDColegio.EficienciaFisicaEficienciaFisicaEstudiante">
+            <End Role="EficienciaFisica" EntitySet="EficienciasFisicas" />
+            <End Role="EficienciaFisicaEstudiante" EntitySet="EficienciasFisicasEstudiantes" />
+          </AssociationSet>
+          <EntitySet Name="ConsolidadosEficienciasFisicas" EntityType="BDColegio.ConsolidadoEficienciaFisica" />
+          <AssociationSet Name="ConsolidadoEficienciaFisicaEficienciaFisica" Association="BDColegio.ConsolidadoEficienciaFisicaEficienciaFisica">
+            <End Role="ConsolidadoEficienciaFisica" EntitySet="ConsolidadosEficienciasFisicas" />
+            <End Role="EficienciaFisica" EntitySet="EficienciasFisicas" />
+          </AssociationSet>
+          <AssociationSet Name="CursoAcademicoCursoAcademicoEstudiante" Association="BDColegio.CursoAcademicoCursoAcademicoEstudiante">
+            <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+            <End Role="CursoAcademicoEstudiante" EntitySet="CursosAcademicosEstudiantes" />
+          </AssociationSet>
+          <AssociationSet Name="EstudianteCursoAcademicoEstudiante" Association="BDColegio.EstudianteCursoAcademicoEstudiante">
+            <End EntitySet="Estudiantes" Role="Estudiante" />
+            <End EntitySet="CursosAcademicosEstudiantes" Role="CursoAcademicoEstudiante" />
+          </AssociationSet>
+          <AssociationSet Name="EstudianteCalificacion" Association="BDColegio.EstudianteCalificacion">
+            <End Role="Estudiante" EntitySet="Estudiantes" />
+            <End Role="Calificacion" EntitySet="Calificaciones" />
+          </AssociationSet>
+          <AssociationSet Name="MateriaCalificacion" Association="BDColegio.MateriaCalificacion">
+            <End Role="Materia" EntitySet="Materias" />
+            <End Role="Calificacion" EntitySet="Calificaciones" />
+          </AssociationSet>
+          <AssociationSet Name="AñoAcademicoMateria" Association="BDColegio.AñoAcademicoMateria">
+            <End Role="AñoAcademico" EntitySet="AñosAcademicos" />
+            <End Role="Materia" EntitySet="Materias" />
+          </AssociationSet>
+          <AssociationSet Name="AñoAcademicoCursoAcademico" Association="BDColegio.AñoAcademicoCursoAcademico">
+            <End Role="AñoAcademico" EntitySet="AñosAcademicos" />
+            <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+          </AssociationSet>
+          <AssociationSet Name="EstudianteEficienciaFisicaEstudiante" Association="BDColegio.EstudianteEficienciaFisicaEstudiante">
+            <End Role="Estudiante" EntitySet="Estudiantes" />
+            <End Role="EficienciaFisicaEstudiante" EntitySet="EficienciasFisicasEstudiantes" />
+          </AssociationSet>
+          <EntitySet Name="InventariosAlimentos" EntityType="BDColegio.InventarioAlimento" />
+          <EntitySet Name="ControlesMeriendas" EntityType="BDColegio.ControlMerienda" />
+          <AssociationSet Name="CursoAcademicoControlMerienda" Association="BDColegio.CursoAcademicoControlMerienda">
+            <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+            <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+          </AssociationSet>
+          <AssociationSet Name="InventarioAlimentoControlMerienda" Association="BDColegio.InventarioAlimentoControlMerienda">
+            <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+            <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+          </AssociationSet>
+          <AssociationSet Name="InventarioAlimentoControlMerienda1" Association="BDColegio.InventarioAlimentoControlMerienda1">
+            <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+            <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+          </AssociationSet>
+          <AssociationSet Name="InventarioAlimentoControlMerienda2" Association="BDColegio.InventarioAlimentoControlMerienda2">
+            <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+            <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+          </AssociationSet>
+          <AssociationSet Name="InventarioAlimentoControlMerienda3" Association="BDColegio.InventarioAlimentoControlMerienda3">
+            <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+            <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+          </AssociationSet>
+          <AssociationSet Name="InventarioAlimentoControlMerienda4" Association="BDColegio.InventarioAlimentoControlMerienda4">
+            <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+            <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+          </AssociationSet>
+          <EntitySet Name="Matriculas" EntityType="BDColegio.Matricula" />
+          <EntitySet Name="Tutores" EntityType="BDColegio.Tutor" />
+          <EntitySet Name="Periodos" EntityType="BDColegio.Periodo" />
+          <AssociationSet Name="EstudianteMatricula" Association="BDColegio.EstudianteMatricula">
+            <End Role="Estudiante" EntitySet="Estudiantes" />
+            <End Role="Matricula" EntitySet="Matriculas" />
+          </AssociationSet>
+          <AssociationSet Name="TutorMatricula" Association="BDColegio.TutorMatricula">
+            <End Role="Tutor" EntitySet="Tutores" />
+            <End Role="Matricula" EntitySet="Matriculas" />
+          </AssociationSet>
+          <AssociationSet Name="PeriodosMatricula" Association="BDColegio.PeriodosMatricula">
+            <End Role="Periodos" EntitySet="Periodos" />
+            <End Role="Matricula" EntitySet="Matriculas" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(BDColegio.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(BDColegio.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="Parciales" EntityType="BDColegio.Parcial" />
+          <EntitySet Name="Semestres" EntityType="BDColegio.Semestre" />
+          <AssociationSet Name="ParcialCalificacion" Association="BDColegio.ParcialCalificacion">
+            <End Role="Parcial" EntitySet="Parciales" />
+            <End Role="Calificacion" EntitySet="Calificaciones" />
+          </AssociationSet>
+          <AssociationSet Name="SemestreParcial" Association="BDColegio.SemestreParcial">
+            <End Role="Semestre" EntitySet="Semestres" />
+            <End Role="Parcial" EntitySet="Parciales" />
+          </AssociationSet>
+          <AssociationSet Name="SemestreConsolidadoEficienciaFisica" Association="BDColegio.SemestreConsolidadoEficienciaFisica">
+            <End Role="Semestre" EntitySet="Semestres" />
+            <End Role="ConsolidadoEficienciaFisica" EntitySet="ConsolidadosEficienciasFisicas" />
+          </AssociationSet>
+          <AssociationSet Name="SemestreEficienciaFisica" Association="BDColegio.SemestreEficienciaFisica">
+            <End Role="Semestre" EntitySet="Semestres" />
+            <End Role="EficienciaFisica" EntitySet="EficienciasFisicas" />
+          </AssociationSet>
+          <EntitySet Name="Años" EntityType="BDColegio.Año" />
+          <AssociationSet Name="AñoCursoAcademico" Association="BDColegio.AñoCursoAcademico">
+            <End Role="Año" EntitySet="Años" />
+            <End Role="CursoAcademico" EntitySet="CursosAcademicos" />
+          </AssociationSet>
+          <AssociationSet Name="AñoEficienciaFisica" Association="BDColegio.AñoEficienciaFisica">
+            <End Role="Año" EntitySet="Años" />
+            <End Role="EficienciaFisica" EntitySet="EficienciasFisicas" />
+          </AssociationSet>
+          <AssociationSet Name="AñoConsolidadoEficienciaFisica" Association="BDColegio.AñoConsolidadoEficienciaFisica">
+            <End Role="Año" EntitySet="Años" />
+            <End Role="ConsolidadoEficienciaFisica" EntitySet="ConsolidadosEficienciasFisicas" />
+          </AssociationSet>
+          <AssociationSet Name="AñoPeriodos" Association="BDColegio.AñoPeriodos">
+            <End Role="Año" EntitySet="Años" />
+            <End Role="Periodos" EntitySet="Periodos" />
+          </AssociationSet>
+          <AssociationSet Name="EstudianteControlMerienda" Association="BDColegio.EstudianteControlMerienda">
+            <End Role="Estudiante" EntitySet="Estudiantes" />
+            <End Role="ControlMerienda" EntitySet="ControlesMeriendas" />
+          </AssociationSet>
+          <AssociationSet Name="AñoAcademicoMatricula" Association="BDColegio.AñoAcademicoMatricula">
+            <End Role="AñoAcademico" EntitySet="AñosAcademicos" />
+            <End Role="Matricula" EntitySet="Matriculas" />
+          </AssociationSet>
+          <AssociationSet Name="TutorEstudiante" Association="BDColegio.TutorEstudiante">
+            <End Role="Tutor" EntitySet="Tutores" />
+            <End Role="Estudiante" EntitySet="Estudiantes" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codigo" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Permiso" Relationship="BDColegio.RolPermiso" FromRole="Rol" ToRole="Permiso" />
+          <NavigationProperty Name="Usuario" Relationship="BDColegio.RolUsuario" FromRole="Rol" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Permiso">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Rol" Relationship="BDColegio.RolPermiso" FromRole="Permiso" ToRole="Rol" />
+          <Property Name="RolId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="RolPermiso">
+          <End Type="BDColegio.Rol" Role="Rol" Multiplicity="1" />
+          <End Type="BDColegio.Permiso" Role="Permiso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Permiso">
+              <PropertyRef Name="RolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="CodigoUsuario" Type="String" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreUsuario" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ClaveHash" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CorreoRecuperacion" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Rol" Relationship="BDColegio.RolUsuario" FromRole="Usuario" ToRole="Rol" />
+          <Property Name="RolId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="RolUsuario">
+          <End Type="BDColegio.Rol" Role="Rol" Multiplicity="1" />
+          <End Type="BDColegio.Usuario" Role="Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="RolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Maestro">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codigo" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Cedula" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Nombres" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Apellidos" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Sexo" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Celular" Type="String" Nullable="false" />
+          <Property Name="Direccion" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Especialidad" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaContratacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="HorarioTrabajo" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Nivel" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CursoAcademico" Relationship="BDColegio.MaestroCursoAcademico" FromRole="Maestro" ToRole="CursoAcademico" />
+        </EntityType>
+        <EntityType Name="CursoAcademico">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Maestro" Relationship="BDColegio.MaestroCursoAcademico" FromRole="CursoAcademico" ToRole="Maestro" />
+          <Property Name="MaestroId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Seccion" Relationship="BDColegio.SeccionCursoAcademico" FromRole="CursoAcademico" ToRole="Seccion" />
+          <Property Name="SeccionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EficienciaFisica" Relationship="BDColegio.CursoAcademicoEficienciaFisica" FromRole="CursoAcademico" ToRole="EficienciaFisica" />
+          <NavigationProperty Name="CursoAcademicoEstudiante" Relationship="BDColegio.CursoAcademicoCursoAcademicoEstudiante" FromRole="CursoAcademico" ToRole="CursoAcademicoEstudiante" />
+          <NavigationProperty Name="AñoAcademico" Relationship="BDColegio.AñoAcademicoCursoAcademico" FromRole="CursoAcademico" ToRole="AñoAcademico" />
+          <Property Name="AñoAcademicoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ControlMerienda" Relationship="BDColegio.CursoAcademicoControlMerienda" FromRole="CursoAcademico" ToRole="ControlMerienda" />
+          <NavigationProperty Name="Año" Relationship="BDColegio.AñoCursoAcademico" FromRole="CursoAcademico" ToRole="Año" />
+          <Property Name="AñoId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EficienciaFisica">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CursoAcademico" Relationship="BDColegio.CursoAcademicoEficienciaFisica" FromRole="EficienciaFisica" ToRole="CursoAcademico" />
+          <Property Name="CursoAcademicoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EficienciaFisicaEstudiante" Relationship="BDColegio.EficienciaFisicaEficienciaFisicaEstudiante" FromRole="EficienciaFisica" ToRole="EficienciaFisicaEstudiante" />
+          <NavigationProperty Name="ConsolidadoEficienciaFisica" Relationship="BDColegio.ConsolidadoEficienciaFisicaEficienciaFisica" FromRole="EficienciaFisica" ToRole="ConsolidadoEficienciaFisica" />
+          <Property Name="ConsolidadoEficienciaFisicaId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Semestre" Relationship="BDColegio.SemestreEficienciaFisica" FromRole="EficienciaFisica" ToRole="Semestre" />
+          <Property Name="SemestreId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Año" Relationship="BDColegio.AñoEficienciaFisica" FromRole="EficienciaFisica" ToRole="Año" />
+          <Property Name="AñoId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EficienciaFisicaEstudiante">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombresApellidos" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Edad" Type="Int32" Nullable="false" />
+          <Property Name="Genero" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Peso_lb" Type="Decimal" Nullable="true" Precision="18" Scale="0" />
+          <Property Name="Talla_cm" Type="Int32" Nullable="true" />
+          <Property Name="Velocidad_seg" Type="Decimal" Nullable="true" Precision="18" Scale="0" />
+          <Property Name="Resistencia_min_seg" Type="Decimal" Nullable="true" Precision="18" Scale="0" />
+          <Property Name="Salto_cm" Type="Int32" Nullable="true" />
+          <Property Name="Pechadas_repet" Type="Int32" Nullable="true" />
+          <Property Name="Abdominales_repet" Type="Int32" Nullable="true" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="EficienciaFisica" Relationship="BDColegio.EficienciaFisicaEficienciaFisicaEstudiante" FromRole="EficienciaFisicaEstudiante" ToRole="EficienciaFisica" />
+          <Property Name="EficienciaFisicaId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Estudiante" Relationship="BDColegio.EstudianteEficienciaFisicaEstudiante" FromRole="EficienciaFisicaEstudiante" ToRole="Estudiante" />
+          <Property Name="EstudianteId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CursoAcademicoEstudiante">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Promedio" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Aprobado" Type="Boolean" Nullable="false" />
+          <Property Name="Estado" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CursoAcademico" Relationship="BDColegio.CursoAcademicoCursoAcademicoEstudiante" FromRole="CursoAcademicoEstudiante" ToRole="CursoAcademico" />
+          <Property Name="CursoAcademicoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Estudiante" Relationship="BDColegio.EstudianteCursoAcademicoEstudiante" FromRole="CursoAcademicoEstudiante" ToRole="Estudiante" />
+          <Property Name="EstudianteId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AñoAcademico">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Nivel" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Materia" Relationship="BDColegio.AñoAcademicoMateria" FromRole="AñoAcademico" ToRole="Materia" />
+          <NavigationProperty Name="CursoAcademico" Relationship="BDColegio.AñoAcademicoCursoAcademico" FromRole="AñoAcademico" ToRole="CursoAcademico" />
+          <NavigationProperty Name="Matricula" Relationship="BDColegio.AñoAcademicoMatricula" FromRole="AñoAcademico" ToRole="Matricula" />
+        </EntityType>
+        <EntityType Name="Calificacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NCuantitativa" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="NCualitativa" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Estudiante" Relationship="BDColegio.EstudianteCalificacion" FromRole="Calificacion" ToRole="Estudiante" />
+          <NavigationProperty Name="Materia" Relationship="BDColegio.MateriaCalificacion" FromRole="Calificacion" ToRole="Materia" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="EstudianteId" Type="Int32" Nullable="false" />
+          <Property Name="MateriaId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Parcial" Relationship="BDColegio.ParcialCalificacion" FromRole="Calificacion" ToRole="Parcial" />
+          <Property Name="ParcialId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Estudiante">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodigoEstudiante" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Nombres" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Apellidos" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaNacimiento" Type="DateTime" Nullable="false" />
+          <Property Name="Edad" Type="Int32" Nullable="false" />
+          <Property Name="Sexo" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Direccion" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CursoAcademicoEstudiante" Relationship="BDColegio.EstudianteCursoAcademicoEstudiante" FromRole="Estudiante" ToRole="CursoAcademicoEstudiante" />
+          <NavigationProperty Name="Calificacion" Relationship="BDColegio.EstudianteCalificacion" FromRole="Estudiante" ToRole="Calificacion" />
+          <NavigationProperty Name="EficienciaFisicaEstudiante" Relationship="BDColegio.EstudianteEficienciaFisicaEstudiante" FromRole="Estudiante" ToRole="EficienciaFisicaEstudiante" />
+          <NavigationProperty Name="Matricula" Relationship="BDColegio.EstudianteMatricula" FromRole="Estudiante" ToRole="Matricula" />
+          <NavigationProperty Name="ControlMerienda" Relationship="BDColegio.EstudianteControlMerienda" FromRole="Estudiante" ToRole="ControlMerienda" />
+          <NavigationProperty Name="Tutor" Relationship="BDColegio.TutorEstudiante" FromRole="Estudiante" ToRole="Tutor" />
+          <Property Name="TutorId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Materia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodigoMateria" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Calificacion" Relationship="BDColegio.MateriaCalificacion" FromRole="Materia" ToRole="Calificacion" />
+          <NavigationProperty Name="AñoAcademico" Relationship="BDColegio.AñoAcademicoMateria" FromRole="Materia" ToRole="AñoAcademico" />
+          <Property Name="AñoAcademicoId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="MaestroCursoAcademico">
+          <End Type="BDColegio.Maestro" Role="Maestro" Multiplicity="1" />
+          <End Type="BDColegio.CursoAcademico" Role="CursoAcademico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Maestro">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CursoAcademico">
+              <PropertyRef Name="MaestroId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Seccion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CapacidadEstudiantes" Type="Int32" Nullable="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CursoAcademico" Relationship="BDColegio.SeccionCursoAcademico" FromRole="Seccion" ToRole="CursoAcademico" />
+        </EntityType>
+        <Association Name="SeccionCursoAcademico">
+          <End Type="BDColegio.Seccion" Role="Seccion" Multiplicity="1" />
+          <End Type="BDColegio.CursoAcademico" Role="CursoAcademico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seccion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CursoAcademico">
+              <PropertyRef Name="SeccionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CursoAcademicoEficienciaFisica">
+          <End Type="BDColegio.CursoAcademico" Role="CursoAcademico" Multiplicity="1" />
+          <End Type="BDColegio.EficienciaFisica" Role="EficienciaFisica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CursoAcademico">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EficienciaFisica">
+              <PropertyRef Name="CursoAcademicoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EficienciaFisicaEficienciaFisicaEstudiante">
+          <End Type="BDColegio.EficienciaFisica" Role="EficienciaFisica" Multiplicity="1" />
+          <End Type="BDColegio.EficienciaFisicaEstudiante" Role="EficienciaFisicaEstudiante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EficienciaFisica">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EficienciaFisicaEstudiante">
+              <PropertyRef Name="EficienciaFisicaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ConsolidadoEficienciaFisica">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Edad" Type="Int32" Nullable="false" />
+          <Property Name="Genero" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CantidadAlumnos" Type="Int32" Nullable="false" />
+          <Property Name="PromedioPeso" Type="Decimal" Nullable="true" Precision="18" Scale="0" />
+          <Property Name="PromedioTalla" Type="Int32" Nullable="true" />
+          <Property Name="PromedioVelocidad" Type="Decimal" Nullable="true" Precision="18" Scale="0" />
+          <Property Name="PromedioResistencia" Type="Decimal" Nullable="true" Precision="18" Scale="0" />
+          <Property Name="PromedioSalto" Type="Int32" Nullable="true" />
+          <Property Name="PromedioPechadas" Type="Int32" Nullable="true" />
+          <Property Name="PromedioAbdominales" Type="Int32" Nullable="true" />
+          <Property Name="Observaciones" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaConsolidado" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="EficienciaFisica" Relationship="BDColegio.ConsolidadoEficienciaFisicaEficienciaFisica" FromRole="ConsolidadoEficienciaFisica" ToRole="EficienciaFisica" />
+          <NavigationProperty Name="Semestre" Relationship="BDColegio.SemestreConsolidadoEficienciaFisica" FromRole="ConsolidadoEficienciaFisica" ToRole="Semestre" />
+          <Property Name="SemestreId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Año" Relationship="BDColegio.AñoConsolidadoEficienciaFisica" FromRole="ConsolidadoEficienciaFisica" ToRole="Año" />
+          <Property Name="AñoId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="ConsolidadoEficienciaFisicaEficienciaFisica">
+          <End Type="BDColegio.ConsolidadoEficienciaFisica" Role="ConsolidadoEficienciaFisica" Multiplicity="1" />
+          <End Type="BDColegio.EficienciaFisica" Role="EficienciaFisica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidadoEficienciaFisica">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EficienciaFisica">
+              <PropertyRef Name="ConsolidadoEficienciaFisicaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CursoAcademicoCursoAcademicoEstudiante">
+          <End Type="BDColegio.CursoAcademico" Role="CursoAcademico" Multiplicity="1" />
+          <End Type="BDColegio.CursoAcademicoEstudiante" Role="CursoAcademicoEstudiante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CursoAcademico">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CursoAcademicoEstudiante">
+              <PropertyRef Name="CursoAcademicoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EstudianteCursoAcademicoEstudiante">
+          <End Type="BDColegio.Estudiante" Multiplicity="1" Role="Estudiante" />
+          <End Type="BDColegio.CursoAcademicoEstudiante" Multiplicity="*" Role="CursoAcademicoEstudiante" />
+          <ReferentialConstraint>
+            <Principal Role="Estudiante">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CursoAcademicoEstudiante">
+              <PropertyRef Name="EstudianteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EstudianteCalificacion">
+          <End Type="BDColegio.Estudiante" Role="Estudiante" Multiplicity="1" />
+          <End Type="BDColegio.Calificacion" Role="Calificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estudiante">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Calificacion">
+              <PropertyRef Name="EstudianteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MateriaCalificacion">
+          <End Type="BDColegio.Materia" Role="Materia" Multiplicity="1" />
+          <End Type="BDColegio.Calificacion" Role="Calificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Materia">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Calificacion">
+              <PropertyRef Name="MateriaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AñoAcademicoMateria">
+          <End Type="BDColegio.AñoAcademico" Role="AñoAcademico" Multiplicity="1" />
+          <End Type="BDColegio.Materia" Role="Materia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AñoAcademico">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Materia">
+              <PropertyRef Name="AñoAcademicoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AñoAcademicoCursoAcademico">
+          <End Type="BDColegio.AñoAcademico" Role="AñoAcademico" Multiplicity="1" />
+          <End Type="BDColegio.CursoAcademico" Role="CursoAcademico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AñoAcademico">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CursoAcademico">
+              <PropertyRef Name="AñoAcademicoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EstudianteEficienciaFisicaEstudiante">
+          <End Type="BDColegio.Estudiante" Role="Estudiante" Multiplicity="1" />
+          <End Type="BDColegio.EficienciaFisicaEstudiante" Role="EficienciaFisicaEstudiante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estudiante">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EficienciaFisicaEstudiante">
+              <PropertyRef Name="EstudianteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="InventarioAlimento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codigo" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="NombreAlimento" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Stock" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="UnidadDeMedida" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaReabastecimiento" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ControlMerienda" Relationship="BDColegio.InventarioAlimentoControlMerienda" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
+          <NavigationProperty Name="ControlMerienda1" Relationship="BDColegio.InventarioAlimentoControlMerienda1" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
+          <NavigationProperty Name="ControlMerienda2" Relationship="BDColegio.InventarioAlimentoControlMerienda2" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
+          <NavigationProperty Name="ControlMerienda3" Relationship="BDColegio.InventarioAlimentoControlMerienda3" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
+          <NavigationProperty Name="ControlMerienda4" Relationship="BDColegio.InventarioAlimentoControlMerienda4" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
+        </EntityType>
+        <EntityType Name="ControlMerienda">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="AsistenciaRealTotal" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codigo" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaEntrega" Type="DateTime" Nullable="false" />
+          <Property Name="AsistenciaEsperadaMujeres" Type="Int32" Nullable="false" />
+          <Property Name="AsistenciaEsperadaTotal" Type="Int32" Nullable="false" />
+          <Property Name="AsistenciaRealMujeres" Type="Int32" Nullable="true" />
+          <Property Name="AsistenciaRealTotal" Type="Int32" Nullable="false" />
+          <Property Name="EAceite" Type="Decimal" Nullable="false" />
+          <Property Name="EArroz" Type="Decimal" Nullable="false" />
+          <Property Name="ECereal" Type="Decimal" Nullable="false" />
+          <Property Name="EFrijoles" Type="Decimal" Nullable="false" />
+          <Property Name="EMaiz" Type="Decimal" Nullable="false" />
+          <Property Name="FirmaDocente" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CedulaTutor" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FirmaTutor" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CursoAcademico" Relationship="BDColegio.CursoAcademicoControlMerienda" FromRole="ControlMerienda" ToRole="CursoAcademico" />
+          <Property Name="CursoAcademicoId" Type="Int32" Nullable="false" />
+          <Property Name="InventarioAlimentoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RAceite" Relationship="BDColegio.InventarioAlimentoControlMerienda1" FromRole="ControlMerienda" ToRole="InventarioAlimento" />
+          <NavigationProperty Name="RArroz" Relationship="BDColegio.InventarioAlimentoControlMerienda" FromRole="ControlMerienda" ToRole="InventarioAlimento" />
+          <Property Name="InventarioAlimentoId2" Type="Int32" Nullable="false" />
+          <Property Name="InventarioAlimentoId1" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RCereal" Relationship="BDColegio.InventarioAlimentoControlMerienda2" FromRole="ControlMerienda" ToRole="InventarioAlimento" />
+          <Property Name="InventarioAlimentoId3" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RFrijoles" Relationship="BDColegio.InventarioAlimentoControlMerienda3" FromRole="ControlMerienda" ToRole="InventarioAlimento" />
+          <Property Name="InventarioAlimentoId4" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RMaiz" Relationship="BDColegio.InventarioAlimentoControlMerienda4" FromRole="ControlMerienda" ToRole="InventarioAlimento" />
+          <Property Name="InventarioAlimentoId5" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Estudiante" Relationship="BDColegio.EstudianteControlMerienda" FromRole="ControlMerienda" ToRole="Estudiante" />
+          <Property Name="EstudianteId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="CursoAcademicoControlMerienda">
+          <End Type="BDColegio.CursoAcademico" Role="CursoAcademico" Multiplicity="1" />
+          <End Type="BDColegio.ControlMerienda" Role="ControlMerienda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CursoAcademico">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ControlMerienda">
+              <PropertyRef Name="CursoAcademicoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="InventarioAlimentoControlMerienda">
+          <End Type="BDColegio.InventarioAlimento" Role="InventarioAlimento" Multiplicity="1" />
+          <End Type="BDColegio.ControlMerienda" Role="ControlMerienda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioAlimento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ControlMerienda">
+              <PropertyRef Name="InventarioAlimentoId1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="InventarioAlimentoControlMerienda1">
+          <End Type="BDColegio.InventarioAlimento" Role="InventarioAlimento" Multiplicity="1" />
+          <End Type="BDColegio.ControlMerienda" Role="ControlMerienda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioAlimento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ControlMerienda">
+              <PropertyRef Name="InventarioAlimentoId2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="InventarioAlimentoControlMerienda2">
+          <End Type="BDColegio.InventarioAlimento" Role="InventarioAlimento" Multiplicity="1" />
+          <End Type="BDColegio.ControlMerienda" Role="ControlMerienda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioAlimento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ControlMerienda">
+              <PropertyRef Name="InventarioAlimentoId3" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="InventarioAlimentoControlMerienda3">
+          <End Type="BDColegio.InventarioAlimento" Role="InventarioAlimento" Multiplicity="1" />
+          <End Type="BDColegio.ControlMerienda" Role="ControlMerienda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioAlimento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ControlMerienda">
+              <PropertyRef Name="InventarioAlimentoId4" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="InventarioAlimentoControlMerienda4">
+          <End Type="BDColegio.InventarioAlimento" Role="InventarioAlimento" Multiplicity="1" />
+          <End Type="BDColegio.ControlMerienda" Role="ControlMerienda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioAlimento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ControlMerienda">
+              <PropertyRef Name="InventarioAlimentoId5" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Matricula">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codigo" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Continuidad" Type="Boolean" Nullable="false" />
+          <Property Name="Traslado" Type="Boolean" Nullable="false" />
+          <Property Name="Repitente" Type="Boolean" Nullable="false" />
+          <Property Name="FechaMatricula" Type="String" Nullable="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Estudiante" Relationship="BDColegio.EstudianteMatricula" FromRole="Matricula" ToRole="Estudiante" />
+          <Property Name="EstudianteId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tutor" Relationship="BDColegio.TutorMatricula" FromRole="Matricula" ToRole="Tutor" />
+          <Property Name="TutorId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Periodos" Relationship="BDColegio.PeriodosMatricula" FromRole="Matricula" ToRole="Periodos" />
+          <Property Name="PeriodosId" Type="Int32" Nullable="false" />
+          <Property Name="AñoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AñoAcademico" Relationship="BDColegio.AñoAcademicoMatricula" FromRole="Matricula" ToRole="AñoAcademico" />
+          <Property Name="AñoAcademicoId" Type="Int32" Nullable="false" />
+          <Property Name="Aprobado" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tutor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombres" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Apellidos" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Cedula" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="RelacionConElEstudiante" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Direccion" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Celular" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Matricula" Relationship="BDColegio.TutorMatricula" FromRole="Tutor" ToRole="Matricula" />
+          <NavigationProperty Name="Estudiante" Relationship="BDColegio.TutorEstudiante" FromRole="Tutor" ToRole="Estudiante" />
+        </EntityType>
+        <EntityType Name="Periodo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Numero" Type="Int32" Nullable="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Matricula" Relationship="BDColegio.PeriodosMatricula" FromRole="Periodos" ToRole="Matricula" />
+          <NavigationProperty Name="Año" Relationship="BDColegio.AñoPeriodos" FromRole="Periodos" ToRole="Año" />
+          <Property Name="AñoId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="EstudianteMatricula">
+          <End Type="BDColegio.Estudiante" Role="Estudiante" Multiplicity="1" />
+          <End Type="BDColegio.Matricula" Role="Matricula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estudiante">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Matricula">
+              <PropertyRef Name="EstudianteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TutorMatricula">
+          <End Type="BDColegio.Tutor" Role="Tutor" Multiplicity="1" />
+          <End Type="BDColegio.Matricula" Role="Matricula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tutor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Matricula">
+              <PropertyRef Name="TutorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PeriodosMatricula">
+          <End Type="BDColegio.Periodo" Role="Periodos" Multiplicity="1" />
+          <End Type="BDColegio.Matricula" Role="Matricula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Periodos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Matricula">
+              <PropertyRef Name="PeriodosId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Parcial">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" />
+          <NavigationProperty Name="Calificacion" Relationship="BDColegio.ParcialCalificacion" FromRole="Parcial" ToRole="Calificacion" />
+          <NavigationProperty Name="Semestre" Relationship="BDColegio.SemestreParcial" FromRole="Parcial" ToRole="Semestre" />
+          <Property Name="SemestreId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Semestre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" />
+          <NavigationProperty Name="Parcial" Relationship="BDColegio.SemestreParcial" FromRole="Semestre" ToRole="Parcial" />
+          <NavigationProperty Name="ConsolidadoEficienciaFisica" Relationship="BDColegio.SemestreConsolidadoEficienciaFisica" FromRole="Semestre" ToRole="ConsolidadoEficienciaFisica" />
+          <NavigationProperty Name="EficienciaFisica" Relationship="BDColegio.SemestreEficienciaFisica" FromRole="Semestre" ToRole="EficienciaFisica" />
+        </EntityType>
+        <Association Name="ParcialCalificacion">
+          <End Type="BDColegio.Parcial" Role="Parcial" Multiplicity="1" />
+          <End Type="BDColegio.Calificacion" Role="Calificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parcial">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Calificacion">
+              <PropertyRef Name="ParcialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SemestreParcial">
+          <End Type="BDColegio.Semestre" Role="Semestre" Multiplicity="1" />
+          <End Type="BDColegio.Parcial" Role="Parcial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semestre">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Parcial">
+              <PropertyRef Name="SemestreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SemestreConsolidadoEficienciaFisica">
+          <End Type="BDColegio.Semestre" Role="Semestre" Multiplicity="1" />
+          <End Type="BDColegio.ConsolidadoEficienciaFisica" Role="ConsolidadoEficienciaFisica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semestre">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidadoEficienciaFisica">
+              <PropertyRef Name="SemestreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SemestreEficienciaFisica">
+          <End Type="BDColegio.Semestre" Role="Semestre" Multiplicity="1" />
+          <End Type="BDColegio.EficienciaFisica" Role="EficienciaFisica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semestre">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EficienciaFisica">
+              <PropertyRef Name="SemestreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Año">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CursoAcademico" Relationship="BDColegio.AñoCursoAcademico" FromRole="Año" ToRole="CursoAcademico" />
+          <NavigationProperty Name="EficienciaFisica" Relationship="BDColegio.AñoEficienciaFisica" FromRole="Año" ToRole="EficienciaFisica" />
+          <NavigationProperty Name="ConsolidadoEficienciaFisica" Relationship="BDColegio.AñoConsolidadoEficienciaFisica" FromRole="Año" ToRole="ConsolidadoEficienciaFisica" />
+          <NavigationProperty Name="Periodos" Relationship="BDColegio.AñoPeriodos" FromRole="Año" ToRole="Periodos" />
+        </EntityType>
+        <Association Name="AñoCursoAcademico">
+          <End Type="BDColegio.Año" Role="Año" Multiplicity="1" />
+          <End Type="BDColegio.CursoAcademico" Role="CursoAcademico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Año">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CursoAcademico">
+              <PropertyRef Name="AñoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AñoEficienciaFisica">
+          <End Type="BDColegio.Año" Role="Año" Multiplicity="1" />
+          <End Type="BDColegio.EficienciaFisica" Role="EficienciaFisica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Año">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EficienciaFisica">
+              <PropertyRef Name="AñoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AñoConsolidadoEficienciaFisica">
+          <End Type="BDColegio.Año" Role="Año" Multiplicity="1" />
+          <End Type="BDColegio.ConsolidadoEficienciaFisica" Role="ConsolidadoEficienciaFisica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Año">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidadoEficienciaFisica">
+              <PropertyRef Name="AñoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AñoPeriodos">
+          <End Type="BDColegio.Año" Role="Año" Multiplicity="1" />
+          <End Type="BDColegio.Periodo" Role="Periodos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Año">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Periodos">
+              <PropertyRef Name="AñoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EstudianteControlMerienda">
+          <End Type="BDColegio.Estudiante" Role="Estudiante" Multiplicity="1" />
+          <End Type="BDColegio.ControlMerienda" Role="ControlMerienda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estudiante">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ControlMerienda">
+              <PropertyRef Name="EstudianteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AñoAcademicoMatricula">
+          <End Type="BDColegio.AñoAcademico" Role="AñoAcademico" Multiplicity="1" />
+          <End Type="BDColegio.Matricula" Role="Matricula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AñoAcademico">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Matricula">
+              <PropertyRef Name="AñoAcademicoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TutorEstudiante">
+          <End Type="BDColegio.Tutor" Role="Tutor" Multiplicity="1" />
+          <End Type="BDColegio.Estudiante" Role="Estudiante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tutor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Estudiante">
+              <PropertyRef Name="TutorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BDColegioStoreContainer" CdmEntityContainer="BDColegioContainer">
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Rol)">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Permisos">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Permiso)">
+        <MappingFragment StoreEntitySet="Permisos">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="RolId" ColumnName="RolId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Usuarios">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Usuario)">
+        <MappingFragment StoreEntitySet="Usuarios">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CodigoUsuario" ColumnName="CodigoUsuario" />
+          <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+          <ScalarProperty Name="ClaveHash" ColumnName="ClaveHash" />
+          <ScalarProperty Name="CorreoRecuperacion" ColumnName="CorreoRecuperacion" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="RolId" ColumnName="RolId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Maestros">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Maestro)">
+        <MappingFragment StoreEntitySet="Maestros">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+          <ScalarProperty Name="Cedula" ColumnName="Cedula" />
+          <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+          <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+          <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+          <ScalarProperty Name="Celular" ColumnName="Celular" />
+          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+          <ScalarProperty Name="Especialidad" ColumnName="Especialidad" />
+          <ScalarProperty Name="FechaContratacion" ColumnName="FechaContratacion" />
+          <ScalarProperty Name="HorarioTrabajo" ColumnName="HorarioTrabajo" />
+          <ScalarProperty Name="Nivel" ColumnName="Nivel" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CursosAcademicos">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.CursoAcademico)">
+        <MappingFragment StoreEntitySet="CursosAcademicos">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="MaestroId" ColumnName="MaestroId" />
+          <ScalarProperty Name="SeccionId" ColumnName="SeccionId" />
+          <ScalarProperty Name="AñoAcademicoId" ColumnName="AñoAcademicoId" />
+          <ScalarProperty Name="AñoId" ColumnName="AñoId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EficienciasFisicas">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.EficienciaFisica)">
+        <MappingFragment StoreEntitySet="EficienciasFisicas">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="CursoAcademicoId" ColumnName="CursoAcademicoId" />
+          <ScalarProperty Name="ConsolidadoEficienciaFisicaId" ColumnName="ConsolidadoEficienciaFisicaId" />
+          <ScalarProperty Name="SemestreId" ColumnName="SemestreId" />
+          <ScalarProperty Name="AñoId" ColumnName="AñoId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EficienciasFisicasEstudiantes">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.EficienciaFisicaEstudiante)">
+        <MappingFragment StoreEntitySet="EficienciasFisicasEstudiantes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="NombresApellidos" ColumnName="NombresApellidos" />
+          <ScalarProperty Name="Edad" ColumnName="Edad" />
+          <ScalarProperty Name="Genero" ColumnName="Genero" />
+          <ScalarProperty Name="Peso_lb" ColumnName="Peso_lb" />
+          <ScalarProperty Name="Talla_cm" ColumnName="Talla_cm" />
+          <ScalarProperty Name="Velocidad_seg" ColumnName="Velocidad_seg" />
+          <ScalarProperty Name="Resistencia_min_seg" ColumnName="Resistencia_min_seg" />
+          <ScalarProperty Name="Salto_cm" ColumnName="Salto_cm" />
+          <ScalarProperty Name="Pechadas_repet" ColumnName="Pechadas_repet" />
+          <ScalarProperty Name="Abdominales_repet" ColumnName="Abdominales_repet" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="EficienciaFisicaId" ColumnName="EficienciaFisicaId" />
+          <ScalarProperty Name="EstudianteId" ColumnName="EstudianteId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CursosAcademicosEstudiantes">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.CursoAcademicoEstudiante)">
+        <MappingFragment StoreEntitySet="CursosAcademicosEstudiantes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Promedio" ColumnName="Promedio" />
+          <ScalarProperty Name="Aprobado" ColumnName="Aprobado" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="CursoAcademicoId" ColumnName="CursoAcademicoId" />
+          <ScalarProperty Name="EstudianteId" ColumnName="EstudianteId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AñosAcademicos">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.AñoAcademico)">
+        <MappingFragment StoreEntitySet="AñosAcademicos">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="Nivel" ColumnName="Nivel" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Calificaciones">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Calificacion)">
+        <MappingFragment StoreEntitySet="Calificaciones">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="NCuantitativa" ColumnName="NCuantitativa" />
+          <ScalarProperty Name="NCualitativa" ColumnName="NCualitativa" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="EstudianteId" ColumnName="EstudianteId" />
+          <ScalarProperty Name="MateriaId" ColumnName="MateriaId" />
+          <ScalarProperty Name="ParcialId" ColumnName="ParcialId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Estudiantes">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Estudiante)">
+        <MappingFragment StoreEntitySet="Estudiantes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CodigoEstudiante" ColumnName="CodigoEstudiante" />
+          <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+          <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+          <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+          <ScalarProperty Name="Edad" ColumnName="Edad" />
+          <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="TutorId" ColumnName="TutorId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Materias">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Materia)">
+        <MappingFragment StoreEntitySet="Materias">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CodigoMateria" ColumnName="CodigoMateria" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="AñoAcademicoId" ColumnName="AñoAcademicoId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Secciones">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Seccion)">
+        <MappingFragment StoreEntitySet="Secciones">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="CapacidadEstudiantes" ColumnName="CapacidadEstudiantes" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ConsolidadosEficienciasFisicas">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.ConsolidadoEficienciaFisica)">
+        <MappingFragment StoreEntitySet="ConsolidadosEficienciasFisicas">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Edad" ColumnName="Edad" />
+          <ScalarProperty Name="Genero" ColumnName="Genero" />
+          <ScalarProperty Name="CantidadAlumnos" ColumnName="CantidadAlumnos" />
+          <ScalarProperty Name="PromedioPeso" ColumnName="PromedioPeso" />
+          <ScalarProperty Name="PromedioTalla" ColumnName="PromedioTalla" />
+          <ScalarProperty Name="PromedioVelocidad" ColumnName="PromedioVelocidad" />
+          <ScalarProperty Name="PromedioResistencia" ColumnName="PromedioResistencia" />
+          <ScalarProperty Name="PromedioSalto" ColumnName="PromedioSalto" />
+          <ScalarProperty Name="PromedioPechadas" ColumnName="PromedioPechadas" />
+          <ScalarProperty Name="PromedioAbdominales" ColumnName="PromedioAbdominales" />
+          <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
+          <ScalarProperty Name="FechaConsolidado" ColumnName="FechaConsolidado" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="SemestreId" ColumnName="SemestreId" />
+          <ScalarProperty Name="AñoId" ColumnName="AñoId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="InventariosAlimentos">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.InventarioAlimento)">
+        <MappingFragment StoreEntitySet="InventariosAlimentos">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+          <ScalarProperty Name="NombreAlimento" ColumnName="NombreAlimento" />
+          <ScalarProperty Name="Stock" ColumnName="Stock" />
+          <ScalarProperty Name="UnidadDeMedida" ColumnName="UnidadDeMedida" />
+          <ScalarProperty Name="FechaReabastecimiento" ColumnName="FechaReabastecimiento" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ControlesMeriendas">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.ControlMerienda)">
+        <MappingFragment StoreEntitySet="ControlesMeriendas">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="AsistenciaRealTotal" ColumnName="AsistenciaRealTotal" />
+          <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+          <ScalarProperty Name="FechaEntrega" ColumnName="FechaEntrega" />
+          <ScalarProperty Name="AsistenciaEsperadaMujeres" ColumnName="AsistenciaEsperadaMujeres" />
+          <ScalarProperty Name="AsistenciaEsperadaTotal" ColumnName="AsistenciaEsperadaTotal" />
+          <ScalarProperty Name="AsistenciaRealMujeres" ColumnName="AsistenciaRealMujeres" />
+          <ScalarProperty Name="EAceite" ColumnName="EAceite" />
+          <ScalarProperty Name="EArroz" ColumnName="EArroz" />
+          <ScalarProperty Name="ECereal" ColumnName="ECereal" />
+          <ScalarProperty Name="EFrijoles" ColumnName="EFrijoles" />
+          <ScalarProperty Name="EMaiz" ColumnName="EMaiz" />
+          <ScalarProperty Name="FirmaDocente" ColumnName="FirmaDocente" />
+          <ScalarProperty Name="CedulaTutor" ColumnName="CedulaTutor" />
+          <ScalarProperty Name="FirmaTutor" ColumnName="FirmaTutor" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="CursoAcademicoId" ColumnName="CursoAcademicoId" />
+          <ScalarProperty Name="InventarioAlimentoId" ColumnName="InventarioAlimentoId" />
+          <ScalarProperty Name="InventarioAlimentoId2" ColumnName="InventarioAlimentoId2" />
+          <ScalarProperty Name="InventarioAlimentoId1" ColumnName="InventarioAlimentoId1" />
+          <ScalarProperty Name="InventarioAlimentoId3" ColumnName="InventarioAlimentoId3" />
+          <ScalarProperty Name="InventarioAlimentoId4" ColumnName="InventarioAlimentoId4" />
+          <ScalarProperty Name="InventarioAlimentoId5" ColumnName="InventarioAlimentoId5" />
+          <ScalarProperty Name="EstudianteId" ColumnName="EstudianteId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Matriculas">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Matricula)">
+        <MappingFragment StoreEntitySet="Matriculas">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="Continuidad" ColumnName="Continuidad" />
+          <ScalarProperty Name="Traslado" ColumnName="Traslado" />
+          <ScalarProperty Name="Repitente" ColumnName="Repitente" />
+          <ScalarProperty Name="FechaMatricula" ColumnName="FechaMatricula" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="EstudianteId" ColumnName="EstudianteId" />
+          <ScalarProperty Name="TutorId" ColumnName="TutorId" />
+          <ScalarProperty Name="PeriodosId" ColumnName="PeriodosId" />
+          <ScalarProperty Name="AñoId" ColumnName="AñoId" />
+          <ScalarProperty Name="AñoAcademicoId" ColumnName="AñoAcademicoId" />
+          <ScalarProperty Name="Aprobado" ColumnName="Aprobado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tutores">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Tutor)">
+        <MappingFragment StoreEntitySet="Tutores">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+          <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+          <ScalarProperty Name="Cedula" ColumnName="Cedula" />
+          <ScalarProperty Name="RelacionConElEstudiante" ColumnName="RelacionConElEstudiante" />
+          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+          <ScalarProperty Name="Celular" ColumnName="Celular" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Periodos">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Periodo)">
+        <MappingFragment StoreEntitySet="Periodos">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Numero" ColumnName="Numero" />
+          <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="AñoId" ColumnName="AñoId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Parciales">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Parcial)">
+        <MappingFragment StoreEntitySet="Parciales">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="SemestreId" ColumnName="SemestreId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Semestres">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Semestre)">
+        <MappingFragment StoreEntitySet="Semestres">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Años">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.Año)">
+        <MappingFragment StoreEntitySet="Años">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

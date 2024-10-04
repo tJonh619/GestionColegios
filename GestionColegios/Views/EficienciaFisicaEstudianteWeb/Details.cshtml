@@ -1,0 +1,130 @@
+﻿@model GestionColegios.Models.EficienciaFisicaEstudiante
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>EficienciaFisicaEstudiante</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NombresApellidos)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombresApellidos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Edad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Edad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Genero)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Genero)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Peso_lb)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Peso_lb)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Talla_cm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Talla_cm)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Velocidad_seg)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Velocidad_seg)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Resistencia_min_seg)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Resistencia_min_seg)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Salto_cm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Salto_cm)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pechadas_repet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pechadas_repet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Abdominales_repet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Abdominales_repet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaModificacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaModificacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Activo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Activo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EficienciaFisica.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EficienciaFisica.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estudiante.CodigoEstudiante)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estudiante.CodigoEstudiante)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

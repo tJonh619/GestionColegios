@@ -1,0 +1,111 @@
+﻿@model IEnumerable<GestionColegios.Models.EficienciaFisicaEstudiante>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NombresApellidos)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Edad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Genero)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Peso_lb)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Talla_cm)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Velocidad_seg)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Resistencia_min_seg)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Salto_cm)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pechadas_repet)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Abdominales_repet)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaModificacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Activo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EficienciaFisica.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Estudiante.CodigoEstudiante)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NombresApellidos)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Edad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Genero)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Peso_lb)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Talla_cm)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Velocidad_seg)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Resistencia_min_seg)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Salto_cm)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pechadas_repet)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Abdominales_repet)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaModificacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Activo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EficienciaFisica.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Estudiante.CodigoEstudiante)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

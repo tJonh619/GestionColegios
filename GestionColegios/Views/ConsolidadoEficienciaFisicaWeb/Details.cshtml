@@ -1,0 +1,146 @@
+﻿@model GestionColegios.Models.ConsolidadoEficienciaFisica
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ConsolidadoEficienciaFisica</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Año)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Año)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Semestre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Semestre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Edad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Edad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Genero)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Genero)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CantidadAlumnos)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CantidadAlumnos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PromedioPeso)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PromedioPeso)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PromedioTalla)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PromedioTalla)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PromedioVelocidad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PromedioVelocidad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PromedioResistencia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PromedioResistencia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PromedioSalto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PromedioSalto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PromedioPechadas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PromedioPechadas)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PromedioAbdominales)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PromedioAbdominales)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Observaciones)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Observaciones)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaConsolidado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaConsolidado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaModificacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaModificacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Activo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Activo)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

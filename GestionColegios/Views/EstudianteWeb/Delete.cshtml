@@ -1,0 +1,105 @@
+﻿@model GestionColegios.ViewModels.VMEstudiantes
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Eliminar Estudiante</h2>
+
+<h3>¿Está seguro de que desea eliminar este estudiante?</h3>
+<div>
+    <h4>Estudiante</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Estudiante.CodigoEstudiante)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Estudiante.CodigoEstudiante)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estudiante.Nombres)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Estudiante.Nombres)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estudiante.Apellidos)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Estudiante.Apellidos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estudiante.FechaModificacion)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Estudiante.FechaModificacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estudiante.Activo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Estudiante.Activo)
+        </dd>
+    </dl>
+
+    <h4>Tutor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Tutor.Nombres)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tutor.Nombres)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tutor.Apellidos)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tutor.Apellidos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tutor.Cedula)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tutor.Cedula)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tutor.RelacionConElEstudiante)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tutor.RelacionConElEstudiante)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tutor.Direccion)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tutor.Direccion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tutor.Celular)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tutor.Celular)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+            @Html.ActionLink("Regresar a la lista", "Index")
+        </div>
+    }
+</div>
