@@ -131,50 +131,75 @@
 
         <div class="tab-pane fade" id="listar" role="tabpanel" aria-labelledby="listar-tab">
             <div class="row mt-4">
-                <div class="col-md-12">
-                    <h3>Lista de Estudiantes y Tutores</h3>
+                <div class="container">
 
-                    <table class="table table-striped">
-                        <thead>
+                    <!-- Filtros y barra de búsqueda -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <!-- Selección del tipo de búsqueda -->
+                        <div class="form-group">
+                            <label for="searchType">Buscar por:</label>
+                            <select id="searchType" class="form-select">
+                                <option value="nombres">Nombre Estudiante</option>
+                                <option value="apellidos">Apellido Estudiante</option>
+                                <option value="codigo">Código Estudiante</option>
+                                <option value="direccion">Dirección</option>
+                            </select>
+                        </div>
+
+                        <!-- Barra de búsqueda -->
+                        <div class="form-group">
+                            <input type="text" id="search" class="form-control" placeholder="Buscar...">
+                        </div>
+
+
+                        <!-- Spinner de carga (oculto por defecto) -->
+                        <div id="spinner" class="spinner-border text-primary" role="status" style="display: none;">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de Estudiantes -->
+                    <table style="width: 100%;" class="table-responsive table-striped table-hover table-bordered align-middle">
+                        <thead style="background-color: #001c7d; color: white;">
                             <tr>
-                                <th>Código Estudiante</th>
-                                <th>Nombre Estudiante</th>
-                                <th>Apellido Estudiante</th>
-                                <th>Fecha de Nacimiento estudiante</th>
-                                <th>Edad</th>
-                                <th>Sexo</th>
-                                <th>Dirección</th>
-                                <th>Activo (estudiante)</th>
-                                <th>Nombre Tutor</th>
-                                <th>Apellido Tutor</th>
-                                <th>Relación Tutor</th>
-                                <th>Activo</th> <!-- Nueva columna para el estado activo -->
-                                <th>Acciones</th>
+                                <th scope="col">Código</th>
+                                <th scope="col">Nombres</th>
+                                <th scope="col">Apellidos</th>
+                                <th scope="col">Fecha de Nacimiento</th>
+                                <th scope="col">Edad</th>
+                                <th scope="col">Sexo</th>
+                                <th scope="col">Dirección</th>
+                                <th scope="col">Activo</th>
+                                <th scope="col">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tableBody">
                             @foreach (var estudiante in Model.Estudiantes)
                             {
-                <tr>
-                    <td>@estudiante.CodigoEstudiante</td>
-                    <td>@estudiante.Nombres</td>
-                    <td>@estudiante.Apellidos</td>
-                    <td>@estudiante.FechaNacimiento</td>
-                    <td>@estudiante.Edad</td>
-                    <td>@estudiante.Sexo</td>
-                    <td>@estudiante.Direccion</td>
-                    <td>@(estudiante.Activo ? "Sí" : "No")</td>
-                    <td>@(estudiante.Tutor?.Nombres ?? "No Asignado")</td> <!-- Mostrar nombres del tutor -->
-                    <td>@(estudiante.Tutor?.Apellidos ?? "No Asignado")</td> <!-- Mostrar apellidos del tutor -->
-                    <td>@(estudiante.Tutor?.RelacionConElEstudiante ?? "No Asignado")</td> <!-- Mostrar relación del tutor -->
-                    <td>@(estudiante.Tutor.Activo ? "Sí" : "No")</td> <!-- Mostrar estado activo -->
-                    <td>
-                        <a href="@Url.Action("Edit", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-warning">Editar</a>
-                        <a href="@Url.Action("Delete", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-danger">Eliminar</a>
-                    </td>
-                </tr>}
+                                <tr>
+                                    <td>@estudiante.CodigoEstudiante</td>
+                                    <td>@estudiante.Nombres</td>
+                                    <td>@estudiante.Apellidos</td>
+                                    <td>@estudiante.FechaNacimiento.ToString("yyyy-MM-dd")</td>
+                                    <td>@estudiante.Edad</td>
+                                    <td>@estudiante.Sexo</td>
+                                    <td>@estudiante.Direccion</td>
+                                    <td>@(estudiante.Activo ? "Sí" : "No")</td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-warning">
+                                            Editar
+                                        </a>
+                                        <a href="@Url.Action("Delete", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-danger">
+                                            Eliminar
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+    </div>
+</div>
