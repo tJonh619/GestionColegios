@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
@@ -35,7 +36,7 @@ namespace GestionColegios.Controllers
         // POST: UsuarioWeb/CreateUsuario
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateUsuario([Bind(Include = "Id,NombreUsuario,ClaveHash,CorreoRecuperacion,FechaModificacion,Activo,RolId")] Usuario usuario)
+        public ActionResult CreateUsuario([Bind(Include = "Id,CodigoUsuario,NombreUsuario,ClaveHash,CorreoRecuperacion,FechaModificacion,Activo,RolId")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
@@ -44,38 +45,77 @@ namespace GestionColegios.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View("Index");
-        }
 
+            // Si ocurre un error, vuelve a cargar la lista de roles
+            var model = new VMUsuario
+            {
+                Roles = db.Roles.ToList(),
+                Usuario = usuario
+            };
+            return View(model);
+        }
         // GET: UsuarioWeb/Edit/5
         public ActionResult Edit(int? id)
         {
+            // Validar si el ID es nulo
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Usuario usuario = db.Usuarios.Find(id);
+
+            // Buscar el usuario en la base de datos
+            Usuario usuario = db.Usuarios.Include(u => u.Rol).SingleOrDefault(u => u.Id == id);
             if (usuario == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Roles = db.Roles.ToList();
-            return View(usuario);
+
+            // Crear el ViewModel
+            var viewModel = new VMUsuario
+            {
+                Usuario = usuario,
+                Roles = db.Roles.ToList() // Obtener la lista de roles
+            };
+
+            // Retornar la vista de edición con el ViewModel
+            return View(viewModel);
         }
 
         // POST: UsuarioWeb/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,NombreUsuario,ClaveHash,CorreoRecuperacion,FechaModificacion,Activo,RolId")] Usuario usuario)
+        public ActionResult Edit(VMUsuario viewModel)
         {
             if (ModelState.IsValid)
             {
+                // Buscar el usuario en la base de datos
+                var usuario = db.Usuarios.Find(viewModel.Usuario.Id);
+                if (usuario == null)
+                {
+                    return HttpNotFound();
+                }
+
+                // Actualizar los datos del usuario
+                usuario.NombreUsuario = viewModel.Usuario.NombreUsuario;
+                usuario.ClaveHash = viewModel.Usuario.ClaveHash;
+                usuario.CorreoRecuperacion = viewModel.Usuario.CorreoRecuperacion;
+                usuario.RolId = viewModel.Usuario.RolId;
+                usuario.Activo = viewModel.Usuario.Activo;
                 usuario.FechaModificacion = DateTime.Now;
+
+                // Marcar el estado del usuario como modificado
                 db.Entry(usuario).State = EntityState.Modified;
+
+                // Guardar los cambios en la base de datos
                 db.SaveChanges();
+
+                // Redirigir a la acción Index
                 return RedirectToAction("Index");
             }
-            return View(usuario);
+
+            // Si el modelo no es válido, volver a cargar la lista de roles en caso de error
+            viewModel.Roles = db.Roles.ToList();
+            return View(viewModel);
         }
 
         // GET: UsuarioWeb/Delete/5
@@ -85,12 +125,22 @@ namespace GestionColegios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            // Encuentra el usuario
             Usuario usuario = db.Usuarios.Find(id);
             if (usuario == null)
             {
                 return HttpNotFound();
             }
-            return View(usuario);
+
+            // Crear el ViewModel y asignar el usuario
+            var viewModel = new VMUsuario
+            {
+                Usuario = usuario
+            };
+
+            // Pasa el ViewModel a la vista
+            return View(viewModel);
         }
 
         // POST: UsuarioWeb/Delete/5
@@ -99,11 +149,18 @@ namespace GestionColegios.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Usuario usuario = db.Usuarios.Find(id);
-            db.Usuarios.Remove(usuario);
-            db.SaveChanges();
+
+            if (usuario != null)
+            {
+                // Marcar el usuario como inactivo
+                usuario.Activo = false;
+                usuario.FechaModificacion = DateTime.Now; // Registrar la fecha de modificación
+                db.Entry(usuario).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
             return RedirectToAction("Index");
         }
-
         // POST: UsuarioWeb/CreateRole
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -145,26 +202,35 @@ namespace GestionColegios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            // Busca el rol en la base de datos usando el ID
             Rol rol = db.Roles.Find(id);
             if (rol == null)
             {
                 return HttpNotFound();
             }
+
+            // Retorna la vista EditRole en la carpeta UsuarioWeb
             return View(rol);
         }
 
         // POST: UsuarioWeb/EditRole/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditRole([Bind(Include = "Id,Codigo,Descripcion,FechaModificacion,Activo")] Rol rol)
+        public ActionResult EditRole([Bind(Include = "Id,Codigo,Nombre,Descripcion,FechaModificacion,Activo")] Rol rol)
         {
             if (ModelState.IsValid)
             {
+                // Actualiza la fecha de modificación y marca el rol como modificado
                 rol.FechaModificacion = DateTime.Now;
                 db.Entry(rol).State = EntityState.Modified;
                 db.SaveChanges();
+
+                // Redirige al Index después de guardar
                 return RedirectToAction("Index");
             }
+
+            // Si el modelo no es válido, retorna la misma vista con los errores
             return View(rol);
         }
 
@@ -180,7 +246,7 @@ namespace GestionColegios.Controllers
             {
                 return HttpNotFound();
             }
-            return View(rol);
+            return View(rol); // Asegúrate de que estás usando la vista correcta
         }
 
         // POST: UsuarioWeb/DeleteRole/5
@@ -189,8 +255,13 @@ namespace GestionColegios.Controllers
         public ActionResult DeleteRoleConfirmed(int id)
         {
             Rol rol = db.Roles.Find(id);
-            db.Roles.Remove(rol);
-            db.SaveChanges();
+            if (rol != null)
+            {
+                rol.Activo = false; // Marcar el rol como inactivo
+                rol.FechaModificacion = DateTime.Now; // Registrar la fecha de modificación
+                db.Entry(rol).State = EntityState.Modified; // Marcar el estado como modificado
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
@@ -238,35 +309,52 @@ namespace GestionColegios.Controllers
         // GET: UsuarioWeb/EditPermiso/5
         public ActionResult EditPermiso(int? id)
         {
+            // Validar si el ID es nulo
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            // Buscar el permiso en la base de datos
             Permiso permiso = db.Permisos.Find(id);
             if (permiso == null)
             {
                 return HttpNotFound();
             }
+
+            // Si necesitas listar los roles disponibles, podrías hacerlo aquí
+            ViewBag.RolId = new SelectList(db.Roles, "Id", "Nombre", permiso.RolId);
+
+            // Retornar la vista de edición con el modelo del permiso
             return View(permiso);
         }
 
         // POST: UsuarioWeb/EditPermiso/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPermiso([Bind(Include = "Id,Descripcion,FechaModificacion,Activo")] Permiso permiso)
+        public ActionResult EditPermiso([Bind(Include = "Id,Nombre,Descripcion,FechaModificacion,Activo,RolId")] Permiso permiso)
         {
             if (ModelState.IsValid)
             {
+                // Actualizar la fecha de modificación
                 permiso.FechaModificacion = DateTime.Now;
+
+                // Marcar el estado del permiso como modificado
                 db.Entry(permiso).State = EntityState.Modified;
+
+                // Guardar los cambios en la base de datos
                 db.SaveChanges();
+
+                // Redirigir a la acción Index
                 return RedirectToAction("Index");
             }
+
+            // Si el modelo no es válido, retornar la misma vista con los errores
             return View(permiso);
         }
 
-        // GET: UsuarioWeb/DeletePermiso/5
-        public ActionResult DeletePermiso(int? id)
+        // GET: UsuarioWeb/DeletePermission/5
+        public ActionResult DeletePermission(int? id)
         {
             if (id == null)
             {
@@ -277,17 +365,22 @@ namespace GestionColegios.Controllers
             {
                 return HttpNotFound();
             }
-            return View(permiso);
+            return View(permiso); // Asegúrate de que estás usando la vista correcta
         }
 
-        // POST: UsuarioWeb/DeletePermiso/5
-        [HttpPost, ActionName("DeletePermiso")]
+        // POST: UsuarioWeb/DeletePermission/5
+        [HttpPost, ActionName("DeletePermission")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeletePermisoConfirmed(int id)
+        public ActionResult DeletePermissionConfirmed(int id)
         {
             Permiso permiso = db.Permisos.Find(id);
-            db.Permisos.Remove(permiso);
-            db.SaveChanges();
+            if (permiso != null)
+            {
+                permiso.Activo = false; // Marcar el permiso como inactivo
+                permiso.FechaModificacion = DateTime.Now; // Registrar la fecha de modificación
+                db.Entry(permiso).State = EntityState.Modified; // Marcar el estado como modificado
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
