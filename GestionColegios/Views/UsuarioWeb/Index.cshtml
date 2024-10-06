@@ -50,7 +50,6 @@
                             </div>
                         </div>
 
-
                         <div class="form-group">
                             @Html.LabelFor(m => m.Usuario.NombreUsuario, new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -70,9 +69,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.Label("Rol", new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(m => m.Usuario.RolId, "Rol", new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("RolId", new SelectList(Model.Roles, "Id", "Descripcion"), "Selecciona un rol", new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.Usuario.RolId, new SelectList(Model.Roles, "Id", "Descripcion"), "Selecciona un rol", new { @class = "form-control" })
                             </div>
                         </div>
                         <div class="form-group">
@@ -101,7 +100,7 @@
                                 <th>@Html.DisplayNameFor(model => model.Usuarios.First().CorreoRecuperacion)</th>
                                 <th>@Html.DisplayNameFor(model => model.Usuarios.First().FechaModificacion)</th>
                                 <th>@Html.DisplayNameFor(model => model.Usuarios.First().Activo)</th>
-                                <th>@Html.DisplayNameFor(model => model.Usuarios.First().Rol.Codigo)</th>
+                                <th>Nombre del rol</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -109,16 +108,16 @@
                             @foreach (var usuario in Model.Usuarios)
                             {
                                 <tr>
+                                    <td>@Html.DisplayFor(modelItem => usuario.CodigoUsuario)</td>
                                     <td>@Html.DisplayFor(modelItem => usuario.NombreUsuario)</td>
                                     <td>@Html.DisplayFor(modelItem => usuario.ClaveHash)</td>
                                     <td>@Html.DisplayFor(modelItem => usuario.CorreoRecuperacion)</td>
                                     <td>@Html.DisplayFor(modelItem => usuario.FechaModificacion)</td>
                                     <td>@Html.DisplayFor(modelItem => usuario.Activo)</td>
-                                    <td>@Html.DisplayFor(modelItem => usuario.Rol.Codigo)</td>
+                                    <td>@Html.DisplayFor(modelItem => usuario.Rol.Nombre)</td>
                                     <td>
-                                        @Html.ActionLink("Editar", "Edit", new { id = usuario.Id }, new { @class = "btn btn-warning" }) |
-                                        @Html.ActionLink("Detalles", "Details", new { id = usuario.Id }, new { @class = "btn btn-info" }) |
-                                        @Html.ActionLink("Eliminar", "Delete", new { id = usuario.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este usuario?');" })
+                                        @Html.ActionLink("Editar", "Edit", new { id = usuario.Id }, new { @class = "btn btn-warning" }) |                                       
+                                        @Html.ActionLink("Desactivar", "Delete", new { id = usuario.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este usuario?');" })
                                     </td>
                                 </tr>
                             }
@@ -194,13 +193,14 @@
                             {
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => rol.Codigo)</td>
+                                    <td>@Html.DisplayFor(modelItem => rol.Nombre)</td>
                                     <td>@Html.DisplayFor(modelItem => rol.Descripcion)</td>
                                     <td>@Html.DisplayFor(modelItem => rol.FechaModificacion)</td>
                                     <td>@Html.DisplayFor(modelItem => rol.Activo)</td>
                                     <td>
                                         @Html.ActionLink("Editar", "EditRole", new { id = rol.Id }, new { @class = "btn btn-warning" }) |
-                                        @Html.ActionLink("Detalles", "DetailsRole", new { id = rol.Id }, new { @class = "btn btn-info" }) |
-                                        @Html.ActionLink("Eliminar", "DeleteRole", new { id = rol.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este rol?');" })
+                                        
+                                        @Html.ActionLink("Desactivr", "DeleteRole", new { id = rol.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este rol?');" })
                                     </td>
                                 </tr>
                             }
@@ -264,6 +264,8 @@
                                 <th>@Html.DisplayNameFor(model => model.Permisos.First().Descripcion)</th>
                                 <th>@Html.DisplayNameFor(model => model.Permisos.First().FechaModificacion)</th>
                                 <th>@Html.DisplayNameFor(model => model.Permisos.First().Activo)</th>
+                                <th>Nombre del rol</th>
+
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -275,10 +277,11 @@
                                     <td>@Html.DisplayFor(modelItem => permiso.Descripcion)</td>
                                     <td>@Html.DisplayFor(modelItem => permiso.FechaModificacion)</td>
                                     <td>@Html.DisplayFor(modelItem => permiso.Activo)</td>
+                                    <td>@Html.DisplayFor(modelItem => permiso.Rol.Nombre) </td>
                                     <td>
                                         @Html.ActionLink("Editar", "EditPermiso", new { id = permiso.Id }, new { @class = "btn btn-warning" }) |
-                                        @Html.ActionLink("Detalles", "DetailsPermiso", new { id = permiso.Id }, new { @class = "btn btn-info" }) |
-                                        @Html.ActionLink("Eliminar", "DeletePermiso", new { id = permiso.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este permiso?');" })
+                                      
+                                        @Html.ActionLink("Desactivar", "DeletePermission", new { id = permiso.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este permiso?');" })
                                     </td>
                                 </tr>
                             }
