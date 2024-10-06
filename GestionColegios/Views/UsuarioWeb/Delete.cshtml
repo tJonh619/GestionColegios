@@ -1,4 +1,4 @@
-﻿@model GestionColegios.Models.Usuario
+﻿@model GestionColegios.ViewModels.VMUsuario
 
 @{
     ViewBag.Title = "Delete";
@@ -6,66 +6,59 @@
 
 <h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to deactivate this user?</h3>
 <div>
     <h4>Usuario</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.NombreUsuario)
+            @Html.DisplayNameFor(model => model.Usuario.NombreUsuario)
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.NombreUsuario)
+            @Html.DisplayFor(model => model.Usuario.NombreUsuario)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ClaveHash)
+            @Html.DisplayNameFor(model => model.Usuario.ClaveHash)
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.ClaveHash)
+            @Html.DisplayFor(model => model.Usuario.ClaveHash)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CorreoRecuperacion)
+            @Html.DisplayNameFor(model => model.Usuario.CorreoRecuperacion)
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.CorreoRecuperacion)
+            @Html.DisplayFor(model => model.Usuario.CorreoRecuperacion)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.FechaModificacion)
+            @Html.DisplayNameFor(model => model.Usuario.FechaModificacion)
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.FechaModificacion)
+            @Html.DisplayFor(model => model.Usuario.FechaModificacion)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Activo)
+            @Html.DisplayNameFor(model => model.Usuario.Activo)
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.Activo)
+            @Html.DisplayFor(model => model.Usuario.Activo)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Rol.Codigo)
+            @Html.DisplayNameFor(model => model.Usuario.Rol.Codigo)
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.Rol.Codigo)
+            @Html.DisplayFor(model => model.Usuario.Rol.Codigo)
         </dd>
-
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
-
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <input type="submit" value="Deactivate" class="btn btn-default" /> |
             @Html.ActionLink("Back to List", "Index")
         </div>
     }
