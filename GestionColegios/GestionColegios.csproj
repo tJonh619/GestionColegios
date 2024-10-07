@@ -310,6 +310,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\VMAñosAcademicos.cs" />
     <Compile Include="ViewModels\VMEstudiantes.cs" />
     <Compile Include="ViewModels\VMMaestros.cs" />
     <Compile Include="ViewModels\VMTutor.cs" />

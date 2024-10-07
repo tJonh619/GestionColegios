@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using GestionColegios.Models;
+using GestionColegios.ViewModels;
 
 namespace GestionColegios.Controllers
 {
@@ -17,7 +18,8 @@ namespace GestionColegios.Controllers
         // GET: AñoAcademicoWeb
         public ActionResult Index()
         {
-            return View(db.AñosAcademicos.ToList());
+            var viewModel = new VMAñosAcademicos { AñosAcademicos = db.AñosAcademicos.ToList(), AñoAcademico = new AñoAcademico() };
+            return View(viewModel);
         }
 
         // GET: AñoAcademicoWeb/Details/5
@@ -50,6 +52,7 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
+                añoAcademico.Activo = true;
                 db.AñosAcademicos.Add(añoAcademico);
                 db.SaveChanges();
                 return RedirectToAction("Index");
