@@ -53,7 +53,7 @@ namespace GestionColegios.Controllers
             if (ModelState.IsValid)
             {
                 //se genera un codigo basandose en las primeras dos letras del primer nombre y el primer apellido con tres numeros aleatorios
-                string Codigo = maestro.Nombres.Substring(0, 2).ToUpper() + maestro.Apellidos.Substring(0, 2).ToUpper() + new Random().Next(100, 1000).ToString();
+                string Codigo = maestro.Nombres.Substring(0, 3).ToUpper() + maestro.Apellidos.Substring(0, 2).ToUpper() + new Random().Next(100, 1000).ToString();
                 maestro.Codigo = Codigo;
                 maestro.FechaModificacion = DateTime.Now;
                 maestro.Activo = true;
