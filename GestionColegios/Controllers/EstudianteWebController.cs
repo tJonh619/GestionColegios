@@ -72,7 +72,7 @@ namespace GestionColegios.Controllers
                 // Genera el código del estudiante
                 string codigo = model.Estudiante.Nombres.Substring(0, 2).ToUpper() + model.Estudiante.Apellidos.Substring(0, 2).ToUpper() + new Random().Next(100, 1000).ToString();
                 model.Estudiante.CodigoEstudiante = codigo;
-                model.Estudiante.FechaNacimiento = DateTime.Now; // Cambia esto según tu lógica
+                
             // Cambia esto según tu lógica
                 model.Estudiante.FechaModificacion = DateTime.Now;
                 model.Estudiante.Activo = true;
