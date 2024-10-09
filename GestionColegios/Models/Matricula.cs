@@ -26,7 +26,6 @@ namespace GestionColegios.Models
         public int EstudianteId { get; set; }
         public int TutorId { get; set; }
         public int PeriodosId { get; set; }
-        public int AñoId { get; set; }
         public int AñoAcademicoId { get; set; }
         public bool Aprobado { get; set; }
     

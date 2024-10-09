@@ -17,11 +17,16 @@ namespace GestionColegios.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public InventarioAlimento()
         {
-            this.ControlMerienda = new HashSet<ControlMerienda>();
-            this.ControlMerienda1 = new HashSet<ControlMerienda>();
-            this.ControlMerienda2 = new HashSet<ControlMerienda>();
-            this.ControlMerienda3 = new HashSet<ControlMerienda>();
-            this.ControlMerienda4 = new HashSet<ControlMerienda>();
+            this.MAceite = new HashSet<ControlMerienda>();
+            this.MArroz = new HashSet<ControlMerienda>();
+            this.MCereal = new HashSet<ControlMerienda>();
+            this.MFrijoles = new HashSet<ControlMerienda>();
+            this.MMaiz = new HashSet<ControlMerienda>();
+            this.CAceite = new HashSet<ControlEntrada>();
+            this.CArroz = new HashSet<ControlEntrada>();
+            this.CCereal = new HashSet<ControlEntrada>();
+            this.CFrijoles = new HashSet<ControlEntrada>();
+            this.CMaiz = new HashSet<ControlEntrada>();
         }
     
         public int Id { get; set; }
@@ -29,19 +34,28 @@ namespace GestionColegios.Models
         public string NombreAlimento { get; set; }
         public decimal Stock { get; set; }
         public string UnidadDeMedida { get; set; }
-        public System.DateTime FechaReabastecimiento { get; set; }
         public System.DateTime FechaModificacion { get; set; }
         public bool Activo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ControlMerienda> ControlMerienda { get; set; }
+        public virtual ICollection<ControlMerienda> MAceite { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ControlMerienda> ControlMerienda1 { get; set; }
+        public virtual ICollection<ControlMerienda> MArroz { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ControlMerienda> ControlMerienda2 { get; set; }
+        public virtual ICollection<ControlMerienda> MCereal { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ControlMerienda> ControlMerienda3 { get; set; }
+        public virtual ICollection<ControlMerienda> MFrijoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ControlMerienda> ControlMerienda4 { get; set; }
+        public virtual ICollection<ControlMerienda> MMaiz { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ControlEntrada> CAceite { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ControlEntrada> CArroz { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ControlEntrada> CCereal { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ControlEntrada> CFrijoles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ControlEntrada> CMaiz { get; set; }
     }
 }
