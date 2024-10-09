@@ -312,6 +312,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\VMAñosAcademicos.cs" />
     <Compile Include="ViewModels\VMEstudiantes.cs" />
+    <Compile Include="ViewModels\VMInventarioAlimento.cs" />
     <Compile Include="ViewModels\VMMaestros.cs" />
     <Compile Include="ViewModels\VMTutor.cs" />
     <Compile Include="ViewModels\VMUsuario.cs" />
