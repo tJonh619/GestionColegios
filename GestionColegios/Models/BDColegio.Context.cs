@@ -49,6 +49,7 @@ namespace GestionColegios.Models
         public virtual DbSet<Parcial> Parciales { get; set; }
         public virtual DbSet<Semestre> Semestres { get; set; }
         public virtual DbSet<Año> Años { get; set; }
+        public virtual DbSet<ControlEntrada> ControlEntradas { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

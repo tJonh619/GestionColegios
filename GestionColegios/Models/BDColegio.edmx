@@ -28,6 +28,7 @@
     <EntitySet Name="Parciales" EntityType="BDColegio.Store.Parciales" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Semestres" EntityType="BDColegio.Store.Semestres" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Años" EntityType="BDColegio.Store.Años" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ControlEntradas" EntityType="BDColegio.Store.ControlEntradas" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="RolPermiso" Association="BDColegio.Store.RolPermiso">
       <End Role="Rol" EntitySet="Roles" />
       <End Role="Permiso" EntitySet="Permisos" />
@@ -163,6 +164,26 @@
     <AssociationSet Name="TutorEstudiante" Association="BDColegio.Store.TutorEstudiante">
       <End Role="Tutor" EntitySet="Tutores" />
       <End Role="Estudiante" EntitySet="Estudiantes" />
+    </AssociationSet>
+    <AssociationSet Name="InventarioAlimentoControlEntrada" Association="BDColegio.Store.InventarioAlimentoControlEntrada">
+      <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+      <End Role="ControlEntrada" EntitySet="ControlEntradas" />
+    </AssociationSet>
+    <AssociationSet Name="InventarioAlimentoControlEntrada1" Association="BDColegio.Store.InventarioAlimentoControlEntrada1">
+      <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+      <End Role="ControlEntrada" EntitySet="ControlEntradas" />
+    </AssociationSet>
+    <AssociationSet Name="InventarioAlimentoControlEntrada2" Association="BDColegio.Store.InventarioAlimentoControlEntrada2">
+      <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+      <End Role="ControlEntrada" EntitySet="ControlEntradas" />
+    </AssociationSet>
+    <AssociationSet Name="InventarioAlimentoControlEntrada3" Association="BDColegio.Store.InventarioAlimentoControlEntrada3">
+      <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+      <End Role="ControlEntrada" EntitySet="ControlEntradas" />
+    </AssociationSet>
+    <AssociationSet Name="InventarioAlimentoControlEntrada4" Association="BDColegio.Store.InventarioAlimentoControlEntrada4">
+      <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+      <End Role="ControlEntrada" EntitySet="ControlEntradas" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Roles">
@@ -368,14 +389,12 @@
     <Property Name="NombreAlimento" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Stock" Type="decimal" Nullable="false" Precision="18" Scale="0" />
     <Property Name="UnidadDeMedida" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="FechaReabastecimiento" Type="datetime" Nullable="false" />
     <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
     <Property Name="Activo" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="ControlesMeriendas">
     <Key>
       <PropertyRef Name="Id" />
-      <PropertyRef Name="AsistenciaRealTotal" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Codigo" Type="nvarchar(max)" Nullable="false" />
@@ -383,24 +402,23 @@
     <Property Name="AsistenciaEsperadaMujeres" Type="int" Nullable="false" />
     <Property Name="AsistenciaEsperadaTotal" Type="int" Nullable="false" />
     <Property Name="AsistenciaRealMujeres" Type="int" Nullable="true" />
-    <Property Name="AsistenciaRealTotal" Type="int" Nullable="false" />
-    <Property Name="EAceite" Type="decimal" Nullable="false" />
-    <Property Name="EArroz" Type="decimal" Nullable="false" />
-    <Property Name="ECereal" Type="decimal" Nullable="false" />
-    <Property Name="EFrijoles" Type="decimal" Nullable="false" />
-    <Property Name="EMaiz" Type="decimal" Nullable="false" />
-    <Property Name="FirmaDocente" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="CedulaTutor" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="FirmaTutor" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AsistenciaRealTotal" Type="int" Nullable="true" />
+    <Property Name="SAceite" Type="decimal" Nullable="false" />
+    <Property Name="SArroz" Type="decimal" Nullable="false" />
+    <Property Name="SCereal" Type="decimal" Nullable="false" />
+    <Property Name="SFrijoles" Type="decimal" Nullable="false" />
+    <Property Name="SMaiz" Type="decimal" Nullable="false" />
+    <Property Name="FirmaDocente" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CedulaTutor" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="FirmaTutor" Type="nvarchar(max)" Nullable="true" />
     <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
     <Property Name="Activo" Type="bit" Nullable="false" />
     <Property Name="CursoAcademicoId" Type="int" Nullable="false" />
-    <Property Name="InventarioAlimentoId" Type="int" Nullable="false" />
-    <Property Name="InventarioAlimentoId2" Type="int" Nullable="false" />
-    <Property Name="InventarioAlimentoId1" Type="int" Nullable="false" />
-    <Property Name="InventarioAlimentoId3" Type="int" Nullable="false" />
-    <Property Name="InventarioAlimentoId4" Type="int" Nullable="false" />
-    <Property Name="InventarioAlimentoId5" Type="int" Nullable="false" />
+    <Property Name="AceiteId" Type="int" Nullable="false" />
+    <Property Name="ArrozId" Type="int" Nullable="false" />
+    <Property Name="CerealId" Type="int" Nullable="false" />
+    <Property Name="FrijolesId" Type="int" Nullable="false" />
+    <Property Name="MaizId" Type="int" Nullable="false" />
     <Property Name="EstudianteId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Matriculas">
@@ -419,7 +437,6 @@
     <Property Name="EstudianteId" Type="int" Nullable="false" />
     <Property Name="TutorId" Type="int" Nullable="false" />
     <Property Name="PeriodosId" Type="int" Nullable="false" />
-    <Property Name="AñoId" Type="int" Nullable="false" />
     <Property Name="AñoAcademicoId" Type="int" Nullable="false" />
     <Property Name="Aprobado" Type="bit" Nullable="false" />
   </EntityType>
@@ -469,6 +486,25 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Nombre" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ControlEntradas">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FechaAbastecimiento" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="NombreReceptor" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="EAceite" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="EArroz" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ECereal" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="EFrijoles" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="EMaiz" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Activo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AceiteId" Type="int" Nullable="false" />
+    <Property Name="ArrozId" Type="int" Nullable="false" />
+    <Property Name="CerealId" Type="int" Nullable="false" />
+    <Property Name="FrijolesId" Type="int" Nullable="false" />
+    <Property Name="MaizId" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="RolPermiso">
     <End Role="Rol" Type="BDColegio.Store.Roles" Multiplicity="1" />
@@ -658,7 +694,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="ControlMerienda">
-        <PropertyRef Name="InventarioAlimentoId1" />
+        <PropertyRef Name="ArrozId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -670,7 +706,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="ControlMerienda">
-        <PropertyRef Name="InventarioAlimentoId2" />
+        <PropertyRef Name="AceiteId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -682,7 +718,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="ControlMerienda">
-        <PropertyRef Name="InventarioAlimentoId3" />
+        <PropertyRef Name="CerealId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -694,7 +730,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="ControlMerienda">
-        <PropertyRef Name="InventarioAlimentoId4" />
+        <PropertyRef Name="FrijolesId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -706,7 +742,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="ControlMerienda">
-        <PropertyRef Name="InventarioAlimentoId5" />
+        <PropertyRef Name="MaizId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -875,6 +911,66 @@
       </Principal>
       <Dependent Role="Estudiante">
         <PropertyRef Name="TutorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="InventarioAlimentoControlEntrada">
+    <End Role="InventarioAlimento" Type="BDColegio.Store.InventariosAlimentos" Multiplicity="1" />
+    <End Role="ControlEntrada" Type="BDColegio.Store.ControlEntradas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InventarioAlimento">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlEntrada">
+        <PropertyRef Name="AceiteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="InventarioAlimentoControlEntrada1">
+    <End Role="InventarioAlimento" Type="BDColegio.Store.InventariosAlimentos" Multiplicity="1" />
+    <End Role="ControlEntrada" Type="BDColegio.Store.ControlEntradas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InventarioAlimento">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlEntrada">
+        <PropertyRef Name="ArrozId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="InventarioAlimentoControlEntrada2">
+    <End Role="InventarioAlimento" Type="BDColegio.Store.InventariosAlimentos" Multiplicity="1" />
+    <End Role="ControlEntrada" Type="BDColegio.Store.ControlEntradas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InventarioAlimento">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlEntrada">
+        <PropertyRef Name="CerealId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="InventarioAlimentoControlEntrada3">
+    <End Role="InventarioAlimento" Type="BDColegio.Store.InventariosAlimentos" Multiplicity="1" />
+    <End Role="ControlEntrada" Type="BDColegio.Store.ControlEntradas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InventarioAlimento">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlEntrada">
+        <PropertyRef Name="FrijolesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="InventarioAlimentoControlEntrada4">
+    <End Role="InventarioAlimento" Type="BDColegio.Store.InventariosAlimentos" Multiplicity="1" />
+    <End Role="ControlEntrada" Type="BDColegio.Store.ControlEntradas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InventarioAlimento">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlEntrada">
+        <PropertyRef Name="MaizId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1070,6 +1166,27 @@
           <AssociationSet Name="TutorEstudiante" Association="BDColegio.TutorEstudiante">
             <End Role="Tutor" EntitySet="Tutores" />
             <End Role="Estudiante" EntitySet="Estudiantes" />
+          </AssociationSet>
+          <EntitySet Name="ControlEntradas" EntityType="BDColegio.ControlEntrada" />
+          <AssociationSet Name="InventarioAlimentoControlEntrada" Association="BDColegio.InventarioAlimentoControlEntrada">
+            <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+            <End Role="ControlEntrada" EntitySet="ControlEntradas" />
+          </AssociationSet>
+          <AssociationSet Name="InventarioAlimentoControlEntrada1" Association="BDColegio.InventarioAlimentoControlEntrada1">
+            <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+            <End Role="ControlEntrada" EntitySet="ControlEntradas" />
+          </AssociationSet>
+          <AssociationSet Name="InventarioAlimentoControlEntrada2" Association="BDColegio.InventarioAlimentoControlEntrada2">
+            <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+            <End Role="ControlEntrada" EntitySet="ControlEntradas" />
+          </AssociationSet>
+          <AssociationSet Name="InventarioAlimentoControlEntrada3" Association="BDColegio.InventarioAlimentoControlEntrada3">
+            <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+            <End Role="ControlEntrada" EntitySet="ControlEntradas" />
+          </AssociationSet>
+          <AssociationSet Name="InventarioAlimentoControlEntrada4" Association="BDColegio.InventarioAlimentoControlEntrada4">
+            <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
+            <End Role="ControlEntrada" EntitySet="ControlEntradas" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Rol">
@@ -1482,19 +1599,22 @@
           <Property Name="NombreAlimento" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="Stock" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
           <Property Name="UnidadDeMedida" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="FechaReabastecimiento" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Activo" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ControlMerienda" Relationship="BDColegio.InventarioAlimentoControlMerienda" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
-          <NavigationProperty Name="ControlMerienda1" Relationship="BDColegio.InventarioAlimentoControlMerienda1" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
-          <NavigationProperty Name="ControlMerienda2" Relationship="BDColegio.InventarioAlimentoControlMerienda2" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
-          <NavigationProperty Name="ControlMerienda3" Relationship="BDColegio.InventarioAlimentoControlMerienda3" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
-          <NavigationProperty Name="ControlMerienda4" Relationship="BDColegio.InventarioAlimentoControlMerienda4" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
+          <NavigationProperty Name="MAceite" Relationship="BDColegio.InventarioAlimentoControlMerienda1" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
+          <NavigationProperty Name="MArroz" Relationship="BDColegio.InventarioAlimentoControlMerienda" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
+          <NavigationProperty Name="MCereal" Relationship="BDColegio.InventarioAlimentoControlMerienda2" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
+          <NavigationProperty Name="MFrijoles" Relationship="BDColegio.InventarioAlimentoControlMerienda3" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
+          <NavigationProperty Name="MMaiz" Relationship="BDColegio.InventarioAlimentoControlMerienda4" FromRole="InventarioAlimento" ToRole="ControlMerienda" />
+          <NavigationProperty Name="CAceite" Relationship="BDColegio.InventarioAlimentoControlEntrada" FromRole="InventarioAlimento" ToRole="ControlEntrada" />
+          <NavigationProperty Name="CArroz" Relationship="BDColegio.InventarioAlimentoControlEntrada1" FromRole="InventarioAlimento" ToRole="ControlEntrada" />
+          <NavigationProperty Name="CCereal" Relationship="BDColegio.InventarioAlimentoControlEntrada2" FromRole="InventarioAlimento" ToRole="ControlEntrada" />
+          <NavigationProperty Name="CFrijoles" Relationship="BDColegio.InventarioAlimentoControlEntrada3" FromRole="InventarioAlimento" ToRole="ControlEntrada" />
+          <NavigationProperty Name="CMaiz" Relationship="BDColegio.InventarioAlimentoControlEntrada4" FromRole="InventarioAlimento" ToRole="ControlEntrada" />
         </EntityType>
         <EntityType Name="ControlMerienda">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="AsistenciaRealTotal" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Codigo" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -1502,30 +1622,29 @@
           <Property Name="AsistenciaEsperadaMujeres" Type="Int32" Nullable="false" />
           <Property Name="AsistenciaEsperadaTotal" Type="Int32" Nullable="false" />
           <Property Name="AsistenciaRealMujeres" Type="Int32" Nullable="true" />
-          <Property Name="AsistenciaRealTotal" Type="Int32" Nullable="false" />
-          <Property Name="EAceite" Type="Decimal" Nullable="false" />
-          <Property Name="EArroz" Type="Decimal" Nullable="false" />
-          <Property Name="ECereal" Type="Decimal" Nullable="false" />
-          <Property Name="EFrijoles" Type="Decimal" Nullable="false" />
-          <Property Name="EMaiz" Type="Decimal" Nullable="false" />
-          <Property Name="FirmaDocente" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="CedulaTutor" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="FirmaTutor" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="AsistenciaRealTotal" Type="Int32" Nullable="true" />
+          <Property Name="SAceite" Type="Decimal" Nullable="false" />
+          <Property Name="SArroz" Type="Decimal" Nullable="false" />
+          <Property Name="SCereal" Type="Decimal" Nullable="false" />
+          <Property Name="SFrijoles" Type="Decimal" Nullable="false" />
+          <Property Name="SMaiz" Type="Decimal" Nullable="false" />
+          <Property Name="FirmaDocente" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CedulaTutor" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FirmaTutor" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="FechaModificacion" Type="DateTime" Nullable="false" />
           <Property Name="Activo" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CursoAcademico" Relationship="BDColegio.CursoAcademicoControlMerienda" FromRole="ControlMerienda" ToRole="CursoAcademico" />
           <Property Name="CursoAcademicoId" Type="Int32" Nullable="false" />
-          <Property Name="InventarioAlimentoId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="RAceite" Relationship="BDColegio.InventarioAlimentoControlMerienda1" FromRole="ControlMerienda" ToRole="InventarioAlimento" />
           <NavigationProperty Name="RArroz" Relationship="BDColegio.InventarioAlimentoControlMerienda" FromRole="ControlMerienda" ToRole="InventarioAlimento" />
-          <Property Name="InventarioAlimentoId2" Type="Int32" Nullable="false" />
-          <Property Name="InventarioAlimentoId1" Type="Int32" Nullable="false" />
+          <Property Name="AceiteId" Type="Int32" Nullable="false" />
+          <Property Name="ArrozId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="RCereal" Relationship="BDColegio.InventarioAlimentoControlMerienda2" FromRole="ControlMerienda" ToRole="InventarioAlimento" />
-          <Property Name="InventarioAlimentoId3" Type="Int32" Nullable="false" />
+          <Property Name="CerealId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="RFrijoles" Relationship="BDColegio.InventarioAlimentoControlMerienda3" FromRole="ControlMerienda" ToRole="InventarioAlimento" />
-          <Property Name="InventarioAlimentoId4" Type="Int32" Nullable="false" />
+          <Property Name="FrijolesId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="RMaiz" Relationship="BDColegio.InventarioAlimentoControlMerienda4" FromRole="ControlMerienda" ToRole="InventarioAlimento" />
-          <Property Name="InventarioAlimentoId5" Type="Int32" Nullable="false" />
+          <Property Name="MaizId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Estudiante" Relationship="BDColegio.EstudianteControlMerienda" FromRole="ControlMerienda" ToRole="Estudiante" />
           <Property Name="EstudianteId" Type="Int32" Nullable="false" />
         </EntityType>
@@ -1549,7 +1668,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ControlMerienda">
-              <PropertyRef Name="InventarioAlimentoId1" />
+              <PropertyRef Name="ArrozId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1561,7 +1680,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ControlMerienda">
-              <PropertyRef Name="InventarioAlimentoId2" />
+              <PropertyRef Name="AceiteId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1573,7 +1692,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ControlMerienda">
-              <PropertyRef Name="InventarioAlimentoId3" />
+              <PropertyRef Name="CerealId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1585,7 +1704,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ControlMerienda">
-              <PropertyRef Name="InventarioAlimentoId4" />
+              <PropertyRef Name="FrijolesId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1597,7 +1716,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ControlMerienda">
-              <PropertyRef Name="InventarioAlimentoId5" />
+              <PropertyRef Name="MaizId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1620,7 +1739,6 @@
           <Property Name="TutorId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Periodos" Relationship="BDColegio.PeriodosMatricula" FromRole="Matricula" ToRole="Periodos" />
           <Property Name="PeriodosId" Type="Int32" Nullable="false" />
-          <Property Name="AñoId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AñoAcademico" Relationship="BDColegio.AñoAcademicoMatricula" FromRole="Matricula" ToRole="AñoAcademico" />
           <Property Name="AñoAcademicoId" Type="Int32" Nullable="false" />
           <Property Name="Aprobado" Type="Boolean" Nullable="false" />
@@ -1864,6 +1982,90 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ControlEntrada">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaAbastecimiento" Type="String" Nullable="false" />
+          <Property Name="NombreReceptor" Type="String" Nullable="false" />
+          <Property Name="EAceite" Type="String" Nullable="false" />
+          <Property Name="EArroz" Type="String" Nullable="false" />
+          <Property Name="ECereal" Type="String" Nullable="false" />
+          <Property Name="EFrijoles" Type="String" Nullable="false" />
+          <Property Name="EMaiz" Type="String" Nullable="false" />
+          <Property Name="Activo" Type="String" Nullable="false" />
+          <NavigationProperty Name="RAceite" Relationship="BDColegio.InventarioAlimentoControlEntrada" FromRole="ControlEntrada" ToRole="InventarioAlimento" />
+          <Property Name="AceiteId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RArroz" Relationship="BDColegio.InventarioAlimentoControlEntrada1" FromRole="ControlEntrada" ToRole="InventarioAlimento" />
+          <Property Name="ArrozId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RCereal" Relationship="BDColegio.InventarioAlimentoControlEntrada2" FromRole="ControlEntrada" ToRole="InventarioAlimento" />
+          <Property Name="CerealId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RFrijoles" Relationship="BDColegio.InventarioAlimentoControlEntrada3" FromRole="ControlEntrada" ToRole="InventarioAlimento" />
+          <Property Name="FrijolesId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RMaiz" Relationship="BDColegio.InventarioAlimentoControlEntrada4" FromRole="ControlEntrada" ToRole="InventarioAlimento" />
+          <Property Name="MaizId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="InventarioAlimentoControlEntrada">
+          <End Type="BDColegio.InventarioAlimento" Role="InventarioAlimento" Multiplicity="1" />
+          <End Type="BDColegio.ControlEntrada" Role="ControlEntrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioAlimento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ControlEntrada">
+              <PropertyRef Name="AceiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="InventarioAlimentoControlEntrada1">
+          <End Type="BDColegio.InventarioAlimento" Role="InventarioAlimento" Multiplicity="1" />
+          <End Type="BDColegio.ControlEntrada" Role="ControlEntrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioAlimento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ControlEntrada">
+              <PropertyRef Name="ArrozId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="InventarioAlimentoControlEntrada2">
+          <End Type="BDColegio.InventarioAlimento" Role="InventarioAlimento" Multiplicity="1" />
+          <End Type="BDColegio.ControlEntrada" Role="ControlEntrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioAlimento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ControlEntrada">
+              <PropertyRef Name="CerealId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="InventarioAlimentoControlEntrada3">
+          <End Type="BDColegio.InventarioAlimento" Role="InventarioAlimento" Multiplicity="1" />
+          <End Type="BDColegio.ControlEntrada" Role="ControlEntrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioAlimento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ControlEntrada">
+              <PropertyRef Name="FrijolesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="InventarioAlimentoControlEntrada4">
+          <End Type="BDColegio.InventarioAlimento" Role="InventarioAlimento" Multiplicity="1" />
+          <End Type="BDColegio.ControlEntrada" Role="ControlEntrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioAlimento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ControlEntrada">
+              <PropertyRef Name="MaizId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2086,7 +2288,6 @@
           <ScalarProperty Name="NombreAlimento" ColumnName="NombreAlimento" />
           <ScalarProperty Name="Stock" ColumnName="Stock" />
           <ScalarProperty Name="UnidadDeMedida" ColumnName="UnidadDeMedida" />
-          <ScalarProperty Name="FechaReabastecimiento" ColumnName="FechaReabastecimiento" />
           <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
           <ScalarProperty Name="Activo" ColumnName="Activo" />
         </MappingFragment>
@@ -2096,29 +2297,28 @@
       <EntityTypeMapping TypeName="IsTypeOf(BDColegio.ControlMerienda)">
         <MappingFragment StoreEntitySet="ControlesMeriendas">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="AsistenciaRealTotal" ColumnName="AsistenciaRealTotal" />
           <ScalarProperty Name="Codigo" ColumnName="Codigo" />
           <ScalarProperty Name="FechaEntrega" ColumnName="FechaEntrega" />
           <ScalarProperty Name="AsistenciaEsperadaMujeres" ColumnName="AsistenciaEsperadaMujeres" />
           <ScalarProperty Name="AsistenciaEsperadaTotal" ColumnName="AsistenciaEsperadaTotal" />
           <ScalarProperty Name="AsistenciaRealMujeres" ColumnName="AsistenciaRealMujeres" />
-          <ScalarProperty Name="EAceite" ColumnName="EAceite" />
-          <ScalarProperty Name="EArroz" ColumnName="EArroz" />
-          <ScalarProperty Name="ECereal" ColumnName="ECereal" />
-          <ScalarProperty Name="EFrijoles" ColumnName="EFrijoles" />
-          <ScalarProperty Name="EMaiz" ColumnName="EMaiz" />
+          <ScalarProperty Name="AsistenciaRealTotal" ColumnName="AsistenciaRealTotal" />
+          <ScalarProperty Name="SAceite" ColumnName="SAceite" />
+          <ScalarProperty Name="SArroz" ColumnName="SArroz" />
+          <ScalarProperty Name="SCereal" ColumnName="SCereal" />
+          <ScalarProperty Name="SFrijoles" ColumnName="SFrijoles" />
+          <ScalarProperty Name="SMaiz" ColumnName="SMaiz" />
           <ScalarProperty Name="FirmaDocente" ColumnName="FirmaDocente" />
           <ScalarProperty Name="CedulaTutor" ColumnName="CedulaTutor" />
           <ScalarProperty Name="FirmaTutor" ColumnName="FirmaTutor" />
           <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
           <ScalarProperty Name="Activo" ColumnName="Activo" />
           <ScalarProperty Name="CursoAcademicoId" ColumnName="CursoAcademicoId" />
-          <ScalarProperty Name="InventarioAlimentoId" ColumnName="InventarioAlimentoId" />
-          <ScalarProperty Name="InventarioAlimentoId2" ColumnName="InventarioAlimentoId2" />
-          <ScalarProperty Name="InventarioAlimentoId1" ColumnName="InventarioAlimentoId1" />
-          <ScalarProperty Name="InventarioAlimentoId3" ColumnName="InventarioAlimentoId3" />
-          <ScalarProperty Name="InventarioAlimentoId4" ColumnName="InventarioAlimentoId4" />
-          <ScalarProperty Name="InventarioAlimentoId5" ColumnName="InventarioAlimentoId5" />
+          <ScalarProperty Name="AceiteId" ColumnName="AceiteId" />
+          <ScalarProperty Name="ArrozId" ColumnName="ArrozId" />
+          <ScalarProperty Name="CerealId" ColumnName="CerealId" />
+          <ScalarProperty Name="FrijolesId" ColumnName="FrijolesId" />
+          <ScalarProperty Name="MaizId" ColumnName="MaizId" />
           <ScalarProperty Name="EstudianteId" ColumnName="EstudianteId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -2138,7 +2338,6 @@
           <ScalarProperty Name="EstudianteId" ColumnName="EstudianteId" />
           <ScalarProperty Name="TutorId" ColumnName="TutorId" />
           <ScalarProperty Name="PeriodosId" ColumnName="PeriodosId" />
-          <ScalarProperty Name="AñoId" ColumnName="AñoId" />
           <ScalarProperty Name="AñoAcademicoId" ColumnName="AñoAcademicoId" />
           <ScalarProperty Name="Aprobado" ColumnName="Aprobado" />
         </MappingFragment>
@@ -2193,6 +2392,26 @@
         <MappingFragment StoreEntitySet="Años">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ControlEntradas">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.ControlEntrada)">
+        <MappingFragment StoreEntitySet="ControlEntradas">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FechaAbastecimiento" ColumnName="FechaAbastecimiento" />
+          <ScalarProperty Name="NombreReceptor" ColumnName="NombreReceptor" />
+          <ScalarProperty Name="EAceite" ColumnName="EAceite" />
+          <ScalarProperty Name="EArroz" ColumnName="EArroz" />
+          <ScalarProperty Name="ECereal" ColumnName="ECereal" />
+          <ScalarProperty Name="EFrijoles" ColumnName="EFrijoles" />
+          <ScalarProperty Name="EMaiz" ColumnName="EMaiz" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="AceiteId" ColumnName="AceiteId" />
+          <ScalarProperty Name="ArrozId" ColumnName="ArrozId" />
+          <ScalarProperty Name="CerealId" ColumnName="CerealId" />
+          <ScalarProperty Name="FrijolesId" ColumnName="FrijolesId" />
+          <ScalarProperty Name="MaizId" ColumnName="MaizId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
