@@ -60,10 +60,25 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Buscar si el alimento ya existe en la base de datos por su nombre
+                var alimentoExistente = db.InventariosAlimentos
+                                          .FirstOrDefault(a => a.NombreAlimento == inventarioAlimento.NombreAlimento);
 
-                inventarioAlimento.FechaModificacion = DateTime.Now;
-                inventarioAlimento.Activo = true;
-                db.InventariosAlimentos.Add(inventarioAlimento);
+                if (alimentoExistente != null)
+                {
+                    // Si el alimento ya existe, sumar el stock
+                    alimentoExistente.Stock += inventarioAlimento.Stock;
+                    alimentoExistente.FechaModificacion = DateTime.Now;
+                    db.Entry(alimentoExistente).State = EntityState.Modified;
+                }
+                else
+                {
+                    // Si no existe, agregarlo como nuevo
+                    inventarioAlimento.FechaModificacion = DateTime.Now;
+                    inventarioAlimento.Activo = true;
+                    db.InventariosAlimentos.Add(inventarioAlimento);
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

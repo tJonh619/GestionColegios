@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 10/08/2025 23:50:11
--- Generated from EDMX file: C:\Users\tjonh\Escritorio\Proyecto Sistema web de colegios publicos de Nicaragua\Proyecto\GestionColegios\GestionColegios\Models\BDColegio.edmx
+-- Date Created: 10/09/2024 19:35:48
+-- Generated from EDMX file: C:\Users\Moises\source\repos\GestionColegios\GestionColegios\Models\BDColegio.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -119,6 +119,21 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_TutorEstudiante]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Estudiantes] DROP CONSTRAINT [FK_TutorEstudiante];
 GO
+IF OBJECT_ID(N'[dbo].[FK_InventarioAlimentoControlEntrada]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ControlEntradas] DROP CONSTRAINT [FK_InventarioAlimentoControlEntrada];
+GO
+IF OBJECT_ID(N'[dbo].[FK_InventarioAlimentoControlEntrada1]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ControlEntradas] DROP CONSTRAINT [FK_InventarioAlimentoControlEntrada1];
+GO
+IF OBJECT_ID(N'[dbo].[FK_InventarioAlimentoControlEntrada2]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ControlEntradas] DROP CONSTRAINT [FK_InventarioAlimentoControlEntrada2];
+GO
+IF OBJECT_ID(N'[dbo].[FK_InventarioAlimentoControlEntrada3]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ControlEntradas] DROP CONSTRAINT [FK_InventarioAlimentoControlEntrada3];
+GO
+IF OBJECT_ID(N'[dbo].[FK_InventarioAlimentoControlEntrada4]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ControlEntradas] DROP CONSTRAINT [FK_InventarioAlimentoControlEntrada4];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -189,6 +204,9 @@ IF OBJECT_ID(N'[dbo].[Semestres]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Años]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Años];
+GO
+IF OBJECT_ID(N'[dbo].[ControlEntradas]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ControlEntradas];
 GO
 
 -- --------------------------------------------------
