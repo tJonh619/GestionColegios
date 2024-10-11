@@ -41,7 +41,17 @@
                         <div class="form-group">
                             @Html.LabelFor(m => m.InventarioAlimento.NombreAlimento, new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.InventarioAlimento.NombreAlimento, new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.InventarioAlimento.NombreAlimento,
+                                    new SelectList(new List<SelectListItem>
+                                    {
+                                        new SelectListItem { Value = "Arroz", Text = "Arroz" },
+                                        new SelectListItem { Value = "Aceite", Text = "Aceite" },
+                                        new SelectListItem { Value = "Cereal", Text = "Cereal" },
+                                        new SelectListItem { Value = "Frijoles", Text = "Frijoles" },
+                                        new SelectListItem { Value = "Maíz", Text = "Maíz" }
+                                    }, "Value", "Text"),
+                                    "Seleccione un alimento",
+                                    new { @class = "form-control" })
                             </div>
                         </div>
 
@@ -103,6 +113,7 @@
                                     <td>@Html.DisplayFor(modelItem => alimento.NombreAlimento)</td>
                                     <td>@Html.DisplayFor(modelItem => alimento.Stock)</td>
                                     <td>@Html.DisplayFor(modelItem => alimento.UnidadDeMedida)</td>
+                                    <td>@Html.DisplayFor(modelItem => alimento.FechaModificacion)</td>
                                     <td>@Html.DisplayFor(modelItem => alimento.Activo)</td>
 
 
