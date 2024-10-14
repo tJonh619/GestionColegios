@@ -58,6 +58,7 @@ namespace GestionColegios.Controllers
                     var frijoles = db.InventariosAlimentos.SingleOrDefault(a => a.NombreAlimento == "Frijoles");
                     var maiz = db.InventariosAlimentos.SingleOrDefault(a => a.NombreAlimento == "Maíz");
 
+                    // Procesar todas las filas enviadas desde el formulario
                     for (int i = 0; i < Codigo.Length; i++)
                     {
                         var controlMerienda = new ControlMerienda
@@ -90,10 +91,14 @@ namespace GestionColegios.Controllers
                             Activo = true
                         };
 
+                        // Agregar la instancia a la base de datos
                         db.ControlesMeriendas.Add(controlMerienda);
                     }
 
+                    // Guardar todos los cambios en la base de datos
                     db.SaveChanges();
+
+                    // Redirigir al índice después de guardar
                     return RedirectToAction("Index");
                 }
             }

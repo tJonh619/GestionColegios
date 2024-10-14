@@ -1,7 +1,7 @@
 ﻿@model GestionColegios.ViewModels.VMControlMerienda
 
 @{
-    Layout = null;
+    Layout = Layout;
 }
 
 <!DOCTYPE html>
@@ -16,8 +16,6 @@
     <div class="container">
         <h2 class="mt-4 mb-3">Control de Merienda</h2>
 
-        <!-- Botón para agregar una nueva tabla -->
-        <button type="button" class="btn btn-primary mb-3" id="agregar-tabla">Nueva Tabla</button>
 
         <!-- Contenedor para las tablas -->
         <form action="@Url.Action("Create", "ControlMeriendas")" method="post" id="form-tablas">
@@ -47,49 +45,30 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach (var item in Model.ControlMeriendas)
-                            {
-                                <tr>
-                                    <td>
-                                        <select class="form-control" name="CursoAcademicoId[]">
-                                            @foreach (var curso in Model.CursosAcademicos)
-                                            {
-                                                <option value="@curso.Id">@curso.Nombre</option>
-                                            }
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select class="form-control" name="EstudianteId[]">
-                                            @foreach (var estudiante in Model.Estudiantes)
-                                            {
-                                                <option value="@estudiante.Id">@estudiante.Nombres</option>
-                                            }
-                                        </select>
-                                    </td>
-                                    <td><input type="text" name="Codigo[]" class="form-control" value="@item.Codigo" /></td>
-                                    <td><input type="date" name="FechaEntrega[]" class="form-control" value="@item.FechaEntrega.ToString("yyyy-MM-dd")" /></td>
-                                    <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" value="@item.AsistenciaEsperadaMujeres" /></td>
-                                    <td><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" value="@item.AsistenciaEsperadaTotal" /></td>
-                                    <td><input type="number" name="AsistenciaRealMujeres[]" class="form-control" value="@item.AsistenciaRealMujeres" /></td>
-                                    <td><input type="number" name="AsistenciaRealTotal[]" class="form-control" value="@item.AsistenciaRealTotal" /></td>
-                                    <td><input type="number" name="SAceite[]" class="form-control" value="@item.SAceite" /></td>
-                                    <td><input type="number" name="SArroz[]" class="form-control" value="@item.SArroz" /></td>
-                                    <td><input type="number" name="SCereal[]" class="form-control" value="@item.SCereal" /></td>
-                                    <td><input type="number" name="SFrijoles[]" class="form-control" value="@item.SFrijoles" /></td>
-                                    <td><input type="number" name="SMaiz[]" class="form-control" value="@item.SMaiz" /></td>
-                                    <td><input type="text" name="FirmaDocente[]" class="form-control" value="@item.FirmaDocente" /></td>
-                                    <td><input type="text" name="CedulaTutor[]" class="form-control" value="@item.CedulaTutor" /></td>
-                                    <td><input type="text" name="FirmaTutor[]" class="form-control" value="@item.FirmaTutor" /></td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger">Eliminar</button>
-                                    </td>
-                                </tr>
-                            }
+                        <tbody id="tabla-body">
+                            <tr>
+                                <td><input type="text" name="CursoAcademicoId[]" class="form-control" /></td>
+                                <td><input type="text" name="EstudianteId[]" class="form-control" /></td>
+                                <td><input type="text" name="Codigo[]" class="form-control" /></td>
+                                <td><input type="date" name="FechaEntrega[]" class="form-control" /></td>
+                                <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
+                                <td><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
+                                <td><input type="number" name="AsistenciaRealMujeres[]" class="form-control" /></td>
+                                <td><input type="number" name="AsistenciaRealTotal[]" class="form-control" /></td>
+                                <td><input type="number" name="SAceite[]" class="form-control" /></td>
+                                <td><input type="number" name="SArroz[]" class="form-control" /></td>
+                                <td><input type="number" name="SCereal[]" class="form-control" /></td>
+                                <td><input type="number" name="SFrijoles[]" class="form-control" /></td>
+                                <td><input type="number" name="SMaiz[]" class="form-control" /></td>
+                                <td><input type="text" name="FirmaDocente[]" class="form-control" /></td>
+                                <td><input type="text" name="CedulaTutor[]" class="form-control" /></td>
+                                <td><input type="text" name="FirmaTutor[]" class="form-control" /></td>
+                                <td><button type="button" class="btn btn-danger eliminar-fila">Eliminar</button></td>
+                            </tr>
                         </tbody>
                     </table>
                     <!-- Botón para agregar fila -->
-                    <button type="button" class="btn btn-success mb-3 agregar-fila">+ Agregar Fila</button>
+                    <button type="button" class="btn btn-success mb-3 agregar-fila">Agregar Fila</button>
                 </div>
             </div>
             <!-- Botón para enviar los datos al servidor -->
@@ -99,118 +78,61 @@
 
     <script>
         $(document).ready(function () {
-            var contadorTablas = 1;
+            var controlMeriendas = []; // Arreglo para guardar los datos de las filas
 
             // Función para agregar una nueva fila a la tabla
             $(document).on('click', '.agregar-fila', function () {
+                // Recogemos los valores de la fila actual
+                var nuevaFilaData = {
+                    CursoAcademicoId: '',
+                    EstudianteId: '',
+                    Codigo: '',
+                    FechaEntrega: '',
+                    AsistenciaEsperadaMujeres: 0,
+                    AsistenciaEsperadaTotal: 0,
+                    AsistenciaRealMujeres: 0,
+                    AsistenciaRealTotal: 0,
+                    SAceite: 0,
+                    SArroz: 0,
+                    SCereal: 0,
+                    SFrijoles: 0,
+                    SMaiz: 0,
+                    FirmaDocente: '',
+                    CedulaTutor: '',
+                    FirmaTutor: ''
+                };
+
+                // Guardamos la nueva fila en el arreglo
+                controlMeriendas.push(nuevaFilaData);
+
+                // Agregamos la nueva fila al DOM
                 var nuevaFila = `
-                    <tr>
-                        <td>
-                            <select class="form-control" name="CursoAcademicoId[]">
-                                @foreach (var curso in Model.CursosAcademicos)
-                                {
-                                    <option value="@curso.Id">@curso.Nombre</option>
-                                }
-                            </select>
-                        </td>
-                        <td>
-                            <select class="form-control" name="EstudianteId[]">
-                                @foreach (var estudiante in Model.Estudiantes)
-                                {
-                                    <option value="@estudiante.Id">@estudiante.Nombres</option>
-                                }
-                            </select>
-                        </td>
-                        <td><input type="text" name="Codigo[]" class="form-control" /></td>
-                        <td><input type="date" name="FechaEntrega[]" class="form-control" /></td>
-                        <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
-                        <td><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
-                        <td><input type="number" name="AsistenciaRealMujeres[]" class="form-control" /></td>
-                        <td><input type="number" name="AsistenciaRealTotal[]" class="form-control" /></td>
-                        <td><input type="number" name="SAceite[]" class="form-control" /></td>
-                        <td><input type="number" name="SArroz[]" class="form-control" /></td>
-                        <td><input type="number" name="SCereal[]" class="form-control" /></td>
-                        <td><input type="number" name="SFrijoles[]" class="form-control" /></td>
-                        <td><input type="number" name="SMaiz[]" class="form-control" /></td>
-                        <td><input type="text" name="FirmaDocente[]" class="form-control" /></td>
-                        <td><input type="text" name="CedulaTutor[]" class="form-control" /></td>
-                        <td><input type="text" name="FirmaTutor[]" class="form-control" /></td>
-                        <td><button type="button" class="btn btn-danger eliminar-fila">Eliminar</button></td>
-                    </tr>`;
-                $(this).parents('table').find('tbody').append(nuevaFila);
+                        <tr>
+    <td><input type="text" name="CursoAcademicoId[]" class="form-control" /></td>
+    <td><input type="text" name="EstudianteId[]" class="form-control" /></td>
+    <td><input type="text" name="Codigo[]" class="form-control" /></td>
+    <td><input type="date" name="FechaEntrega[]" class="form-control" /></td>
+    <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
+    <td><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
+    <td><input type="number" name="AsistenciaRealMujeres[]" class="form-control" /></td>
+    <td><input type="number" name="AsistenciaRealTotal[]" class="form-control" /></td>
+    <td><input type="number" name="SAceite[]" class="form-control" /></td>
+    <td><input type="number" name="SArroz[]" class="form-control" /></td>
+    <td><input type="number" name="SCereal[]" class="form-control" /></td>
+    <td><input type="number" name="SFrijoles[]" class="form-control" /></td>
+    <td><input type="number" name="SMaiz[]" class="form-control" /></td>
+    <td><input type="text" name="FirmaDocente[]" class="form-control" /></td>
+    <td><input type="text" name="CedulaTutor[]" class="form-control" /></td>
+    <td><input type="text" name="FirmaTutor[]" class="form-control" /></td>
+    <td><button type="button" class="btn btn-danger eliminar-fila">Eliminar</button></td>
+</tr>`;
+
+                $('#tabla-body').append(nuevaFila);
             });
 
             // Función delegada para eliminar una fila específica
             $(document).on('click', '.eliminar-fila', function () {
                 $(this).closest('tr').remove();
-            });
-
-            // Función para agregar una nueva tabla vacía
-            $('#agregar-tabla').click(function () {
-                contadorTablas++;
-                var nuevaTabla = `
-                    <div class="table-responsive" id="tabla-${contadorTablas}">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Curso Académico</th>
-                                    <th>Estudiante</th>
-                                    <th>Código</th>
-                                    <th>Fecha Entrega</th>
-                                    <th>Asistencia Esperada Mujeres</th>
-                                    <th>Asistencia Esperada Total</th>
-                                    <th>Asistencia Real Mujeres</th>
-                                    <th>Asistencia Real Total</th>
-                                    <th>SAceite</th>
-                                    <th>SArroz</th>
-                                    <th>SCereal</th>
-                                    <th>SFrijoles</th>
-                                    <th>SMaiz</th>
-                                    <th>Firma Docente</th>
-                                    <th>Cédula Tutor</th>
-                                    <th>Firma Tutor</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </ thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <select class="form-control" name="CursoAcademicoId[]">
-                                            @foreach (var curso in Model.CursosAcademicos)
-                                            {
-                                                <option value="@curso.Id">@curso.Nombre</option>
-                                            }
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select class="form-control" name="EstudianteId[]">
-                                            @foreach (var estudiante in Model.Estudiantes)
-                                            {
-                                                <option value="@estudiante.Id">@estudiante.Nombres</option>
-                                            }
-                                        </select>
-                                    </td>
-                                    <td><input type="text" name="Codigo[]" class="form-control" /></td>
-                                    <td><input type="date" name="FechaEntrega[]" class="form-control" /></td>
-                                    <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
-                                    <td><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
-                                    <td><input type="number" name="AsistenciaRealMujeres[]" class="form-control" /></td>
-                                    <td><input type="number" name="AsistenciaRealTotal[]" class="form-control" /></td>
-                                    <td><input type="number" name="SAceite[]" class="form-control" /></td>
-                                    <td><input type="number" name="SArroz[]" class="form-control" /></td>
-                                    <td><input type="number" name="SCereal[]" class="form-control" /></td>
-                                    <td><input type="number" name="SFrijoles[]" class="form-control" /></td>
-                                    <td><input type="number" name="SMaiz[]" class="form-control" /></td>
-                                    <td><input type="text" name="FirmaDocente[]" class="form-control" /></td>
-                                    <td><input type="text" name="CedulaTutor[]" class="form-control" /></td>
-                                    <td><input type="text" name="FirmaTutor[]" class="form-control" /></td>
-                                    <td><button type="button" class="btn btn-danger eliminar-fila">Eliminar</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <button type="button" class="btn btn-success mb-3 agregar-fila">+ Agregar Fila</button>
-                    </div>`;
-                $('#tablas-container').append(nuevaTabla);
             });
         });
     </script>
