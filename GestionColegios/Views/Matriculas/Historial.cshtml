@@ -1,0 +1,85 @@
+﻿@model IEnumerable<GestionColegios.Models.Matricula>
+
+@{
+    ViewBag.Title = "Historial de Matrículas";
+}
+
+<div class="container-fluid" style="background-color: #f9f9f9; padding: 2rem;">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-sm" style="border-radius: 15px;">
+                <div class="card-header text-center" style="background-color: #4A90E2; color: white; border-radius: 15px 15px 0 0;">
+                    <h2 class="mb-0">Historial de Matrículas</h2>
+                </div>
+                <div class="card-body" style="padding: 2rem;">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Descripción</th>
+                                    <th>Estudiante</th>
+                                    <th>Tutor</th>
+                                    <th>Periodo</th>
+                                    <th>Año Académico</th>
+                                    <th>Continuidad</th>
+                                    <th>Traslado</th>
+                                    <th>Repitente</th>
+                                    <th>Aprobado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var matricula in Model)
+                                {
+                                    <tr>
+                                        <td>@matricula.Codigo</td>
+                                        <td>@matricula.Descripcion</td>
+                                        <td>@matricula.Estudiante.Nombres @matricula.Estudiante.Apellidos</td>
+                                        <td>@matricula.Tutor.Nombres @matricula.Tutor.Apellidos</td>
+                                        <td>@matricula.Periodos.Nombre</td>
+                                        <td>@matricula.AñoAcademico.Nombre</td>
+                                        <td>@(matricula.Continuidad ? "Sí" : "No")</td>
+                                        <td>@(matricula.Traslado ? "Sí" : "No")</td>
+                                        <td>@(matricula.Repitente ? "Sí" : "No")</td>
+                                        <td>@(matricula.Aprobado ? "Sí" : "No")</td>
+                                        <td>
+                                            <!-- Botón para editar la matrícula -->
+                                            @Html.ActionLink("Editar", "Edit", new { id = matricula.Id }, new { @class = "btn btn-primary btn-sm" })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center mt-4">
+                        @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary px-5 py-2", style = "border-radius: 25px;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<style>
+    .form-check-input {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    /* Estilo adicional para compactar la tabla */
+    .table {
+        margin-bottom: 0; /* Reduce el margen inferior de la tabla */
+    }
+
+    th, td {
+        padding: 0.75rem; /* Aumenta el padding de celdas para un mejor espaciado */
+    }
+</style>
