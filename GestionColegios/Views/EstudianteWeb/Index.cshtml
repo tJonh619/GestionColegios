@@ -193,6 +193,13 @@
                                         <a href="@Url.Action("Delete", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-danger">
                                             Eliminar
                                         </a>
+
+                                        <a href="@Url.Action("Create", "Matriculas", new { estudianteId = estudiante.Id, tutorId = Model.Tutor?.Id })" class="btn btn-sm btn-success">
+                                            Matricular
+                                        </a>
+
+                                        <a href="@Url.Action("Historial", "Matriculas", new { estudianteId = estudiante.Id })" class="btn btn-secondary">Ver Historial de Matrículas</a>
+
                                     </td>
                                 </tr>
                             }
