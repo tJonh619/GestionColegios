@@ -516,6 +516,9 @@
     <Content Include="Views\Matriculas\Edit.cshtml" />
     <Content Include="Views\Matriculas\Index.cshtml" />
     <Content Include="Views\Matriculas\Historial.cshtml" />
+    <Content Include="Views\UsuarioWeb\Login.cshtml" />
+    <Content Include="Views\UsuarioWeb\OlvidasteContrasena.cshtml" />
+    <Content Include="Views\UsuarioWeb\CambiarContrasena.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
