@@ -9,17 +9,11 @@ namespace GestionColegios.ViewModels
 {
     public class VMControlMerienda
     {
-        public IEnumerable<ControlMerienda> ControlMeriendas { get; set; }
-        public IEnumerable<CursoAcademico> CursosAcademicos { get; set; } // Asegúrate de que esta clase exista
-        public IEnumerable<Estudiante> Estudiantes { get; set; } // Asegúrate de que esta clase exista
-
-        // Constructor (opcional, pero recomendable)
-        public VMControlMerienda()
-        {
-            ControlMeriendas = new List<ControlMerienda>();
-            CursosAcademicos = new List<CursoAcademico>();
-            Estudiantes = new List<Estudiante>();
-        }
-
+        public List<Estudiante> Estudiantes { get; set; }
+        public Estudiante Estudiante { get; set; }
+        public List<CursoAcademico> CursosAcademicos { get; set; }
+        public CursoAcademico cursoAcademico { get; set; }
+        public List<ControlMerienda> ControlesMeriendas { get; set; }
+        public ControlMerienda ControlMerienda { get; set; }
     }
 }
