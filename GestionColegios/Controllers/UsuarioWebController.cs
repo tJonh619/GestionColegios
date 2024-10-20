@@ -44,16 +44,20 @@ namespace GestionColegios.Controllers
                 usuario.FechaModificacion = DateTime.Now;
                 db.Usuarios.Add(usuario);
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Usuario guardado correctamente.";
                 return RedirectToAction("Index");
             }
 
+            TempData["ErrorMessage"] = "Error al guardar Usuario. Intente de nuevo.";
             // Si ocurre un error, vuelve a cargar la lista de roles
             var model = new VMUsuario
             {
                 Roles = db.Roles.ToList(),
                 Usuario = usuario
             };
+        
             return View(model);
+          
         }
         // GET: UsuarioWeb/Edit/5
         public ActionResult Edit(int? id)
@@ -177,6 +181,7 @@ namespace GestionColegios.Controllers
                 try
                 {
                     db.SaveChanges(); // Guarda los cambios
+                    TempData["SuccessMessage"] = "Rol guardado correctamente.";
                     return RedirectToAction("Index"); // Redirige a la lista de roles
                 }
                 catch (DbEntityValidationException ex)
@@ -193,6 +198,7 @@ namespace GestionColegios.Controllers
             }
 
             // Si ModelState no es válido o ocurre un error, vuelve a mostrar la vista con el modelo
+            TempData["ErrorMessage"] = "Error al guardar Rol. Intente de nuevo.";
             return View(rol); // Devuelve la vista con el modelo para mostrar los errores de validación
         }
 
@@ -288,6 +294,7 @@ namespace GestionColegios.Controllers
 
                     db.Permisos.Add(permiso);
                     db.SaveChanges();
+                    TempData["SuccessMessage"] = "Permiso guardado correctamente.";
                     return RedirectToAction("Index");
                 }
             }
@@ -303,7 +310,7 @@ namespace GestionColegios.Controllers
                 }
                 return View(permiso);  // Regresar la vista con los errores mostrados
             }
-
+            TempData["ErrorMessage"] = "Error al guardar Permiso. Intente de nuevo.";
             return View(permiso);  // En caso de error, retornar la vista con los datos
         }
 
