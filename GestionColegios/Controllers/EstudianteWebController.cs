@@ -64,6 +64,7 @@ namespace GestionColegios.Controllers
                     model.Tutor.Activo = true;
                     db.Tutores.Add(model.Tutor);
                     db.SaveChanges(); // Guarda el tutor y obtiene su ID
+                    TempData["SuccessMessage"] = "Tutor guardado correctamente.";
                 }
 
                 // Asigna el ID del tutor al estudiante
@@ -80,10 +81,11 @@ namespace GestionColegios.Controllers
                 // Guarda el estudiante
                 db.Estudiantes.Add(model.Estudiante);
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Estudiantes guardado correctamente.";
 
                 return RedirectToAction("Index");
             }
-
+            TempData["ErrorMessage"] = "Error al guardar Estudiante y tutor. Intente de nuevo.";
             return View(model); // Si hay un error, retorna el modelo para mostrar errores
         }
 
