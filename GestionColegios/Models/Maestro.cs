@@ -11,8 +11,7 @@ namespace GestionColegios.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Maestro
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,16 +23,11 @@ namespace GestionColegios.Models
         public int Id { get; set; }
         public string Codigo { get; set; }
         public string Cedula { get; set; }
-
         public string Nombres { get; set; }
-
         public string Apellidos { get; set; }
-
         public string Sexo { get; set; }
         public string Celular { get; set; }
-
         public string Direccion { get; set; }
-
         public string Especialidad { get; set; }
         public System.DateTime FechaContratacion { get; set; }
         public string HorarioTrabajo { get; set; }
