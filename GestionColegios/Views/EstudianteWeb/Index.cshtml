@@ -41,242 +41,26 @@
         </div>
     }
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="crear-editar-tab" data-bs-toggle="tab" data-bs-target="#crear-editar" type="button" role="tab" aria-controls="crear-editar" aria-selected="true">Crear/Editar Estudiante</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="false">Listar Estudiantes</button>
-        </li>
-    </ul>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="true">Listar Estudiantes</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="crear-editar-tab" data-bs-toggle="tab" data-bs-target="#crear-editar" type="button" role="tab" aria-controls="crear-editar" aria-selected="false">Crear/Editar Estudiante</button>
+    </li>
+
+</ul>
 
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="crear-editar" role="tabpanel" aria-labelledby="crear-editar-tab">
-            <div class="row mt-2">
-                <div class="col-md-12">
-                    @using (Html.BeginForm("Create", "EstudianteWeb", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.HiddenFor(model => model.Estudiante.Id)
-
-                        <div class="row">
-                            <div class="col-md-5 card">
-                                <div class="row card" style="background-color: #001c7d">
-                                    <label class="m-md-1" style="color:white">Información Personal</label>
-                                </div>
-
-                                <!-- Nombres -->
-                                <div class="form-group mb-3 has-error">
-                                    <label for="Nombres">Nombres</label>
-                                    @Html.TextBoxFor(model => model.Estudiante.Nombres, new { @class = "form-control", placeholder = "Ingrese los nombres", required = "required", @id = "Nombres" })
-                                    @Html.ValidationMessageFor(model => model.Estudiante.Nombres, "", new { @class = "text-danger" })
-                                    @if (!ViewData.ModelState.IsValidField("Estudiante.Nombres"))
-                                    {
-                                        <div class="tooltip">Rellena este campo.</div>
-                                    }
-                                </div>
-
-                                <!-- Apellidos -->
-                                <div class="form-group mb-3 has-error">
-                                    <label for="Apellidos">Apellidos</label>
-                                    @Html.TextBoxFor(model => model.Estudiante.Apellidos, new { @class = "form-control", placeholder = "Ingrese los apellidos", required = "required", @id = "Apellidos" })
-                                    @Html.ValidationMessageFor(model => model.Estudiante.Apellidos, "", new { @class = "text-danger" })
-                                    @if (!ViewData.ModelState.IsValidField("Estudiante.Apellidos"))
-                                    {
-                                        <div class="tooltip">Rellena este campo.</div>
-                                    }
-                                </div>
-
-                                <!-- Fecha de nacimiento -->
-                                <div class="form-group mb-3 has-error">
-                                    <label for="FechaNacimiento">Fecha de Nacimiento</label>
-                                    @Html.TextBoxFor(model => model.Estudiante.FechaNacimiento, new { @class = "form-control", @type = "date", required = "required", @id = "FechaNacimiento" })
-                                    @Html.ValidationMessageFor(model => model.Estudiante.FechaNacimiento, "", new { @class = "text-danger" })
-                                    @if (!ViewData.ModelState.IsValidField("Estudiante.FechaNacimiento"))
-                                    {
-                                        <div class="tooltip">Rellena este campo.</div>
-                                    }
-                                </div>
-
-                                <!-- Edad -->
-                                <div class="form-group mb-3 has-error">
-                                    <label for="Edad">Edad</label>
-                                    @Html.TextBoxFor(model => model.Estudiante.Edad, new { @class = "form-control", placeholder = "Ingrese la edad", required = "required", @id = "Edad" })
-                                    @Html.ValidationMessageFor(model => model.Estudiante.Edad, "", new { @class = "text-danger" })
-                                    @if (!ViewData.ModelState.IsValidField("Estudiante.Edad"))
-                                    {
-                                        <div class="tooltip">Rellena este campo.</div>
-                                    }
-                                </div>
-
-                                <!-- Sexo -->
-                                <div class="form-group mb-3 has-error">
-                                    <label for="Sexo">Sexo</label>
-                                    @Html.DropDownListFor(model => model.Estudiante.Sexo, new SelectList(new List<string> { "Masculino", "Femenino" }), "Seleccione el sexo", new { @class = "form-control", required = "required", @id = "Sexo" })
-                                    @Html.ValidationMessageFor(model => model.Estudiante.Sexo, "", new { @class = "text-danger" })
-                                    @if (!ViewData.ModelState.IsValidField("Estudiante.Sexo"))
-                                    {
-                                        <div class="tooltip">Rellena este campo.</div>
-                                    }
-                                </div>
-
-                                <!-- Dirección -->
-                                <div class="form-group mb-3 has-error">
-                                    <label for="Direccion">Dirección</label>
-                                    @Html.TextBoxFor(model => model.Estudiante.Direccion, new { @class = "form-control", placeholder = "Ingrese la dirección", required = "required", @id = "Direccion" })
-                                    @Html.ValidationMessageFor(model => model.Estudiante.Direccion, "", new { @class = "text-danger" })
-                                    @if (!ViewData.ModelState.IsValidField("Estudiante.Direccion"))
-                                    {
-                                        <div class="tooltip">Rellena este campo.</div>
-                                    }
-                                </div>
-                            </div>
-
-                            <!-- Información del tutor -->
-                            <div class="col-md-5 card">
-                                <div class="row card" style="background-color: #001c7d">
-                                    <label class="m-md-1" style="color:white">Información del tutor</label>
-                                </div>
-
-                                <!-- Nombres del Tutor -->
-                                <div class="form-group mb-3 has-error">
-                                    <label for="TutorNombres">Nombres del Tutor</label>
-                                    @Html.TextBoxFor(model => model.Tutor.Nombres, new { @class = "form-control", placeholder = "Ingrese los nombres del tutor", required = "required", @id = "TutorNombres" })
-                                    @Html.ValidationMessageFor(model => model.Tutor.Nombres, "", new { @class = "text-danger" })
-                                    @if (!ViewData.ModelState.IsValidField("Tutor.Nombres"))
-                                    {
-                                        <div class="tooltip">Rellena este campo.</div>
-                                    }
-                                </div>
-
-                                <!-- Apellidos del Tutor -->
-                                <div class="form-group mb-3 has-error">
-                                    <label for="TutorApellidos">Apellidos del Tutor</label>
-                                    @Html.TextBoxFor(model => model.Tutor.Apellidos, new { @class = "form-control", placeholder = "Ingrese los apellidos del tutor", required = "required", @id = "TutorApellidos" })
-                                    @Html.ValidationMessageFor(model => model.Tutor.Apellidos, "", new { @class = "text-danger" })
-                                    @if (!ViewData.ModelState.IsValidField("Tutor.Apellidos"))
-                                    {
-                                        <div class="tooltip">Rellena este campo.</div>
-                                    }
-                                </div>
-
-                                <!-- Cédula del Tutor -->
-                                <div class="form-group mb-3 has-error">
-                                    <label for="TutorCedula">Cédula del Tutor</label>
-                                    @Html.TextBoxFor(model => model.Tutor.Cedula, new { @class = "form-control", placeholder = "Ingrese la cédula del tutor", required = "required", @id = "TutorCedula" })
-                                    @Html.ValidationMessageFor(model => model.Tutor.Cedula, "", new { @class = "text-danger" })
-                                    @if (!ViewData.ModelState.IsValidField("Tutor.Cedula"))
-                                    {
-                                        <div class="tooltip">Rellena este campo.</div>
-                                    }
-                                </div>
-
-                                <!-- Relación del Tutor -->
-                                <div class="form-group mb-3 has-error">
-                                    <label for="TutorRelacion">Relación con el Estudiante</label>
-                                    @Html.TextBoxFor(model => model.Tutor.RelacionConElEstudiante, new { @class = "form-control", placeholder = "Ingrese la relación con el estudiante", required = "required", @id = "TutorRelacion" })
-                                    @Html.ValidationMessageFor(model => model.Tutor.RelacionConElEstudiante, "", new { @class = "text-danger" })
-                                    @if (!ViewData.ModelState.IsValidField("Tutor.RelacionConElEstudiante"))
-                                    {
-                                        <div class="tooltip">Rellena este campo.</div>
-                                    }
-                                </div>
-
-                                <!-- Dirección del Tutor -->
-                                <div class="form-group mb-3 has-error">
-                                    <label for="TutorDireccion">Dirección del Tutor</label>
-                                    @Html.TextBoxFor(model => model.Tutor.Direccion, new { @class = "form-control", placeholder = "Ingrese la dirección del tutor", required = "required", @id = "TutorDireccion" })
-                                    @Html.ValidationMessageFor(model => model.Tutor.Direccion, "", new { @class = "text-danger" })
-                                    @if (!ViewData.ModelState.IsValidField("Tutor.Direccion"))
-                                    {
-                                        <div class="tooltip">Rellena este campo.</div>
-                                    }
-                                </div>
-
-                                <!-- Celular del Tutor -->
-                                <div class="form-group mb-3 has-error">
-                                    <label for="TutorCelular">Celular del Tutor</label>
-                                    @Html.TextBoxFor(model => model.Tutor.Celular, new { @class = "form-control", placeholder = "Ingrese el celular del tutor", required = "required", @id = "TutorCelular" })
-                                    @Html.ValidationMessageFor(model => model.Tutor.Celular, "", new { @class = "text-danger" })
-                                    @if (!ViewData.ModelState.IsValidField("Tutor.Celular"))
-                                    {
-                                        <div class="tooltip">Rellena este campo.</div>
-                                    }
-                                </div>
-                            </div>
-
-                            <div class="form-group col-md-2 mt-4">
-                                <button type="submit" class="btn btn-primary">
-                                    @(Model.Estudiante.Id == 0 ? "Registrar" : "Guardar Cambios")
-                                </button>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
+        <div class="tab-pane fade show active" id="listar" role="tabpanel" aria-labelledby="listar-tab">
+            @Html.Partial("_List", Model)
         </div>
 
-        <div class="tab-pane fade" id="listar" role="tabpanel" aria-labelledby="listar-tab">
-            <div class="row mt-4">
-                <div class="container">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="form-group">
-                            <label for="searchType">Buscar por:</label>
-                            <select id="searchType" class="form-select">
-                                <option value="nombres">Nombre Estudiante</option>
-                                <option value="apellidos">Apellido Estudiante</option>
-                                <option value="codigo">Código Estudiante</option>
-                                <option value="direccion">Dirección</option>
-                            </select>
-                        </div>
 
-                        <div class="form-group">
-                            <input type="text" id="search" class="form-control" placeholder="Buscar...">
-                        </div>
-
-                        <div id="spinner" class="spinner-border text-primary" role="status" style="display: none;">
-                            <span class="visually-hidden">Cargando...</span>
-                        </div>
-                    </div>
-
-                    <table style="width: 100%;" class="table-responsive table-striped table-hover table-bordered align-middle">
-                        <thead style="background-color: #001c7d; color: white;">
-                            <tr>
-                                <th scope="col">Código</th>
-                                <th scope="col">Nombres</th>
-                                <th scope="col">Apellidos</th>
-                                <th scope="col">Fecha de Nacimiento</th>
-                                <th scope="col">Edad</th>
-                                <th scope="col">Sexo</th>
-                                <th scope="col">Dirección</th>
-                                <th scope="col">Activo</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            @foreach (var estudiante in Model.Estudiantes)
-                            {
-                                <tr>
-                                    <td>@estudiante.CodigoEstudiante</td>
-                                    <td>@estudiante.Nombres</td>
-                                    <td>@estudiante.Apellidos</td>
-                                    <td>@estudiante.FechaNacimiento.ToString("yyyy-MM-dd")</td>
-                                    <td>@estudiante.Edad</td>
-                                    <td>@estudiante.Sexo</td>
-                                    <td>@estudiante.Direccion</td>
-                                    <td>@(estudiante.Activo ? "Sí" : "No")</td>
-                                    <td>
-                                        <a href="@Url.Action("Edit", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-warning">Editar</a>
-                                        <a href="@Url.Action("Delete", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-danger">Eliminar</a>
-                                        <a href="@Url.Action("Create", "Matriculas", new { estudianteId = estudiante.Id, tutorId = Model.Tutor?.Id })" class="btn btn-sm btn-success">Matricular</a>
-                                        <a href="@Url.Action("Historial", "Matriculas", new { estudianteId = estudiante.Id })" class="btn btn-secondary">Ver Historial de Matrículas</a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="tab-pane fade" id="crear-editar" role="tabpanel" aria-labelledby="crear-editar-tab">
+            @Html.Partial("_Create_Edit", Model)
         </div>
+
+
     </div>
 </div>

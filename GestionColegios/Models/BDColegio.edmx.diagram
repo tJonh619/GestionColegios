@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b6c7ab075203471e86a18fd0e4b2950a" Name="Diagram1" ZoomLevel="79" >
+      <Diagram DiagramId="b6c7ab075203471e86a18fd0e4b2950a" Name="Diagram1" ZoomLevel="80" >
         <EntityTypeShape EntityType="BDColegio.Rol" Width="1.75" PointX="9.5" PointY="7.75" />
         <EntityTypeShape EntityType="BDColegio.Permiso" Width="1.875" PointX="6.5" PointY="8.75" />
         <AssociationConnector Association="BDColegio.RolPermiso" />
