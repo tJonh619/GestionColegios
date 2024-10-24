@@ -431,7 +431,7 @@
     <Property Name="Continuidad" Type="bit" Nullable="false" />
     <Property Name="Traslado" Type="bit" Nullable="false" />
     <Property Name="Repitente" Type="bit" Nullable="false" />
-    <Property Name="FechaMatricula" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaMatricula" Type="datetime" Nullable="false" />
     <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
     <Property Name="Activo" Type="bit" Nullable="false" />
     <Property Name="EstudianteId" Type="int" Nullable="false" />
@@ -1730,7 +1730,7 @@
           <Property Name="Continuidad" Type="Boolean" Nullable="false" />
           <Property Name="Traslado" Type="Boolean" Nullable="false" />
           <Property Name="Repitente" Type="Boolean" Nullable="false" />
-          <Property Name="FechaMatricula" Type="String" Nullable="false" />
+          <Property Name="FechaMatricula" Type="DateTime" Nullable="false" />
           <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Activo" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Estudiante" Relationship="BDColegio.EstudianteMatricula" FromRole="Matricula" ToRole="Estudiante" />

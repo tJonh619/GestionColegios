@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 10/09/2024 19:35:48
--- Generated from EDMX file: C:\Users\Moises\source\repos\GestionColegios\GestionColegios\Models\BDColegio.edmx
+-- Date Created: 10/23/2024 21:18:59
+-- Generated from EDMX file: C:\Users\tjonh\Escritorio\Proyecto Sistema web de colegios publicos de Nicaragua\Proyecto\GestionColegios\GestionColegios\Models\BDColegio.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -456,7 +456,7 @@ CREATE TABLE [dbo].[Matriculas] (
     [Continuidad] bit  NOT NULL,
     [Traslado] bit  NOT NULL,
     [Repitente] bit  NOT NULL,
-    [FechaMatricula] nvarchar(max)  NOT NULL,
+    [FechaMatricula] datetime  NOT NULL,
     [FechaModificacion] datetime  NOT NULL,
     [Activo] bit  NOT NULL,
     [EstudianteId] int  NOT NULL,

@@ -18,13 +18,23 @@ namespace GestionColegios.Controllers
         // GET: ControlMeriendas
         public ActionResult Index()
         {
-            var controlesMeriendas = db.ControlesMeriendas.Include(c => c.CursoAcademico).Include(c => c.RAceite).Include(c => c.RArroz).Include(c => c.RCereal).Include(c => c.RFrijoles).Include(c => c.RMaiz).Include(c => c.Estudiante);
+            var controlesMeriendas = db.ControlesMeriendas
+                .Include(c => c.CursoAcademico)
+                .Include(c => c.RAceite)
+                .Include(c => c.RArroz)
+                .Include(c => c.RCereal)
+                .Include(c => c.RFrijoles)
+                .Include(c => c.RMaiz)
+                .Include(c => c.Estudiante);
 
             var viewModel = new VMControlMerienda
             {
-                ControlMeriendas = controlesMeriendas.ToList(),
+                ControlesMeriendas = controlesMeriendas.ToList(),
+                ControlMerienda = new ControlMerienda(),
                 CursosAcademicos = db.CursosAcademicos.ToList(),
-                Estudiantes = db.Estudiantes.ToList()
+                cursoAcademico = new CursoAcademico(),
+                Estudiantes = db.Estudiantes.ToList(),
+                Estudiante = new Estudiante()
             };
 
             return View(viewModel);
@@ -51,59 +61,56 @@ namespace GestionColegios.Controllers
             {
                 if (Codigo != null && Codigo.Length > 0)
                 {
-                    // Obtener los IDs de los alimentos desde la base de datos
                     var aceite = db.InventariosAlimentos.SingleOrDefault(a => a.NombreAlimento == "Aceite");
                     var arroz = db.InventariosAlimentos.SingleOrDefault(a => a.NombreAlimento == "Arroz");
                     var cereal = db.InventariosAlimentos.SingleOrDefault(a => a.NombreAlimento == "Cereal");
                     var frijoles = db.InventariosAlimentos.SingleOrDefault(a => a.NombreAlimento == "Frijoles");
                     var maiz = db.InventariosAlimentos.SingleOrDefault(a => a.NombreAlimento == "Maíz");
 
-                    // Procesar todas las filas enviadas desde el formulario
                     for (int i = 0; i < Codigo.Length; i++)
                     {
-                        var controlMerienda = new ControlMerienda
+                        if (CursoAcademicoId[i] != 0 && EstudianteId[i] != 0) // Validar que no sean nulos
                         {
-                            Codigo = Codigo[i],
-                            FechaEntrega = FechaEntrega[i],
-                            AsistenciaEsperadaMujeres = AsistenciaEsperadaMujeres[i],
-                            AsistenciaEsperadaTotal = AsistenciaEsperadaTotal[i],
-                            AsistenciaRealMujeres = AsistenciaRealMujeres[i],
-                            AsistenciaRealTotal = AsistenciaRealTotal[i],
-                            SAceite = SAceite[i],
-                            SArroz = SArroz[i],
-                            SCereal = SCereal[i],
-                            SFrijoles = SFrijoles[i],
-                            SMaiz = SMaiz[i],
-                            FirmaDocente = FirmaDocente[i],
-                            CedulaTutor = CedulaTutor[i],
-                            FirmaTutor = FirmaTutor[i],
-                            CursoAcademicoId = CursoAcademicoId[i],
-                            EstudianteId = EstudianteId[i],
+                            var controlMerienda = new ControlMerienda
+                            {
+                                Codigo = Codigo[i],
+                                FechaEntrega = FechaEntrega[i],
+                                AsistenciaEsperadaMujeres = AsistenciaEsperadaMujeres[i],
+                                AsistenciaEsperadaTotal = AsistenciaEsperadaTotal[i],
+                                AsistenciaRealMujeres = AsistenciaRealMujeres[i],
+                                AsistenciaRealTotal = AsistenciaRealTotal[i],
+                                SAceite = SAceite[i],
+                                SArroz = SArroz[i],
+                                SCereal = SCereal[i],
+                                SFrijoles = SFrijoles[i],
+                                SMaiz = SMaiz[i],
+                                FirmaDocente = FirmaDocente[i],
+                                CedulaTutor = CedulaTutor[i],
+                                FirmaTutor = FirmaTutor[i],
+                                CursoAcademicoId = CursoAcademicoId[i],
+                                EstudianteId = EstudianteId[i],
+                                AceiteId = aceite.Id,
+                                ArrozId = arroz.Id,
+                                CerealId = cereal.Id,
+                                FrijolesId = frijoles.Id,
+                                MaizId = maiz.Id,
+                                FechaModificacion = DateTime.Now,
+                                Activo = true
+                            };
 
-                            // Asignar los IDs de los alimentos obtenidos desde la base de datos
-                            AceiteId = aceite.Id,
-                            ArrozId = arroz.Id,
-                            CerealId = cereal.Id,
-                            FrijolesId = frijoles.Id,
-                            MaizId = maiz.Id,
-
-                            FechaModificacion = DateTime.Now,
-                            Activo = true
-                        };
-
-                        // Agregar la instancia a la base de datos
-                        db.ControlesMeriendas.Add(controlMerienda);
+                            db.ControlesMeriendas.Add(controlMerienda);
+                        }
                     }
 
-                    // Guardar todos los cambios en la base de datos
                     db.SaveChanges();
-
-                    // Redirigir al índice después de guardar
                     return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "No hay registros para guardar.");
                 }
             }
 
-            // Si algo falla, recargar las listas de selección
             viewModel.CursosAcademicos = db.CursosAcademicos.ToList();
             viewModel.Estudiantes = db.Estudiantes.ToList();
             return View(viewModel);
@@ -124,7 +131,7 @@ namespace GestionColegios.Controllers
 
             var viewModel = new VMControlMerienda
             {
-                ControlMeriendas = new List<ControlMerienda> { controlMerienda },
+                ControlMerienda = controlMerienda,
                 CursosAcademicos = db.CursosAcademicos.ToList(),
                 Estudiantes = db.Estudiantes.ToList()
             };
@@ -135,38 +142,44 @@ namespace GestionColegios.Controllers
         // POST: ControlMeriendas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, VMControlMerienda viewModel, string[] Codigo, DateTime[] FechaEntrega, int[] AsistenciaEsperadaMujeres, int[] AsistenciaEsperadaTotal, int[] AsistenciaRealMujeres, int[] AsistenciaRealTotal, int[] SAceite, int[] SArroz, int[] SCereal, int[] SFrijoles, int[] SMaiz, string[] FirmaDocente, string[] CedulaTutor, string[] FirmaTutor, int[] CursoAcademicoId, int[] EstudianteId)
+        public ActionResult Edit(int id, VMControlMerienda viewModel, string[] Codigo, DateTime[] FechaEntrega, int[] AsistenciaEsperadaMujeres, int[] AsistenciaEsperadaTotal, int[] AsistenciaRealMujeres, int[] AsistenciaRealTotal, decimal[] SAceite, decimal[] SArroz, decimal[] SCereal, decimal[] SFrijoles, decimal[] SMaiz, string[] FirmaDocente, string[] CedulaTutor, string[] FirmaTutor, int[] CursoAcademicoId, int[] EstudianteId)
         {
             if (ModelState.IsValid)
             {
                 var controlMerienda = db.ControlesMeriendas.Find(id);
                 if (controlMerienda != null)
                 {
-                    controlMerienda.Codigo = Codigo[0];
-                    controlMerienda.FechaEntrega = FechaEntrega[0];
-                    controlMerienda.AsistenciaEsperadaMujeres = AsistenciaEsperadaMujeres[0];
-                    controlMerienda.AsistenciaEsperadaTotal = AsistenciaEsperadaTotal[0];
-                    controlMerienda.AsistenciaRealMujeres = AsistenciaRealMujeres[0];
-                    controlMerienda.AsistenciaRealTotal = AsistenciaRealTotal[0];
-                    controlMerienda.SAceite = SAceite[0];
-                    controlMerienda.SArroz = SArroz[0];
-                    controlMerienda.SCereal = SCereal[0];
-                    controlMerienda.SFrijoles = SFrijoles[0];
-                    controlMerienda.SMaiz = SMaiz[0];
-                    controlMerienda.FirmaDocente = FirmaDocente[0];
-                    controlMerienda.CedulaTutor = CedulaTutor[0];
-                    controlMerienda.FirmaTutor = FirmaTutor[0];
-                    controlMerienda.CursoAcademicoId = CursoAcademicoId[0];
-                    controlMerienda.EstudianteId = EstudianteId[0];
-                    controlMerienda.FechaModificacion = DateTime.Now;
+                    if (CursoAcademicoId[0] != 0 && EstudianteId[0] != 0) // Validar que no sean nulos
+                    {
+                        controlMerienda.Codigo = Codigo[0];
+                        controlMerienda.FechaEntrega = FechaEntrega[0];
+                        controlMerienda.AsistenciaEsperadaMujeres = AsistenciaEsperadaMujeres[0];
+                        controlMerienda.AsistenciaEsperadaTotal = AsistenciaEsperadaTotal[0];
+                        controlMerienda.AsistenciaRealMujeres = AsistenciaRealMujeres[0];
+                        controlMerienda.AsistenciaRealTotal = AsistenciaRealTotal[0];
+                        controlMerienda.SAceite = 3;
+                        controlMerienda.SArroz = 1;
+                        controlMerienda.SCereal = 4;
+                        controlMerienda.SFrijoles = 2;
+                        controlMerienda.SMaiz = 5;
+                        controlMerienda.FirmaDocente = FirmaDocente[0];
+                        controlMerienda.CedulaTutor = CedulaTutor[0];
+                        controlMerienda.FirmaTutor = FirmaTutor[0];
+                        controlMerienda.CursoAcademicoId = CursoAcademicoId[0];
+                        controlMerienda.EstudianteId = EstudianteId[0];
+                        controlMerienda.FechaModificacion = DateTime.Now;
 
-                    db.Entry(controlMerienda).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                        db.Entry(controlMerienda).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Debe seleccionar un curso académico y un estudiante válidos.");
+                    }
                 }
             }
 
-            // Si algo falla, se vuelve a cargar las listas de selección
             viewModel.CursosAcademicos = db.CursosAcademicos.ToList();
             viewModel.Estudiantes = db.Estudiantes.ToList();
             return View(viewModel);

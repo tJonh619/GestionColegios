@@ -20,7 +20,7 @@ namespace GestionColegios.Models
         public bool Continuidad { get; set; }
         public bool Traslado { get; set; }
         public bool Repitente { get; set; }
-        public string FechaMatricula { get; set; }
+        public System.DateTime FechaMatricula { get; set; }
         public System.DateTime FechaModificacion { get; set; }
         public bool Activo { get; set; }
         public int EstudianteId { get; set; }

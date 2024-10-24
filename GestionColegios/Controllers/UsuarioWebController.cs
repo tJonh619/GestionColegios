@@ -5,6 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Web.Mvc;
 using GestionColegios.Models;
 using GestionColegios.ViewModels;
@@ -43,16 +44,20 @@ namespace GestionColegios.Controllers
                 usuario.FechaModificacion = DateTime.Now;
                 db.Usuarios.Add(usuario);
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Usuario guardado correctamente.";
                 return RedirectToAction("Index");
             }
 
+            TempData["ErrorMessage"] = "Error al guardar Usuario. Intente de nuevo.";
             // Si ocurre un error, vuelve a cargar la lista de roles
             var model = new VMUsuario
             {
                 Roles = db.Roles.ToList(),
                 Usuario = usuario
             };
+        
             return View(model);
+          
         }
         // GET: UsuarioWeb/Edit/5
         public ActionResult Edit(int? id)
@@ -176,6 +181,7 @@ namespace GestionColegios.Controllers
                 try
                 {
                     db.SaveChanges(); // Guarda los cambios
+                    TempData["SuccessMessage"] = "Rol guardado correctamente.";
                     return RedirectToAction("Index"); // Redirige a la lista de roles
                 }
                 catch (DbEntityValidationException ex)
@@ -192,6 +198,7 @@ namespace GestionColegios.Controllers
             }
 
             // Si ModelState no es válido o ocurre un error, vuelve a mostrar la vista con el modelo
+            TempData["ErrorMessage"] = "Error al guardar Rol. Intente de nuevo.";
             return View(rol); // Devuelve la vista con el modelo para mostrar los errores de validación
         }
 
@@ -287,6 +294,7 @@ namespace GestionColegios.Controllers
 
                     db.Permisos.Add(permiso);
                     db.SaveChanges();
+                    TempData["SuccessMessage"] = "Permiso guardado correctamente.";
                     return RedirectToAction("Index");
                 }
             }
@@ -302,7 +310,7 @@ namespace GestionColegios.Controllers
                 }
                 return View(permiso);  // Regresar la vista con los errores mostrados
             }
-
+            TempData["ErrorMessage"] = "Error al guardar Permiso. Intente de nuevo.";
             return View(permiso);  // En caso de error, retornar la vista con los datos
         }
 
@@ -383,6 +391,101 @@ namespace GestionColegios.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(Usuario model)
+        {
+            var usuario = db.Usuarios.SingleOrDefault(u => u.NombreUsuario == model.NombreUsuario && u.ClaveHash == model.ClaveHash);
+            if (usuario != null)
+            {
+                Session["Usuario"] = usuario.NombreUsuario;
+                Session["Rol"] = usuario.Rol.Nombre; // Guarda el rol en la sesión
+                return RedirectToAction("Index", "Home"); // Redirige después de iniciar sesión
+            }
+            ViewBag.Error = "Usuario o contraseña incorrectos.";
+            return View();
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Clear(); // Limpia la sesión al cerrar sesión
+            return RedirectToAction("Login", "UsuarioWeb");
+        }
+
+        // GET: UsuarioWeb/OlvidasteContrasena
+        public ActionResult OlvidasteContrasena()
+        {
+            var model = new Usuario(); // Inicializa el modelo de Usuario
+            return View(model); // Muestra la vista para ingresar el nombre de usuario
+        }
+
+        // POST: UsuarioWeb/OlvidasteContrasena
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult OlvidasteContrasena(Usuario model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Busca el usuario por el nombre de usuario ingresado
+                var usuario = db.Usuarios.FirstOrDefault(u => u.NombreUsuario == model.NombreUsuario);
+
+                if (usuario != null)
+                {
+                    // Redirige a la vista para cambiar la contraseña con el id del usuario
+                    return RedirectToAction("CambiarContrasena", new { usuarioId = usuario.Id });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "No se encontró un usuario con ese nombre.");
+                }
+            }
+
+            return View(model); // Si hay errores, se muestra la misma vista
+        }
+
+        // GET: UsuarioWeb/CambiarContrasena
+        public ActionResult CambiarContrasena(int usuarioId)
+        {
+            var usuario = db.Usuarios.Find(usuarioId);
+
+            if (usuario == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Enviamos el usuario encontrado a la vista
+            return View(usuario);
+        }
+
+        // POST: UsuarioWeb/CambiarContrasena
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CambiarContrasena(Usuario model)
+        {
+            if (ModelState.IsValid)
+            {
+                var usuario = db.Usuarios.Find(model.Id);
+
+                if (usuario != null)
+                {
+                    // Actualizamos la contraseña del usuario
+                    usuario.ClaveHash = model.ClaveHash; // Asegúrate de encriptarla si es necesario
+                    db.SaveChanges();
+
+                    TempData["SuccessMessage"] = "Tu contraseña ha sido cambiada exitosamente.";
+                    return RedirectToAction("Login");
+                }
+            }
+
+            return View(model); // Si hay errores, se muestra la misma vista
+        }
+
 
         protected override void Dispose(bool disposing)
         {

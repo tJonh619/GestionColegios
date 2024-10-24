@@ -8,6 +8,19 @@
 
 <div class="container mt-1">
 
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
     <!-- Navegación de Tabs -->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -43,43 +56,52 @@
                     {
                         @Html.AntiForgeryToken()
 
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Usuario.CodigoUsuario, new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.Usuario.CodigoUsuario, new { @class = "form-control" })
-                            </div>
-                        </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Usuario.CodigoUsuario, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Usuario.CodigoUsuario, new { @class = "form-control", required = "required", title = "Introduce el código del usuario" })
+                        <div class="tooltip">Rellena este campo.</div>
+                    </div>
+                </div>
 
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Usuario.NombreUsuario, new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.Usuario.NombreUsuario, new { @class = "form-control" })
-                            </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Usuario.NombreUsuario, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Usuario.NombreUsuario, new { @class = "form-control", required = "required", title = "Introduce el nombre del usuario" })
+                        <div class="tooltip">Rellena este campo.</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Usuario.ClaveHash, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.Usuario.ClaveHash, new { @class = "form-control", required = "required", title = "Introduce la contraseña" })
+                        <div class="tooltip">Rellena este campo.</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Usuario.CorreoRecuperacion, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Usuario.CorreoRecuperacion, new { @class = "form-control", required = "required", title = "Introduce el correo para recuperación" })
+                        <div class="tooltip">Rellena este campo.</div>
+                    </div>
+                </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Usuario.RolId, "Rol", new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(m => m.Usuario.RolId, new SelectList(Model.Roles, "Id", "Descripcion"), "Selecciona un rol", new { @class = "form-control", required = "required", title = "Selecciona el rol del usuario" })
+                            <div class="tooltip">Selecciona un rol.</div>
                         </div>
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Usuario.ClaveHash, new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.PasswordFor(m => m.Usuario.ClaveHash, new { @class = "form-control" })
-                            </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Agregar Usuario" class="btn btn-primary" />
                         </div>
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Usuario.CorreoRecuperacion, new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.Usuario.CorreoRecuperacion, new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Usuario.RolId, "Rol", new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownListFor(m => m.Usuario.RolId, new SelectList(Model.Roles, "Id", "Descripcion"), "Selecciona un rol", new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Agregar Usuario" class="btn btn-primary" />
-                            </div>
-                        </div>
-                    }
+                    </div>
+                }
                 </div>
             </div>
         </div>
@@ -116,7 +138,7 @@
                                     <td>@Html.DisplayFor(modelItem => usuario.Activo)</td>
                                     <td>@Html.DisplayFor(modelItem => usuario.Rol.Nombre)</td>
                                     <td>
-                                        @Html.ActionLink("Editar", "Edit", new { id = usuario.Id }, new { @class = "btn btn-warning" }) |                                       
+                                        @Html.ActionLink("Editar", "Edit", new { id = usuario.Id }, new { @class = "btn btn-warning" }) |
                                         @Html.ActionLink("Desactivar", "Delete", new { id = usuario.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este usuario?');" })
                                     </td>
                                 </tr>
@@ -138,34 +160,34 @@
                     {
                         @Html.AntiForgeryToken()
                         <div class="form-group">
-                            @Html.Label("Código", new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(m => m.Rol.Nombre, new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.TextBox("Codigo", null, new { @class = "form-control" })
+                                @Html.TextBoxFor(m => m.Rol.Nombre, new { @class = "form-control", required = "required", title = "Introduce el nombre del rol" })
+                                <div class="tooltip">Rellena este campo.</div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            @Html.Label("Nombre", new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextBox("Nombre", null, new { @class = "form-control" })
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Rol.Descripcion, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(m => m.Rol.Descripcion, new { @class = "form-control", required = "required",title = "Introduce una descripción del rol" })
+                                    <div class="tooltip">Opcional, pero recomendado.</div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            @Html.Label("Descripción", new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextBox("Descripcion", null, new { @class = "form-control" })
+                            <div class="form-group">
+                                @Html.Label("Descripción", new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextBox("Descripcion", null, new { @class = "form-control", required = "required", title = "Introduce la descripción del rol" })
+                                </div>
                             </div>
-                        </div>
 
-                     
-
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Agregar Rol" class="btn btn-primary" />
-                            </div>
-                        </div>
-                    }
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="Agregar Rol" class="btn btn-primary" />
+                                            </div>
+                                        </div>
+                                    }
                 </div>
             </div>
         </div>
@@ -199,8 +221,7 @@
                                     <td>@Html.DisplayFor(modelItem => rol.Activo)</td>
                                     <td>
                                         @Html.ActionLink("Editar", "EditRole", new { id = rol.Id }, new { @class = "btn btn-warning" }) |
-                                        
-                                        @Html.ActionLink("Desactivr", "DeleteRole", new { id = rol.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este rol?');" })
+                                        @Html.ActionLink("Desactivar", "DeleteRole", new { id = rol.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este rol?');" })
                                     </td>
                                 </tr>
                             }
@@ -223,20 +244,21 @@
                         <div class="form-group">
                             @Html.Label("Nombre", new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.TextBox("Nombre", null, new { @class = "form-control" })
+                                @Html.TextBox("Nombre", null, new { @class = "form-control", required = "required", title = "Introduce el nombre del permiso" })
                             </div>
                         </div>
+
                         <div class="form-group">
                             @Html.Label("Descripción", new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.TextBox("Descripcion", null, new { @class = "form-control" })
+                                @Html.TextBox("Descripcion", null, new { @class = "form-control", required = "required", title = "Introduce la descripción del permiso" })
                             </div>
                         </div>
 
                         <div class="form-group">
                             @Html.Label("Rol", new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("RolId", new SelectList(Model.Roles, "Id", "Nombre"), "Selecciona un Rol", new { @class = "form-control" })
+                                @Html.DropDownList("RolId", new SelectList(Model.Roles, "Id", "Nombre"), "Selecciona un Rol", new { @class = "form-control", required = "required", title = "Selecciona el rol asociado al permiso" })
                             </div>
                         </div>
 
@@ -265,7 +287,6 @@
                                 <th>@Html.DisplayNameFor(model => model.Permisos.First().FechaModificacion)</th>
                                 <th>@Html.DisplayNameFor(model => model.Permisos.First().Activo)</th>
                                 <th>Nombre del rol</th>
-
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -277,10 +298,9 @@
                                     <td>@Html.DisplayFor(modelItem => permiso.Descripcion)</td>
                                     <td>@Html.DisplayFor(modelItem => permiso.FechaModificacion)</td>
                                     <td>@Html.DisplayFor(modelItem => permiso.Activo)</td>
-                                    <td>@Html.DisplayFor(modelItem => permiso.Rol.Nombre) </td>
+                                    <td>@Html.DisplayFor(modelItem => permiso.Rol.Nombre)</td>
                                     <td>
                                         @Html.ActionLink("Editar", "EditPermiso", new { id = permiso.Id }, new { @class = "btn btn-warning" }) |
-                                      
                                         @Html.ActionLink("Desactivar", "DeletePermission", new { id = permiso.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este permiso?');" })
                                     </td>
                                 </tr>
@@ -292,3 +312,12 @@
         </div>
     </div>
 </div>
+
+<!-- Estilos CSS para tooltips -->
+<style>
+    .tooltip {
+        color: red;
+        font-size: 0.875em;
+        margin-top: 5px;
+    }
+</style>

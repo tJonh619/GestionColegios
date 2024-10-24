@@ -1,0 +1,40 @@
+﻿@model GestionColegios.Models.Usuario
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h3>Recuperar Contraseña</h3>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm("OlvidasteContrasena", "UsuarioWeb", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.NombreUsuario)
+                                @Html.TextBoxFor(m => m.NombreUsuario, new { @class = "form-control", placeholder = "Ingresa tu nombre de usuario" })
+                                @Html.ValidationMessageFor(m => m.NombreUsuario, "", new { @class = "text-danger" })
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Buscar Usuario</button>
+                        }
+                    </div>
+                    <div class="card-footer text-center">
+                        <small><a href="@Url.Action("Login", "UsuarioWeb")">Regresar al inicio de sesión</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

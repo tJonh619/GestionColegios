@@ -59,9 +59,10 @@ namespace GestionColegios.Controllers
                 maestro.Activo = true;
                 db.Maestros.Add(maestro);
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Maestro guardado correctamente.";
                 return RedirectToAction("Index");
             }
-
+            TempData["ErrorMessage"] = "Error al guardar el maestro. Intente de nuevo.";
             return View(maestro);
         }
 

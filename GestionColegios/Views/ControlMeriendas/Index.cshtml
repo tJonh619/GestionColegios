@@ -16,12 +16,9 @@
     <div class="container">
         <h2 class="mt-4 mb-3">Control de Merienda</h2>
 
-
-        <!-- Contenedor para las tablas -->
         <form action="@Url.Action("Create", "ControlMeriendas")" method="post" id="form-tablas">
             @Html.AntiForgeryToken()
             <div id="tablas-container">
-                <!-- Primera tabla (inicial) -->
                 <div class="table-responsive" id="tabla-1">
                     <table class="table table-bordered">
                         <thead>
@@ -47,8 +44,8 @@
                         </thead>
                         <tbody id="tabla-body">
                             <tr>
-                                <td><input type="text" name="CursoAcademicoId[]" class="form-control" /></td>
-                                <td><input type="text" name="EstudianteId[]" class="form-control" /></td>
+                                <td>@Html.DropDownList("CursoAcademicoId[]", new SelectList(Model.CursosAcademicos, "Id", "Nombre"), "Seleccione un Curso Académico", new { @class = "form-control" })</td>
+                                <td>@Html.DropDownList("EstudianteId[]", new SelectList(Model.Estudiantes, "Id", "Nombres"), "Seleccione un Estudiante", new { @class = "form-control" })</td>
                                 <td><input type="text" name="Codigo[]" class="form-control" /></td>
                                 <td><input type="date" name="FechaEntrega[]" class="form-control" /></td>
                                 <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
@@ -67,70 +64,42 @@
                             </tr>
                         </tbody>
                     </table>
-                    <!-- Botón para agregar fila -->
                     <button type="button" class="btn btn-success mb-3 agregar-fila">Agregar Fila</button>
                 </div>
             </div>
-            <!-- Botón para enviar los datos al servidor -->
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
     </div>
 
     <script>
         $(document).ready(function () {
-            var controlMeriendas = []; // Arreglo para guardar los datos de las filas
-
             // Función para agregar una nueva fila a la tabla
             $(document).on('click', '.agregar-fila', function () {
-                // Recogemos los valores de la fila actual
-                var nuevaFilaData = {
-                    CursoAcademicoId: '',
-                    EstudianteId: '',
-                    Codigo: '',
-                    FechaEntrega: '',
-                    AsistenciaEsperadaMujeres: 0,
-                    AsistenciaEsperadaTotal: 0,
-                    AsistenciaRealMujeres: 0,
-                    AsistenciaRealTotal: 0,
-                    SAceite: 0,
-                    SArroz: 0,
-                    SCereal: 0,
-                    SFrijoles: 0,
-                    SMaiz: 0,
-                    FirmaDocente: '',
-                    CedulaTutor: '',
-                    FirmaTutor: ''
-                };
-
-                // Guardamos la nueva fila en el arreglo
-                controlMeriendas.push(nuevaFilaData);
-
-                // Agregamos la nueva fila al DOM
                 var nuevaFila = `
-                        <tr>
-    <td><input type="text" name="CursoAcademicoId[]" class="form-control" /></td>
-    <td><input type="text" name="EstudianteId[]" class="form-control" /></td>
-    <td><input type="text" name="Codigo[]" class="form-control" /></td>
-    <td><input type="date" name="FechaEntrega[]" class="form-control" /></td>
-    <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
-    <td><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
-    <td><input type="number" name="AsistenciaRealMujeres[]" class="form-control" /></td>
-    <td><input type="number" name="AsistenciaRealTotal[]" class="form-control" /></td>
-    <td><input type="number" name="SAceite[]" class="form-control" /></td>
-    <td><input type="number" name="SArroz[]" class="form-control" /></td>
-    <td><input type="number" name="SCereal[]" class="form-control" /></td>
-    <td><input type="number" name="SFrijoles[]" class="form-control" /></td>
-    <td><input type="number" name="SMaiz[]" class="form-control" /></td>
-    <td><input type="text" name="FirmaDocente[]" class="form-control" /></td>
-    <td><input type="text" name="CedulaTutor[]" class="form-control" /></td>
-    <td><input type="text" name="FirmaTutor[]" class="form-control" /></td>
-    <td><button type="button" class="btn btn-danger eliminar-fila">Eliminar</button></td>
-</tr>`;
+                    <tr>
+                        <td><select name="CursoAcademicoId[]" class="form-control">@foreach (var curso in Model.CursosAcademicos) { <option value="@curso.Id">@curso.Nombre</option> }</select></td>
+                        <td><select name="EstudianteId[]" class="form-control">@foreach (var estudiante in Model.Estudiantes) { <option value="@estudiante.Id">@estudiante.Nombres</option> }</select></td>
+                        <td><input type="text" name="Codigo[]" class="form-control" /></td>
+                        <td><input type="date" name="FechaEntrega[]" class="form-control" /></td>
+                        <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
+                        <td><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
+                        <td><input type="number" name="AsistenciaRealMujeres[]" class="form-control" /></td>
+                        <td><input type="number" name="AsistenciaRealTotal[]" class="form-control" /></td>
+                        <td><input type="number" name="SAceite[]" class="form-control" /></td>
+                        <td><input type="number" name="SArroz[]" class="form-control" /></td>
+                        <td><input type="number" name="SCereal[]" class="form-control" /></td>
+                        <td><input type="number" name="SFrijoles[]" class="form-control" /></td>
+                        <td><input type="number" name="SMaiz[]" class="form-control" /></td>
+                        <td><input type="text" name="FirmaDocente[]" class="form-control" /></td>
+                        <td><input type="text" name="CedulaTutor[]" class="form-control" /></td>
+                        <td><input type="text" name="FirmaTutor[]" class="form-control" /></td>
+                        <td><button type="button" class="btn btn-danger eliminar-fila">Eliminar</button></td>
+                    </tr>`;
 
                 $('#tabla-body').append(nuevaFila);
             });
 
-            // Función delegada para eliminar una fila específica
+            // Función para eliminar una fila
             $(document).on('click', '.eliminar-fila', function () {
                 $(this).closest('tr').remove();
             });
