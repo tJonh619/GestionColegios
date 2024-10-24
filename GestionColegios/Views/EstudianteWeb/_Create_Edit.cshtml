@@ -1,0 +1,173 @@
+﻿@model GestionColegios.ViewModels.VMEstudiantes
+
+@{
+    ViewBag.Title = "_Create_Edit";
+}
+
+
+<div class="row mt-2">
+    <div class="col-md-12">
+        @using (Html.BeginForm("Create", "EstudianteWeb", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Estudiante.Id)
+
+            <div class="row">
+                <div class="col-md-5 card">
+                    <div class="row card" style="background-color: #001c7d">
+                        <label class="m-md-1" style="color:white">Información Personal</label>
+                    </div>
+
+                    <!-- Nombres -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="Nombres">Nombres</label>
+                        @Html.TextBoxFor(model => model.Estudiante.Nombres, new { @class = "form-control", placeholder = "Ingrese los nombres", required = "required", @id = "Nombres" })
+                        @Html.ValidationMessageFor(model => model.Estudiante.Nombres, "", new { @class = "text-danger" })
+                        @if (!ViewData.ModelState.IsValidField("Estudiante.Nombres"))
+                        {
+                            <div class="tooltip">Rellena este campo.</div>
+                        }
+                    </div>
+
+                    <!-- Apellidos -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="Apellidos">Apellidos</label>
+                        @Html.TextBoxFor(model => model.Estudiante.Apellidos, new { @class = "form-control", placeholder = "Ingrese los apellidos", required = "required", @id = "Apellidos" })
+                        @Html.ValidationMessageFor(model => model.Estudiante.Apellidos, "", new { @class = "text-danger" })
+                        @if (!ViewData.ModelState.IsValidField("Estudiante.Apellidos"))
+                        {
+                            <div class="tooltip">Rellena este campo.</div>
+                        }
+                    </div>
+
+                    <!-- Fecha de nacimiento -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="FechaNacimiento">Fecha de Nacimiento</label>
+                        @Html.TextBoxFor(model => model.Estudiante.FechaNacimiento, new { @class = "form-control", @type = "date", required = "required", @id = "FechaNacimiento" })
+                        @Html.ValidationMessageFor(model => model.Estudiante.FechaNacimiento, "", new { @class = "text-danger" })
+                        @if (!ViewData.ModelState.IsValidField("Estudiante.FechaNacimiento"))
+                        {
+                            <div class="tooltip">Rellena este campo.</div>
+                        }
+                    </div>
+
+                    <!-- Edad -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="Edad">Edad</label>
+                        @Html.TextBoxFor(model => model.Estudiante.Edad, new { @class = "form-control", placeholder = "Ingrese la edad", required = "required", @id = "Edad" })
+                        @Html.ValidationMessageFor(model => model.Estudiante.Edad, "", new { @class = "text-danger" })
+                        @if (!ViewData.ModelState.IsValidField("Estudiante.Edad"))
+                        {
+                            <div class="tooltip">Rellena este campo.</div>
+                        }
+                    </div>
+
+                    <!-- Sexo -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="Sexo">Sexo</label>
+                        @Html.DropDownListFor(model => model.Estudiante.Sexo, new SelectList(new List<string> { "Masculino", "Femenino" }), "Seleccione el sexo", new { @class = "form-control", required = "required", @id = "Sexo" })
+                        @Html.ValidationMessageFor(model => model.Estudiante.Sexo, "", new { @class = "text-danger" })
+                        @if (!ViewData.ModelState.IsValidField("Estudiante.Sexo"))
+                        {
+                            <div class="tooltip">Rellena este campo.</div>
+                        }
+                    </div>
+
+                    <!-- Dirección -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="Direccion">Dirección</label>
+                        @Html.TextBoxFor(model => model.Estudiante.Direccion, new { @class = "form-control", placeholder = "Ingrese la dirección", required = "required", @id = "Direccion" })
+                        @Html.ValidationMessageFor(model => model.Estudiante.Direccion, "", new { @class = "text-danger" })
+                        @if (!ViewData.ModelState.IsValidField("Estudiante.Direccion"))
+                        {
+                            <div class="tooltip">Rellena este campo.</div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Información del tutor -->
+                <div class="col-md-5 card">
+                    <div class="row card" style="background-color: #001c7d">
+                        <label class="m-md-1" style="color:white">Información del tutor</label>
+                    </div>
+
+                    <!-- Nombres del Tutor -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="TutorNombres">Nombres del Tutor</label>
+                        @Html.TextBoxFor(model => model.Tutor.Nombres, new { @class = "form-control", placeholder = "Ingrese los nombres del tutor", required = "required", @id = "TutorNombres" })
+                        @Html.ValidationMessageFor(model => model.Tutor.Nombres, "", new { @class = "text-danger" })
+                        @if (!ViewData.ModelState.IsValidField("Tutor.Nombres"))
+                        {
+                            <div class="tooltip">Rellena este campo.</div>
+                        }
+                    </div>
+
+                    <!-- Apellidos del Tutor -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="TutorApellidos">Apellidos del Tutor</label>
+                        @Html.TextBoxFor(model => model.Tutor.Apellidos, new { @class = "form-control", placeholder = "Ingrese los apellidos del tutor", required = "required", @id = "TutorApellidos" })
+                        @Html.ValidationMessageFor(model => model.Tutor.Apellidos, "", new { @class = "text-danger" })
+                        @if (!ViewData.ModelState.IsValidField("Tutor.Apellidos"))
+                        {
+                            <div class="tooltip">Rellena este campo.</div>
+                        }
+                    </div>
+
+                    <!-- Cédula del Tutor -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="TutorCedula">Cédula del Tutor</label>
+                        @Html.TextBoxFor(model => model.Tutor.Cedula, new { @class = "form-control", placeholder = "Ingrese la cédula del tutor", required = "required", @id = "TutorCedula" })
+                        @Html.ValidationMessageFor(model => model.Tutor.Cedula, "", new { @class = "text-danger" })
+                        @if (!ViewData.ModelState.IsValidField("Tutor.Cedula"))
+                        {
+                            <div class="tooltip">Rellena este campo.</div>
+                        }
+                    </div>
+
+                    <!-- Relación del Tutor -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="TutorRelacion">Relación con el Estudiante</label>
+                        @Html.TextBoxFor(model => model.Tutor.RelacionConElEstudiante, new { @class = "form-control", placeholder = "Ingrese la relación con el estudiante", required = "required", @id = "TutorRelacion" })
+                        @Html.ValidationMessageFor(model => model.Tutor.RelacionConElEstudiante, "", new { @class = "text-danger" })
+                        @if (!ViewData.ModelState.IsValidField("Tutor.RelacionConElEstudiante"))
+                        {
+                            <div class="tooltip">Rellena este campo.</div>
+                        }
+                    </div>
+
+                    <!-- Dirección del Tutor -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="TutorDireccion">Dirección del Tutor</label>
+                        @Html.TextBoxFor(model => model.Tutor.Direccion, new { @class = "form-control", placeholder = "Ingrese la dirección del tutor", required = "required", @id = "TutorDireccion" })
+                        @Html.ValidationMessageFor(model => model.Tutor.Direccion, "", new { @class = "text-danger" })
+                        @if (!ViewData.ModelState.IsValidField("Tutor.Direccion"))
+                        {
+                            <div class="tooltip">Rellena este campo.</div>
+                        }
+                    </div>
+
+                    <!-- Celular del Tutor -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="TutorCelular">Celular del Tutor</label>
+                        @Html.TextBoxFor(model => model.Tutor.Celular, new { @class = "form-control", placeholder = "Ingrese el celular del tutor", required = "required", @id = "TutorCelular" })
+                        @Html.ValidationMessageFor(model => model.Tutor.Celular, "", new { @class = "text-danger" })
+                        @if (!ViewData.ModelState.IsValidField("Tutor.Celular"))
+                        {
+                            <div class="tooltip">Rellena este campo.</div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group col-md-2 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        @(Model.Estudiante.Id == 0 ? "Registrar" : "Guardar Cambios")
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

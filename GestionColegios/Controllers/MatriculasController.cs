@@ -87,7 +87,7 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
-                matricula.FechaMatricula = "Cambiar a datetime";
+                matricula.FechaMatricula = DateTime.Now;
                 matricula.FechaModificacion = DateTime.Now;
                 matricula.Activo = true;
                 db.Matriculas.Add(matricula);
