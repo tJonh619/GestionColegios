@@ -1,0 +1,110 @@
+﻿
+@model GestionColegios.ViewModels.VMMaestros
+
+<div class="row mt-2">
+    <div class="col-md-12">
+        @using (Html.BeginForm("Create", "MaestrosWeb", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="row">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <!-- Información Personal -->
+                <div class="col-md-5 card">
+                    <div class="row card" style="background-color: #001c7d">
+                        <label class="m-md-1" style="color:white">
+                            <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información Personal
+                        </label>
+                    </div>
+
+                    <!-- Cédula -->
+                    <div class="form-group mb-3">
+                        <label for="Cedula">Cédula</label>
+                        @Html.TextBoxFor(model => model.Maestro.Cedula, new { @class = "form-control", placeholder = "Ingrese la cédula", required = "required" })
+                        @Html.ValidationMessageFor(model => model.Maestro.Cedula, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Nombres -->
+                    <div class="form-group mb-3">
+                        <label for="Nombres">Nombres</label>
+                        @Html.TextBoxFor(model => model.Maestro.Nombres, new { @class = "form-control", placeholder = "Ingrese los nombres", required = "required" })
+                        @Html.ValidationMessageFor(model => model.Maestro.Nombres, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Apellidos -->
+                    <div class="form-group mb-3">
+                        <label for="Apellidos">Apellidos</label>
+                        @Html.TextBoxFor(model => model.Maestro.Apellidos, new { @class = "form-control", placeholder = "Ingrese los apellidos", required = "required" })
+                        @Html.ValidationMessageFor(model => model.Maestro.Apellidos, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Sexo -->
+                    <div class="form-group mb-3">
+                        <label for="Sexo">Sexo</label>
+                        @Html.DropDownListFor(model => model.Maestro.Sexo, new SelectList(new List<string> { "Masculino", "Femenino" }), "Seleccione el sexo", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.Maestro.Sexo, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Dirección -->
+                    <div class="form-group mb-3">
+                        <label for="Direccion">Dirección</label>
+                        @Html.TextAreaFor(model => model.Maestro.Direccion, new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.Maestro.Direccion, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Celular -->
+                    <div class="form-group mb-3">
+                        <label for="Celular">Celular</label>
+                        @Html.TextBoxFor(model => model.Maestro.Celular, new { @class = "form-control", placeholder = "Ingrese el celular", required = "required" })
+                        @Html.ValidationMessageFor(model => model.Maestro.Celular, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Información Profesional -->
+                <div class="col-md-5 card">
+                    <div class="row card" style="background-color: #001c7d">
+                        <label class="m-md-1" style="color:white">
+                            <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información Profesional
+                        </label>
+                    </div>
+
+                    <!-- Especialidad -->
+                    <div class="form-group mb-3">
+                        <label for="Especialidad">Especialidad</label>
+                        @Html.TextBoxFor(model => model.Maestro.Especialidad, new { @class = "form-control", placeholder = "Ingrese la especialidad", required = "required" })
+                        @Html.ValidationMessageFor(model => model.Maestro.Especialidad, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Fecha de Contratación -->
+                    <div class="form-group mb-3">
+                        <label for="FechaContratacion">Fecha de Contratación</label>
+                        @Html.TextBoxFor(model => model.Maestro.FechaContratacion, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required", @value = DateTime.Today.ToString("yyyy-MM-dd") })
+                        @Html.ValidationMessageFor(model => model.Maestro.FechaContratacion, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Horario de Trabajo -->
+                    <div class="form-group mb-3">
+                        <label for="HorarioTrabajo">Horario de Trabajo</label>
+                        @Html.DropDownListFor(model => model.Maestro.HorarioTrabajo, new SelectList(new List<string> { "Matutino", "Vespertino", "Ambos" }), "Seleccione el horario de trabajo", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.Maestro.HorarioTrabajo, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Nivel -->
+                    <div class="form-group mb-3">
+                        <label for="Nivel">Nivel</label>
+                        @Html.DropDownListFor(model => model.Maestro.Nivel, new SelectList(new List<string> { "Primaria", "Secundaria", "Ambos" }), "Seleccione el Nivel", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.Maestro.Nivel, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Botón para registrar o editar -->
+                <div class="form-group col-md-2 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        @(Model.Maestro.Id == 0 ? "Registrar" : "Guardar Cambios")
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

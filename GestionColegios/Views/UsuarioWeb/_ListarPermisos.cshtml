@@ -1,0 +1,32 @@
+﻿@model GestionColegios.ViewModels.VMUsuario
+
+<div class="panel panel-default mt-2">
+    <div class="panel-heading">
+        <h3 class="panel-title">Lista de Permisos</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Permisos.First().Nombre)</th>
+                    <th>@Html.DisplayNameFor(model => model.Permisos.First().Descripcion)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var permiso in Model.Permisos)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => permiso.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => permiso.Descripcion)</td>
+                        <td>
+                            @Html.ActionLink("Editar", "EditPermiso", new { id = permiso.Id }, new { @class = "btn btn-warning" }) |
+                            @Html.ActionLink("Eliminar", "DeletePermiso", new { id = permiso.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este permiso?');" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

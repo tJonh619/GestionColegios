@@ -1,0 +1,43 @@
+﻿
+@model GestionColegios.ViewModels.VMInventarioAlimento
+
+<div class="tab-pane fade" id="listar-alimentos" role="tabpanel" aria-labelledby="listar-alimentos-tab">
+    <div class="panel panel-default mt-2">
+        <div class="panel-heading">
+            <h3 class="panel-title">Lista de Alimentos</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Nombre del Alimento</th>
+                        <th>Stock</th>
+                        <th>Unidad de Medida</th>
+                        <th>Fecha de Reabastecimiento</th>
+                        <th>Activo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var alimento in Model.InventarioAlimentos)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => alimento.Codigo)</td>
+                            <td>@Html.DisplayFor(modelItem => alimento.NombreAlimento)</td>
+                            <td>@Html.DisplayFor(modelItem => alimento.Stock)</td>
+                            <td>@Html.DisplayFor(modelItem => alimento.UnidadDeMedida)</td>
+                            <td>@Html.DisplayFor(modelItem => alimento.FechaModificacion)</td>
+                            <td>@Html.DisplayFor(modelItem => alimento.Activo)</td>
+
+                            <td>
+                                @Html.ActionLink("Editar", "Edit", new { id = alimento.Id }, new { @class = "btn btn-warning" }) |
+                                @Html.ActionLink("Desactivar", "Delete", new { id = alimento.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas desactivar este alimento?');" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

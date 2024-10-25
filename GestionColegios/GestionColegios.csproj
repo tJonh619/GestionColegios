@@ -495,7 +495,7 @@
     <Content Include="Views\PeriodoWeb\Create.cshtml" />
     <Content Include="Views\PeriodoWeb\Delete.cshtml" />
     <Content Include="Views\PeriodoWeb\Details.cshtml" />
-    <Content Include="Views\PeriodoWeb\Edit.cshtml" />
+    <Content Include="Views\PeriodoWeb\EditPeriodo.cshtml" />
     <Content Include="Views\PeriodoWeb\Index.cshtml" />
     <Content Include="Views\MaestrosWeb\Create.cshtml" />
     <Content Include="Views\MaestrosWeb\Delete.cshtml" />
@@ -521,6 +521,26 @@
     <Content Include="Views\UsuarioWeb\OlvidasteContrasena.cshtml" />
     <Content Include="Views\UsuarioWeb\CambiarContrasena.cshtml" />
     <Content Include="Views\EstudianteWeb\_List.cshtml" />
+    <Content Include="Views\MaestrosWeb\_List.cshtml" />
+    <Content Include="Views\MaestrosWeb\_Create_Edit.cshtml" />
+    <Content Include="Views\UsuarioWeb\_AgregarUsuario.cshtml" />
+    <Content Include="Views\UsuarioWeb\_ListarUsuarios.cshtml" />
+    <Content Include="Views\UsuarioWeb\_AgregarRol.cshtml" />
+    <Content Include="Views\UsuarioWeb\_ListarRoles.cshtml" />
+    <Content Include="Views\UsuarioWeb\_AgregarPermiso.cshtml" />
+    <Content Include="Views\UsuarioWeb\_ListarPermisos.cshtml" />
+    <Content Include="Views\AñoAcademicoWeb\_CrearEditarAñoAcademico.cshtml" />
+    <Content Include="Views\AñoAcademicoWeb\_ListarAñosAcademicos.cshtml" />
+    <Content Include="Views\InventarioAlimentoWeb\_AgregarAlimento.cshtml" />
+    <Content Include="Views\InventarioAlimentoWeb\_ListarAlimentos.cshtml" />
+    <Content Include="Views\PeriodoWeb\_AñosCreate.cshtml" />
+    <Content Include="Views\PeriodoWeb\_AñosList.cshtml" />
+    <Content Include="Views\PeriodoWeb\_PeriodosCreate.cshtml" />
+    <Content Include="Views\PeriodoWeb\_PeriodosList.cshtml" />
+    <Content Include="Views\PeriodoWeb\_SemestresCreate.cshtml" />
+    <Content Include="Views\PeriodoWeb\_SemestresList.cshtml" />
+    <Content Include="Views\PeriodoWeb\EditAño.cshtml" />
+    <Content Include="Views\PeriodoWeb\EditSemestre.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,32 @@
+﻿
+@model GestionColegios.ViewModels.VMUsuario
+
+<div class="panel panel-default mt-2">
+    <div class="panel-heading">
+        <h3 class="panel-title">Lista de Roles</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Roles.First().Nombre)</th>
+                    <th>@Html.DisplayNameFor(model => model.Roles.First().Descripcion)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rol in Model.Roles)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => rol.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => rol.Descripcion)</td>
+                        <td>
+                            @Html.ActionLink("Editar", "EditRole", new { id = rol.Id }, new { @class = "btn btn-warning" }) |
+                            @Html.ActionLink("Eliminar", "DeleteRole", new { id = rol.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este rol?');" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
