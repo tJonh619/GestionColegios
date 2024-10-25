@@ -1,0 +1,67 @@
+﻿
+@model GestionColegios.ViewModels.VMInventarioAlimento
+
+<div class="tab-pane fade show active" id="agregar-alimento" role="tabpanel" aria-labelledby="agregar-alimento-tab">
+    <div class="panel panel-default mt-2">
+        <div class="panel-heading">
+            <h3 class="panel-title">Agregar Alimento</h3>
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm("Create", "InventarioAlimentoWeb", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.InventarioAlimento.Codigo, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.InventarioAlimento.Codigo, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.InventarioAlimento.NombreAlimento, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(m => m.InventarioAlimento.NombreAlimento,
+                            new SelectList(new List<SelectListItem>
+                            {
+                                new SelectListItem { Value = "Arroz", Text = "Arroz" },
+                                new SelectListItem { Value = "Aceite", Text = "Aceite" },
+                                new SelectListItem { Value = "Cereal", Text = "Cereal" },
+                                new SelectListItem { Value = "Frijoles", Text = "Frijoles" },
+                                new SelectListItem { Value = "Maíz", Text = "Maíz" }
+                            }, "Value", "Text"),
+                            "Seleccione un alimento",
+                            new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.InventarioAlimento.Stock, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.InventarioAlimento.Stock, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.InventarioAlimento.UnidadDeMedida, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(m => m.InventarioAlimento.UnidadDeMedida,
+                            new SelectList(new List<SelectListItem>
+                            {
+                                new SelectListItem { Value = "Libras", Text = "Libras" },
+                                new SelectListItem { Value = "Cuartas", Text = "Cuartas" }
+                            }, "Value", "Text", Model.InventarioAlimento.UnidadDeMedida),
+                            "Seleccione una unidad",
+                            new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Agregar Alimento" class="btn btn-primary" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

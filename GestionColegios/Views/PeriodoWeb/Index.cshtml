@@ -7,161 +7,40 @@
 <h2>Gestionar Años, Periodos y Semestres</h2>
 
 <div class="container mt-1">
-
-    <!-- Navegación de Tabs -->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
+
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="años-tab" data-bs-toggle="tab" data-bs-target="#años" type="button" role="tab" aria-controls="años" aria-selected="true">Años Académicos</button>
+            <button class="nav-link" id="años-list-tab" data-bs-toggle="tab" data-bs-target="#años-list" type="button" role="tab" aria-controls="años-list" aria-selected="false">Lista de Años Académicos</button>
         </li>
+
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="periodos-tab" data-bs-toggle="tab" data-bs-target="#periodos" type="button" role="tab" aria-controls="periodos" aria-selected="false">Periodos</button>
+            <button class="nav-link active" id="años-create-tab" data-bs-toggle="tab" data-bs-target="#años-create" type="button" role="tab" aria-controls="años-create" aria-selected="true">Agregar Años Académicos</button>
         </li>
+
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="semestres-tab" data-bs-toggle="tab" data-bs-target="#semestres" type="button" role="tab" aria-controls="semestres" aria-selected="false">Semestres</button>
+            <button class="nav-link" id="periodos-list-tab" data-bs-toggle="tab" data-bs-target="#periodos-list" type="button" role="tab" aria-controls="periodos-list" aria-selected="false">Lista de Periodos</button>
         </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="periodos-create-tab" data-bs-toggle="tab" data-bs-target="#periodos-create" type="button" role="tab" aria-controls="periodos-create" aria-selected="false">Agregar Periodos</button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="semestres-list-tab" data-bs-toggle="tab" data-bs-target="#semestres-list" type="button" role="tab" aria-controls="semestres-list" aria-selected="false">Lista de Semestres</button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="semestres-create-tab" data-bs-toggle="tab" data-bs-target="#semestres-create" type="button" role="tab" aria-controls="semestres-create" aria-selected="false">Agregar Semestres</button>
+        </li>
+
     </ul>
 
-    <!-- Contenido de las Tabs -->
     <div class="tab-content" id="myTabContent">
-
-        <!-- Tab Años Académicos -->
-        <div class="tab-pane fade show active" id="años" role="tabpanel" aria-labelledby="años-tab">
-            <div class="row mt-2">
-                <div class="col-md-12">
-                    @using (Html.BeginForm("CreateAño", "PeriodoWeb", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-
-                        <div class="row">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                            <div class="col-md-6 card">
-                                <div class="row card" style="background-color: #001c7d">
-                                    <label class="m-md-1" style="color:white">
-                                        <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información del Año Académico
-                                    </label>
-                                </div>
-
-                                <!-- Nombre del Año Académico -->
-                                <div class="form-group mb-3">
-                                    <label for="Nombre">Nombre del Año Académico</label>
-                                    @Html.TextBoxFor(model => model.Año.Nombre, new { @class = "form-control", placeholder = "Ingrese el nombre del año académico" })
-                                    @Html.ValidationMessageFor(model => model.Año.Nombre, "", new { @class = "text-danger" })
-                                </div>
-
-
-                            </div>
-
-                            <!-- Botón para registrar o editar -->
-                            <div class="form-group col-md-2 mt-4">
-                                <button type="submit" class="btn btn-primary">
-                                    @(Model.Año.Id == 0 ? "Registrar" : "Guardar Cambios")
-                                </button>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab Periodos -->
-        <div class="tab-pane fade" id="periodos" role="tabpanel" aria-labelledby="periodos-tab">
-            <div class="row mt-2">
-                <div class="col-md-12">
-                    @using (Html.BeginForm("CreatePeriodo", "PeriodoWeb", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-
-                        <div class="row">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                            <div class="col-md-6 card">
-                                <div class="row card" style="background-color: #001c7d">
-                                    <label class="m-md-1" style="color:white">
-                                        <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información del Periodo
-                                    </label>
-                                </div>
-
-                                <!-- Nombre del Periodo -->
-                                <div class="form-group mb-3">
-                                    <label for="Nombre">Nombre del Periodo</label>
-                                    @Html.TextBoxFor(model => model.Periodo.Nombre, new { @class = "form-control", placeholder = "Ingrese el nombre del periodo" })
-                                    @Html.ValidationMessageFor(model => model.Periodo.Nombre, "", new { @class = "text-danger" })
-                                </div>
-
-                                <!-- Fecha de Inicio -->
-                                <div class="form-group mb-3">
-                                    <label for="FechaInicio">Fecha de Inicio</label>
-                                    @Html.TextBoxFor(model => model.Periodo.Numero, new { @class = "form-control", type = "date" })
-                                    @Html.ValidationMessageFor(model => model.Periodo.Numero, "", new { @class = "text-danger" })
-                                </div>
-
-                                <!-- Fecha de Fin -->
-                                <div class="form-group mb-3">
-                                    <label for="AñoId">Año Académico</label>
-                                    @Html.DropDownListFor(model => model.Año.Id, new SelectList(Model.Años, "Id", "Nombre"), "Seleccione un año", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.Año.Id, "", new { @class = "text-danger" })
-                                </div>
-
-                            </div>
-
-                            <!-- Botón para registrar o editar -->
-                            <div class="form-group col-md-2 mt-4">
-                                <button type="submit" class="btn btn-primary">
-                                    @(Model.Periodo.Id == 0 ? "Registrar" : "Guardar Cambios")
-                                </button>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab Semestres -->
-        <div class="tab-pane fade" id="semestres" role="tabpanel" aria-labelledby="semestres-tab">
-            <div class="row mt-2">
-                <div class="col-md-12">
-                    @using (Html.BeginForm("CreateSemestre", "PeriodoWeb", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-
-                        <div class="row">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                            <div class="col-md-6 card">
-                                <div class="row card" style="background-color: #001c7d">
-                                    <label class="m-md-1" style="color:white">
-                                        <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información del Semestre
-                                    </label>
-                                </div>
-
-                                <!-- Nombre del Semestre -->
-                                <div class="form-group mb-3">
-                                    <label for="Nombre">Nombre del Semestre</label>
-                                    @Html.TextBoxFor(model => model.Semestre.Nombre, new { @class = "form-control", placeholder = "Ingrese el nombre del semestre" })
-                                    @Html.ValidationMessageFor(model => model.Semestre.Nombre, "", new { @class = "text-danger" })
-                                </div>
-
-                                <!-- Año del Semestre -->
-                                <div class="form-group mb-3">
-                                    <label for="AñoId">Año Académico</label>
-                                    @Html.DropDownListFor(model => model.Semestre.Id, new SelectList(Model.Años, "Id", "Nombre"), "Seleccione un año", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.Semestre.Id, "", new { @class = "text-danger" })
-                                </div>
-
-                            </div>
-
-                            <!-- Botón para registrar o editar -->
-                            <div class="form-group col-md-2 mt-4">
-                                <button type="submit" class="btn btn-primary">
-                                    @(Model.Semestre.Id == 0 ? "Registrar" : "Guardar Cambios")
-                                </button>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-
+        @Html.Partial("_AñosCreate", Model)
+        @Html.Partial("_AñosList", Model)
+        @Html.Partial("_PeriodosCreate", Model)
+        @Html.Partial("_PeriodosList", Model)
+        @Html.Partial("_SemestresCreate", Model)
+        @Html.Partial("_SemestresList", Model)
     </div>
 </div>

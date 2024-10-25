@@ -1,0 +1,43 @@
+﻿@model GestionColegios.ViewModels.VMUsuario
+
+@{
+    ViewBag.Title = "Agregar Permiso";
+}
+
+<div class="panel panel-default mt-2">
+    <div class="panel-heading">
+        <h3 class="panel-title">Agregar Permiso</h3>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm("CreatePermiso", "UsuarioWeb", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                @Html.Label("Nombre", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBox("Nombre", null, new { @class = "form-control", required = "required", title = "Introduce el nombre del permiso" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Descripción", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBox("Descripcion", null, new { @class = "form-control", required = "required", title = "Introduce la descripción del permiso" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Rol", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("RolId", new SelectList(Model.Roles, "Id", "Nombre"), "Selecciona un Rol", new { @class = "form-control", required = "required", title = "Selecciona el rol asociado al permiso" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Agregar Permiso" class="btn btn-primary" />
+                </div>
+            </div>
+        }
+    </div>
+</div>

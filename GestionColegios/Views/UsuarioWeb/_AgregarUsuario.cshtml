@@ -1,0 +1,59 @@
+﻿@model GestionColegios.ViewModels.VMUsuario
+
+<div class="panel panel-default mt-2">
+    <div class="panel-heading">
+        <h3 class="panel-title">Agregar Usuario</h3>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm("CreateUsuario", "UsuarioWeb", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Usuario.CodigoUsuario, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Usuario.CodigoUsuario, new { @class = "form-control", required = "required", title = "Introduce el código del usuario" })
+                    <div class="tooltip">Rellena este campo.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Usuario.NombreUsuario, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Usuario.NombreUsuario, new { @class = "form-control", required = "required", title = "Introduce el nombre del usuario" })
+                    <div class="tooltip">Rellena este campo.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Usuario.ClaveHash, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.Usuario.ClaveHash, new { @class = "form-control", required = "required", title = "Introduce la contraseña" })
+                    <div class="tooltip">Rellena este campo.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Usuario.CorreoRecuperacion, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Usuario.CorreoRecuperacion, new { @class = "form-control", required = "required", title = "Introduce el correo para recuperación" })
+                    <div class="tooltip">Rellena este campo.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Usuario.RolId, "Rol", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.Usuario.RolId, new SelectList(Model.Roles, "Id", "Descripcion"), "Selecciona un rol", new { @class = "form-control", required = "required", title = "Selecciona el rol del usuario" })
+                    <div class="tooltip">Selecciona un rol.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Agregar Usuario" class="btn btn-primary" />
+                </div>
+            </div>
+        }
+    </div>
+</div>

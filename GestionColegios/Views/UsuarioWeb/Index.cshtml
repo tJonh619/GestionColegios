@@ -4,6 +4,26 @@
     ViewBag.Title = "Gestión de Usuarios, Roles y Permisos";
 }
 
+<style>
+    .tooltip {
+        display: none;
+        position: absolute;
+        background-color: #f9d6a8;
+        border: 1px solid #f0ad4e;
+        padding: 5px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
+
+    .has-error {
+        position: relative;
+    }
+
+        .has-error .tooltip {
+            display: block;
+        }
+</style>
+
 <h2>Gestión de Usuarios, Roles y Permisos</h2>
 
 <div class="container mt-1">
@@ -21,303 +41,62 @@
         </div>
     }
 
-    <!-- Navegación de Tabs -->
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="agregar-usuario-tab" data-bs-toggle="tab" data-bs-target="#agregar-usuario" type="button" role="tab" aria-controls="agregar-usuario" aria-selected="true">Agregar Usuario</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="listar-usuarios-tab" data-bs-toggle="tab" data-bs-target="#listar-usuarios" type="button" role="tab" aria-controls="listar-usuarios" aria-selected="false">Listar Usuarios</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="agregar-rol-tab" data-bs-toggle="tab" data-bs-target="#agregar-rol" type="button" role="tab" aria-controls="agregar-rol" aria-selected="false">Agregar Rol</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="listar-roles-tab" data-bs-toggle="tab" data-bs-target="#listar-roles" type="button" role="tab" aria-controls="listar-roles" aria-selected="false">Listar Roles</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="agregar-permiso-tab" data-bs-toggle="tab" data-bs-target="#agregar-permiso" type="button" role="tab" aria-controls="agregar-permiso" aria-selected="false">Agregar Permiso</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="listar-permisos-tab" data-bs-toggle="tab" data-bs-target="#listar-permisos" type="button" role="tab" aria-controls="listar-permisos" aria-selected="false">Listar Permisos</button>
-        </li>
-    </ul>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
 
-    <!-- Contenido de las Tabs -->
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="listar-usuarios-tab" data-bs-toggle="tab" data-bs-target="#listar-usuarios" type="button" role="tab" aria-controls="listar-usuarios" aria-selected="false">Listar Usuarios</button>
+    </li>
+
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="agregar-usuario-tab" data-bs-toggle="tab" data-bs-target="#agregar-usuario" type="button" role="tab" aria-controls="agregar-usuario" aria-selected="true">Agregar Usuario</button>
+    </li>
+
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="listar-roles-tab" data-bs-toggle="tab" data-bs-target="#listar-roles" type="button" role="tab" aria-controls="listar-roles" aria-selected="false">Listar Roles</button>
+    </li>
+
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="agregar-rol-tab" data-bs-toggle="tab" data-bs-target="#agregar-rol" type="button" role="tab" aria-controls="agregar-rol" aria-selected="false">Agregar Rol</button>
+    </li>
+
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="listar-permisos-tab" data-bs-toggle="tab" data-bs-target="#listar-permisos" type="button" role="tab" aria-controls="listar-permisos" aria-selected="false">Listar Permisos</button>
+    </li>
+
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="agregar-permiso-tab" data-bs-toggle="tab" data-bs-target="#agregar-permiso" type="button" role="tab" aria-controls="agregar-permiso" aria-selected="false">Agregar Permiso</button>
+    </li>
+
+</ul>
+
     <div class="tab-content" id="myTabContent">
-        <!-- Tab Agregar Usuario -->
-        <div class="tab-pane fade show active" id="agregar-usuario" role="tabpanel" aria-labelledby="agregar-usuario-tab">
-            <div class="panel panel-default mt-2">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Agregar Usuario</h3>
-                </div>
-                <div class="panel-body">
-                    @using (Html.BeginForm("CreateUsuario", "UsuarioWeb", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Usuario.CodigoUsuario, new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Usuario.CodigoUsuario, new { @class = "form-control", required = "required", title = "Introduce el código del usuario" })
-                        <div class="tooltip">Rellena este campo.</div>
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Usuario.NombreUsuario, new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Usuario.NombreUsuario, new { @class = "form-control", required = "required", title = "Introduce el nombre del usuario" })
-                        <div class="tooltip">Rellena este campo.</div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Usuario.ClaveHash, new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Usuario.ClaveHash, new { @class = "form-control", required = "required", title = "Introduce la contraseña" })
-                        <div class="tooltip">Rellena este campo.</div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Usuario.CorreoRecuperacion, new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Usuario.CorreoRecuperacion, new { @class = "form-control", required = "required", title = "Introduce el correo para recuperación" })
-                        <div class="tooltip">Rellena este campo.</div>
-                    </div>
-                </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Usuario.RolId, "Rol", new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownListFor(m => m.Usuario.RolId, new SelectList(Model.Roles, "Id", "Descripcion"), "Selecciona un rol", new { @class = "form-control", required = "required", title = "Selecciona el rol del usuario" })
-                            <div class="tooltip">Selecciona un rol.</div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Agregar Usuario" class="btn btn-primary" />
-                        </div>
-                    </div>
-                }
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab Listar Usuarios -->
         <div class="tab-pane fade" id="listar-usuarios" role="tabpanel" aria-labelledby="listar-usuarios-tab">
-            <div class="panel panel-default mt-2">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Lista de Usuarios</h3>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>@Html.DisplayNameFor(model => model.Usuarios.First().CodigoUsuario)</th>
-                                <th>@Html.DisplayNameFor(model => model.Usuarios.First().NombreUsuario)</th>
-                                <th>@Html.DisplayNameFor(model => model.Usuarios.First().ClaveHash)</th>
-                                <th>@Html.DisplayNameFor(model => model.Usuarios.First().CorreoRecuperacion)</th>
-                                <th>@Html.DisplayNameFor(model => model.Usuarios.First().FechaModificacion)</th>
-                                <th>@Html.DisplayNameFor(model => model.Usuarios.First().Activo)</th>
-                                <th>Nombre del rol</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var usuario in Model.Usuarios)
-                            {
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => usuario.CodigoUsuario)</td>
-                                    <td>@Html.DisplayFor(modelItem => usuario.NombreUsuario)</td>
-                                    <td>@Html.DisplayFor(modelItem => usuario.ClaveHash)</td>
-                                    <td>@Html.DisplayFor(modelItem => usuario.CorreoRecuperacion)</td>
-                                    <td>@Html.DisplayFor(modelItem => usuario.FechaModificacion)</td>
-                                    <td>@Html.DisplayFor(modelItem => usuario.Activo)</td>
-                                    <td>@Html.DisplayFor(modelItem => usuario.Rol.Nombre)</td>
-                                    <td>
-                                        @Html.ActionLink("Editar", "Edit", new { id = usuario.Id }, new { @class = "btn btn-warning" }) |
-                                        @Html.ActionLink("Desactivar", "Delete", new { id = usuario.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este usuario?');" })
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            @Html.Partial("_ListarUsuarios", Model)
         </div>
 
-        <!-- Tab Agregar Rol -->
-        <div class="tab-pane fade" id="agregar-rol" role="tabpanel" aria-labelledby="agregar-rol-tab">
-            <div class="panel panel-default mt-2">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Agregar Rol</h3>
-                </div>
-                <div class="panel-body">
-                    @using (Html.BeginForm("CreateRole", "UsuarioWeb", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Rol.Nombre, new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.Rol.Nombre, new { @class = "form-control", required = "required", title = "Introduce el nombre del rol" })
-                                <div class="tooltip">Rellena este campo.</div>
-                            </div>
-                        </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.Rol.Descripcion, new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.TextBoxFor(m => m.Rol.Descripcion, new { @class = "form-control", required = "required",title = "Introduce una descripción del rol" })
-                                    <div class="tooltip">Opcional, pero recomendado.</div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.Label("Descripción", new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.TextBox("Descripcion", null, new { @class = "form-control", required = "required", title = "Introduce la descripción del rol" })
-                                </div>
-                            </div>
-
-                                        <div class="form-group">
-                                            <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Agregar Rol" class="btn btn-primary" />
-                                            </div>
-                                        </div>
-                                    }
-                </div>
-            </div>
+        <div class="tab-pane fade show active" id="agregar-usuario" role="tabpanel" aria-labelledby="agregar-usuario-tab">
+            @Html.Partial("_AgregarUsuario", Model)
         </div>
 
-        <!-- Tab Listar Roles -->
         <div class="tab-pane fade" id="listar-roles" role="tabpanel" aria-labelledby="listar-roles-tab">
-            <div class="panel panel-default mt-2">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Lista de Roles</h3>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>@Html.DisplayNameFor(model => model.Roles.First().Codigo)</th>
-                                <th>@Html.DisplayNameFor(model => model.Roles.First().Nombre)</th>
-                                <th>@Html.DisplayNameFor(model => model.Roles.First().Descripcion)</th>
-                                <th>@Html.DisplayNameFor(model => model.Roles.First().FechaModificacion)</th>
-                                <th>@Html.DisplayNameFor(model => model.Roles.First().Activo)</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var rol in Model.Roles)
-                            {
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => rol.Codigo)</td>
-                                    <td>@Html.DisplayFor(modelItem => rol.Nombre)</td>
-                                    <td>@Html.DisplayFor(modelItem => rol.Descripcion)</td>
-                                    <td>@Html.DisplayFor(modelItem => rol.FechaModificacion)</td>
-                                    <td>@Html.DisplayFor(modelItem => rol.Activo)</td>
-                                    <td>
-                                        @Html.ActionLink("Editar", "EditRole", new { id = rol.Id }, new { @class = "btn btn-warning" }) |
-                                        @Html.ActionLink("Desactivar", "DeleteRole", new { id = rol.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este rol?');" })
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            @Html.Partial("_ListarRoles", Model)
         </div>
 
-        <!-- Tab Agregar Permiso -->
-        <div class="tab-pane fade" id="agregar-permiso" role="tabpanel" aria-labelledby="agregar-permiso-tab">
-            <div class="panel panel-default mt-2">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Agregar Permiso</h3>
-                </div>
-                <div class="panel-body">
-                    @using (Html.BeginForm("CreatePermiso", "UsuarioWeb", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <div class="form-group">
-                            @Html.Label("Nombre", new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextBox("Nombre", null, new { @class = "form-control", required = "required", title = "Introduce el nombre del permiso" })
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            @Html.Label("Descripción", new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextBox("Descripcion", null, new { @class = "form-control", required = "required", title = "Introduce la descripción del permiso" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.Label("Rol", new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownList("RolId", new SelectList(Model.Roles, "Id", "Nombre"), "Selecciona un Rol", new { @class = "form-control", required = "required", title = "Selecciona el rol asociado al permiso" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Agregar Permiso" class="btn btn-primary" />
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
+        <div class="tab-pane fade" id="agregar-rol" role="tabpanel" aria-labelledby="agregar-rol-tab">
+            @Html.Partial("_AgregarRol", Model)
         </div>
 
-        <!-- Tab Listar Permisos -->
         <div class="tab-pane fade" id="listar-permisos" role="tabpanel" aria-labelledby="listar-permisos-tab">
-            <div class="panel panel-default mt-2">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Lista de Permisos</h3>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>@Html.DisplayNameFor(model => model.Permisos.First().Nombre)</th>
-                                <th>@Html.DisplayNameFor(model => model.Permisos.First().Descripcion)</th>
-                                <th>@Html.DisplayNameFor(model => model.Permisos.First().FechaModificacion)</th>
-                                <th>@Html.DisplayNameFor(model => model.Permisos.First().Activo)</th>
-                                <th>Nombre del rol</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var permiso in Model.Permisos)
-                            {
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => permiso.Nombre)</td>
-                                    <td>@Html.DisplayFor(modelItem => permiso.Descripcion)</td>
-                                    <td>@Html.DisplayFor(modelItem => permiso.FechaModificacion)</td>
-                                    <td>@Html.DisplayFor(modelItem => permiso.Activo)</td>
-                                    <td>@Html.DisplayFor(modelItem => permiso.Rol.Nombre)</td>
-                                    <td>
-                                        @Html.ActionLink("Editar", "EditPermiso", new { id = permiso.Id }, new { @class = "btn btn-warning" }) |
-                                        @Html.ActionLink("Desactivar", "DeletePermission", new { id = permiso.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este permiso?');" })
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            @Html.Partial("_ListarPermisos", Model)
         </div>
+
+        <div class="tab-pane fade" id="agregar-permiso" role="tabpanel" aria-labelledby="agregar-permiso-tab">
+            @Html.Partial("_AgregarPermiso", Model)
+        </div>
+
+
     </div>
 </div>
-
-<!-- Estilos CSS para tooltips -->
-<style>
-    .tooltip {
-        color: red;
-        font-size: 0.875em;
-        margin-top: 5px;
-    }
-</style>
