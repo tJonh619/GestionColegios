@@ -27,6 +27,7 @@ namespace GestionColegios.Controllers
                 Estudiante = new Estudiante(),
                 Tutor = new Tutor() // Agregamos un nuevo tutor aquí
             };
+            ViewBag.EsEdicion = false;
             return View(viewModel);
         }
 
@@ -48,7 +49,8 @@ namespace GestionColegios.Controllers
                 Estudiante = new Estudiante(),
                 Tutor = new Tutor() // Inicializa un nuevo Tutor
             };
-            return View(viewModel);
+            ViewBag.EsEdicion = false;
+            return View("_Create_Edit", viewModel);
         }
 
         [HttpPost]
@@ -57,37 +59,54 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Guarda el tutor primero
-                if (model.Tutor != null)
+                // Verificar si estamos creando un nuevo estudiante o editando uno existente
+                if (model.Estudiante.Id == 0)
                 {
-                    model.Tutor.FechaModificacion = DateTime.Now;
-                    model.Tutor.Activo = true;
-                    db.Tutores.Add(model.Tutor);
-                    db.SaveChanges(); // Guarda el tutor y obtiene su ID
-                    TempData["SuccessMessage"] = "Tutor guardado correctamente.";
+                    // Código para creación
+                    model.Estudiante.FechaModificacion = DateTime.Now;
+                    model.Estudiante.Activo = true;
+                    db.Estudiantes.Add(model.Estudiante);
+                }
+                else
+                {
+                    // Código para edición
+                    var estudiante = db.Estudiantes.Include(e => e.Tutor).SingleOrDefault(e => e.Id == model.Estudiante.Id);
+                    if (estudiante == null) return HttpNotFound();
+
+                    estudiante.Nombres = model.Estudiante.Nombres;
+                    estudiante.Apellidos = model.Estudiante.Apellidos;
+                    estudiante.FechaNacimiento = model.Estudiante.FechaNacimiento;
+                    estudiante.Edad = model.Estudiante.Edad;
+                    estudiante.Sexo = model.Estudiante.Sexo;
+                    estudiante.Direccion = model.Estudiante.Direccion;
+                    estudiante.FechaModificacion = DateTime.Now;
+
+                    // Actualización de tutor (si aplica)
+                    if (model.Tutor != null)
+                    {
+                        var tutorExistente = db.Tutores.Find(model.Tutor.Id);
+                        if (tutorExistente != null)
+                        {
+                            tutorExistente.Nombres = model.Tutor.Nombres;
+                            tutorExistente.Apellidos = model.Tutor.Apellidos;
+                            tutorExistente.Cedula = model.Tutor.Cedula;
+                            tutorExistente.RelacionConElEstudiante = model.Tutor.RelacionConElEstudiante;
+                            tutorExistente.Direccion = model.Tutor.Direccion;
+                            tutorExistente.Celular = model.Tutor.Celular;
+                            tutorExistente.FechaModificacion = DateTime.Now;
+                        }
+                    }
                 }
 
-                // Asigna el ID del tutor al estudiante
-                model.Estudiante.TutorId = model.Tutor.Id;
-
-                // Genera el código del estudiante
-                string codigo = model.Estudiante.Nombres.Substring(0, 2).ToUpper() + model.Estudiante.Apellidos.Substring(0, 2).ToUpper() + new Random().Next(100, 1000).ToString();
-                model.Estudiante.CodigoEstudiante = codigo;
-                
-            // Cambia esto según tu lógica
-                model.Estudiante.FechaModificacion = DateTime.Now;
-                model.Estudiante.Activo = true;
-
-                // Guarda el estudiante
-                db.Estudiantes.Add(model.Estudiante);
                 db.SaveChanges();
-                TempData["SuccessMessage"] = "Estudiantes guardado correctamente.";
-
+                TempData["SuccessMessage"] = "Estudiante guardado correctamente.";
                 return RedirectToAction("Index");
             }
-            TempData["ErrorMessage"] = "Error al guardar Estudiante y tutor. Intente de nuevo.";
-            return View(model); // Si hay un error, retorna el modelo para mostrar errores
+
+            TempData["ErrorMessage"] = "Error al guardar el estudiante. Intente nuevamente.";
+            return View("_Create_Edit", model); // Retorna a la misma vista en caso de error
         }
+
 
         // GET: EstudianteWeb/Edit/5
         public ActionResult Edit(int? id)
@@ -107,7 +126,8 @@ namespace GestionColegios.Controllers
                 Estudiante = estudiante,
                 Tutor = estudiante.Tutor // Asumiendo que tienes una propiedad de Tutor en Estudiante
             };
-            return View(viewModel);
+            ViewBag.EsEdicion = true;
+            return View("_Create_Edit", viewModel);
         }
 
         // POST: EstudianteWeb/Edit/5
@@ -117,7 +137,7 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Actualiza el estudiante
+                // Busca el estudiante
                 var estudiante = db.Estudiantes.Include(e => e.Tutor).SingleOrDefault(e => e.Id == model.Estudiante.Id);
                 if (estudiante == null)
                 {
@@ -125,17 +145,15 @@ namespace GestionColegios.Controllers
                 }
 
                 // Actualiza los datos del estudiante
-                estudiante.CodigoEstudiante = model.Estudiante.CodigoEstudiante;
                 estudiante.Nombres = model.Estudiante.Nombres;
                 estudiante.Apellidos = model.Estudiante.Apellidos;
                 estudiante.FechaNacimiento = model.Estudiante.FechaNacimiento;
                 estudiante.Edad = model.Estudiante.Edad;
                 estudiante.Sexo = model.Estudiante.Sexo;
                 estudiante.Direccion = model.Estudiante.Direccion;
-                estudiante.FechaModificacion = DateTime.Now; // Actualiza la fecha de modificación
-                estudiante.Activo = model.Estudiante.Activo;
+                estudiante.FechaModificacion = DateTime.Now;
 
-                // Actualiza el tutor solo si ya existe en la base de datos
+                // Actualiza el tutor si el estudiante tiene un tutor asociado
                 if (model.Tutor != null && model.Tutor.Id > 0)
                 {
                     var tutorExistente = db.Tutores.Find(model.Tutor.Id);
@@ -147,7 +165,10 @@ namespace GestionColegios.Controllers
                         tutorExistente.RelacionConElEstudiante = model.Tutor.RelacionConElEstudiante;
                         tutorExistente.Direccion = model.Tutor.Direccion;
                         tutorExistente.Celular = model.Tutor.Celular;
-                        tutorExistente.FechaModificacion = DateTime.Now; // Actualiza la fecha de modificación
+                        tutorExistente.FechaModificacion = DateTime.Now;
+
+                        // Marca el tutor como modificado
+                        db.Entry(tutorExistente).State = EntityState.Modified;
                     }
                     else
                     {
@@ -156,10 +177,14 @@ namespace GestionColegios.Controllers
                     }
                 }
 
-                // Guarda los cambios
+                // Guarda los cambios tanto en el estudiante como en el tutor
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Estudiante y tutor actualizados correctamente.";
+
                 return RedirectToAction("Index");
             }
+
+            TempData["ErrorMessage"] = "Error al actualizar el estudiante y el tutor. Intente de nuevo.";
             return View(model);
         }
         // GET: EstudianteWeb/Delete/5
