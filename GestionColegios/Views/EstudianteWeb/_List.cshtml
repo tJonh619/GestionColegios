@@ -53,10 +53,10 @@
                         <td>@estudiante.Direccion</td>
                         <td>@(estudiante.Activo ? "Sí" : "No")</td>
                         <td>
-                            <a href="@Url.Action("Edit", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-warning">Editar</a>
-                            <a href="@Url.Action("Delete", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-danger">Eliminar</a>
+                            <a href="@Url.Action("Edit", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-warning">Detalles</a>
+                            
                             <a href="@Url.Action("Create", "Matriculas", new { estudianteId = estudiante.Id, tutorId = Model.Tutor?.Id })" class="btn btn-sm btn-success">Matricular</a>
-                            <a href="@Url.Action("Historial", "Matriculas", new { estudianteId = estudiante.Id })" class="btn btn-secondary">Ver Historial de Matrículas</a>
+                            <a href="@Url.Action("Historial", "Matriculas", new { estudianteId = estudiante.Id })" class="btn btn-sm btn-primary">Historial de Matrículas</a>
                         </td>
                     </tr>
                 }

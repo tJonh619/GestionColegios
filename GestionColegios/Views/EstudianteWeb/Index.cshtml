@@ -4,6 +4,7 @@
     ViewBag.Title = "Gestionar Estudiantes";
 }
 
+
 <style>
     .tooltip {
         display: none;
@@ -41,15 +42,15 @@
         </div>
     }
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="true">Listar Estudiantes</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="crear-editar-tab" data-bs-toggle="tab" data-bs-target="#crear-editar" type="button" role="tab" aria-controls="crear-editar" aria-selected="false">Crear/Editar Estudiante</button>
-    </li>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="true">Lista Estudiantes</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="crear-editar-tab" data-bs-toggle="tab" data-bs-target="#crear-editar" type="button" role="tab" aria-controls="crear-editar" aria-selected="false">Nuevo Estudiante</button>
+        </li>
 
-</ul>
+    </ul>
 
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="listar" role="tabpanel" aria-labelledby="listar-tab">
@@ -64,3 +65,12 @@
 
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+    var isEdit = @Model.Estudiante != null && @Model.Estudiante.Id > 0;
+    if (isEdit) {
+        $('#crear-editar-tab').tab('show'); // Activa la pestaña de edición
+    }
+});
+</script>

@@ -7,7 +7,7 @@
 
 <div class="row mt-2">
     <div class="col-md-12">
-        @using (Html.BeginForm("Create", "EstudianteWeb", FormMethod.Post))
+        @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "EstudianteWeb", FormMethod.Post, new { @id = "form-estudiante" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.Estudiante.Id)
@@ -21,7 +21,7 @@
                     <!-- Nombres -->
                     <div class="form-group mb-3 has-error">
                         <label for="Nombres">Nombres</label>
-                        @Html.TextBoxFor(model => model.Estudiante.Nombres, new { @class = "form-control", placeholder = "Ingrese los nombres", required = "required", @id = "Nombres" })
+                        @Html.TextBoxFor(model => model.Estudiante.Nombres, new { @class = "form-control", placeholder = "Ingrese los nombres", required = "required", @id = "Nombres", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                         @Html.ValidationMessageFor(model => model.Estudiante.Nombres, "", new { @class = "text-danger" })
                         @if (!ViewData.ModelState.IsValidField("Estudiante.Nombres"))
                         {
@@ -32,7 +32,7 @@
                     <!-- Apellidos -->
                     <div class="form-group mb-3 has-error">
                         <label for="Apellidos">Apellidos</label>
-                        @Html.TextBoxFor(model => model.Estudiante.Apellidos, new { @class = "form-control", placeholder = "Ingrese los apellidos", required = "required", @id = "Apellidos" })
+                        @Html.TextBoxFor(model => model.Estudiante.Apellidos, new { @class = "form-control", placeholder = "Ingrese los apellidos", required = "required", @id = "Apellidos", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                         @Html.ValidationMessageFor(model => model.Estudiante.Apellidos, "", new { @class = "text-danger" })
                         @if (!ViewData.ModelState.IsValidField("Estudiante.Apellidos"))
                         {
@@ -43,7 +43,7 @@
                     <!-- Fecha de nacimiento -->
                     <div class="form-group mb-3 has-error">
                         <label for="FechaNacimiento">Fecha de Nacimiento</label>
-                        @Html.TextBoxFor(model => model.Estudiante.FechaNacimiento, new { @class = "form-control", @type = "date", required = "required", @id = "FechaNacimiento" })
+                        @Html.TextBoxFor(model => model.Estudiante.FechaNacimiento, new { @class = "form-control", @type = "date", required = "required", @id = "FechaNacimiento", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                         @Html.ValidationMessageFor(model => model.Estudiante.FechaNacimiento, "", new { @class = "text-danger" })
                         @if (!ViewData.ModelState.IsValidField("Estudiante.FechaNacimiento"))
                         {
@@ -54,7 +54,7 @@
                     <!-- Edad -->
                     <div class="form-group mb-3 has-error">
                         <label for="Edad">Edad</label>
-                        @Html.TextBoxFor(model => model.Estudiante.Edad, new { @class = "form-control", placeholder = "Ingrese la edad", required = "required", @id = "Edad" })
+                        @Html.TextBoxFor(model => model.Estudiante.Edad, new { @class = "form-control", placeholder = "Ingrese la edad", required = "required", @id = "Edad", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                         @Html.ValidationMessageFor(model => model.Estudiante.Edad, "", new { @class = "text-danger" })
                         @if (!ViewData.ModelState.IsValidField("Estudiante.Edad"))
                         {
@@ -65,7 +65,7 @@
                     <!-- Sexo -->
                     <div class="form-group mb-3 has-error">
                         <label for="Sexo">Sexo</label>
-                        @Html.DropDownListFor(model => model.Estudiante.Sexo, new SelectList(new List<string> { "Masculino", "Femenino" }), "Seleccione el sexo", new { @class = "form-control", required = "required", @id = "Sexo" })
+                        @Html.DropDownListFor(model => model.Estudiante.Sexo, new SelectList(new List<string> { "Masculino", "Femenino" }), "Seleccione el sexo", new { @class = "form-control", required = "required", @id = "Sexo", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                         @Html.ValidationMessageFor(model => model.Estudiante.Sexo, "", new { @class = "text-danger" })
                         @if (!ViewData.ModelState.IsValidField("Estudiante.Sexo"))
                         {
@@ -76,7 +76,7 @@
                     <!-- Dirección -->
                     <div class="form-group mb-3 has-error">
                         <label for="Direccion">Dirección</label>
-                        @Html.TextBoxFor(model => model.Estudiante.Direccion, new { @class = "form-control", placeholder = "Ingrese la dirección", required = "required", @id = "Direccion" })
+                        @Html.TextBoxFor(model => model.Estudiante.Direccion, new { @class = "form-control", placeholder = "Ingrese la dirección", required = "required", @id = "Direccion", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                         @Html.ValidationMessageFor(model => model.Estudiante.Direccion, "", new { @class = "text-danger" })
                         @if (!ViewData.ModelState.IsValidField("Estudiante.Direccion"))
                         {
@@ -86,6 +86,7 @@
                 </div>
 
                 <!-- Información del tutor -->
+                @Html.HiddenFor(model => model.Tutor.Id)
                 <div class="col-md-5 card">
                     <div class="row card" style="background-color: #001c7d">
                         <label class="m-md-1" style="color:white">Información del tutor</label>
@@ -94,7 +95,7 @@
                     <!-- Nombres del Tutor -->
                     <div class="form-group mb-3 has-error">
                         <label for="TutorNombres">Nombres del Tutor</label>
-                        @Html.TextBoxFor(model => model.Tutor.Nombres, new { @class = "form-control", placeholder = "Ingrese los nombres del tutor", required = "required", @id = "TutorNombres" })
+                        @Html.TextBoxFor(model => model.Tutor.Nombres, new { @class = "form-control", placeholder = "Ingrese los nombres del tutor", required = "required", @id = "TutorNombres", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                         @Html.ValidationMessageFor(model => model.Tutor.Nombres, "", new { @class = "text-danger" })
                         @if (!ViewData.ModelState.IsValidField("Tutor.Nombres"))
                         {
@@ -105,7 +106,7 @@
                     <!-- Apellidos del Tutor -->
                     <div class="form-group mb-3 has-error">
                         <label for="TutorApellidos">Apellidos del Tutor</label>
-                        @Html.TextBoxFor(model => model.Tutor.Apellidos, new { @class = "form-control", placeholder = "Ingrese los apellidos del tutor", required = "required", @id = "TutorApellidos" })
+                        @Html.TextBoxFor(model => model.Tutor.Apellidos, new { @class = "form-control", placeholder = "Ingrese los apellidos del tutor", required = "required", @id = "TutorApellidos", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                         @Html.ValidationMessageFor(model => model.Tutor.Apellidos, "", new { @class = "text-danger" })
                         @if (!ViewData.ModelState.IsValidField("Tutor.Apellidos"))
                         {
@@ -116,7 +117,7 @@
                     <!-- Cédula del Tutor -->
                     <div class="form-group mb-3 has-error">
                         <label for="TutorCedula">Cédula del Tutor</label>
-                        @Html.TextBoxFor(model => model.Tutor.Cedula, new { @class = "form-control", placeholder = "Ingrese la cédula del tutor", required = "required", @id = "TutorCedula" })
+                        @Html.TextBoxFor(model => model.Tutor.Cedula, new { @class = "form-control", placeholder = "Ingrese la cédula del tutor", required = "required", @id = "TutorCedula", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                         @Html.ValidationMessageFor(model => model.Tutor.Cedula, "", new { @class = "text-danger" })
                         @if (!ViewData.ModelState.IsValidField("Tutor.Cedula"))
                         {
@@ -127,7 +128,7 @@
                     <!-- Relación del Tutor -->
                     <div class="form-group mb-3 has-error">
                         <label for="TutorRelacion">Relación con el Estudiante</label>
-                        @Html.TextBoxFor(model => model.Tutor.RelacionConElEstudiante, new { @class = "form-control", placeholder = "Ingrese la relación con el estudiante", required = "required", @id = "TutorRelacion" })
+                        @Html.TextBoxFor(model => model.Tutor.RelacionConElEstudiante, new { @class = "form-control", placeholder = "Ingrese la relación con el estudiante", required = "required", @id = "TutorRelacion", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                         @Html.ValidationMessageFor(model => model.Tutor.RelacionConElEstudiante, "", new { @class = "text-danger" })
                         @if (!ViewData.ModelState.IsValidField("Tutor.RelacionConElEstudiante"))
                         {
@@ -138,7 +139,7 @@
                     <!-- Dirección del Tutor -->
                     <div class="form-group mb-3 has-error">
                         <label for="TutorDireccion">Dirección del Tutor</label>
-                        @Html.TextBoxFor(model => model.Tutor.Direccion, new { @class = "form-control", placeholder = "Ingrese la dirección del tutor", required = "required", @id = "TutorDireccion" })
+                        @Html.TextBoxFor(model => model.Tutor.Direccion, new { @class = "form-control", placeholder = "Ingrese la dirección del tutor", required = "required", @id = "TutorDireccion", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                         @Html.ValidationMessageFor(model => model.Tutor.Direccion, "", new { @class = "text-danger" })
                         @if (!ViewData.ModelState.IsValidField("Tutor.Direccion"))
                         {
@@ -149,7 +150,7 @@
                     <!-- Celular del Tutor -->
                     <div class="form-group mb-3 has-error">
                         <label for="TutorCelular">Celular del Tutor</label>
-                        @Html.TextBoxFor(model => model.Tutor.Celular, new { @class = "form-control", placeholder = "Ingrese el celular del tutor", required = "required", @id = "TutorCelular" })
+                        @Html.TextBoxFor(model => model.Tutor.Celular, new { @class = "form-control", placeholder = "Ingrese el celular del tutor", required = "required", @id = "TutorCelular", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                         @Html.ValidationMessageFor(model => model.Tutor.Celular, "", new { @class = "text-danger" })
                         @if (!ViewData.ModelState.IsValidField("Tutor.Celular"))
                         {
@@ -159,9 +160,22 @@
                 </div>
 
                 <div class="form-group col-md-2 mt-4">
-                    <button type="submit" class="btn btn-primary">
+                    <!-- Botón Guardar Cambios -->
+                    <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1" style="@(ViewBag.EsEdicion ? "" : "display:none;")" onclick="activateEdit()">Editar</button>
+
+                    @if (ViewBag.EsEdicion)
+                    {
+                        <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1" onclick="deleteRecord()">Eliminar</button>
+                    }
+
+                    <!-- Botón Guardar Cambios, oculto inicialmente si está en modo edición -->
+                    <button type="submit" id="btn-save" class="btn btn-primary m-1" style="@(ViewBag.EsEdicion ? "display:none;" : "")">
                         @(Model.Estudiante.Id == 0 ? "Registrar" : "Guardar Cambios")
                     </button>
+
+                    <!-- Botón Cancelar, oculto inicialmente -->
+                    <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1" onclick="cancelOrReturn()">Regresar</button>
+
                 </div>
             </div>
         }
@@ -170,4 +184,34 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script>
+        // Función para activar el modo de edición
+        function activateEdit() {
+            $('input, select').prop('readonly', false);  // Habilita los campos
+            $('#btn-save').show();  // Muestra el botón de Guardar Cambios
+            $('#btn-cancel-edit').text("Cancelar");  // Cambia el texto a "Cancelar" en modo edición
+            $('#btn-edit').hide();  // Oculta el botón Editar
+            $('#btn-delete').hide();  // Oculta el botón Eliminar
+        }
+
+        // Función para cancelar la edición y regresar los campos a solo lectura
+        function cancelOrReturn() {
+            if ($('#btn-cancel-edit').text() === "Cancelar") {
+                // Si está en modo edición, cancelar y revertir a solo lectura
+                $('input, select').prop('readonly', true);
+                $('#btn-save').hide();
+                $('#btn-edit').show();
+                $('#btn-cancel-edit').text("Regresar");
+                $('#btn-delete').show();  // Muestra el botón Eliminar
+            } else {
+                // Si no está en modo edición, regresar a la página anterior
+                window.location.href = '@Url.Action("Index", "EstudianteWeb")'; // Cambia "Index" según la página de destino
+            }
+        }
+
+        function deleteRecord() {
+            const deleteUrl = '@Url.Action("Delete", "EstudianteWeb", new { id = Model.Estudiante.Id })';
+            window.location.href = deleteUrl;
+        }
+</script>
 }
