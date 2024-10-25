@@ -79,30 +79,39 @@ namespace GestionColegios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Periodo periodo = db.Periodos.Find(id);
             if (periodo == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AñoId = new SelectList(db.Años, "Id", "Id", periodo.AñoId);
-            return View(periodo);
+
+            var viewModel = new VMAñosPeriodosSemestres
+            {
+                Periodo = periodo,
+                Años = db.Años.ToList() // Asegúrate de llenar esta propiedad
+            };
+
+            return View(viewModel);
         }
+
 
         // POST: PeriodoWeb/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPeriodo([Bind(Include = "Id,Nombre,Numero,FechaModificacion,Activo,AñoId")] Periodo periodo)
+        public ActionResult EditPeriodo(VMAñosPeriodosSemestres viewModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(periodo).State = EntityState.Modified;
+                db.Entry(viewModel.Periodo).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AñoId = new SelectList(db.Años, "Id", "Id", periodo.AñoId);
-            return View(periodo);
+
+            viewModel.Años = db.Años.ToList(); // Repetimos para rellenar la lista de años en caso de error
+            return View(viewModel);
         }
 
         // GET: PeriodoWeb/Delete/5
@@ -170,7 +179,6 @@ namespace GestionColegios.Controllers
 
             return View(año);
         }
-
         // GET: AñoWeb/Edit/5
         public ActionResult EditAño(int? id)
         {
@@ -183,23 +191,31 @@ namespace GestionColegios.Controllers
             {
                 return HttpNotFound();
             }
-            return View(año);
+
+            // Crea una vista de modelo
+            var viewModel = new VMAñosPeriodosSemestres
+            {
+                Año = año
+            };
+
+            return View(viewModel);
         }
 
         // POST: AñoWeb/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: AñoWeb/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditAño([Bind(Include = "Id,Nombre")] Año año)
+        public ActionResult EditAño(VMAñosPeriodosSemestres model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(año).State = EntityState.Modified;
+                db.Entry(model.Año).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(año);
+            return View(model);
         }
 
         // GET: AñoWeb/Delete/5
@@ -276,30 +292,37 @@ namespace GestionColegios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Semestre semestre = db.Semestres.Find(id);
+
+            var semestre = db.Semestres.Find(id);
             if (semestre == null)
             {
                 return HttpNotFound();
             }
-            return View(semestre);
-        }
 
+            var viewModel = new VMAñosPeriodosSemestres
+            {
+                Semestre = semestre,
+               
+            };
+
+            return View(viewModel);
+        }
         // POST: SemestreWeb/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditSemestre([Bind(Include = "Id,Nombre")] Semestre semestre)
+        public ActionResult EditSemestre(VMAñosPeriodosSemestres viewModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(semestre).State = EntityState.Modified;
+                db.Entry(viewModel.Semestre).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(semestre);
-        }
 
+            return View(viewModel);
+        }
         // GET: SemestreWeb/Delete/5
         public ActionResult DeleteSemestre(int? id)
         {

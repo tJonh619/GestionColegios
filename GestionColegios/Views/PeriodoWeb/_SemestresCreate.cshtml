@@ -1,0 +1,36 @@
+﻿@model GestionColegios.ViewModels.VMAñosPeriodosSemestres
+
+<div class="tab-pane fade" id="semestres-create" role="tabpanel" aria-labelledby="semestres-create-tab">
+    <div class="row mt-2">
+        <div class="col-md-12">
+            @using (Html.BeginForm("CreateSemestre", "PeriodoWeb", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="col-md-6 card">
+                        <div class="row card" style="background-color: #001c7d">
+                            <label class="m-md-1" style="color:white">
+                                <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información del Semestre
+                            </label>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="Nombre">Nombre del Semestre</label>
+                            @Html.TextBoxFor(model => model.Semestre.Nombre, new { @class = "form-control", placeholder = "Ingrese el nombre del semestre" })
+                            @Html.ValidationMessageFor(model => model.Semestre.Nombre, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-2 mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            @(Model.Semestre.Id == 0 ? "Registrar" : "Guardar Cambios")
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,49 @@
+﻿@model GestionColegios.ViewModels.VMAñosAcademicos
+
+<div class="tab-pane fade show active" id="crear-editar" role="tabpanel" aria-labelledby="crear-editar-tab">
+    <div class="row mt-2">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Create", "AñoAcademicoWeb", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="col-md-6 card">
+                        <div class="row card" style="background-color: #001c7d">
+                            <label class="m-md-1" style="color:white">
+                                <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información del Año Académico
+                            </label>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="Nombre">Nombre del Año Académico</label>
+                            @Html.TextBoxFor(model => model.AñoAcademico.Nombre, new { @class = "form-control", placeholder = "Ingrese el nombre del año académico" })
+                            @Html.ValidationMessageFor(model => model.AñoAcademico.Nombre, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="Descripcion">Descripción</label>
+                            @Html.TextAreaFor(model => model.AñoAcademico.Descripcion, new { @class = "form-control", placeholder = "Ingrese una descripción" })
+                            @Html.ValidationMessageFor(model => model.AñoAcademico.Descripcion, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="Nivel">Nivel</label>
+                            @Html.DropDownListFor(model => model.AñoAcademico.Nivel, new SelectList(new List<string> { "Primaria", "Secundaria" }), "Seleccione el Nivel", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.AñoAcademico.Nivel, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-2 mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            @(Model.AñoAcademico.Id == 0 ? "Registrar" : "Guardar Cambios")
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

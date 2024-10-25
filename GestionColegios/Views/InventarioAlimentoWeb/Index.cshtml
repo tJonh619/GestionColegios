@@ -1,132 +1,27 @@
 ﻿@model GestionColegios.ViewModels.VMInventarioAlimento
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Gestión de Inventario de Alimentos";
 }
 
 <h2>Gestión de Inventario de Alimentos</h2>
 
 <div class="container mt-1">
 
-    <!-- Navegación de Tabs -->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="agregar-alimento-tab" data-bs-toggle="tab" data-bs-target="#agregar-alimento" type="button" role="tab" aria-controls="agregar-alimento" aria-selected="true">Agregar Alimento</button>
-        </li>
+
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="listar-alimentos-tab" data-bs-toggle="tab" data-bs-target="#listar-alimentos" type="button" role="tab" aria-controls="listar-alimentos" aria-selected="false">Listar Alimentos</button>
         </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="agregar-alimento-tab" data-bs-toggle="tab" data-bs-target="#agregar-alimento" type="button" role="tab" aria-controls="agregar-alimento" aria-selected="true">Agregar Alimento</button>
+        </li>
+
     </ul>
 
-    <!-- Contenido de las Tabs -->
     <div class="tab-content" id="myTabContent">
-        <!-- Tab Agregar Alimento -->
-        <div class="tab-pane fade show active" id="agregar-alimento" role="tabpanel" aria-labelledby="agregar-alimento-tab">
-            <div class="panel panel-default mt-2">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Agregar Alimento</h3>
-                </div>
-                <div class="panel-body">
-                    @using (Html.BeginForm("Create", "InventarioAlimentoWeb", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.InventarioAlimento.Codigo, new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.InventarioAlimento.Codigo, new { @class = "form-control" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.InventarioAlimento.NombreAlimento, new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownListFor(m => m.InventarioAlimento.NombreAlimento,
-                                    new SelectList(new List<SelectListItem>
-                                    {
-                                        new SelectListItem { Value = "Arroz", Text = "Arroz" },
-                                        new SelectListItem { Value = "Aceite", Text = "Aceite" },
-                                        new SelectListItem { Value = "Cereal", Text = "Cereal" },
-                                        new SelectListItem { Value = "Frijoles", Text = "Frijoles" },
-                                        new SelectListItem { Value = "Maíz", Text = "Maíz" }
-                                    }, "Value", "Text"),
-                                    "Seleccione un alimento",
-                                    new { @class = "form-control" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.InventarioAlimento.Stock, new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.InventarioAlimento.Stock, new { @class = "form-control" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.InventarioAlimento.UnidadDeMedida, new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownListFor(m => m.InventarioAlimento.UnidadDeMedida,
-                                    new SelectList(new List<SelectListItem>
-                                    {
-                                        new SelectListItem { Value = "Libras", Text = "Libras" },
-                                        new SelectListItem { Value = "Cuartas", Text = "Cuartas" }
-                                    }, "Value", "Text", Model.InventarioAlimento.UnidadDeMedida),
-                                    "Seleccione una unidad",
-                                    new { @class = "form-control" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Agregar Alimento" class="btn btn-primary" />
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab Listar Alimentos -->
-        <div class="tab-pane fade" id="listar-alimentos" role="tabpanel" aria-labelledby="listar-alimentos-tab">
-            <div class="panel panel-default mt-2">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Lista de Alimentos</h3>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Codigo</th>
-                                <th>Nombre del Alimento</th>
-                                <th>Stock</th>
-                                <th>Unidad de Medida</th>
-                                <th>Fecha de Reabastecimiento</th>
-                                <th>Activo</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var alimento in Model.InventarioAlimentos)
-                            {
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => alimento.Codigo)</td>
-                                    <td>@Html.DisplayFor(modelItem => alimento.NombreAlimento)</td>
-                                    <td>@Html.DisplayFor(modelItem => alimento.Stock)</td>
-                                    <td>@Html.DisplayFor(modelItem => alimento.UnidadDeMedida)</td>
-                                    <td>@Html.DisplayFor(modelItem => alimento.FechaModificacion)</td>
-                                    <td>@Html.DisplayFor(modelItem => alimento.Activo)</td>
-
-
-                                    <td>
-                                        @Html.ActionLink("Editar", "Edit", new { id = alimento.Id }, new { @class = "btn btn-warning" }) |
-                                        @Html.ActionLink("Desactivar", "Delete", new { id = alimento.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas desactivar este alimento?');" })
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        @Html.Partial("_AgregarAlimento", Model)
+        @Html.Partial("_ListarAlimentos", Model)
     </div>
 </div>
