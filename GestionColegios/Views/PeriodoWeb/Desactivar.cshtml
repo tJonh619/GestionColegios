@@ -1,0 +1,59 @@
+﻿@model GestionColegios.ViewModels.VMAñosPeriodosSemestres
+
+@{
+    ViewBag.Title = "Desactivar Periodo";
+}
+
+<h2>Desactivar Periodo</h2>
+
+<h3>¿Estás seguro de que quieres desactivar este periodo?</h3>
+<div>
+    <h4>Periodo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Periodo.Nombre)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Periodo.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Periodo.Año)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Periodo.Año.Nombre) <!-- Asumiendo que Año tiene una propiedad Nombre -->
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Periodo.Numero)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Periodo.Numero)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Periodo.FechaModificacion)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Periodo.FechaModificacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Periodo.Activo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Periodo.Activo)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm("DeactivateConfirmedPeriodo", "PeriodoWeb", new { id = Model.Periodo.Id }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Desactivar" class="btn btn-warning" /> |
+            @Html.ActionLink("Regresar a la Lista", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

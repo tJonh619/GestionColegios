@@ -11,64 +11,148 @@
     <title>Control de Merienda</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .table-responsive {
+            margin-bottom: 20px;
+        }
+
+        .table-inventario {
+            font-size: 0.9rem; /* Ajustar tamaño de fuente */
+        }
+
+            /* Estilo para hacer más pequeña la tabla de inventario */
+            .table-inventario th, .table-inventario td {
+                font-size: 0.8rem; /* Reducir tamaño de fuente */
+                padding: 0.5rem; /* Ajustar el padding */
+            }
+
+                .table-inventario th:nth-child(1) {
+                    width: 40%; /* Ancho del nombre del alimento */
+                }
+
+                .table-inventario th:nth-child(2) {
+                    width: 30%; /* Ancho del stock */
+                }
+
+                .table-inventario th:nth-child(3) {
+                    width: 30%; /* Ancho de la unidad de medida */
+                }
+    </style>
 </head>
 <body>
     <div class="container">
         <h2 class="mt-4 mb-3">Control de Merienda</h2>
 
-        <form action="@Url.Action("Create", "ControlMeriendas")" method="post" id="form-tablas">
-            @Html.AntiForgeryToken()
-            <div id="tablas-container">
-                <div class="table-responsive" id="tabla-1">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Curso Académico</th>
-                                <th>Estudiante</th>
-                                <th>Código</th>
-                                <th>Fecha Entrega</th>
-                                <th>Asistencia Esperada Mujeres</th>
-                                <th>Asistencia Esperada Total</th>
-                                <th>Asistencia Real Mujeres</th>
-                                <th>Asistencia Real Total</th>
-                                <th>SAceite</th>
-                                <th>SArroz</th>
-                                <th>SCereal</th>
-                                <th>SFrijoles</th>
-                                <th>SMaiz</th>
-                                <th>Firma Docente</th>
-                                <th>Cédula Tutor</th>
-                                <th>Firma Tutor</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-body">
-                            <tr>
-                                <td>@Html.DropDownList("CursoAcademicoId[]", new SelectList(Model.CursosAcademicos, "Id", "Nombre"), "Seleccione un Curso Académico", new { @class = "form-control" })</td>
-                                <td>@Html.DropDownList("EstudianteId[]", new SelectList(Model.Estudiantes, "Id", "Nombres"), "Seleccione un Estudiante", new { @class = "form-control" })</td>
-                                <td><input type="text" name="Codigo[]" class="form-control" /></td>
-                                <td><input type="date" name="FechaEntrega[]" class="form-control" /></td>
-                                <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
-                                <td><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
-                                <td><input type="number" name="AsistenciaRealMujeres[]" class="form-control" /></td>
-                                <td><input type="number" name="AsistenciaRealTotal[]" class="form-control" /></td>
-                                <td><input type="number" name="SAceite[]" class="form-control" /></td>
-                                <td><input type="number" name="SArroz[]" class="form-control" /></td>
-                                <td><input type="number" name="SCereal[]" class="form-control" /></td>
-                                <td><input type="number" name="SFrijoles[]" class="form-control" /></td>
-                                <td><input type="number" name="SMaiz[]" class="form-control" /></td>
-                                <td><input type="text" name="FirmaDocente[]" class="form-control" /></td>
-                                <td><input type="text" name="CedulaTutor[]" class="form-control" /></td>
-                                <td><input type="text" name="FirmaTutor[]" class="form-control" /></td>
-                                <td><button type="button" class="btn btn-danger eliminar-fila">Eliminar</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button type="button" class="btn btn-success mb-3 agregar-fila">Agregar Fila</button>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Registro de Meriendas</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="@Url.Action("Create", "ControlMeriendas")" method="post" id="form-tablas">
+                            @Html.AntiForgeryToken()
+                            <div id="tablas-container">
+                                <div class="table-responsive" id="tabla-1">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Curso Académico</th>
+                                                <th>Estudiante</th>
+                                                <th>Código</th>
+                                                <th>Fecha Entrega</th>
+                                                <th>Asistencia Esperada Mujeres</th>
+                                                <th>Asistencia Esperada Total</th>
+                                                <th>Asistencia Real Mujeres</th>
+                                                <th>Asistencia Real Total</th>
+                                                <th>SAceite</th>
+                                                <th>SArroz</th>
+                                                <th>SCereal</th>
+                                                <th>SFrijoles</th>
+                                                <th>SMaiz</th>
+                                                <th>Firma Docente</th>
+                                                <th>Cédula Tutor</th>
+                                                <th>Firma Tutor</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabla-body">
+                                            <tr>
+                                                <td>@Html.DropDownList("CursoAcademicoId[]", new SelectList(Model.CursosAcademicos, "Id", "Nombre"), "Seleccione un Curso Académico", new { @class = "form-control" })</td>
+                                                <td>@Html.DropDownList("EstudianteId[]", new SelectList(Model.Estudiantes, "Id", "Nombres"), "Seleccione un Estudiante", new { @class = "form-control" })</td>
+                                                <td><input type="text" name="Codigo[]" class="form-control" /></td>
+                                                <td><input type="date" name="FechaEntrega[]" class="form-control" /></td>
+                                                <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
+                                                <td><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
+                                                <td><input type="number" name="AsistenciaRealMujeres[]" class="form-control" /></td>
+                                                <td><input type="number" name="AsistenciaRealTotal[]" class="form-control" /></td>
+                                                <td><input type="number" name="SAceite[]" class="form-control" /></td>
+                                                <td><input type="number" name="SArroz[]" class="form-control" /></td>
+                                                <td><input type="number" name="SCereal[]" class="form-control" /></td>
+                                                <td><input type="number" name="SFrijoles[]" class="form-control" /></td>
+                                                <td><input type="number" name="SMaiz[]" class="form-control" /></td>
+                                                <td><input type="text" name="FirmaDocente[]" class="form-control" /></td>
+                                                <td><input type="text" name="CedulaTutor[]" class="form-control" /></td>
+                                                <td><input type="text" name="FirmaTutor[]" class="form-control" /></td>
+                                                <td><button type="button" class="btn btn-danger eliminar-fila">Eliminar</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button type="button" class="btn btn-success mb-3 agregar-fila">Agregar Fila</button>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Guardar</button>
-        </form>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Inventario de Alimentos</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-inventario">
+                            <thead>
+                                <tr>
+                                    <th>Nombre del Alimento</th>
+                                    <th>Stock</th>
+                                    <th>Unidad de Medida</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.InventarioAlimentos != null && Model.InventarioAlimentos.Any())
+                                {
+                                    foreach (var alimento in Model.InventarioAlimentos)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => alimento.NombreAlimento)</td>
+                                            <td>@Html.DisplayFor(modelItem => alimento.Stock)</td>
+                                            <td>@Html.DisplayFor(modelItem => alimento.UnidadDeMedida)</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-center">No hay alimentos en el inventario.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>

@@ -34,6 +34,7 @@ namespace GestionColegios.Controllers
                 CursosAcademicos = db.CursosAcademicos.ToList(),
                 cursoAcademico = new CursoAcademico(),
                 Estudiantes = db.Estudiantes.ToList(),
+                InventarioAlimentos = db.InventariosAlimentos.ToList(),
                 Estudiante = new Estudiante()
             };
 
@@ -46,7 +47,8 @@ namespace GestionColegios.Controllers
             var viewModel = new VMControlMerienda
             {
                 CursosAcademicos = db.CursosAcademicos.ToList(),
-                Estudiantes = db.Estudiantes.ToList()
+                Estudiantes = db.Estudiantes.ToList(),
+                InventarioAlimentos = db.InventariosAlimentos.ToList()
             };
 
             return View(viewModel);
@@ -98,10 +100,18 @@ namespace GestionColegios.Controllers
                                 Activo = true
                             };
 
+                            // Actualiza el inventario
+                            if (aceite != null) aceite.Stock -= SAceite[i];
+                            if (arroz != null) arroz.Stock -= SArroz[i];
+                            if (cereal != null) cereal.Stock -= SCereal[i];
+                            if (frijoles != null) frijoles.Stock -= SFrijoles[i];
+                            if (maiz != null) maiz.Stock -= SMaiz[i];
+
                             db.ControlesMeriendas.Add(controlMerienda);
                         }
                     }
 
+                    // Guarda los cambios en la base de datos
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
