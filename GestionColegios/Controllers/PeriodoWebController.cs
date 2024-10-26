@@ -114,32 +114,48 @@ namespace GestionColegios.Controllers
             return View(viewModel);
         }
 
-        // GET: PeriodoWeb/Delete/5
-        public ActionResult DeletePeriodo(int? id)
+        // GET: PeriodoWeb/Deactivate/5
+        public ActionResult Desactivar(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Periodo periodo = db.Periodos.Find(id);
+
+            var periodo = db.Periodos.Find(id);
             if (periodo == null)
             {
                 return HttpNotFound();
             }
-            return View(periodo);
+
+            var viewModel = new VMAñosPeriodosSemestres
+            {
+                Periodo = periodo, // Asigna el objeto Periodo aquí
+                                   // Puedes asignar otros datos si es necesario, por ejemplo:
+                                   // Años = db.Años.ToList(),
+                                   // Semestres = db.Semestres.ToList()
+            };
+
+            return View(viewModel);
         }
 
-        // POST: PeriodoWeb/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeactivateConfirmedPeriodo")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmedPeriodo(int id)
+        public ActionResult DeactivateConfirmedPeriodo(int id)
         {
-            Periodo periodo = db.Periodos.Find(id);
-            db.Periodos.Remove(periodo);
+            // Lógica para desactivar el periodo
+            var periodo = db.Periodos.Find(id);
+            if (periodo == null)
+            {
+                return HttpNotFound();
+            }
+
+            periodo.Activo = false; // Cambia a desactivado
+            db.Entry(periodo).State = EntityState.Modified;
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
-
 
 
 
@@ -217,7 +233,6 @@ namespace GestionColegios.Controllers
             }
             return View(model);
         }
-
         // GET: AñoWeb/Delete/5
         public ActionResult DeleteAño(int? id)
         {
@@ -225,26 +240,37 @@ namespace GestionColegios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Año año = db.Años.Find(id);
             if (año == null)
             {
                 return HttpNotFound();
             }
-            return View(año);
+
+            var viewModel = new VMAñosPeriodosSemestres
+            {
+                Año = año
+            };
+
+            return View(viewModel);
         }
 
         // POST: AñoWeb/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteAño")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmedAño(int id)
         {
             Año año = db.Años.Find(id);
+            if (año == null)
+            {
+                return HttpNotFound();
+            }
+
             db.Años.Remove(año);
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
-
-
 
 
 
@@ -330,22 +356,35 @@ namespace GestionColegios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Semestre semestre = db.Semestres.Find(id);
             if (semestre == null)
             {
                 return HttpNotFound();
             }
-            return View(semestre);
+
+            var viewModel = new VMAñosPeriodosSemestres
+            {
+                Semestre = semestre
+            };
+
+            return View(viewModel);
         }
 
         // POST: SemestreWeb/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteSemestre")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmedSemestre(int id)
         {
             Semestre semestre = db.Semestres.Find(id);
+            if (semestre == null)
+            {
+                return HttpNotFound();
+            }
+
             db.Semestres.Remove(semestre);
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

@@ -22,7 +22,7 @@
                             <td>@Html.DisplayFor(modelItem => periodo.Año.Nombre)</td>
                             <td>
                                 @Html.ActionLink("Editar", "EditPeriodo", new { id = periodo.Id }, new { @class = "btn btn-warning" }) |
-                                @Html.ActionLink("Eliminar", "DeletePeriodo", new { id = periodo.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este periodo?');" })
+                                @Html.ActionLink("Desactivar", "Desactivar", new { id = periodo.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este periodo?');" })
                             </td>
                         </tr>
                     }
