@@ -19,28 +19,20 @@ namespace GestionColegios.Controllers
         public ActionResult Index()
         {
             var viewModel = new VMMaestros { Maestros = db.Maestros.ToList(), Maestro = new Maestro() };
+            ViewBag.EsEdicion = false;
             return View(viewModel);
         }
 
-        // GET: MaestrosWeb/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Maestro maestro = db.Maestros.Find(id);
-            if (maestro == null)
-            {
-                return HttpNotFound();
-            }
-            return View(maestro);
-        }
 
         // GET: MaestrosWeb/Create
         public ActionResult Create()
         {
-            return View();
+            var viewModel = new VMMaestros
+            {
+                Maestro = new Maestro()
+            };
+            ViewBag.EsEdicion = false;
+            return View("_Create_Edit", viewModel);
         }
 
         // POST: MaestrosWeb/Create
@@ -48,24 +40,49 @@ namespace GestionColegios.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Codigo,Cedula,Nombres,Apellidos,Sexo,Celular,Direccion,Especialidad,FechaContratacion,HorarioTrabajo,Nivel,FechaModificacion,Activo")] Maestro maestro)
+        public ActionResult Create(VMMaestros model)
         {
             if (ModelState.IsValid)
             {
-                //se genera un codigo basandose en las primeras dos letras del primer nombre y el primer apellido con tres numeros aleatorios
-                string Codigo = maestro.Nombres.Substring(0, 3).ToUpper() + maestro.Apellidos.Substring(0, 2).ToUpper() + new Random().Next(100, 1000).ToString();
-                maestro.Codigo = Codigo;
-                maestro.FechaModificacion = DateTime.Now;
-                maestro.Activo = true;
-                db.Maestros.Add(maestro);
+                // Verificar si estamos creando un nuevo maestro o editando uno existente
+                if (model.Maestro.Id == 0)
+                {
+                    // Código para creación
+                    model.Maestro.Codigo = model.Maestro.Nombres.Substring(0, 3).ToUpper() +
+                                           model.Maestro.Apellidos.Substring(0, 2).ToUpper() +
+                                           new Random().Next(100, 1000).ToString();
+                    model.Maestro.FechaModificacion = DateTime.Now;
+                    model.Maestro.Activo = true;
+                    db.Maestros.Add(model.Maestro);
+                }
+                else
+                {
+                    // Código para edición
+                    var maestro = db.Maestros.SingleOrDefault(m => m.Id == model.Maestro.Id);
+                    if (maestro == null) return HttpNotFound();
+
+                    maestro.Cedula = model.Maestro.Cedula;
+                    maestro.Nombres = model.Maestro.Nombres;
+                    maestro.Apellidos = model.Maestro.Apellidos;
+                    maestro.Sexo = model.Maestro.Sexo;
+                    maestro.Celular = model.Maestro.Celular;
+                    maestro.Direccion = model.Maestro.Direccion;
+                    maestro.Especialidad = model.Maestro.Especialidad;
+                    maestro.FechaContratacion = model.Maestro.FechaContratacion;
+                    maestro.HorarioTrabajo = model.Maestro.HorarioTrabajo;
+                    maestro.Nivel = model.Maestro.Nivel;
+                    maestro.FechaModificacion = DateTime.Now;
+                    maestro.Activo = model.Maestro.Activo;
+                }
+
                 db.SaveChanges();
                 TempData["SuccessMessage"] = "Maestro guardado correctamente.";
                 return RedirectToAction("Index");
             }
-            TempData["ErrorMessage"] = "Error al guardar el maestro. Intente de nuevo.";
-            return View(maestro);
-        }
 
+            TempData["ErrorMessage"] = "Error al guardar el maestro. Intente de nuevo.";
+            return View("_Create_Edit", model); // Retorna a la misma vista en caso de error
+        }
         // GET: MaestrosWeb/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -73,12 +90,22 @@ namespace GestionColegios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Maestro maestro = db.Maestros.Find(id);
+
+            // Busca el maestro con el ID especificado
+            Maestro maestro = db.Maestros.SingleOrDefault(m => m.Id == id);
             if (maestro == null)
             {
                 return HttpNotFound();
             }
-            return View(maestro);
+
+            // Crea el ViewModel para pasar los datos a la vista
+            var viewModel = new VMMaestros
+            {
+                Maestro = maestro
+            };
+
+            ViewBag.EsEdicion = true;
+            return View("_Create_Edit", viewModel);
         }
 
         // POST: MaestrosWeb/Edit/5
@@ -86,15 +113,41 @@ namespace GestionColegios.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Codigo,Cedula,Nombres,Apellidos,Sexo,Celular,Direccion,Especialidad,FechaContratacion,HorarioTrabajo,Nivel,FechaModificacion,Activo")] Maestro maestro)
+        public ActionResult Edit(VMMaestros model)
         {
             if (ModelState.IsValid)
             {
+                // Busca el maestro
+                var maestro = db.Maestros.SingleOrDefault(m => m.Id == model.Maestro.Id);
+                if (maestro == null)
+                {
+                    return HttpNotFound();
+                }
+
+                // Actualiza los datos del maestro
+                maestro.Cedula = model.Maestro.Cedula;
+                maestro.Nombres = model.Maestro.Nombres;
+                maestro.Apellidos = model.Maestro.Apellidos;
+                maestro.Sexo = model.Maestro.Sexo;
+                maestro.Celular = model.Maestro.Celular;
+                maestro.Direccion = model.Maestro.Direccion;
+                maestro.Especialidad = model.Maestro.Especialidad;
+                maestro.FechaContratacion = model.Maestro.FechaContratacion;
+                maestro.HorarioTrabajo = model.Maestro.HorarioTrabajo;
+                maestro.Nivel = model.Maestro.Nivel;
+                maestro.FechaModificacion = DateTime.Now;
+                maestro.Activo = model.Maestro.Activo;
+
+                // Marca el maestro como modificado y guarda los cambios
                 db.Entry(maestro).State = EntityState.Modified;
                 db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Maestro actualizado correctamente.";
                 return RedirectToAction("Index");
             }
-            return View(maestro);
+
+            TempData["ErrorMessage"] = "Error al actualizar el maestro. Intente de nuevo.";
+            return View(model);
         }
 
         // GET: MaestrosWeb/Delete/5

@@ -31,15 +31,6 @@ namespace GestionColegios.Controllers
             return View(viewModel);
         }
 
-        // Método para listar los estudiantes
-        public ActionResult Listar()
-        {
-            var estudiantes = db.Estudiantes
-                                .Include(e => e.Tutor)
-                                .Where(e => e.Activo) // Filtrar solo estudiantes activos
-                                .ToList();
-            return PartialView("_ListaEstudiantes", estudiantes); // Asegúrate de que la vista parcial existe y se llama _ListaEstudiantes.cshtml
-        }
 
         // GET: EstudianteWeb/Create
         public ActionResult Create()

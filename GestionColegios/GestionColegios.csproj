@@ -507,7 +507,6 @@
     <Content Include="Views\TutorWeb\Details.cshtml" />
     <Content Include="Views\TutorWeb\Edit.cshtml" />
     <Content Include="Views\TutorWeb\Index.cshtml" />
-    <Content Include="Views\PeriodoWeb\Create.cshtml" />
     <Content Include="Views\PeriodoWeb\Desactivar.cshtml" />
     <Content Include="Views\PeriodoWeb\Details.cshtml" />
     <Content Include="Views\PeriodoWeb\EditPeriodo.cshtml" />

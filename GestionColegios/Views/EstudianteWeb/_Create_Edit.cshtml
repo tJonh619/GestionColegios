@@ -43,7 +43,7 @@
                     <!-- Fecha de nacimiento -->
                     <div class="form-group mb-3 has-error">
                         <label for="FechaNacimiento">Fecha de Nacimiento</label>
-                        @Html.TextBoxFor(model => model.Estudiante.FechaNacimiento, new { @class = "form-control", @type = "date", required = "required", @id = "FechaNacimiento", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
+                        @Html.TextBoxFor(model => model.Estudiante.FechaNacimiento, "{0:yyyy-MM-dd}", new { @class = "form-control", type= "date", required = "required", @id = "FechaNacimiento", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                         @Html.ValidationMessageFor(model => model.Estudiante.FechaNacimiento, "", new { @class = "text-danger" })
                         @if (!ViewData.ModelState.IsValidField("Estudiante.FechaNacimiento"))
                         {
