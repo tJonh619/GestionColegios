@@ -92,6 +92,12 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="@Url.Action("Index", "CursoAcademicoWeb")">
+                                    <i class="fas fa-box me-2"></i> Cursos Academicos
+                                </a>
+                            </li>
+
                         }
 
                         @if (Session["Rol"] != null && (Session["Rol"].ToString() == "Docente"))
