@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using GestionColegios.Models;
+using GestionColegios.ViewModels;
 
 namespace GestionColegios.Controllers
 {
@@ -38,7 +39,8 @@ namespace GestionColegios.Controllers
         // GET: SeccionWeb/Create
         public ActionResult Create()
         {
-            return View();
+            ViewBag.EsEdicion = false;
+            return View(new VMSeccion());
         }
 
         // POST: SeccionWeb/Create
@@ -46,31 +48,48 @@ namespace GestionColegios.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Nombre,CapacidadEstudiantes,FechaModificacion,Activo")] Seccion seccion)
+        public ActionResult Create(VMSeccion vmSeccion)
         {
             if (ModelState.IsValid)
             {
+                var seccion = new Seccion
+                {
+                    Nombre = vmSeccion.Nombre,
+                    CapacidadEstudiantes = vmSeccion.CapacidadEstudiantes,
+                    Activo = vmSeccion.Activo,
+                    FechaModificacion = DateTime.Now // Asegúrate de setear la fecha
+                };
+
                 db.Secciones.Add(seccion);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(seccion);
+            return View(vmSeccion);
         }
-
-        // GET: SeccionWeb/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Seccion seccion = db.Secciones.Find(id);
             if (seccion == null)
             {
                 return HttpNotFound();
             }
-            return View(seccion);
+
+            var vmSeccion = new VMSeccion
+            {
+                Id = seccion.Id,
+                Nombre = seccion.Nombre,
+                CapacidadEstudiantes = seccion.CapacidadEstudiantes,
+                Activo = seccion.Activo,
+                
+            };
+            ViewBag.EsEdicion = true;
+            return View(vmSeccion);
         }
 
         // POST: SeccionWeb/Edit/5
@@ -78,30 +97,27 @@ namespace GestionColegios.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Nombre,CapacidadEstudiantes,FechaModificacion,Activo")] Seccion seccion)
+        public ActionResult Edit(VMSeccion vmSeccion)
         {
             if (ModelState.IsValid)
             {
+                var seccion = db.Secciones.Find(vmSeccion.Id);
+                if (seccion == null)
+                {
+                    return HttpNotFound();
+                }
+
+                seccion.Nombre = vmSeccion.Nombre;
+                seccion.CapacidadEstudiantes = vmSeccion.CapacidadEstudiantes;
+                seccion.Activo = vmSeccion.Activo;
+                seccion.FechaModificacion = DateTime.Now; // Asegúrate de setear la fecha
+
                 db.Entry(seccion).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(seccion);
-        }
 
-        // GET: SeccionWeb/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Seccion seccion = db.Secciones.Find(id);
-            if (seccion == null)
-            {
-                return HttpNotFound();
-            }
-            return View(seccion);
+            return View(vmSeccion);
         }
 
         // POST: SeccionWeb/Delete/5
