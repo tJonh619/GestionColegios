@@ -1,14 +1,15 @@
-﻿@model GestionColegios.ViewModels.VMSeccion
+﻿@model GestionColegios.Models.Seccion
 
 @{
     ViewBag.Title = "Editar Sección";
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>Editar Sección</h2>
 
-@using (Html.BeginForm("Edit", "SeccionWeb", FormMethod.Post, new { @id = "form-seccion" }))
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+
     @Html.HiddenFor(model => model.Id)
 
     <div class="form-group">
@@ -28,8 +29,7 @@
         @Html.CheckBoxFor(model => model.Activo)
     </div>
 
-    <button type="submit" class="btn btn-primary">
-        @(Model.Id == 0 ? "Registrar" : "Guardar Cambios")
-    </button>
-    <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancelar</button>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-secondary" })
 }
+

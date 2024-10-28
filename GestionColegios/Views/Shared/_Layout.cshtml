@@ -92,6 +92,17 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="@Url.Action("Index", "CursoAcademicoWeb")">
+                                    <i class="fas fa-box me-2"></i> Cursos Academicos
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="@Url.Action("Index", "SeccionWeb")">
+                                    <i class="fas fa-box me-2"></i> Sección
+                                </a>
+                            </li>
                         }
 
                         @if (Session["Rol"] != null && (Session["Rol"].ToString() == "Docente"))
@@ -107,6 +118,7 @@
                                     <i class="fas fa-box me-2"></i> Control Meriendas
                                 </a>
                             </li>
+
 
 
                         }  <!-- Mostrar a todos los usuarios -->

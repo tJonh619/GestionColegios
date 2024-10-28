@@ -330,10 +330,12 @@
     <Compile Include="ViewModels\VMAñosAcademicos.cs" />
     <Compile Include="ViewModels\VMAñosPeriodosSemestres.cs" />
     <Compile Include="ViewModels\VMControlMerienda.cs" />
+    <Compile Include="ViewModels\VMCursoAcademico.cs" />
     <Compile Include="ViewModels\VMEstudiantes.cs" />
     <Compile Include="ViewModels\VMInventarioAlimento.cs" />
     <Compile Include="ViewModels\VMMaestros.cs" />
     <Compile Include="ViewModels\VMMatricula.cs" />
+    <Compile Include="ViewModels\VMSeccion.cs" />
     <Compile Include="ViewModels\VMTutor.cs" />
     <Compile Include="ViewModels\VMUsuario.cs" />
   </ItemGroup>
@@ -537,6 +539,11 @@
     <Content Include="Views\PeriodoWeb\EditSemestre.cshtml" />
     <Content Include="Views\PeriodoWeb\DeleteAño.cshtml" />
     <Content Include="Views\PeriodoWeb\DeleteSemestre.cshtml" />
+    <Content Include="Views\CursoAcademicoWeb\_CursosList.cshtml" />
+    <Content Include="Views\CursoAcademicoWeb\_CursosCreate.cshtml" />
+    <Content Include="Views\SeccionWeb\_ListarSecciones.cshtml" />
+    <Content Include="Views\SeccionWeb\_AgregarSecciones.cshtml" />
+    <Content Include="Views\SeccionWeb\_EditSecciones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

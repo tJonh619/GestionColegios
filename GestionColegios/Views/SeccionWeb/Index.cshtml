@@ -1,51 +1,27 @@
 ﻿@model IEnumerable<GestionColegios.Models.Seccion>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Gestionar Secciones";
 }
 
-<h2>Index</h2>
+@using GestionColegios.ViewModels
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CapacidadEstudiantes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaModificacion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Activo)
-        </th>
-        <th></th>
-    </tr>
+<h2>Gestionar Secciones</h2>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CapacidadEstudiantes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaModificacion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Activo)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="true">Listar Secciones</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="agregar-tab" data-bs-toggle="tab" data-bs-target="#agregar" type="button" role="tab" aria-controls="agregar" aria-selected="false">Agregar Sección</button>
+    </li>
+</ul>
 
-</table>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="listar" role="tabpanel" aria-labelledby="listar-tab">
+        @Html.Partial("_ListarSecciones", Model)
+    </div>
+    <div class="tab-pane fade" id="agregar" role="tabpanel" aria-labelledby="agregar-tab">
+        @Html.Partial("_AgregarSecciones", new VMSeccion())
+    </div>
+</div>
