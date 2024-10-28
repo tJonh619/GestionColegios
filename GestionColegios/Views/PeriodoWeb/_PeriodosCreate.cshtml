@@ -1,10 +1,25 @@
 ﻿@model GestionColegios.ViewModels.VMAñosPeriodosSemestres
 
+@{
+    var esSoloLectura = ViewBag.EsEdicion
+        ? new Dictionary<string, object> { { "readonly", "readonly" }, { "disabled", "disabled" } }
+        : new Dictionary<string, object>();
+}
+
+@functions {
+    IDictionary<string, object> ObtenerAtributos(Dictionary<string, object> atributosBase, Dictionary<string, object> soloLectura)
+    {
+        return atributosBase.Concat(soloLectura).ToDictionary(k => k.Key, v => v.Value);
+    }
+}
+
 <div class="row mt-2">
     <div class="col-md-12">
-        @using (Html.BeginForm("CreatePeriodo", "PeriodoWeb", FormMethod.Post))
+        @using (Html.BeginForm(ViewBag.EsEdicion ? "EditPeriodo" : "CreatePeriodo", "PeriodoWeb", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Periodo.Id)
+
             <div class="row">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -15,28 +30,65 @@
                         </label>
                     </div>
 
+                    <!-- Nombre del Periodo -->
                     <div class="form-group mb-3">
                         <label for="Nombre">Nombre del Periodo</label>
-                        @Html.TextBoxFor(model => model.Periodo.Nombre, new { @class = "form-control", placeholder = "Ingrese el nombre del periodo" })
+                        @Html.TextBoxFor(model => model.Periodo.Nombre,
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" },
+                                { "placeholder", "Ingrese el nombre del periodo" }
+                            }, esSoloLectura))
                         @Html.ValidationMessageFor(model => model.Periodo.Nombre, "", new { @class = "text-danger" })
                     </div>
 
+                    <!-- Número del Periodo -->
                     <div class="form-group mb-3">
                         <label for="Numero">Número del Periodo</label>
-                        @Html.TextBoxFor(model => model.Periodo.Numero, new { @class = "form-control", placeholder = "Ingrese el número del periodo" })
+                        @Html.TextBoxFor(model => model.Periodo.Numero,
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" },
+                                { "placeholder", "Ingrese el número del periodo" }
+                            }, esSoloLectura))
                         @Html.ValidationMessageFor(model => model.Periodo.Numero, "", new { @class = "text-danger" })
                     </div>
 
+                    <!-- Año Académico -->
                     <div class="form-group mb-3">
                         <label for="AñoId">Año Académico</label>
-                        @Html.DropDownListFor(model => model.Periodo.AñoId, new SelectList(Model.Años, "Id", "Nombre"), "Seleccione un año", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.Periodo.AñoId,
+                            new SelectList(Model.Años, "Id", "Nombre", Model.Periodo.AñoId),
+                            "Seleccione un año",
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" }
+                            }, esSoloLectura))
                         @Html.ValidationMessageFor(model => model.Periodo.AñoId, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
+                <!-- Botones de Acción -->
                 <div class="form-group col-md-2 mt-4">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
+                            style="@(ViewBag.EsEdicion ? "" : "display:none;")"
+                            onclick="activateEdit()">
+                        Editar
+                    </button>
+
+                    @if (ViewBag.EsEdicion)
+                    {
+                        <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
+                                onclick="deleteRecord()">
+                            Eliminar
+                        </button>
+                    }
+
+                    <button type="submit" id="btn-save" class="btn btn-primary m-1"
+                            style="@(ViewBag.EsEdicion ? "display:none;" : "")">
                         @(Model.Periodo.Id == 0 ? "Registrar" : "Guardar Cambios")
+                    </button>
+
+                    <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
+                            onclick="cancelOrReturn()">
+                        Regresar
                     </button>
                 </div>
             </div>
@@ -44,3 +96,34 @@
     </div>
 </div>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function activateEdit() {
+            $('input, select').prop('readonly', false).prop('disabled', false);
+            $('#btn-save').show();
+            $('#btn-cancel-edit').text("Cancelar");
+            $('#btn-edit').hide();
+            $('#btn-delete').hide();
+        }
+
+        function cancelOrReturn() {
+            if ($('#btn-cancel-edit').text() === "Cancelar") {
+                $('input, select').prop('readonly', true).prop('disabled', true);
+                $('#btn-save').hide();
+                $('#btn-edit').show();
+                $('#btn-cancel-edit').text("Regresar");
+                $('#btn-delete').show();
+            } else {
+                window.location.href = '@Url.Action("Index", "PeriodoWeb")';
+            }
+        }
+
+        function deleteRecord() {
+            const deleteUrl = '@Url.Action("DeletePeriodo", "PeriodoWeb", new { id = Model.Periodo.Id })';
+            if (confirm("¿Estás seguro de que deseas eliminar este periodo?")) {
+                window.location.href = deleteUrl;
+            }
+        }
+    </script>
+}
