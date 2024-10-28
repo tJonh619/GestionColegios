@@ -3,9 +3,11 @@
 <div class="tab-pane fade show active" id="años-create" role="tabpanel" aria-labelledby="años-create-tab">
     <div class="row mt-2">
         <div class="col-md-12">
-            @using (Html.BeginForm("CreateAño", "PeriodoWeb", FormMethod.Post))
+            @using (Html.BeginForm(ViewBag.EsEdicion ? "EditAño" : "CreateAño", "PeriodoWeb", FormMethod.Post, new { @id = "form-año" }))
             {
                 @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Año.Id)
+
                 <div class="row">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -16,17 +18,32 @@
                             </label>
                         </div>
 
+                        <!-- Nombre del Año Académico -->
                         <div class="form-group mb-3">
                             <label for="Nombre">Nombre del Año Académico</label>
-                            @Html.TextBoxFor(model => model.Año.Nombre, new { @class = "form-control", placeholder = "Ingrese el nombre del año académico" })
+                            @Html.TextBoxFor(model => model.Año.Nombre, new { @class = "form-control", placeholder = "Ingrese el nombre del año académico", required = "required", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
                             @Html.ValidationMessageFor(model => model.Año.Nombre, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
+                    <!-- Botones de Acción -->
                     <div class="form-group col-md-2 mt-4">
-                        <button type="submit" class="btn btn-primary">
+                        <!-- Botón para habilitar edición -->
+                        <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1" style="@(ViewBag.EsEdicion ? "" : "display:none;")" onclick="activateEdit()">Editar</button>
+
+                        <!-- Botón para eliminar, visible solo en edición -->
+                        @if (ViewBag.EsEdicion)
+                        {
+                            <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1" onclick="deleteRecord()">Eliminar</button>
+                        }
+
+                        <!-- Botón Guardar Cambios -->
+                        <button type="submit" id="btn-save" class="btn btn-primary m-1" style="@(ViewBag.EsEdicion ? "display:none;" : "")">
                             @(Model.Año.Id == 0 ? "Registrar" : "Guardar Cambios")
                         </button>
+
+                        <!-- Botón para cancelar o regresar -->
+                        <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1" onclick="cancelOrReturn()">Regresar</button>
                     </div>
                 </div>
             }
@@ -34,3 +51,37 @@
     </div>
 </div>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        // Función para activar el modo de edición
+        function activateEdit() {
+            $('input').prop('readonly', false);  // Habilita los campos
+            $('#btn-save').show();  // Muestra el botón Guardar Cambios
+            $('#btn-cancel-edit').text("Cancelar");  // Cambia el texto a "Cancelar" en modo edición
+            $('#btn-edit').hide();  // Oculta el botón Editar
+            $('#btn-delete').hide();  // Oculta el botón Eliminar
+        }
+
+        // Función para cancelar edición o regresar
+        function cancelOrReturn() {
+            if ($('#btn-cancel-edit').text() === "Cancelar") {
+                // Cancela y revierte a solo lectura
+                $('input').prop('readonly', true);
+                $('#btn-save').hide();
+                $('#btn-edit').show();
+                $('#btn-cancel-edit').text("Regresar");
+                $('#btn-delete').show();
+            } else {
+                // Redirige a la página anterior
+                window.location.href = '@Url.Action("Index", "PeriodoWeb")';
+            }
+        }
+
+        // Función para eliminar el registro
+        function deleteRecord() {
+            const deleteUrl = '@Url.Action("DeleteAño", "PeriodoWeb", new { id = Model.Año.Id })';
+            window.location.href = deleteUrl;
+        }
+    </script>
+}
