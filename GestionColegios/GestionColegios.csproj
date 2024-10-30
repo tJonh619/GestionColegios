@@ -334,6 +334,7 @@
     <Compile Include="ViewModels\VMEstudiantes.cs" />
     <Compile Include="ViewModels\VMInventarioAlimento.cs" />
     <Compile Include="ViewModels\VMMaestros.cs" />
+    <Compile Include="ViewModels\VMMateria.cs" />
     <Compile Include="ViewModels\VMMatricula.cs" />
     <Compile Include="ViewModels\VMSeccion.cs" />
     <Compile Include="ViewModels\VMTutor.cs" />
@@ -474,9 +475,9 @@
     <Content Include="Views\InventarioAlimentoWeb\Details.cshtml" />
     <Content Include="Views\InventarioAlimentoWeb\Edit.cshtml" />
     <Content Include="Views\InventarioAlimentoWeb\Index.cshtml" />
-    <Content Include="Views\MateriaWeb\Create.cshtml" />
+    <Content Include="Views\MateriaWeb\_Create.cshtml" />
     <Content Include="Views\MateriaWeb\Delete.cshtml" />
-    <Content Include="Views\MateriaWeb\Details.cshtml" />
+    <Content Include="Views\MateriaWeb\_List.cshtml" />
     <Content Include="Views\MateriaWeb\Edit.cshtml" />
     <Content Include="Views\MateriaWeb\Index.cshtml" />
     <Content Include="Views\SeccionWeb\Create.cshtml" />
