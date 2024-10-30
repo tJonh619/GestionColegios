@@ -1,122 +1,81 @@
-﻿@model GestionColegios.Models.Calificacion
+﻿@model GestionColegios.ViewModels.VMCalificaciones
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Registrar Calificaciones";
 }
 
-<h2>Create</h2>
+<h2>Registrar Calificaciones</h2>
 
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Calificacion</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.NParcial1, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NParcial1, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NParcial1, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.NCualitativa1, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NCualitativa1, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NCualitativa1, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    <!-- Campo oculto para EstudianteId -->
+    @Html.HiddenFor(m => m.Calificacion.EstudianteId)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.NParcial2, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NParcial2, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NParcial2, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Materia</th>
+                <th>Parcial I (Cuantitativa)</th>
+                <th>Parcial I (Cualitativa)</th>
+                <th>Parcial II (Cuantitativa)</th>
+                <th>Parcial II (Cualitativa)</th>
+                <th>Parcial III (Cuantitativa)</th>
+                <th>Parcial III (Cualitativa)</th>
+                <th>Parcial IV (Cuantitativa)</th>
+                <th>Parcial IV (Cualitativa)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Materias.Count; i++)
+            {
+                var materia = Model.Materias[i];
+                <tr>
+                    <!-- Campo oculto para el MateriaId -->
+                    @Html.Hidden("Calificaciones[" + i + "].MateriaId", materia.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.NCualitativa2, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NCualitativa2, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NCualitativa2, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <td>@materia.Nombre</td>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.NParcial3, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NParcial3, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NParcial3, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <!-- Parcial I -->
+                    <td>
+                        @Html.EditorFor(m => m.Calificaciones[i].NCuantitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Nota Parcial I" } })
+                        @Html.Hidden("Calificaciones[" + i + "].ParcialId", 2) <!-- ID para Parcial I -->
+                    </td>
+                    <td>
+                        @Html.EditorFor(m => m.Calificaciones[i].NCualitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Cualitativa Parcial I" } })
+                    </td>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.NCualitativa3, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NCualitativa3, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NCualitativa3, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <!-- Parcial II -->
+                    <td>
+                        @Html.EditorFor(m => m.Calificaciones[i].NCuantitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Nota Parcial II" } })
+                        @Html.Hidden("Calificaciones[" + i + "].ParcialId", 3) <!-- ID para Parcial II -->
+                    </td>
+                    <td>
+                        @Html.EditorFor(m => m.Calificaciones[i].NCualitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Cualitativa Parcial II" } })
+                    </td>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.NParcial4, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NParcial4, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NParcial4, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <!-- Parcial III -->
+                    <td>
+                        @Html.EditorFor(m => m.Calificaciones[i].NCuantitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Nota Parcial III" } })
+                        @Html.Hidden("Calificaciones[" + i + "].ParcialId", 4) <!-- ID para Parcial III -->
+                    </td>
+                    <td>
+                        @Html.EditorFor(m => m.Calificaciones[i].NCualitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Cualitativa Parcial III" } })
+                    </td>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.NCualitativa4, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NCualitativa4, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NCualitativa4, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <!-- Parcial IV -->
+                    <td>
+                        @Html.EditorFor(m => m.Calificaciones[i].NCuantitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Nota Parcial IV" } })
+                        @Html.Hidden("Calificaciones[" + i + "].ParcialId", 5) <!-- ID para Parcial IV -->
+                    </td>
+                    <td>
+                        @Html.EditorFor(m => m.Calificaciones[i].NCualitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Cualitativa Parcial IV" } })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Activo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Activo)
-                    @Html.ValidationMessageFor(model => model.Activo, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EstudianteId, "EstudianteId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("EstudianteId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.EstudianteId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.MateriaId, "MateriaId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("MateriaId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.MateriaId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    <button type="submit" class="btn btn-primary">Guardar</button>
 }
