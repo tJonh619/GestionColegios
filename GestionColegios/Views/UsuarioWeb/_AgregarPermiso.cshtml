@@ -1,6 +1,17 @@
 ﻿@model GestionColegios.ViewModels.VMUsuario
 
+@{
+    var esSoloLectura = ViewBag.EsEdicion
+        ? new Dictionary<string, object> { { "readonly", "readonly" }, { "disabled", "disabled" } }
+        : new Dictionary<string, object>();
+}
 
+@functions {
+    IDictionary<string, object> ObtenerAtributos(Dictionary<string, object> atributosBase, Dictionary<string, object> soloLectura)
+    {
+        return atributosBase.Concat(soloLectura).ToDictionary(k => k.Key, v => v.Value);
+    }
+}
 
 <div class="tab-pane fade show active" id="permiso-create" role="tabpanel" aria-labelledby="permiso-create-tab">
     <div class="row mt-2">
@@ -13,7 +24,6 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                 <div class="row">
-                    <!-- Información del Permiso -->
                     <div class="col-md-6 card mb-3">
                         <div class="row card-header bg-primary text-white">
                             <label class="m-md-1">
@@ -25,58 +35,54 @@
                         <!-- Nombre del Permiso -->
                         <div class="form-group mb-3">
                             @Html.Label("Nombre del Permiso", new { @for = "Nombre" })
-                            @Html.TextBox("Nombre", Model.Permiso.Nombre, new
-                            {
-                                @class = "form-control",
-                                placeholder = "Introduce el nombre del permiso",
-                                required = "required",
-                                @readonly = ViewBag.EsEdicion ? "readonly" : null
-                            })
+                            @Html.TextBox("Nombre", Model.Permiso.Nombre,
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control" },
+                                    { "placeholder", "Introduce el nombre del permiso" },
+                                    { "required", "required" }
+                                }, esSoloLectura))
                             @Html.ValidationMessageFor(model => model.Permiso.Nombre, "", new { @class = "text-danger" })
                         </div>
 
                         <!-- Descripción del Permiso -->
                         <div class="form-group mb-3">
                             @Html.Label("Descripción", new { @for = "Descripcion" })
-                            @Html.TextBox("Descripcion", Model.Permiso.Descripcion, new
-                            {
-                                @class = "form-control",
-                                placeholder = "Introduce la descripción del permiso",
-                                required = "required",
-                                @readonly = ViewBag.EsEdicion ? "readonly" : null
-                            })
+                            @Html.TextBox("Descripcion", Model.Permiso.Descripcion,
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control" },
+                                    { "placeholder", "Introduce la descripción del permiso" },
+                                    { "required", "required" }
+                                }, esSoloLectura))
                             @Html.ValidationMessageFor(model => model.Permiso.Descripcion, "", new { @class = "text-danger" })
                         </div>
 
                         <!-- Selección de Rol -->
                         <div class="form-group mb-3">
                             @Html.Label("Rol Asociado", new { @for = "RolId" })
-                            @Html.DropDownList("RolId", new SelectList(Model.Roles, "Id", "Nombre", Model.Permiso.RolId), "Selecciona un Rol", new
-                            {
-                                @class = "form-control",
-                                required = "required",
-                                disabled = ViewBag.EsEdicion ? "disabled" : null
-                            })
+                            @Html.DropDownList("RolId",
+                                new SelectList(Model.Roles, "Id", "Nombre", Model.Permiso.RolId),
+                                "Selecciona un Rol",
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control" },
+                                    { "required", "required" }
+                                }, esSoloLectura))
                             @Html.ValidationMessageFor(model => model.Permiso.RolId, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
                     <!-- Botones de Acción -->
                     <div class="form-group col-md-2 mt-4">
-                        <!-- Botón Editar -->
                         <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
                                 style="@(ViewBag.EsEdicion ? "" : "display:none;")"
                                 onclick="activateEdit()">
                             Editar
                         </button>
 
-                        <!-- Botón Guardar Cambios -->
                         <button type="submit" id="btn-save" class="btn btn-primary m-1"
                                 style="@(ViewBag.EsEdicion ? "display:none;" : "")">
                             @(Model.Permiso.Id == 0 ? "Registrar" : "Guardar Cambios")
                         </button>
 
-                        <!-- Botón Eliminar (visible solo en edición) -->
                         @if (ViewBag.EsEdicion)
                         {
                             <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
@@ -85,7 +91,6 @@
                             </button>
                         }
 
-                        <!-- Botón Cancelar/Regresar -->
                         <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
                                 onclick="cancelOrReturn()">
                             Regresar
@@ -100,31 +105,26 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        // Activar modo edición
         function activateEdit() {
-            $('input, select').prop('readonly', false).prop('disabled', false);  // Habilitar campos
-            $('#btn-save').show();  // Mostrar botón Guardar
-            $('#btn-cancel-edit').text("Cancelar");  // Cambiar texto a "Cancelar"
-            $('#btn-edit').hide();  // Ocultar botón Editar
-            $('#btn-delete').hide();  // Ocultar botón Eliminar
+            $('input, select').prop('readonly', false).prop('disabled', false);
+            $('#btn-save').show();
+            $('#btn-cancel-edit').text("Cancelar");
+            $('#btn-edit').hide();
+            $('#btn-delete').hide();
         }
 
-        // Cancelar edición o regresar
         function cancelOrReturn() {
             if ($('#btn-cancel-edit').text() === "Cancelar") {
-                // Revertir a solo lectura
                 $('input, select').prop('readonly', true).prop('disabled', true);
-                $('#btn-save').hide();  // Ocultar botón Guardar
-                $('#btn-edit').show();  // Mostrar botón Editar
-                $('#btn-cancel-edit').text("Regresar");  // Cambiar texto a "Regresar"
-                $('#btn-delete').show();  // Mostrar botón Eliminar
+                $('#btn-save').hide();
+                $('#btn-edit').show();
+                $('#btn-cancel-edit').text("Regresar");
+                $('#btn-delete').show();
             } else {
-                // Redirigir a la página anterior
                 window.location.href = '@Url.Action("Index", "UsuarioWeb")';
             }
         }
 
-        // Eliminar registro
         function deleteRecord() {
             const deleteUrl = '@Url.Action("DeletePermiso", "UsuarioWeb", new { id = Model.Permiso.Id })';
             if (confirm("¿Estás seguro de que deseas eliminar este permiso?")) {

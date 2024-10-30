@@ -1,5 +1,18 @@
 ﻿@model GestionColegios.ViewModels.VMUsuario
 
+@{
+    var esSoloLectura = ViewBag.EsEdicion
+        ? new Dictionary<string, object> { { "readonly", "readonly" }, { "disabled", "disabled" } }
+        : new Dictionary<string, object>();
+}
+
+@functions {
+    IDictionary<string, object> ObtenerAtributos(Dictionary<string, object> atributosBase, Dictionary<string, object> soloLectura)
+    {
+        return atributosBase.Concat(soloLectura).ToDictionary(k => k.Key, v => v.Value);
+    }
+}
+
 <div class="panel panel-default mt-2">
     <div class="panel-heading bg-primary text-white">
         <h3 class="panel-title p-2">
@@ -9,10 +22,10 @@
     </div>
     <div class="panel-body">
         @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "UsuarioWeb", FormMethod.Post,
-                               new { @class = "form-horizontal", @role = "form" }))
+                       new { @class = "form-horizontal", @role = "form" }))
         {
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.Usuario.Id) <!-- Campo oculto para el Id -->
+            @Html.HiddenFor(m => m.Usuario.Id)
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -20,13 +33,10 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.Usuario.CodigoUsuario, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.Usuario.CodigoUsuario, new
-                    {
-                        @class = "form-control",
-                        required = "required",
-                        placeholder = "Introduce el código del usuario",
-                        @readonly = ViewBag.EsEdicion ? "readonly" : null
-                    })
+                    @Html.TextBoxFor(m => m.Usuario.CodigoUsuario,
+                             ObtenerAtributos(new Dictionary<string, object> {
+                            { "class", "form-control" }, { "required", "required" }, { "placeholder", "Introduce el código del usuario" }
+                         }, esSoloLectura))
                     @Html.ValidationMessageFor(m => m.Usuario.CodigoUsuario, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -35,12 +45,10 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.Usuario.NombreUsuario, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.Usuario.NombreUsuario, new
-                    {
-                        @class = "form-control",
-                        required = "required",
-                        placeholder = "Introduce el nombre del usuario"
-                    })
+                    @Html.TextBoxFor(m => m.Usuario.NombreUsuario,
+                             ObtenerAtributos(new Dictionary<string, object> {
+                            { "class", "form-control" }, { "required", "required" }, { "placeholder", "Introduce el nombre del usuario" }
+                         }, esSoloLectura))
                     @Html.ValidationMessageFor(m => m.Usuario.NombreUsuario, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -49,12 +57,10 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.Usuario.ClaveHash, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.PasswordFor(m => m.Usuario.ClaveHash, new
-                    {
-                        @class = "form-control",
-                        required = "required",
-                        placeholder = "Introduce la contraseña"
-                    })
+                    @Html.PasswordFor(m => m.Usuario.ClaveHash,
+                             ObtenerAtributos(new Dictionary<string, object> {
+                            { "class", "form-control" }, { "required", "required" }, { "placeholder", "Introduce la contraseña" }
+                         }, esSoloLectura))
                     @Html.ValidationMessageFor(m => m.Usuario.ClaveHash, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -63,12 +69,10 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.Usuario.CorreoRecuperacion, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.Usuario.CorreoRecuperacion, new
-                    {
-                        @class = "form-control",
-                        required = "required",
-                        placeholder = "Introduce el correo para recuperación"
-                    })
+                    @Html.TextBoxFor(m => m.Usuario.CorreoRecuperacion,
+                             ObtenerAtributos(new Dictionary<string, object> {
+                            { "class", "form-control" }, { "required", "required" }, { "placeholder", "Introduce el correo para recuperación" }
+                         }, esSoloLectura))
                     @Html.ValidationMessageFor(m => m.Usuario.CorreoRecuperacion, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -78,12 +82,11 @@
                 @Html.LabelFor(m => m.Usuario.RolId, "Rol", new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DropDownListFor(m => m.Usuario.RolId,
-                        new SelectList(Model.Roles, "Id", "Descripcion", Model.Usuario.RolId),
-                        "Selecciona un rol", new
-                    {
-                        @class = "form-control",
-                        required = "required"
-                    })
+                             new SelectList(Model.Roles, "Id", "Descripcion", Model.Usuario.RolId),
+                             "Selecciona un rol",
+                             ObtenerAtributos(new Dictionary<string, object> {
+                            { "class", "form-control" }, { "required", "required" }
+                         }, esSoloLectura))
                     @Html.ValidationMessageFor(m => m.Usuario.RolId, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -91,20 +94,15 @@
             <!-- Botones de Acción -->
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <!-- Botón Editar -->
                     <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
                             style="@(ViewBag.EsEdicion ? "" : "display:none;")"
                             onclick="activateEdit()">
                         Editar
                     </button>
-
-                    <!-- Botón Guardar Cambios -->
                     <button type="submit" id="btn-save" class="btn btn-primary m-1"
                             style="@(ViewBag.EsEdicion ? "display:none;" : "")">
                         @(Model.Usuario.Id == 0 ? "Registrar" : "Guardar Cambios")
                     </button>
-
-                    <!-- Botón Eliminar (solo en edición) -->
                     @if (ViewBag.EsEdicion)
                     {
                         <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
@@ -112,8 +110,6 @@
                             Eliminar
                         </button>
                     }
-
-                    <!-- Botón Cancelar/Regresar -->
                     <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
                             onclick="cancelOrReturn()">
                         Regresar
@@ -128,22 +124,22 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         function activateEdit() {
-            $('input, select').prop('readonly', false).prop('disabled', false);  // Habilitar campos
-            $('#btn-save').show();  // Mostrar botón Guardar
-            $('#btn-cancel-edit').text("Cancelar");  // Cambiar texto a "Cancelar"
-            $('#btn-edit').hide();  // Ocultar botón Editar
-            $('#btn-delete').hide();  // Ocultar botón Eliminar
+            $('input, select').prop('readonly', false).prop('disabled', false);
+            $('#btn-save').show();
+            $('#btn-cancel-edit').text("Cancelar");
+            $('#btn-edit').hide();
+            $('#btn-delete').hide();
         }
 
         function cancelOrReturn() {
             if ($('#btn-cancel-edit').text() === "Cancelar") {
-                $('input, select').prop('readonly', true).prop('disabled', true);  // Deshabilitar campos
-                $('#btn-save').hide();  // Ocultar botón Guardar
-                $('#btn-edit').show();  // Mostrar botón Editar
-                $('#btn-cancel-edit').text("Regresar");  // Cambiar texto a "Regresar"
-                $('#btn-delete').show();  // Mostrar botón Eliminar
+                $('input, select').prop('readonly', true).prop('disabled', true);
+                $('#btn-save').hide();
+                $('#btn-edit').show();
+                $('#btn-cancel-edit').text("Regresar");
+                $('#btn-delete').show();
             } else {
-                window.location.href = '@Url.Action("Index", "UsuarioWeb")';  // Redirigir
+                window.location.href = '@Url.Action("Index", "UsuarioWeb")';
             }
         }
 

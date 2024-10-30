@@ -18,47 +18,42 @@ namespace GestionColegios.Controllers
         // GET: AñoAcademicoWeb
         public ActionResult Index()
         {
-            var viewModel = new VMAñosAcademicos { AñosAcademicos = db.AñosAcademicos.ToList(), AñoAcademico = new AñoAcademico() };
+            var viewModel = new VMAñosAcademicos
+            {
+                AñosAcademicos = db.AñosAcademicos.Where(a => a.Activo).ToList(),
+                AñoAcademico = new AñoAcademico()
+            };
+            ViewBag.EsEdicion = false;
             return View(viewModel);
-        }
-
-        // GET: AñoAcademicoWeb/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            AñoAcademico añoAcademico = db.AñosAcademicos.Find(id);
-            if (añoAcademico == null)
-            {
-                return HttpNotFound();
-            }
-            return View(añoAcademico);
         }
 
         // GET: AñoAcademicoWeb/Create
         public ActionResult Create()
         {
-            return View();
+            var viewModel = new VMAñosAcademicos
+            {
+                AñoAcademico = new AñoAcademico()
+            };
+            ViewBag.EsEdicion = false;
+            return View("_Create_Edit", viewModel);
         }
 
-        // POST: AñoAcademicoWeb/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Nombre,Descripcion,Nivel,Activo")] AñoAcademico añoAcademico)
+        public ActionResult Create(VMAñosAcademicos model)
         {
             if (ModelState.IsValid)
             {
-                añoAcademico.Activo = true;
-                db.AñosAcademicos.Add(añoAcademico);
+                model.AñoAcademico.Activo = true;
+                db.AñosAcademicos.Add(model.AñoAcademico);
                 db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Año académico creado correctamente.";
                 return RedirectToAction("Index");
             }
 
-            return View(añoAcademico);
+            TempData["ErrorMessage"] = "Error al crear el año académico. Intente nuevamente.";
+            return View("_Create_Edit", model);
         }
 
         // GET: AñoAcademicoWeb/Edit/5
@@ -68,28 +63,44 @@ namespace GestionColegios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AñoAcademico añoAcademico = db.AñosAcademicos.Find(id);
+
+            var añoAcademico = db.AñosAcademicos.SingleOrDefault(a => a.Id == id);
             if (añoAcademico == null)
             {
                 return HttpNotFound();
             }
-            return View(añoAcademico);
+
+            var viewModel = new VMAñosAcademicos
+            {
+                AñoAcademico = añoAcademico
+            };
+            ViewBag.EsEdicion = true;
+            return View("_Create_Edit", viewModel);
         }
 
-        // POST: AñoAcademicoWeb/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Nombre,Descripcion,Nivel,Activo")] AñoAcademico añoAcademico)
+        public ActionResult Edit(VMAñosAcademicos model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(añoAcademico).State = EntityState.Modified;
+                var añoAcademico = db.AñosAcademicos.SingleOrDefault(a => a.Id == model.AñoAcademico.Id);
+                if (añoAcademico == null)
+                {
+                    return HttpNotFound();
+                }
+
+                añoAcademico.Nombre = model.AñoAcademico.Nombre;
+                añoAcademico.Descripcion = model.AñoAcademico.Descripcion;
+                añoAcademico.Nivel = model.AñoAcademico.Nivel;
+
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Año académico actualizado correctamente.";
                 return RedirectToAction("Index");
             }
-            return View(añoAcademico);
+
+            TempData["ErrorMessage"] = "Error al actualizar el año académico. Intente de nuevo.";
+            return View("_Create_Edit", model);
         }
 
         // GET: AñoAcademicoWeb/Delete/5
@@ -99,12 +110,19 @@ namespace GestionColegios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AñoAcademico añoAcademico = db.AñosAcademicos.Find(id);
+
+            var añoAcademico = db.AñosAcademicos.SingleOrDefault(a => a.Id == id);
             if (añoAcademico == null)
             {
                 return HttpNotFound();
             }
-            return View(añoAcademico);
+
+            var viewModel = new VMAñosAcademicos
+            {
+                AñoAcademico = añoAcademico
+            };
+
+            return View(viewModel);
         }
 
         // POST: AñoAcademicoWeb/Delete/5
@@ -112,9 +130,14 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            AñoAcademico añoAcademico = db.AñosAcademicos.Find(id);
-            db.AñosAcademicos.Remove(añoAcademico);
-            db.SaveChanges();
+            var añoAcademico = db.AñosAcademicos.Find(id);
+            if (añoAcademico != null)
+            {
+                añoAcademico.Activo = false;
+                db.SaveChanges();
+            }
+
+            TempData["SuccessMessage"] = "Año académico desactivado correctamente.";
             return RedirectToAction("Index");
         }
 

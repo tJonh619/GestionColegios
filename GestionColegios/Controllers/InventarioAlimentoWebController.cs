@@ -18,72 +18,58 @@ namespace GestionColegios.Controllers
         // GET: InventarioAlimentoWeb
         public ActionResult Index()
         {
-            // Obtén la lista de alimentos desde la base de datos
-            var listaDeAlimentos = db.InventariosAlimentos.ToList();
-
-            // Crea un ViewModel con la lista de alimentos
             var viewModel = new VMInventarioAlimento
             {
-                InventarioAlimentos = listaDeAlimentos, // Asigna la lista de alimentos
-                InventarioAlimento = new InventarioAlimento() // Inicializa un objeto vacío para el formulario de agregar
+                InventarioAlimentos = db.InventariosAlimentos.Where(a => a.Activo).ToList(),
+                InventarioAlimento = new InventarioAlimento()
             };
 
-            // Pasa el ViewModel a la vista
+            ViewBag.EsEdicion = false;
             return View(viewModel);
-        }
-
-        // GET: InventarioAlimentoWeb/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            InventarioAlimento inventarioAlimento = db.InventariosAlimentos.Find(id);
-            if (inventarioAlimento == null)
-            {
-                return HttpNotFound();
-            }
-            return View(inventarioAlimento);
         }
 
         // GET: InventarioAlimentoWeb/Create
         public ActionResult Create()
         {
-            return View();
+            var viewModel = new VMInventarioAlimento
+            {
+                InventarioAlimento = new InventarioAlimento()
+            };
+
+            ViewBag.EsEdicion = false;
+            ViewBag.UnidadesDeMedida = new SelectList(new List<string> { "libras", "cuartas" });
+            return View("_Create_Edit", viewModel);
         }
 
-        // POST: InventarioAlimentoWeb/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Codigo,NombreAlimento,Stock,UnidadDeMedida,FechaReabastecimiento,FechaModificacion,Activo")] InventarioAlimento inventarioAlimento)
+        public ActionResult Create(VMInventarioAlimento model)
         {
             if (ModelState.IsValid)
             {
-                // Buscar si el alimento ya existe en la base de datos por su nombre
                 var alimentoExistente = db.InventariosAlimentos
-                                          .FirstOrDefault(a => a.NombreAlimento == inventarioAlimento.NombreAlimento);
+                    .FirstOrDefault(a => a.NombreAlimento == model.InventarioAlimento.NombreAlimento);
 
                 if (alimentoExistente != null)
                 {
-                    // Si el alimento ya existe, sumar el stock
-                    alimentoExistente.Stock += inventarioAlimento.Stock;
+                    alimentoExistente.Stock += model.InventarioAlimento.Stock;
                     alimentoExistente.FechaModificacion = DateTime.Now;
-                    db.Entry(alimentoExistente).State = EntityState.Modified;
                 }
                 else
                 {
-                    // Si no existe, agregarlo como nuevo
-                    inventarioAlimento.FechaModificacion = DateTime.Now;
-                    inventarioAlimento.Activo = true;
-                    db.InventariosAlimentos.Add(inventarioAlimento);
+                    model.InventarioAlimento.Activo = true;
+                    model.InventarioAlimento.FechaModificacion = DateTime.Now;
+                    db.InventariosAlimentos.Add(model.InventarioAlimento);
                 }
 
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Alimento agregado correctamente.";
                 return RedirectToAction("Index");
             }
 
-            return View(inventarioAlimento);
+            TempData["ErrorMessage"] = "Error al agregar el alimento. Verifique los datos.";
+            ViewBag.UnidadesDeMedida = new SelectList(new List<string> { "libras", "cuartas" });
+            return View("_Create_Edit", model);
         }
 
         // GET: InventarioAlimentoWeb/Edit/5
@@ -94,35 +80,49 @@ namespace GestionColegios.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            InventarioAlimento inventarioAlimento = db.InventariosAlimentos.Find(id);
+            var inventarioAlimento = db.InventariosAlimentos.Find(id);
             if (inventarioAlimento == null)
             {
                 return HttpNotFound();
             }
 
-            // Cargar la lista de unidades de medida
-            ViewBag.UnidadesDeMedida = new SelectList(new List<string> { "libras", "cuartas" }, inventarioAlimento.UnidadDeMedida);
+            var viewModel = new VMInventarioAlimento
+            {
+                InventarioAlimento = inventarioAlimento
+            };
 
-            return View(inventarioAlimento);
+            ViewBag.EsEdicion = true;
+            ViewBag.UnidadesDeMedida = new SelectList(new List<string> { "libras", "cuartas" }, inventarioAlimento.UnidadDeMedida);
+            return View("_Create_Edit", viewModel);
         }
 
-        // POST: InventarioAlimentoWeb/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Codigo,NombreAlimento,Stock,UnidadDeMedida,FechaReabastecimiento,FechaModificacion,Activo")] InventarioAlimento inventarioAlimento)
+        public ActionResult Edit(VMInventarioAlimento model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(inventarioAlimento).State = EntityState.Modified;
+                var inventarioAlimento = db.InventariosAlimentos.Find(model.InventarioAlimento.Id);
+                if (inventarioAlimento == null)
+                {
+                    return HttpNotFound();
+                }
+
+                inventarioAlimento.NombreAlimento = model.InventarioAlimento.NombreAlimento;
+                inventarioAlimento.Stock = model.InventarioAlimento.Stock;
+                inventarioAlimento.UnidadDeMedida = model.InventarioAlimento.UnidadDeMedida;
+                inventarioAlimento.FechaModificacion = DateTime.Now;
+
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Alimento actualizado correctamente.";
                 return RedirectToAction("Index");
             }
 
-            // Volver a cargar la lista de unidades de medida en caso de error
-            ViewBag.UnidadesDeMedida = new SelectList(new List<string> { "libras", "cuartas" }, inventarioAlimento.UnidadDeMedida);
-
-            return View(inventarioAlimento);
+            TempData["ErrorMessage"] = "Error al actualizar el alimento.";
+            ViewBag.UnidadesDeMedida = new SelectList(new List<string> { "libras", "cuartas" }, model.InventarioAlimento.UnidadDeMedida);
+            return View("_Create_Edit", model);
         }
+
         // GET: InventarioAlimentoWeb/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -130,12 +130,19 @@ namespace GestionColegios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            InventarioAlimento inventarioAlimento = db.InventariosAlimentos.Find(id);
+
+            var inventarioAlimento = db.InventariosAlimentos.Find(id);
             if (inventarioAlimento == null)
             {
                 return HttpNotFound();
             }
-            return View(inventarioAlimento);
+
+            var viewModel = new VMInventarioAlimento
+            {
+                InventarioAlimento = inventarioAlimento
+            };
+
+            return View(viewModel);
         }
 
         // POST: InventarioAlimentoWeb/Delete/5
@@ -143,18 +150,19 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            InventarioAlimento inventarioAlimento = db.InventariosAlimentos.Find(id);
-
+            var inventarioAlimento = db.InventariosAlimentos.Find(id);
             if (inventarioAlimento != null)
             {
-                // Marcar como inactivo en lugar de eliminar
                 inventarioAlimento.Activo = false;
+                inventarioAlimento.FechaModificacion = DateTime.Now;
                 db.Entry(inventarioAlimento).State = EntityState.Modified;
                 db.SaveChanges();
             }
 
+            TempData["SuccessMessage"] = "Alimento desactivado correctamente.";
             return RedirectToAction("Index");
         }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

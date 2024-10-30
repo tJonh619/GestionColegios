@@ -1,0 +1,55 @@
+﻿@model GestionColegios.ViewModels.VMMateria
+
+@{
+    ViewBag.Title = "_ListMaterias";
+}
+
+<div class="row mt-4">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="form-group">
+                <label for="searchType">Buscar por:</label>
+                <select id="searchType" class="form-select">
+                    <option value="nombre">Nombre Materia</option>
+                    <option value="codigo">Código Materia</option>
+                    <option value="docente">Nombre Docente</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="search" class="form-control" placeholder="Buscar...">
+            </div>
+
+            <div id="spinner" class="spinner-border text-primary" role="status" style="display: none;">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+
+        <table style="width: 100%;" class="table-responsive table-striped table-hover table-bordered align-middle">
+            <thead style="background-color: #001c7d; color: white;">
+                <tr>
+                    <th scope="col">Código</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Activo</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                @foreach (var materia in Model.Materias)
+                {
+                    <tr>
+                        <td>@materia.CodigoMateria</td>
+                        <td>@materia.Nombre</td>
+                        <td>@materia.Descripcion</td>
+                        <td>@(materia.Activo ? "Sí" : "No")</td>
+                        <td>
+                            <a href="@Url.Action("Edit", "MateriaWeb", new { id = materia.Id })" class="btn btn-sm btn-warning">Detalles</a>
+                            <a href="@Url.Action("EstudiantesInscritos", "MateriaWeb", new { materiaId = materia.Id })" class="btn btn-sm btn-primary">Estudiantes</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

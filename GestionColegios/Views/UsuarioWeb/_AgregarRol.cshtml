@@ -1,5 +1,18 @@
 ﻿@model GestionColegios.ViewModels.VMUsuario
 
+@{
+    var esSoloLectura = ViewBag.EsEdicion
+        ? new Dictionary<string, object> { { "readonly", "readonly" }, { "disabled", "disabled" } }
+        : new Dictionary<string, object>();
+}
+
+@functions {
+    IDictionary<string, object> ObtenerAtributos(Dictionary<string, object> atributosBase, Dictionary<string, object> soloLectura)
+    {
+        return atributosBase.Concat(soloLectura).ToDictionary(k => k.Key, v => v.Value);
+    }
+}
+
 <div class="panel panel-default mt-2">
     <div class="panel-heading bg-primary text-white">
         <h3 class="panel-title p-2">
@@ -12,20 +25,19 @@
                                new { @class = "form-horizontal", @role = "form" }))
         {
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.Rol.Id) <!-- Campo oculto para el Id -->
+            @Html.HiddenFor(m => m.Rol.Id)
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <div class="form-group">
                 @Html.LabelFor(m => m.Rol.Nombre, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.Rol.Nombre, new
-                    {
-                        @class = "form-control",
-                        placeholder = "Introduce el nombre del rol",
-                        required = "required",
-                        @readonly = ViewBag.EsEdicion ? "readonly" : null
-                    })
+                    @Html.TextBoxFor(m => m.Rol.Nombre,
+                        ObtenerAtributos(new Dictionary<string, object> {
+                            { "class", "form-control" },
+                            { "placeholder", "Introduce el nombre del rol" },
+                            { "required", "required" }
+                        }, esSoloLectura))
                     @Html.ValidationMessageFor(m => m.Rol.Nombre, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -33,33 +45,29 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.Rol.Descripcion, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.Rol.Descripcion, new
-                    {
-                        @class = "form-control",
-                        placeholder = "Introduce una descripción del rol",
-                        required = "required",
-                        @readonly = ViewBag.EsEdicion ? "readonly" : null
-                    })
+                    @Html.TextBoxFor(m => m.Rol.Descripcion,
+                        ObtenerAtributos(new Dictionary<string, object> {
+                            { "class", "form-control" },
+                            { "placeholder", "Introduce una descripción del rol" },
+                            { "required", "required" }
+                        }, esSoloLectura))
                     @Html.ValidationMessageFor(m => m.Rol.Descripcion, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <!-- Botón Editar -->
                     <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
                             style="@(ViewBag.EsEdicion ? "" : "display:none;")"
                             onclick="activateEdit()">
                         Editar
                     </button>
 
-                    <!-- Botón Guardar Cambios -->
                     <button type="submit" id="btn-save" class="btn btn-primary m-1"
                             style="@(ViewBag.EsEdicion ? "display:none;" : "")">
                         @(Model.Rol.Id == 0 ? "Registrar" : "Guardar Cambios")
                     </button>
 
-                    <!-- Botón Eliminar (solo en edición) -->
                     @if (ViewBag.EsEdicion)
                     {
                         <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
@@ -68,7 +76,6 @@
                         </button>
                     }
 
-                    <!-- Botón Cancelar/Regresar -->
                     <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
                             onclick="cancelOrReturn()">
                         Regresar
@@ -83,22 +90,22 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         function activateEdit() {
-            $('input').prop('readonly', false);  // Habilita los campos
-            $('#btn-save').show();  // Muestra el botón Guardar
-            $('#btn-cancel-edit').text("Cancelar");  // Cambia el texto del botón
-            $('#btn-edit').hide();  // Oculta el botón Editar
-            $('#btn-delete').hide();  // Oculta el botón Eliminar
+            $('input').prop('readonly', false);
+            $('#btn-save').show();
+            $('#btn-cancel-edit').text("Cancelar");
+            $('#btn-edit').hide();
+            $('#btn-delete').hide();
         }
 
         function cancelOrReturn() {
             if ($('#btn-cancel-edit').text() === "Cancelar") {
-                $('input').prop('readonly', true);  // Vuelve los campos a solo lectura
-                $('#btn-save').hide();  // Oculta el botón Guardar
-                $('#btn-edit').show();  // Muestra el botón Editar
-                $('#btn-cancel-edit').text("Regresar");  // Cambia el texto a Regresar
-                $('#btn-delete').show();  // Muestra el botón Eliminar
+                $('input').prop('readonly', true);
+                $('#btn-save').hide();
+                $('#btn-edit').show();
+                $('#btn-cancel-edit').text("Regresar");
+                $('#btn-delete').show();
             } else {
-                window.location.href = '@Url.Action("Index", "UsuarioWeb")';  // Redirige a la página principal
+                window.location.href = '@Url.Action("Index", "UsuarioWeb")';
             }
         }
 

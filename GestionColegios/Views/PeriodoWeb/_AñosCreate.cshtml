@@ -1,5 +1,18 @@
 ﻿@model GestionColegios.ViewModels.VMAñosPeriodosSemestres
 
+@{
+    var esSoloLectura = ViewBag.EsEdicion
+        ? new Dictionary<string, object> { { "readonly", "readonly" }, { "disabled", "disabled" } }
+        : new Dictionary<string, object>();
+}
+
+@functions {
+    IDictionary<string, object> ObtenerAtributos(Dictionary<string, object> atributosBase, Dictionary<string, object> soloLectura)
+    {
+        return atributosBase.Concat(soloLectura).ToDictionary(k => k.Key, v => v.Value);
+    }
+}
+
 <div class="tab-pane fade show active" id="años-create" role="tabpanel" aria-labelledby="años-create-tab">
     <div class="row mt-2">
         <div class="col-md-12">
@@ -21,29 +34,41 @@
                         <!-- Nombre del Año Académico -->
                         <div class="form-group mb-3">
                             <label for="Nombre">Nombre del Año Académico</label>
-                            @Html.TextBoxFor(model => model.Año.Nombre, new { @class = "form-control", placeholder = "Ingrese el nombre del año académico", required = "required", @readonly = ViewBag.EsEdicion ? "readonly" : "" })
+                            @Html.TextBoxFor(model => model.Año.Nombre,
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control" },
+                                    { "placeholder", "Ingrese el nombre del año académico" },
+                                    { "required", "required" }
+                                }, esSoloLectura))
                             @Html.ValidationMessageFor(model => model.Año.Nombre, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
                     <!-- Botones de Acción -->
                     <div class="form-group col-md-2 mt-4">
-                        <!-- Botón para habilitar edición -->
-                        <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1" style="@(ViewBag.EsEdicion ? "" : "display:none;")" onclick="activateEdit()">Editar</button>
+                        <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
+                                style="@(ViewBag.EsEdicion ? "" : "display:none;")"
+                                onclick="activateEdit()">
+                            Editar
+                        </button>
 
-                        <!-- Botón para eliminar, visible solo en edición -->
                         @if (ViewBag.EsEdicion)
                         {
-                            <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1" onclick="deleteRecord()">Eliminar</button>
+                            <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
+                                    onclick="deleteRecord()">
+                                Eliminar
+                            </button>
                         }
 
-                        <!-- Botón Guardar Cambios -->
-                        <button type="submit" id="btn-save" class="btn btn-primary m-1" style="@(ViewBag.EsEdicion ? "display:none;" : "")">
+                        <button type="submit" id="btn-save" class="btn btn-primary m-1"
+                                style="@(ViewBag.EsEdicion ? "display:none;" : "")">
                             @(Model.Año.Id == 0 ? "Registrar" : "Guardar Cambios")
                         </button>
 
-                        <!-- Botón para cancelar o regresar -->
-                        <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1" onclick="cancelOrReturn()">Regresar</button>
+                        <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
+                                onclick="cancelOrReturn()">
+                            Regresar
+                        </button>
                     </div>
                 </div>
             }
@@ -54,34 +79,31 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        // Función para activar el modo de edición
         function activateEdit() {
-            $('input').prop('readonly', false);  // Habilita los campos
-            $('#btn-save').show();  // Muestra el botón Guardar Cambios
-            $('#btn-cancel-edit').text("Cancelar");  // Cambia el texto a "Cancelar" en modo edición
-            $('#btn-edit').hide();  // Oculta el botón Editar
-            $('#btn-delete').hide();  // Oculta el botón Eliminar
+            $('input').prop('readonly', false).prop('disabled', false);
+            $('#btn-save').show();
+            $('#btn-cancel-edit').text("Cancelar");
+            $('#btn-edit').hide();
+            $('#btn-delete').hide();
         }
 
-        // Función para cancelar edición o regresar
         function cancelOrReturn() {
             if ($('#btn-cancel-edit').text() === "Cancelar") {
-                // Cancela y revierte a solo lectura
-                $('input').prop('readonly', true);
+                $('input').prop('readonly', true).prop('disabled', true);
                 $('#btn-save').hide();
                 $('#btn-edit').show();
                 $('#btn-cancel-edit').text("Regresar");
                 $('#btn-delete').show();
             } else {
-                // Redirige a la página anterior
                 window.location.href = '@Url.Action("Index", "PeriodoWeb")';
             }
         }
 
-        // Función para eliminar el registro
         function deleteRecord() {
             const deleteUrl = '@Url.Action("DeleteAño", "PeriodoWeb", new { id = Model.Año.Id })';
-            window.location.href = deleteUrl;
+            if (confirm("¿Estás seguro de que deseas eliminar este año académico?")) {
+                window.location.href = deleteUrl;
+            }
         }
     </script>
 }

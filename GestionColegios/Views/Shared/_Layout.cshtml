@@ -103,6 +103,11 @@
                                     <i class="fas fa-box me-2"></i> Sección
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="@Url.Action("Index", "MateriaWeb")">
+                                    <i class="fas fa-box me-2"></i> Materias
+                                </a>
+                            </li>
                         }
 
                         @if (Session["Rol"] != null && (Session["Rol"].ToString() == "Docente"))
@@ -118,6 +123,8 @@
                                     <i class="fas fa-box me-2"></i> Control Meriendas
                                 </a>
                             </li>
+
+
 
 
 

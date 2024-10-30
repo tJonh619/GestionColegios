@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using GestionColegios.Models;
+using GestionColegios.ViewModels;
 
 namespace GestionColegios.Controllers
 {
@@ -17,48 +18,51 @@ namespace GestionColegios.Controllers
         // GET: MateriaWeb
         public ActionResult Index()
         {
-            var materias = db.Materias.Include(m => m.AñoAcademico);
-            return View(materias.ToList());
-        }
+            var viewModel = new VMMateria
+            {
+                Materias = db.Materias.ToList(),
+                Materia = new Materia(),
+                AñoAcademico = new AñoAcademico(),
+                AñosAcademicos = db.AñosAcademicos.ToList()
 
-        // GET: MateriaWeb/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Materia materia = db.Materias.Find(id);
-            if (materia == null)
-            {
-                return HttpNotFound();
-            }
-            return View(materia);
+            };
+            ViewBag.EsEdicion = false;
+            return View(viewModel);
         }
 
         // GET: MateriaWeb/Create
         public ActionResult Create()
         {
-            ViewBag.AñoAcademicoId = new SelectList(db.AñosAcademicos, "Id", "Nombre");
-            return View();
+            var viewModel = new VMMateria
+            {
+                Materia = new Materia(),
+                Materias = db.Materias.ToList(),
+                AñoAcademico = new AñoAcademico(),
+                AñosAcademicos = db.AñosAcademicos.ToList()
+            };
+
+            ViewBag.EsEdicion = false;
+            return View("_Create", viewModel);
         }
 
         // POST: MateriaWeb/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CodigoMateria,Nombre,Descripcion,FechaModificacion,Activo,AñoAcademicoId")] Materia materia)
+        public ActionResult Create(VMMateria model)
         {
             if (ModelState.IsValid)
             {
-                db.Materias.Add(materia);
+                model.Materia.Activo = true;
+                model.Materia.FechaModificacion = DateTime.Now;
+                db.Materias.Add(model.Materia);
                 db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Materia creada correctamente.";
                 return RedirectToAction("Index");
             }
 
-            ViewBag.AñoAcademicoId = new SelectList(db.AñosAcademicos, "Id", "Nombre", materia.AñoAcademicoId);
-            return View(materia);
+            TempData["ErrorMessage"] = "Error al crear la materia. Verifique los datos.";
+            return View("_Create", model);
         }
 
         // GET: MateriaWeb/Edit/5
@@ -68,30 +72,51 @@ namespace GestionColegios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Materia materia = db.Materias.Find(id);
+
+            var materia = db.Materias.Find(id);
             if (materia == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AñoAcademicoId = new SelectList(db.AñosAcademicos, "Id", "Nombre", materia.AñoAcademicoId);
-            return View(materia);
+
+            var viewModel = new VMMateria
+            {
+                Materia = materia,
+                Materias = db.Materias.ToList(),
+                AñoAcademico = new AñoAcademico(),
+                AñosAcademicos = db.AñosAcademicos.ToList()
+            };
+
+            ViewBag.EsEdicion = true;
+            return View("_Create", viewModel);
         }
 
         // POST: MateriaWeb/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CodigoMateria,Nombre,Descripcion,FechaModificacion,Activo,AñoAcademicoId")] Materia materia)
+        public ActionResult Edit(VMMateria model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(materia).State = EntityState.Modified;
+                var materia = db.Materias.Find(model.Materia.Id);
+                if (materia == null)
+                {
+                    return HttpNotFound();
+                }
+
+                materia.CodigoMateria = model.Materia.CodigoMateria;
+                materia.Nombre = model.Materia.Nombre;
+                materia.Descripcion = model.Materia.Descripcion;
+                materia.AñoAcademicoId = model.Materia.AñoAcademicoId;
+                materia.FechaModificacion = DateTime.Now;
+
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Materia actualizada correctamente.";
                 return RedirectToAction("Index");
             }
-            ViewBag.AñoAcademicoId = new SelectList(db.AñosAcademicos, "Id", "Nombre", materia.AñoAcademicoId);
-            return View(materia);
+
+            TempData["ErrorMessage"] = "Error al actualizar la materia.";
+            return View("_Create", model);
         }
 
         // GET: MateriaWeb/Delete/5
@@ -101,12 +126,15 @@ namespace GestionColegios.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Materia materia = db.Materias.Find(id);
+
+            var materia = db.Materias.Find(id);
             if (materia == null)
             {
                 return HttpNotFound();
             }
-            return View(materia);
+
+            var viewModel = new VMMateria { Materia = materia };
+            return View(viewModel);
         }
 
         // POST: MateriaWeb/Delete/5
@@ -114,9 +142,16 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Materia materia = db.Materias.Find(id);
-            db.Materias.Remove(materia);
-            db.SaveChanges();
+            var materia = db.Materias.Find(id);
+            if (materia != null)
+            {
+                materia.Activo = false;
+                materia.FechaModificacion = DateTime.Now;
+                db.Entry(materia).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            TempData["SuccessMessage"] = "Materia desactivada correctamente.";
             return RedirectToAction("Index");
         }
 

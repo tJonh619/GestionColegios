@@ -212,7 +212,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AñoAcademicoWebController.cs" />
-    <Compile Include="Controllers\AñoWebController.cs" />
     <Compile Include="Controllers\CalificacionWebController.cs" />
     <Compile Include="Controllers\ConsolidadoEficienciaFisicaWebController.cs" />
     <Compile Include="Controllers\ControlMeriendasController.cs" />
@@ -228,11 +227,7 @@
     <Compile Include="Controllers\MateriaWebController.cs" />
     <Compile Include="Controllers\MatriculasController.cs" />
     <Compile Include="Controllers\PeriodoWebController.cs" />
-    <Compile Include="Controllers\PermisoWebController.cs" />
-    <Compile Include="Controllers\RolWebController.cs" />
     <Compile Include="Controllers\SeccionWebController.cs" />
-    <Compile Include="Controllers\SemestreWebController.cs" />
-    <Compile Include="Controllers\TutorWebController.cs" />
     <Compile Include="Controllers\UsuarioWebController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -339,6 +334,7 @@
     <Compile Include="ViewModels\VMEstudiantes.cs" />
     <Compile Include="ViewModels\VMInventarioAlimento.cs" />
     <Compile Include="ViewModels\VMMaestros.cs" />
+    <Compile Include="ViewModels\VMMateria.cs" />
     <Compile Include="ViewModels\VMMatricula.cs" />
     <Compile Include="ViewModels\VMSeccion.cs" />
     <Compile Include="ViewModels\VMTutor.cs" />
@@ -479,21 +475,11 @@
     <Content Include="Views\InventarioAlimentoWeb\Details.cshtml" />
     <Content Include="Views\InventarioAlimentoWeb\Edit.cshtml" />
     <Content Include="Views\InventarioAlimentoWeb\Index.cshtml" />
-    <Content Include="Views\MateriaWeb\Create.cshtml" />
+    <Content Include="Views\MateriaWeb\_Create.cshtml" />
     <Content Include="Views\MateriaWeb\Delete.cshtml" />
-    <Content Include="Views\MateriaWeb\Details.cshtml" />
+    <Content Include="Views\MateriaWeb\_List.cshtml" />
     <Content Include="Views\MateriaWeb\Edit.cshtml" />
     <Content Include="Views\MateriaWeb\Index.cshtml" />
-    <Content Include="Views\PermisoWeb\Create.cshtml" />
-    <Content Include="Views\PermisoWeb\Delete.cshtml" />
-    <Content Include="Views\PermisoWeb\Details.cshtml" />
-    <Content Include="Views\PermisoWeb\Edit.cshtml" />
-    <Content Include="Views\PermisoWeb\Index.cshtml" />
-    <Content Include="Views\RolWeb\Create.cshtml" />
-    <Content Include="Views\RolWeb\Delete.cshtml" />
-    <Content Include="Views\RolWeb\Details.cshtml" />
-    <Content Include="Views\RolWeb\Edit.cshtml" />
-    <Content Include="Views\RolWeb\Index.cshtml" />
     <Content Include="Views\SeccionWeb\Create.cshtml" />
     <Content Include="Views\SeccionWeb\Delete.cshtml" />
     <Content Include="Views\SeccionWeb\Details.cshtml" />
@@ -504,11 +490,6 @@
     <Content Include="Views\UsuarioWeb\Details.cshtml" />
     <Content Include="Views\UsuarioWeb\Edit.cshtml" />
     <Content Include="Views\UsuarioWeb\Index.cshtml" />
-    <Content Include="Views\TutorWeb\Create.cshtml" />
-    <Content Include="Views\TutorWeb\Delete.cshtml" />
-    <Content Include="Views\TutorWeb\Details.cshtml" />
-    <Content Include="Views\TutorWeb\Edit.cshtml" />
-    <Content Include="Views\TutorWeb\Index.cshtml" />
     <Content Include="Views\PeriodoWeb\Desactivar.cshtml" />
     <Content Include="Views\PeriodoWeb\Details.cshtml" />
     <Content Include="Views\PeriodoWeb\EditPeriodo.cshtml" />
@@ -567,8 +548,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\AñoWeb\" />
-    <Folder Include="Views\SemestreWeb\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
