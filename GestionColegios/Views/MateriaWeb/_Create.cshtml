@@ -15,7 +15,7 @@
 
 <div class="row mt-2">
     <div class="col-md-12">
-        @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "Materia", FormMethod.Post))
+        @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "MateriaWeb", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.Materia.Id)

@@ -329,6 +329,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\VMAñosAcademicos.cs" />
     <Compile Include="ViewModels\VMAñosPeriodosSemestres.cs" />
+    <Compile Include="ViewModels\VMCalificaciones.cs" />
     <Compile Include="ViewModels\VMControlMerienda.cs" />
     <Compile Include="ViewModels\VMCursoAcademico.cs" />
     <Compile Include="ViewModels\VMEstudiantes.cs" />
