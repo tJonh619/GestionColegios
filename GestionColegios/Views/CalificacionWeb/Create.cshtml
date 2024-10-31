@@ -31,49 +31,47 @@
             @for (int i = 0; i < Model.Materias.Count; i++)
             {
                 var materia = Model.Materias[i];
-                <tr>
-                    <!-- Campo oculto para el MateriaId -->
-                    @Html.Hidden("Calificaciones[" + i + "].MateriaId", materia.Id)
+        <tr>
+            @Html.Hidden("Calificaciones[" + (i * 4) + "].MateriaId", materia.Id) <!-- Cambiado para múltiples parciales -->
 
-                    <td>@materia.Nombre</td>
+            <td>@materia.Nombre</td>
 
-                    <!-- Parcial I -->
-                    <td>
-                        @Html.EditorFor(m => m.Calificaciones[i].NCuantitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Nota Parcial I" } })
-                        @Html.Hidden("Calificaciones[" + i + "].ParcialId", 2) <!-- ID para Parcial I -->
-                    </td>
-                    <td>
-                        @Html.EditorFor(m => m.Calificaciones[i].NCualitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Cualitativa Parcial I" } })
-                    </td>
+            <!-- Parcial I -->
+            <td>
+                @Html.EditorFor(m => m.Calificaciones[i * 4].NCuantitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Nota Parcial I" } })
+                @Html.Hidden("Calificaciones[" + (i * 4) + "].ParcialId", 2) <!-- ID para Parcial I -->
+            </td>
+            <td>
+                @Html.EditorFor(m => m.Calificaciones[i * 4].NCualitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Cualitativa Parcial I" } })
+            </td>
 
-                    <!-- Parcial II -->
-                    <td>
-                        @Html.EditorFor(m => m.Calificaciones[i].NCuantitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Nota Parcial II" } })
-                        @Html.Hidden("Calificaciones[" + i + "].ParcialId", 3) <!-- ID para Parcial II -->
-                    </td>
-                    <td>
-                        @Html.EditorFor(m => m.Calificaciones[i].NCualitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Cualitativa Parcial II" } })
-                    </td>
+            <!-- Parcial II -->
+            <td>
+                @Html.EditorFor(m => m.Calificaciones[i * 4 + 1].NCuantitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Nota Parcial II" } })
+                @Html.Hidden("Calificaciones[" + (i * 4 + 1) + "].ParcialId", 3) <!-- ID para Parcial II -->
+            </td>
+            <td>
+                @Html.EditorFor(m => m.Calificaciones[i * 4 + 1].NCualitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Cualitativa Parcial II" } })
+            </td>
 
-                    <!-- Parcial III -->
-                    <td>
-                        @Html.EditorFor(m => m.Calificaciones[i].NCuantitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Nota Parcial III" } })
-                        @Html.Hidden("Calificaciones[" + i + "].ParcialId", 4) <!-- ID para Parcial III -->
-                    </td>
-                    <td>
-                        @Html.EditorFor(m => m.Calificaciones[i].NCualitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Cualitativa Parcial III" } })
-                    </td>
+            <!-- Parcial III -->
+            <td>
+                @Html.EditorFor(m => m.Calificaciones[i * 4 + 2].NCuantitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Nota Parcial III" } })
+                @Html.Hidden("Calificaciones[" + (i * 4 + 2) + "].ParcialId", 4) <!-- ID para Parcial III -->
+            </td>
+            <td>
+                @Html.EditorFor(m => m.Calificaciones[i * 4 + 2].NCualitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Cualitativa Parcial III" } })
+            </td>
 
-                    <!-- Parcial IV -->
-                    <td>
-                        @Html.EditorFor(m => m.Calificaciones[i].NCuantitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Nota Parcial IV" } })
-                        @Html.Hidden("Calificaciones[" + i + "].ParcialId", 5) <!-- ID para Parcial IV -->
-                    </td>
-                    <td>
-                        @Html.EditorFor(m => m.Calificaciones[i].NCualitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Cualitativa Parcial IV" } })
-                    </td>
-                </tr>
-            }
+            <!-- Parcial IV -->
+            <td>
+                @Html.EditorFor(m => m.Calificaciones[i * 4 + 3].NCuantitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Nota Parcial IV" } })
+                @Html.Hidden("Calificaciones[" + (i * 4 + 3) + "].ParcialId", 5) <!-- ID para Parcial IV -->
+            </td>
+            <td>
+                @Html.EditorFor(m => m.Calificaciones[i * 4 + 3].NCualitativa, new { htmlAttributes = new { @class = "form-control", placeholder = "Cualitativa Parcial IV" } })
+            </td>
+        </tr>}
         </tbody>
     </table>
 
