@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -52,7 +53,7 @@ namespace GestionColegios.Controllers
             return View(vm);
         }
 
-        // POST: CalificacionWeb/Create
+
         // POST: CalificacionWeb/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -60,33 +61,46 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Validamos que el EstudianteId esté correctamente asignado
                 if (vm.Calificacion.EstudianteId == 0)
                 {
                     ModelState.AddModelError("", "El estudiante no se encontró o no fue seleccionado.");
-                    CargarDatos(vm); // Cargar listas necesarias en caso de error
+                    CargarDatos(vm);
                     return View(vm);
                 }
 
+                // Iterar sobre las calificaciones y asignar el EstudianteId y MateriaId
                 foreach (var calificacion in vm.Calificaciones)
                 {
-                    // Verifica que el MateriaId sea válido
-                    if (db.Materias.Any(m => m.Id == calificacion.MateriaId))
+                    if (calificacion.NCuantitativa != 0 || !string.IsNullOrEmpty(calificacion.NCualitativa))
                     {
-                        calificacion.EstudianteId = vm.Calificacion.EstudianteId; // Asegúrate de asignar el EstudianteId
-                        db.Calificaciones.Add(calificacion);
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", $"La materia con ID {calificacion.MateriaId} no existe.");
+                        calificacion.EstudianteId = vm.Calificacion.EstudianteId;
+
+                        // Verifica que la MateriaId sea válida
+                        if (db.Materias.Any(m => m.Id == calificacion.MateriaId))
+                        {
+                            calificacion.Activo = true;
+                            db.Calificaciones.Add(calificacion);
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", $"La materia con ID {calificacion.MateriaId} no existe.");
+                        }
                     }
                 }
 
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                // Guarda los cambios en la base de datos
+                try
+                {
+                    
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateException ex)
+                {
+                    ModelState.AddModelError("", "Error al guardar los datos: " + ex.InnerException?.Message);
+                }
             }
 
-            // Vuelve a cargar las listas necesarias en caso de error de validación
             CargarDatos(vm);
             return View(vm);
         }
