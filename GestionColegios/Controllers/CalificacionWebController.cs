@@ -59,6 +59,12 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(VMCalificaciones vm)
         {
+            // Cargar datos en caso de que Materias sea null
+            if (vm.Materias == null)
+            {
+                CargarDatos(vm);
+            }
+
             if (ModelState.IsValid)
             {
                 if (vm.Calificacion.EstudianteId == 0)
@@ -69,21 +75,25 @@ namespace GestionColegios.Controllers
                 }
 
                 // Iterar sobre las calificaciones y asignar el EstudianteId y MateriaId
-                foreach (var calificacion in vm.Calificaciones)
+                for (int i = 0; i < vm.Materias.Count; i++)
                 {
-                    if (calificacion.NCuantitativa != 0 || !string.IsNullOrEmpty(calificacion.NCualitativa))
+                    // Crear una nueva calificación para cada materia
+                    for (int j = 0; j < 4; j++) // Asumiendo que hay 4 parciales
                     {
-                        calificacion.EstudianteId = vm.Calificacion.EstudianteId;
+                        var calificacion = new Calificacion
+                        {
+                            EstudianteId = vm.Calificacion.EstudianteId,
+                            MateriaId = vm.Materias[i].Id,
+                            ParcialId = j + 2, // Ajusta según tu lógica de ParcialId
+                            NCuantitativa = vm.Calificaciones[i * 4 + j].NCuantitativa,
+                            NCualitativa = vm.Calificaciones[i * 4 + j].NCualitativa,
+                            Activo = true
+                        };
 
-                        // Verifica que la MateriaId sea válida
-                        if (db.Materias.Any(m => m.Id == calificacion.MateriaId))
+                        // Solo agregar si hay alguna nota
+                        if (calificacion.NCuantitativa != 0 || !string.IsNullOrEmpty(calificacion.NCualitativa))
                         {
-                            calificacion.Activo = true;
                             db.Calificaciones.Add(calificacion);
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", $"La materia con ID {calificacion.MateriaId} no existe.");
                         }
                     }
                 }
@@ -91,7 +101,6 @@ namespace GestionColegios.Controllers
                 // Guarda los cambios en la base de datos
                 try
                 {
-                    
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -110,6 +119,8 @@ namespace GestionColegios.Controllers
             vm.Estudiantes = db.Estudiantes.ToList();
             vm.Materias = db.Materias.ToList();
             vm.Parciales = db.Parciales.ToList();
+
+
         }
         // POST: CalificacionWeb/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
