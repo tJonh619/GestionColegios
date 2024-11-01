@@ -19,15 +19,10 @@ namespace GestionColegios.ViewModels
         public List<Parcial> Parciales { get; set; }
         public Parcial Parcial { get; set; }
 
-        public List<Matricula> Matriculas { get; set; }
-
-        public Matricula Matricula { get; set; }
 
         public List<AñoAcademico> AñoAcademicos { get; set; }
 
         public AñoAcademico AñoAcademico { get; set; }
-
-
 
     }
 }
