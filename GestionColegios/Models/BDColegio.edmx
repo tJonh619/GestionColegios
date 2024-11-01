@@ -185,6 +185,10 @@
       <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
       <End Role="ControlEntrada" EntitySet="ControlEntradas" />
     </AssociationSet>
+    <AssociationSet Name="UsuarioMaestro" Association="BDColegio.Store.UsuarioMaestro">
+      <End Role="Usuario" EntitySet="Usuarios" />
+      <End Role="Maestro" EntitySet="Maestros" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Roles">
     <Key>
@@ -220,6 +224,7 @@
     <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
     <Property Name="Activo" Type="bit" Nullable="false" />
     <Property Name="RolId" Type="int" Nullable="false" />
+    <Property Name="Maestro_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Maestros">
     <Key>
@@ -974,6 +979,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="UsuarioMaestro">
+    <End Role="Usuario" Type="BDColegio.Store.Usuarios" Multiplicity="*" />
+    <End Role="Maestro" Type="BDColegio.Store.Maestros" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Maestro">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Usuario">
+        <PropertyRef Name="Maestro_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -1188,6 +1205,10 @@
             <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
             <End Role="ControlEntrada" EntitySet="ControlEntradas" />
           </AssociationSet>
+          <AssociationSet Name="UsuarioMaestro" Association="BDColegio.UsuarioMaestro">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Maestro" EntitySet="Maestros" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Rol">
           <Key>
@@ -1239,6 +1260,7 @@
           <Property Name="Activo" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Rol" Relationship="BDColegio.RolUsuario" FromRole="Usuario" ToRole="Rol" />
           <Property Name="RolId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Maestro" Relationship="BDColegio.UsuarioMaestro" FromRole="Usuario" ToRole="Maestro" />
         </EntityType>
         <Association Name="RolUsuario">
           <End Type="BDColegio.Rol" Role="Rol" Multiplicity="1" />
@@ -1271,6 +1293,7 @@
           <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Activo" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CursoAcademico" Relationship="BDColegio.MaestroCursoAcademico" FromRole="Maestro" ToRole="CursoAcademico" />
+          <NavigationProperty Name="Usuario" Relationship="BDColegio.UsuarioMaestro" FromRole="Maestro" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="CursoAcademico">
           <Key>
@@ -2066,6 +2089,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="UsuarioMaestro">
+          <End Type="BDColegio.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="BDColegio.Maestro" Role="Maestro" Multiplicity="1" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2415,6 +2442,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <AssociationSetMapping Name="UsuarioMaestro" TypeName="BDColegio.UsuarioMaestro" StoreEntitySet="Usuarios">
+      <EndProperty Name="Maestro">
+        <ScalarProperty Name="Id" ColumnName="Maestro_Id" />
+      </EndProperty>
+      <EndProperty Name="Usuario">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

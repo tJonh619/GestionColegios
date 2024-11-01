@@ -37,5 +37,6 @@ namespace GestionColegios.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CursoAcademico> CursoAcademico { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }
