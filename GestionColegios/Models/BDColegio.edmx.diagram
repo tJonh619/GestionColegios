@@ -4,13 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b6c7ab075203471e86a18fd0e4b2950a" Name="Diagram1" ZoomLevel="92" >
-        <EntityTypeShape EntityType="BDColegio.Rol" Width="1.75" PointX="9.5" PointY="7.75" />
-        <EntityTypeShape EntityType="BDColegio.Permiso" Width="1.875" PointX="6.5" PointY="8.75" />
+      <Diagram DiagramId="b6c7ab075203471e86a18fd0e4b2950a" Name="Diagram1" ZoomLevel="69" >
+        <EntityTypeShape EntityType="BDColegio.Rol" Width="1.75" PointX="37.875" PointY="14.125" />
+        <EntityTypeShape EntityType="BDColegio.Permiso" Width="1.875" PointX="34.875" PointY="15.125" />
         <AssociationConnector Association="BDColegio.RolPermiso" />
-        <EntityTypeShape EntityType="BDColegio.Usuario" Width="2" PointX="9.125" PointY="13.25" />
+        <EntityTypeShape EntityType="BDColegio.Usuario" Width="2" PointX="37.5" PointY="19.625" />
         <AssociationConnector Association="BDColegio.RolUsuario" />
-        <EntityTypeShape EntityType="BDColegio.Maestro" Width="1.5" PointX="24.75" PointY="17.5" />
+        <EntityTypeShape EntityType="BDColegio.Maestro" Width="1.5" PointX="24.75" PointY="17.625" />
         <EntityTypeShape EntityType="BDColegio.CursoAcademico" Width="2.375" PointX="20.875" PointY="19.625" />
         <EntityTypeShape EntityType="BDColegio.EficienciaFisica" Width="2.125" PointX="21.875" PointY="11.25" />
         <EntityTypeShape EntityType="BDColegio.EficienciaFisicaEstudiante" Width="2" PointX="20.5" PointY="5.625" />
@@ -42,8 +42,8 @@
           <ConnectorPoint PointX="17.06984050822409" PointY="19.537903645833332" />
           <ConnectorPoint PointX="17.06984050822409" PointY="19.162903645833332" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="BDColegio.InventarioAlimento" Width="2.25" PointX="35.375" PointY="4.75" />
-        <EntityTypeShape EntityType="BDColegio.ControlMerienda" Width="2.125" PointX="27.125" PointY="3.25" />
+        <EntityTypeShape EntityType="BDColegio.InventarioAlimento" Width="2.25" PointX="37" PointY="4.75" />
+        <EntityTypeShape EntityType="BDColegio.ControlMerienda" Width="2.125" PointX="33" PointY="4.125" />
         <AssociationConnector Association="BDColegio.CursoAcademicoControlMerienda" />
         <AssociationConnector Association="BDColegio.InventarioAlimentoControlMerienda" />
         <AssociationConnector Association="BDColegio.InventarioAlimentoControlMerienda1" />
@@ -52,7 +52,7 @@
         <AssociationConnector Association="BDColegio.InventarioAlimentoControlMerienda4" />
         <EntityTypeShape EntityType="BDColegio.Matricula" Width="1.5" PointX="11.625" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="BDColegio.Tutor" Width="3" PointX="6.625" PointY="1.75" />
-        <EntityTypeShape EntityType="BDColegio.Periodo" Width="1.5" PointX="24.125" PointY="1.625" />
+        <EntityTypeShape EntityType="BDColegio.Periodo" Width="1.5" PointX="29.375" PointY="1.625" />
         <AssociationConnector Association="BDColegio.EstudianteMatricula" />
         <AssociationConnector Association="BDColegio.TutorMatricula" />
         <AssociationConnector Association="BDColegio.PeriodosMatricula" />
@@ -63,7 +63,7 @@
         <AssociationConnector Association="BDColegio.SemestreParcial" />
         <AssociationConnector Association="BDColegio.SemestreConsolidadoEficienciaFisica" />
         <AssociationConnector Association="BDColegio.SemestreEficienciaFisica" />
-        <EntityTypeShape EntityType="BDColegio.Año" Width="2.375" PointX="24.75" PointY="12" />
+        <EntityTypeShape EntityType="BDColegio.Año" Width="2.375" PointX="29.25" PointY="12.125" />
         <AssociationConnector Association="BDColegio.AñoCursoAcademico" />
         <AssociationConnector Association="BDColegio.AñoEficienciaFisica" />
         <AssociationConnector Association="BDColegio.AñoConsolidadoEficienciaFisica" />
@@ -71,12 +71,13 @@
         <AssociationConnector Association="BDColegio.EstudianteControlMerienda" />
         <AssociationConnector Association="BDColegio.AñoAcademicoMatricula" />
         <AssociationConnector Association="BDColegio.TutorEstudiante" />
-        <EntityTypeShape EntityType="BDColegio.ControlEntrada" Width="1.5" PointX="40.125" PointY="4.75" />
+        <EntityTypeShape EntityType="BDColegio.ControlEntrada" Width="1.5" PointX="42.875" PointY="4.75" />
         <AssociationConnector Association="BDColegio.InventarioAlimentoControlEntrada" />
         <AssociationConnector Association="BDColegio.InventarioAlimentoControlEntrada1" />
         <AssociationConnector Association="BDColegio.InventarioAlimentoControlEntrada2" />
         <AssociationConnector Association="BDColegio.InventarioAlimentoControlEntrada3" />
         <AssociationConnector Association="BDColegio.InventarioAlimentoControlEntrada4" />
+        <AssociationConnector Association="BDColegio.UsuarioMaestro" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 10/23/2024 21:18:59
+-- Date Created: 10/31/2024 23:50:30
 -- Generated from EDMX file: C:\Users\tjonh\Escritorio\Proyecto Sistema web de colegios publicos de Nicaragua\Proyecto\GestionColegios\GestionColegios\Models\BDColegio.edmx
 -- --------------------------------------------------
 
@@ -134,6 +134,9 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_InventarioAlimentoControlEntrada4]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ControlEntradas] DROP CONSTRAINT [FK_InventarioAlimentoControlEntrada4];
 GO
+IF OBJECT_ID(N'[dbo].[FK_UsuarioMaestro]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Usuarios] DROP CONSTRAINT [FK_UsuarioMaestro];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -244,7 +247,8 @@ CREATE TABLE [dbo].[Usuarios] (
     [CorreoRecuperacion] nvarchar(max)  NOT NULL,
     [FechaModificacion] datetime  NOT NULL,
     [Activo] bit  NOT NULL,
-    [RolId] int  NOT NULL
+    [RolId] int  NOT NULL,
+    [Maestro_Id] int  NOT NULL
 );
 GO
 
@@ -1262,6 +1266,21 @@ GO
 CREATE INDEX [IX_FK_InventarioAlimentoControlEntrada4]
 ON [dbo].[ControlEntradas]
     ([MaizId]);
+GO
+
+-- Creating foreign key on [Maestro_Id] in table 'Usuarios'
+ALTER TABLE [dbo].[Usuarios]
+ADD CONSTRAINT [FK_UsuarioMaestro]
+    FOREIGN KEY ([Maestro_Id])
+    REFERENCES [dbo].[Maestros]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UsuarioMaestro'
+CREATE INDEX [IX_FK_UsuarioMaestro]
+ON [dbo].[Usuarios]
+    ([Maestro_Id]);
 GO
 
 -- --------------------------------------------------

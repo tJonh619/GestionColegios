@@ -24,5 +24,6 @@ namespace GestionColegios.Models
         public int RolId { get; set; }
     
         public virtual Rol Rol { get; set; }
+        public virtual Maestro Maestro { get; set; }
     }
 }
