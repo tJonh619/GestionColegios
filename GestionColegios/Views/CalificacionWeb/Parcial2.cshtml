@@ -1,14 +1,14 @@
 ﻿@model GestionColegios.ViewModels.VMCalificaciones
 
 @{
-    ViewBag.Title = "Registrar Notas";
+    ViewBag.Title = "Registrar Notas - Parcial II";
 }
 
-<h2>Registrar Notas </h2>
+<h2>Registrar Notas - Parcial II</h2>
 
 @using (Html.BeginForm("Create", "CalificacionWeb", FormMethod.Post))
 {
-    @Html.AntiForgeryToken() <!-- Agrega esta línea -->
+    @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Estudiante.Id)
 
     <table class="table">
@@ -27,22 +27,17 @@
 
                 <tr>
                     <td>
-                        <!-- Nombre de la materia -->
                         @Html.HiddenFor(m => Model.Calificaciones[i].MateriaId)
                         @materiaNombre
                     </td>
                     <td>
-                        <!-- Campo oculto para el Id del parcial -->
-                        @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, new { Value = "2" }) <!-- Cambia "1" por el Id correspondiente de Parcial I -->
-                        <!-- Mostrar el nombre del parcial -->
-                        <span class="form-control" style="border: none; background: transparent;">Parcial I</span>
+                        @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, 3) <!-- Estático para Parcial 3 -->
+                        Parcial II
                     </td>
                     <td>
-                        <!-- Campo para la nota cuantitativa -->
                         @Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new { @class = "form-control", type = "number", step = "0.01", min = "0", max = "100" })
                     </td>
                     <td>
-                        <!-- Campo para la nota cualitativa -->
                         @Html.TextBoxFor(m => Model.Calificaciones[i].NCualitativa, new { @class = "form-control" })
                     </td>
                 </tr>

@@ -1,0 +1,18 @@
+﻿@model GestionColegios.ViewModels.VMCalificaciones
+
+@{
+    ViewBag.Title = "Seleccionar Parcial";
+}
+
+<h2>Seleccionar Parcial para el Estudiante: @Model.Estudiante.Nombres @Model.Estudiante.Apellidos</h2>
+
+<div class="container">
+    <p>Seleccione el parcial para registrar las notas:</p>
+    <div class="list-group">
+        <a href="@Url.Action("Create", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action">Registrar Parcial I</a>
+        <a href="@Url.Action("Parcial2", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action">Registrar Parcial II</a>
+        <a href="@Url.Action("Parcial3", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action">Registrar Parcial III</a>
+        <a href="@Url.Action("Parcial4", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action">Registrar Parcial IV</a>
+        
+    </div>
+</div>
