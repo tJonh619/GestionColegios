@@ -1,0 +1,57 @@
+﻿@model GestionColegios.ViewModels.VMCalificaciones
+
+@{
+    ViewBag.Title = "Ver Calificaciones";
+}
+
+<h2 class="text-center mt-4">Calificaciones de @Model.Estudiante.Nombres @Model.Estudiante.Apellidos</h2>
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white text-center">
+            <h5 class="mb-0">Tabla de Calificaciones</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Materia</th>
+                            <th>Parcial I (Cuantitativa)</th>
+                            <th>Parcial I (Cualitativa)</th>
+                            <th>Parcial II (Cuantitativa)</th>
+                            <th>Parcial II (Cualitativa)</th>
+                            <th>Parcial III (Cuantitativa)</th>
+                            <th>Parcial III (Cualitativa)</th>
+                            <th>Parcial IV (Cuantitativa)</th>
+                            <th>Parcial IV (Cualitativa)</th>
+                            <th>Nota Final</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var materia in Model.Materias)
+                        {
+                            var calificacionParcial1 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 2);
+                            var calificacionParcial2 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 3);
+                            var calificacionParcial3 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 4);
+                            var calificacionParcial4 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 5);
+
+                            <tr>
+                                <td>@materia.Nombre</td>
+                                <td>@(calificacionParcial1 != null ? calificacionParcial1.NCuantitativa.ToString() : "N/A")</td>
+                                <td>@(calificacionParcial1 != null ? calificacionParcial1.NCualitativa : "N/A")</td>
+                                <td>@(calificacionParcial2 != null ? calificacionParcial2.NCuantitativa.ToString() : "N/A")</td>
+                                <td>@(calificacionParcial2 != null ? calificacionParcial2.NCualitativa : "N/A")</td>
+                                <td>@(calificacionParcial3 != null ? calificacionParcial3.NCuantitativa.ToString() : "N/A")</td>
+                                <td>@(calificacionParcial3 != null ? calificacionParcial3.NCualitativa : "N/A")</td>
+                                <td>@(calificacionParcial4 != null ? calificacionParcial4.NCuantitativa.ToString() : "N/A")</td>
+                                <td>@(calificacionParcial4 != null ? calificacionParcial4.NCualitativa : "N/A")</td>
+                                <td><!-- Aquí puedes calcular y mostrar la nota final si lo deseas --></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

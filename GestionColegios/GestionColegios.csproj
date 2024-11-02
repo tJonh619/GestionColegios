@@ -550,6 +550,7 @@
     <Content Include="Views\CalificacionWeb\Parcial3.cshtml" />
     <Content Include="Views\CalificacionWeb\Parcial4.cshtml" />
     <Content Include="Views\CalificacionWeb\SeleccionarParciales.cshtml" />
+    <Content Include="Views\CalificacionWeb\VerCalificaciones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
