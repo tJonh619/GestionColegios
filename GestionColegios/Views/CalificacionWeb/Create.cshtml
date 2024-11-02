@@ -4,11 +4,11 @@
     ViewBag.Title = "Registrar Notas";
 }
 
-<h2>Registrar Notas </h2>
+<h2>Registrar Notas</h2>
 
 @using (Html.BeginForm("Create", "CalificacionWeb", FormMethod.Post))
 {
-    @Html.AntiForgeryToken() <!-- Agrega esta línea -->
+    @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Estudiante.Id)
 
     <table class="table">
@@ -27,23 +27,18 @@
 
                 <tr>
                     <td>
-                        <!-- Nombre de la materia -->
                         @Html.HiddenFor(m => Model.Calificaciones[i].MateriaId)
                         @materiaNombre
                     </td>
                     <td>
-                        <!-- Campo oculto para el Id del parcial -->
-                        @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, new { Value = "2" }) <!-- Cambia "1" por el Id correspondiente de Parcial I -->
-                        <!-- Mostrar el nombre del parcial -->
+                        @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, new { Value = "2" }) <!-- Cambia "2" por el Id correspondiente de Parcial I -->
                         <span class="form-control" style="border: none; background: transparent;">Parcial I</span>
                     </td>
                     <td>
-                        <!-- Campo para la nota cuantitativa -->
-                        @Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new { @class = "form-control", type = "number", step = "0.01", min = "0", max = "100" })
+                        @Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new { @class = "form-control", type = "number", step = "0.01", min = "0", max = "100", oninput = "updateCualitativa(this, " + i + ")" })
                     </td>
                     <td>
-                        <!-- Campo para la nota cualitativa -->
-                        @Html.TextBoxFor(m => Model.Calificaciones[i].NCualitativa, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => Model.Calificaciones[i].NCualitativa, new { @class = "form-control", @readonly = "readonly" })
                     </td>
                 </tr>
             }
@@ -53,9 +48,21 @@
     <button type="submit" class="btn btn-primary">Guardar Notas</button>
 }
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success mt-3">
-        @TempData["SuccessMessage"]
-    </div>
-}
+<script>
+    function updateCualitativa(input, index) {
+        var cuantitativa = parseFloat(input.value);
+        var cualitativa = "";
+
+        if (cuantitativa >= 0 && cuantitativa <= 59) {
+            cualitativa = "AI";
+        } else if (cuantitativa >= 60 && cuantitativa <= 75) {
+            cualitativa = "AF";
+        } else if (cuantitativa >= 76 && cuantitativa <= 89) {
+            cualitativa = "AS";
+        } else if (cuantitativa >= 90 && cuantitativa <= 100) {
+            cualitativa = "AA";
+        }
+
+        document.getElementsByName("Calificaciones[" + index + "].NCualitativa")[0].value = cualitativa;
+    }
+</script>
