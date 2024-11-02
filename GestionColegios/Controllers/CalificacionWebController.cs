@@ -229,6 +229,31 @@ namespace GestionColegios.Controllers
             return View(vm);
         }
 
+        public ActionResult VerCalificaciones(int estudianteId)
+        {
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Obtener todas las calificaciones del estudiante
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudianteId)
+                .Include(c => c.Materia) // Asegúrate de que Materia está incluido para acceder a su nombre
+                .ToList();
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Calificaciones = calificaciones,
+                Materias = db.Materias.ToList(),
+                Parciales = db.Parciales.ToList()
+            };
+
+            return View(vm);
+        }
+
 
         protected override void Dispose(bool disposing)
         {
