@@ -30,7 +30,7 @@ namespace GestionColegios.Controllers
         }
 
         // GET: CalificacionWeb/Create
-        public ActionResult Create(int estudianteId)
+        public ActionResult Create(int estudianteId, int parcialId = 2)
         {
             var estudiante = db.Estudiantes.Find(estudianteId);
             if (estudiante == null)
@@ -38,24 +38,34 @@ namespace GestionColegios.Controllers
                 return HttpNotFound();
             }
 
-            // Obtener las materias y construir las calificaciones en memoria
-            var materias = db.Materias.ToList();
-            var calificaciones = materias.Select(m => new Calificacion
+            // Buscar calificaciones existentes para el parcial especificado
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .ToList();
+
+            // Si no existen calificaciones para el parcial especificado, inicializa una lista en blanco para cada materia
+            if (!calificaciones.Any())
             {
-                EstudianteId = estudiante.Id,
-                MateriaId = m.Id
-            }).ToList();
+                var materias = db.Materias.ToList();
+                calificaciones = materias.Select(m => new Calificacion
+                {
+                    EstudianteId = estudiante.Id,
+                    MateriaId = m.Id,
+                    ParcialId = parcialId // Asignar el parcial proporcionado
+                }).ToList();
+            }
 
             var vm = new VMCalificaciones
             {
                 Estudiante = estudiante,
                 Calificaciones = calificaciones,
-                Materias = materias,
+                Materias = db.Materias.ToList(),
                 Parciales = db.Parciales.ToList()
             };
 
             return View(vm);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
