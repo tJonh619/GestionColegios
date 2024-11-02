@@ -13,7 +13,7 @@ namespace GestionColegios.ViewModels
 
         public List<Estudiante> Estudiantes { get; set; }
         public Estudiante Estudiante { get; set; }
-        public List<Materia> Materias { get; set; }
+        public List<Materia> Materias { get; set; } = new List<Materia>(); // Inicialización
         public Materia Materia { get; set; }
 
         public List<Parcial> Parciales { get; set; }
