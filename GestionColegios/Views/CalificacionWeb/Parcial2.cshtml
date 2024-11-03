@@ -1,10 +1,10 @@
 ﻿@model GestionColegios.ViewModels.VMCalificaciones
 
 @{
-    ViewBag.Title = "Registrar Notas";
+    ViewBag.Title = "Registrar Notas - Parcial II";
 }
 
-<h2>Registrar Notas</h2>
+<h2>Registrar Notas - Parcial II</h2>
 
 @using (Html.BeginForm("Create", "CalificacionWeb", FormMethod.Post))
 {
@@ -31,8 +31,8 @@
                         @materiaNombre
                     </td>
                     <td>
-                        @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, new { Value = "2" }) <!-- Cambia "2" por el Id correspondiente de Parcial I -->
-                        <span class="form-control" style="border: none; background: transparent;">Parcial I</span>
+                        @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, 3) <!-- Estático para Parcial 3 -->
+                        Parcial II
                     </td>
                     <td>
                         @Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new { @class = "form-control", type = "number", step = "0.01", min = "0", max = "100", oninput = "updateCualitativa(this, " + i + ")" })
@@ -66,3 +66,10 @@
         document.getElementsByName("Calificaciones[" + index + "].NCualitativa")[0].value = cualitativa;
     }
 </script>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["SuccessMessage"]
+    </div>
+}

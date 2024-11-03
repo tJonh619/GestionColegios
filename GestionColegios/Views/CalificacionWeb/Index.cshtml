@@ -41,7 +41,9 @@
                         <td>@estudiante.Nombres</td>
                         <td>@estudiante.Apellidos</td>
                         <td>
-                            @Html.ActionLink("Registrar Notas", "Create", "CalificacionWeb", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-success" })
+                            @Html.ActionLink("Registrar Notas", "SeleccionarParciales", "CalificacionWeb", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-success" })
+
+
                             @Html.ActionLink("Pruebas de Eficiencia Física", "PruebasEficiencia", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-info" })
                         </td>
                     </tr>
