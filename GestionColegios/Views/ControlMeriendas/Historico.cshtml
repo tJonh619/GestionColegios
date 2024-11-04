@@ -1,0 +1,105 @@
+﻿@model GestionColegios.ViewModels.VMControlMerienda
+
+@{
+    Layout = Layout;
+}
+
+<div class="container">
+    <h2>Historial de Control de Meriendas</h2>
+
+    <form method="get" action="@Url.Action("Historico", "ControlMeriendas")">
+        <div class="form-group">
+            <label for="fecha">Seleccionar Fecha:</label>
+            <input type="date" name="fecha" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+    </form>
+
+    @if (Model.ControlesMeriendas.Any()) // Verificamos si hay datos
+    {
+        <button class="btn btn-secondary mt-3" onclick="printTable()" id="printButton">Imprimir</button>
+
+        <table class="table table-bordered mt-3" id="controlMeriendasTable">
+            <thead>
+                <tr>
+                    <th>Curso Academico</th>
+                    <th>Fecha Entrega</th>
+                    <th>Estudiante</th>
+                    <th style="width: 50px;">A.E Mujeres</th>
+                    <th style="width: 50px;">A.E Total</th>
+                    <th style="width: 50px;">A.R Mujeres</th>
+                    <th style="width: 50px;">A.R Total</th>
+                    <th style="width: 50px;">Aceite</th>
+                    <th style="width: 50px;">Arroz</th>
+                    <th style="width: 50px;">Cereal</th>
+                    <th style="width: 50px;">Frijoles</th>
+                    <th style="width: 50px;">Maíz</th>
+                    <th style="width: 200px;">Firma Docente</th>
+                    <th style="width: 200px;">Cédula Tutor</th>
+                    <th style="width: 200px;">Firma Tutor</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var control in Model.ControlesMeriendas)
+                {
+                    <tr>
+                        <td>@control.CursoAcademico.Nombre</td>
+                        <td>@control.FechaEntrega.ToShortDateString()</td>
+                        <td>@control.Estudiante.Nombres</td>
+                        <td>@control.AsistenciaEsperadaMujeres</td>
+                        <td>@control.AsistenciaEsperadaTotal</td>
+                        <td>@control.AsistenciaRealMujeres</td>
+                        <td>@control.AsistenciaRealTotal</td>
+                        <td>@control.SAceite</td>
+                        <td>@control.SArroz</td>
+                        <td>@control.SCereal</td>
+                        <td>@control.SFrijoles</td>
+                        <td>@control.SMaiz</td>
+                        <td>@control.FirmaDocente</td>
+                        <td>@control.CedulaTutor</td>
+                        <td>@control.FirmaTutor</td>
+                        <td class="print-hide">
+                            <a href="@Url.Action("Edit", "ControlMeriendas", new { id = control.Id })" class="btn btn-primary">Editar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<script>
+    function printTable() {
+        var printContents = document.getElementById('controlMeriendasTable').outerHTML;
+        var win = window.open('', '', 'height=700,width=900');
+        win.document.write('<html><head><title>Imprimir</title>');
+        win.document.write('<style>');
+        win.document.write('table { width: 100%; border-collapse: collapse; }');
+        win.document.write('th, td { border: 1px solid black; padding: 8px; text-align: left; }');
+        win.document.write('th { background-color: #f2f2f2; }');
+        win.document.write('body { margin: 0; }'); // Ajuste del margen
+        win.document.write('.signature-section { display: none; }'); // Ocultar firma por defecto
+        win.document.write('.print-hide { display: none; }'); // Ocultar botones de edición
+        win.document.write('</style>');
+        win.document.write('</head><body>');
+        win.document.write('<h2>COLEGIO PUBLICO FIDEL COLOMA       CONTROL DE MERIENDAS</h2>');
+
+        win.document.write(printContents);
+
+        // Sección para firmas (solo al imprimir)
+        win.document.write('<div class="signature-section" style="margin-top: 50px; display: flex; justify-content: space-between;">');
+        win.document.write('<div style="text-align: center; width: 300px;">');
+        win.document.write('<div style="border-top: 1px solid black; margin: 0 auto;"></div>');
+        win.document.write('<p>Firma de la Directora</p>');
+        win.document.write('</div>');
+        win.document.write('<div style="text-align: center; width: 300px;">');
+        win.document.write('<div style="border-top: 1px solid black; margin: 0 auto;"></div>');
+        win.document.write('<p>Firma del Subdirector</p>');
+        win.document.write('</div>');
+        win.document.write('</div>');
+
+        win.document.write('</body></html>');
+        win.document.close();
+        win.print();
+    }
+</script>

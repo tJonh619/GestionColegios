@@ -551,6 +551,7 @@
     <Content Include="Views\CalificacionWeb\Parcial4.cshtml" />
     <Content Include="Views\CalificacionWeb\SeleccionarParciales.cshtml" />
     <Content Include="Views\CalificacionWeb\VerCalificaciones.cshtml" />
+    <Content Include="Views\ControlMeriendas\Historico.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
