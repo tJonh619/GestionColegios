@@ -547,6 +547,12 @@
     <Content Include="Views\SeccionWeb\_ListarSecciones.cshtml" />
     <Content Include="Views\SeccionWeb\_AgregarSecciones.cshtml" />
     <Content Include="Views\SeccionWeb\_EditSecciones.cshtml" />
+    <Content Include="Views\CalificacionWeb\Parcial2.cshtml" />
+    <Content Include="Views\CalificacionWeb\Parcial3.cshtml" />
+    <Content Include="Views\CalificacionWeb\Parcial4.cshtml" />
+    <Content Include="Views\CalificacionWeb\SeleccionarParciales.cshtml" />
+    <Content Include="Views\CalificacionWeb\VerCalificaciones.cshtml" />
+    <Content Include="Views\ControlMeriendas\Historico.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Shared\_SideBar.cshtml" />
   </ItemGroup>
