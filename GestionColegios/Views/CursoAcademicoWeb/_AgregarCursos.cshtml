@@ -1,0 +1,156 @@
+﻿@model GestionColegios.ViewModels.VMCursoAcademico
+
+@{
+    // Asegúrate de que ViewBag.EsEdicion siempre tenga un valor booleano (true o false)
+    var esSoloLectura = (ViewBag.EsEdicion ?? false)
+        ? new Dictionary<string, object> { { "readonly", "readonly" }, { "disabled", "disabled" } }
+        : new Dictionary<string, object>();
+}
+
+@functions {
+    IDictionary<string, object> ObtenerAtributos(Dictionary<string, object> atributosBase, Dictionary<string, object> soloLectura)
+    {
+        return atributosBase.Concat(soloLectura).ToDictionary(k => k.Key, v => v.Value);
+    }
+}
+
+<div class="row mt-2">
+    <div class="col-md-12">
+        @using (Html.BeginForm((ViewBag.EsEdicion ?? false) ? "Edit" : "Create", "CursoAcademicoWeb", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.CursoAcademico.Id)
+
+            <div class="row">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="col-md-6 card">
+                    <div class="row card" style="background-color: #001c7d">
+                        <label class="m-md-1" style="color:white">
+                            <i class="fa fa-graduation-cap mr-md-2" aria-hidden="true"></i>
+                            @(ViewBag.EsEdicion ?? false ? "Editar Curso Académico" : "Agregar Curso Académico")
+                        </label>
+                    </div>
+
+                    <!-- Nombre del Curso -->
+                    <div class="form-group mb-3">
+                        <label for="Nombre">Nombre del Curso</label>
+                        @Html.TextBoxFor(m => m.CursoAcademico.Nombre,
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" },
+                                { "placeholder", "Introduce el nombre del curso" }
+                            }, esSoloLectura))
+                        @Html.ValidationMessageFor(m => m.CursoAcademico.Nombre, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Maestro -->
+                    <div class="form-group mb-3">
+                        <label for="MaestroId">Maestro</label>
+                        @Html.DropDownListFor(m => m.CursoAcademico.MaestroId,
+                            new SelectList(Model.Maestros, "Id", "Codigo", Model.CursoAcademico.MaestroId),
+                            "Seleccione un maestro",
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" }
+                            }, esSoloLectura))
+                        @Html.ValidationMessageFor(m => m.CursoAcademico.MaestroId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Sección -->
+                    <div class="form-group mb-3">
+                        <label for="SeccionId">Sección</label>
+                        @Html.DropDownListFor(m => m.CursoAcademico.SeccionId,
+                            new SelectList(Model.Secciones, "Id", "Nombre", Model.CursoAcademico.SeccionId),
+                            "Seleccione una sección",
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" }
+                            }, esSoloLectura))
+                        @Html.ValidationMessageFor(m => m.CursoAcademico.SeccionId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Año Académico -->
+                    <div class="form-group mb-3">
+                        <label for="AñoAcademicoId">Año Académico</label>
+                        @Html.DropDownListFor(m => m.CursoAcademico.AñoAcademicoId,
+                            new SelectList(Model.AñosAcademicos, "Id", "Nombre", Model.CursoAcademico.AñoAcademicoId),
+                            "Seleccione un año académico",
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" }
+                            }, esSoloLectura))
+                        @Html.ValidationMessageFor(m => m.CursoAcademico.AñoAcademicoId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Año -->
+                    <div class="form-group mb-3">
+                        <label for="AñoId">Año</label>
+                        @Html.DropDownListFor(m => m.CursoAcademico.AñoId,
+                            new SelectList(Model.Años, "Id", "Id", Model.CursoAcademico.AñoId),
+                            "Seleccione un año",
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" }
+                            }, esSoloLectura))
+                        @Html.ValidationMessageFor(m => m.CursoAcademico.AñoId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="form-group col-md-2 mt-4">
+                        <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
+                                style="@(ViewBag.EsEdicion ?? false ? "" : "display:none;")"
+                                onclick="activateEdit()">
+                            Editar
+                        </button>
+
+                        @if (ViewBag.EsEdicion ?? false)
+                        {
+                            <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
+                                    onclick="deleteRecord()">
+                                Eliminar
+                            </button>
+                        }
+
+                        <button type="submit" id="btn-save" class="btn btn-primary m-1"
+                                style="@(ViewBag.EsEdicion ?? false ? "display:none;" : "")">
+                            @(Model.CursoAcademico?.Id == 0 ? "Registrar" : "Guardar Cambios")
+                        </button>
+
+                        <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
+                                onclick="cancelOrReturn()">
+                            Regresar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function activateEdit() {
+            $('input, select').prop('readonly', false).prop('disabled', false);
+            $('#btn-save').show();
+            $('#btn-cancel-edit').text("Cancelar");
+            $('#btn-edit').hide();
+            $('#btn-delete').hide();
+        }
+
+        function cancelOrReturn() {
+            if ($('#btn-cancel-edit').text() === "Cancelar") {
+                $('input, select').prop('readonly', true).prop('disabled', true);
+                $('#btn-save').hide();
+                $('#btn-edit').show();
+                $('#btn-cancel-edit').text("Regresar");
+                $('#btn-delete').show();
+            } else {
+                window.location.href = '@Url.Action("Index", "CursoAcademicoWeb")';
+            }
+        }
+
+        function deleteRecord() {
+            const deleteUrl = '@Url.Action("Delete", "CursoAcademicoWeb", new { id = Model.CursoAcademico.Id })';
+            if (confirm("¿Estás seguro de que deseas eliminar este curso académico?")) {
+                window.location.href = deleteUrl;
+            }
+        }
+    </script>
+}
