@@ -8,14 +8,14 @@ namespace GestionColegios.ViewModels
 {
     public class VMCursoAcademico
     {
-        public class VMCursosAcademicos
-        {
-            public List<CursoAcademico> Cursos { get; set; }
+            public List<CursoAcademico> CursoAcademicos { get; set; }
             public CursoAcademico CursoAcademico { get; set; }
 
+            
             public List<Maestro> Maestros { get; set; }
 
-            public Seccion Seccion { get; set; }
+            public Maestro Maestro { get; set; }
+             public Seccion Seccion { get; set; }
             public List<Seccion> Secciones { get; set; }
 
             public AñoAcademico AñoAcademico { get; set; }
@@ -26,17 +26,5 @@ namespace GestionColegios.ViewModels
 
             public List<Año> Años { get; set; }
 
-            public VMCursosAcademicos()
-            {
-                Cursos = new List<CursoAcademico>();
-                CursoAcademico = new CursoAcademico();
-                Maestros = new List<Maestro>();
-                Secciones = new List<Seccion>();
-                AñosAcademicos = new List<AñoAcademico>();
-                Años = new List<Año>();
-            }
-
-     
-        }
     }
 }
