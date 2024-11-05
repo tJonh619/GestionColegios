@@ -5,13 +5,18 @@
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Control de Merienda</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
         .table th, .table td {
             vertical-align: middle;
         }
@@ -25,33 +30,64 @@
         }
 
         .table-inventario {
-            font-size: 0.9rem; /* Ajustar tamaño de fuente */
+            font-size: 0.9rem;
         }
 
-            /* Estilo para hacer más pequeña la tabla de inventario */
             .table-inventario th, .table-inventario td {
-                font-size: 0.8rem; /* Reducir tamaño de fuente */
-                padding: 0.5rem; /* Ajustar el padding */
+                padding: 0.8rem;
+                font-size: 0.85rem;
             }
 
                 .table-inventario th:nth-child(1) {
-                    width: 40%; /* Ancho del nombre del alimento */
+                    width: 40%;
                 }
 
                 .table-inventario th:nth-child(2) {
-                    width: 30%; /* Ancho del stock */
+                    width: 30%;
                 }
 
                 .table-inventario th:nth-child(3) {
-                    width: 30%; /* Ancho de la unidad de medida */
+                    width: 30%;
                 }
+
+        .form-control {
+            border-radius: 0.375rem; /* Round corners for inputs */
+        }
+
+        .btn-custom {
+            border-radius: 0.375rem;
+        }
+
+        .card-header h5 {
+            font-weight: 600;
+        }
+
+        .row > .col-md-8, .row > .col-md-4 {
+            padding: 15px;
+        }
+
+        .btn-add-row, .btn-delete-row {
+            border-radius: 0.375rem;
+        }
+
+        .table thead th {
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+        }
+
+        .table tbody td {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h2 class="mt-4 mb-3">Control de Merienda</h2>
+        <h2 class="mt-4 mb-3 text-center text-primary">Control de Merienda</h2>
 
         <div class="row">
+            <!-- Formulario de Registro de Meriendas -->
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
@@ -102,21 +138,23 @@
                                                 <td><input type="text" name="FirmaDocente[]" class="form-control" /></td>
                                                 <td><input type="text" name="CedulaTutor[]" class="form-control" /></td>
                                                 <td><input type="text" name="FirmaTutor[]" class="form-control" /></td>
-                                                <td><button type="button" class="btn btn-danger eliminar-fila">Eliminar</button></td>
+                                                <td><button type="button" class="btn btn-danger btn-delete-row">Eliminar</button></td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <button type="button" class="btn btn-success mb-3 agregar-fila">Agregar Fila</button>
+                                    <button type="button" class="btn btn-success btn-add-row mb-3">Agregar Fila</button>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a href="@Url.Action("Historico", "ControlMeriendas")" class="btn btn-info mb-3">Historial de Control de Meriendas</a>
-
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary btn-custom">Guardar</button>
+                                <a href="@Url.Action("Historico", "ControlMeriendas")" class="btn btn-info btn-custom">Historial de Control de Meriendas</a>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
 
+            <!-- Inventario de Alimentos -->
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
@@ -127,8 +165,8 @@
                             <thead>
                                 <tr>
                                     <th>Nombre del Alimento</th>
-                                    <th>Stock</th>
-                                    <th>Unidad de Medida</th>
+                                    <th>Stock U</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -136,11 +174,15 @@
                                 {
                                     foreach (var alimento in Model.InventarioAlimentos)
                                     {
-                                        <tr>
-                                            <td>@Html.DisplayFor(modelItem => alimento.NombreAlimento)</td>
-                                            <td>@Html.DisplayFor(modelItem => alimento.Stock)</td>
-                                            <td>@Html.DisplayFor(modelItem => alimento.UnidadDeMedida)</td>
-                                        </tr>
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => alimento.NombreAlimento)</td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => alimento.Stock)
+                                        -
+                                        @Html.DisplayFor(modelItem => alimento.UnidadDeMedida)
+                                    </td>
+
+                                </tr>
                                     }
                                 }
                                 else
@@ -154,42 +196,44 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
     <script>
-        $(document).ready(function () {
-            // Función para agregar una nueva fila a la tabla
-            $(document).on('click', '.agregar-fila', function () {
-                var nuevaFila = `
-                    <tr>
-                        <td><select name="CursoAcademicoId[]" class="form-control">@foreach (var curso in Model.CursosAcademicos) { <option value="@curso.Id">@curso.Nombre</option> }</select></td>
-                        <td><select name="EstudianteId[]" class="form-control">@foreach (var estudiante in Model.Estudiantes) { <option value="@estudiante.Id">@estudiante.Nombres</option> }</select></td>
-                        <td><input type="text" name="Codigo[]" class="form-control" /></td>
-                        <td><input type="date" name="FechaEntrega[]" class="form-control" /></td>
-                        <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
-                        <td><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
-                        <td><input type="number" name="AsistenciaRealMujeres[]" class="form-control" /></td>
-                        <td><input type="number" name="AsistenciaRealTotal[]" class="form-control" /></td>
-                        <td><input type="number" name="SAceite[]" class="form-control" /></td>
-                        <td><input type="number" name="SArroz[]" class="form-control" /></td>
-                        <td><input type="number" name="SCereal[]" class="form-control" /></td>
-                        <td><input type="number" name="SFrijoles[]" class="form-control" /></td>
-                        <td><input type="number" name="SMaiz[]" class="form-control" /></td>
-                        <td><input type="text" name="FirmaDocente[]" class="form-control" /></td>
-                        <td><input type="text" name="CedulaTutor[]" class="form-control" /></td>
-                        <td><input type="text" name="FirmaTutor[]" class="form-control" /></td>
-                        <td><button type="button" class="btn btn-danger eliminar-fila">Eliminar</button></td>
-                    </tr>`;
+    $(document).ready(function () {
+        // Función para agregar una nueva fila
+        $(document).on('click', '.btn-add-row', function () {
+            var nuevaFila = `
+                <tr>
+                    <td><select name="CursoAcademicoId[]" class="form-control">@foreach (var curso in Model.CursosAcademicos) { <option value="@curso.Id">@curso.Nombre</option> }</select></td>
+                    <td><select name="EstudianteId[]" class="form-control">@foreach (var estudiante in Model.Estudiantes) { <option value="@estudiante.Id">@estudiante.Nombres</option> }</select></td>
+                    <td><input type="text" name="Codigo[]" class="form-control" /></td>
+                    <td><input type="date" name="FechaEntrega[]" class="form-control" /></td>
+                    <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
+                    <td><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
+                    <td><input type="number" name="AsistenciaRealMujeres[]" class="form-control" /></td>
+                    <td><input type="number" name="AsistenciaRealTotal[]" class="form-control" /></td>
+                    <td><input type="number" name="SAceite[]" class="form-control" /></td>
+                    <td><input type="number" name="SArroz[]" class="form-control" /></td>
+                    <td><input type="number" name="SCereal[]" class="form-control" /></td>
+                    <td><input type="number" name="SFrijoles[]" class="form-control" /></td>
+                    <td><input type="number" name="SMaiz[]" class="form-control" /></td>
+                    <td><input type="text" name="FirmaDocente[]" class="form-control" /></td>
+                    <td><input type="text" name="CedulaTutor[]" class="form-control" /></td>
+                    <td><input type="text" name="FirmaTutor[]" class="form-control" /></td>
+                    <td><button type="button" class="btn btn-danger btn-delete-row">Eliminar</button></td>
+                </tr>`;
 
-                $('#tabla-body').append(nuevaFila);
-            });
-
-            // Función para eliminar una fila
-            $(document).on('click', '.eliminar-fila', function () {
-                $(this).closest('tr').remove();
-            });
+            $('#tabla-body').append(nuevaFila);
         });
+
+        // Función para eliminar una fila
+        $(document).on('click', '.btn-delete-row', function () {
+            $(this).closest('tr').remove();
+        });
+    });
     </script>
+
 </body>
 </html>
