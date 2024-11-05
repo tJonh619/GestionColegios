@@ -47,6 +47,12 @@
                 margin-top: 10px;
             }
 
+            /* Estilos para el logo */
+            .card-header img {
+                max-width: 100px; /* Ajusta el tamaño del logo */
+                margin-bottom: 10px;
+            }
+
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
@@ -98,6 +104,8 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
+                        <!-- Imagen del logo del colegio -->
+                        <img src="~/Content/Images/logo.png" alt="Logo del colegio" />
                         <h3>@ViewBag.Title</h3>
                         <i class="fa fa-lock fa-2x"></i> <!-- Icono de candado -->
                     </div>
@@ -106,26 +114,31 @@
                         {
                             @Html.AntiForgeryToken()
 
-                            <div class="form-group">
+                            <div class="form-group text-center">
                                 @Html.LabelFor(m => m.NombreUsuario, new { @class = "col-form-label" })
-                                @Html.TextBoxFor(m => m.NombreUsuario, new { @class = "form-control", placeholder = "Correo electrónico" })
+                                @Html.TextBoxFor(m => m.NombreUsuario, new { @class = "form-control mx-auto", placeholder = "Correo electrónico", style = "max-width: 400px;" })
                                 @Html.ValidationMessageFor(m => m.NombreUsuario, "", new { @class = "text-danger" })
                             </div>
-                            <div class="form-group">
+
+                            <div class="form-group text-center">
                                 @Html.LabelFor(m => m.Password, new { @class = "col-form-label" })
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Contraseña" })
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control mx-auto", placeholder = "Contraseña", style = "max-width: 400px;" })
                                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                             </div>
-                            <div class="form-group form-check">
+
+                            <div class="form-group form-check text-center">
                                 @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input" })
                                 @Html.LabelFor(m => m.RememberMe, new { @class = "form-check-label" })
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+
+                            <!-- Botón centrado -->
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary" style="max-width: 400px; margin: 10px auto;">Iniciar Sesión</button>
+                            </div>
                         }
                     </div>
-                    <div class="card-footer text-center">
-                        <small>¿Olvidaste tu <a class="footer-link" href="@Url.Action("ForgotPassword", "Account")">contraseña?</a></small>
-                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -133,4 +146,3 @@
     <script src="https://kit.fontawesome.com/a076d05399.js"></script> <!-- Cargar Font Awesome -->
 </body>
 </html>
--+
