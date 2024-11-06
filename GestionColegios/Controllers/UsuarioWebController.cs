@@ -157,6 +157,9 @@ namespace GestionColegios.Controllers
 
             return RedirectToAction("Index");
         }
+
+
+
         public ActionResult CreateRole()
         {
             var rol = new Rol();
@@ -167,14 +170,14 @@ namespace GestionColegios.Controllers
         // POST: UsuarioWeb/CreateRole
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateRole(Rol rol)
+        public ActionResult CreateRole(VMUsuario model)
         {
             if (ModelState.IsValid)
             {
-                rol.FechaModificacion = DateTime.Now;
-                rol.Activo = true;
+                model.Rol.FechaModificacion = DateTime.Now;
+                model.Rol.Activo = true;
 
-                db.Roles.Add(rol);
+                db.Roles.Add(model.Rol);
                 try
                 {
                     db.SaveChanges();
@@ -183,7 +186,6 @@ namespace GestionColegios.Controllers
                 }
                 catch (DbEntityValidationException ex)
                 {
-                    // Manejo de errores de validación detallado
                     foreach (var validationErrors in ex.EntityValidationErrors)
                     {
                         foreach (var error in validationErrors.ValidationErrors)
@@ -199,7 +201,8 @@ namespace GestionColegios.Controllers
             }
 
             TempData["ErrorMessage"] = "Error al guardar el rol. Intente de nuevo.";
-            return View("_AgregarRol", rol); // Devuelve la vista con el modelo para mostrar errores
+            model.Roles = db.Roles.ToList(); // Recarga la lista de roles en caso de error
+            return View("_AgregarRol", model);
         }
 
         // GET: UsuarioWeb/EditRole/5
@@ -212,27 +215,32 @@ namespace GestionColegios.Controllers
             if (rol == null)
                 return HttpNotFound();
 
+            var viewModel = new VMUsuario
+            {
+                Rol = rol,
+                Roles = db.Roles.ToList()
+            };
             ViewBag.EsEdicion = true;
-            return View("_AgregarRol", rol); // Vista compartida para crear/editar roles
+            return View("_AgregarRol", viewModel);
         }
 
         // POST: UsuarioWeb/EditRole/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditRole(Rol rol)
+        public ActionResult EditRole(VMUsuario model)
         {
             if (ModelState.IsValid)
             {
-                var rolExistente = db.Roles.Find(rol.Id);
+                var rolExistente = db.Roles.Find(model.Rol.Id);
                 if (rolExistente == null)
                     return HttpNotFound();
 
                 // Actualiza los campos necesarios
-                rolExistente.Codigo = rol.Codigo;
-                rolExistente.Nombre = rol.Nombre;
-                rolExistente.Descripcion = rol.Descripcion;
+                rolExistente.Codigo = model.Rol.Codigo;
+                rolExistente.Nombre = model.Rol.Nombre;
+                rolExistente.Descripcion = model.Rol.Descripcion;
                 rolExistente.FechaModificacion = DateTime.Now;
-                rolExistente.Activo = rol.Activo;
+                rolExistente.Activo = model.Rol.Activo;
 
                 db.Entry(rolExistente).State = EntityState.Modified;
                 try
@@ -248,22 +256,25 @@ namespace GestionColegios.Controllers
             }
 
             TempData["ErrorMessage"] = "Error al actualizar el rol. Intente de nuevo.";
-            return View("_AgregarRol", rol); // Vista con los errores mostrados
+            model.Roles = db.Roles.ToList(); // Recarga la lista de roles en caso de error
+            return View("_AgregarRol", model);
         }
 
         // GET: UsuarioWeb/DeleteRole/5
         public ActionResult DeleteRole(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Rol rol = db.Roles.Find(id);
+
+            var rol = db.Roles.Find(id);
             if (rol == null)
-            {
                 return HttpNotFound();
-            }
-            return View(rol); // Asegúrate de que estás usando la vista correcta
+
+            var viewModel = new VMUsuario
+            {
+                Rol = rol
+            };
+            return View(viewModel);
         }
 
         // POST: UsuarioWeb/DeleteRole/5
@@ -271,70 +282,59 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteRoleConfirmed(int id)
         {
-            Rol rol = db.Roles.Find(id);
+            var rol = db.Roles.Find(id);
             if (rol != null)
             {
-                rol.Activo = false; // Marcar el rol como inactivo
-                rol.FechaModificacion = DateTime.Now; // Registrar la fecha de modificación
-                db.Entry(rol).State = EntityState.Modified; // Marcar el estado como modificado
+                rol.Activo = false;
+                rol.FechaModificacion = DateTime.Now;
+                db.Entry(rol).State = EntityState.Modified;
                 db.SaveChanges();
             }
             return RedirectToAction("Index");
         }
 
-        // POST: UsuarioWeb/CreatePermiso
+
+
+        // GET: UsuarioWeb/CreatePermiso
         public ActionResult CreatePermiso()
         {
-            ViewBag.RolId = new SelectList(db.Roles, "Id", "Nombre"); // Cargar los roles disponibles
-            var permiso = new Permiso();
-            return View("_AgregarPermiso", permiso); // Usar una vista compartida para crear/editar permisos
+            var viewModel = new VMUsuario
+            {
+                Permiso = new Permiso(),
+                Roles = db.Roles.ToList() // Cargar roles disponibles
+            };
+            ViewBag.EsEdicion = false;
+            return View("_AgregarPermiso", viewModel); // Vista compartida para crear/editar permisos
         }
 
         // POST: UsuarioWeb/CreatePermiso
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreatePermiso(Permiso permiso)
+        public ActionResult CreatePermiso(VMUsuario model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                model.Permiso.FechaModificacion = DateTime.Now;
+                model.Permiso.Activo = true;
+
+                // Validar la existencia del rol seleccionado
+                if (!db.Roles.Any(r => r.Id == model.Permiso.RolId))
                 {
-                    permiso.FechaModificacion = DateTime.Now;
-                    permiso.Activo = true;
-
-                    // Validar la existencia del rol seleccionado
-                    if (!db.Roles.Any(r => r.Id == permiso.RolId))
-                    {
-                        ModelState.AddModelError("RolId", "El rol seleccionado no es válido.");
-                        ViewBag.RolId = new SelectList(db.Roles, "Id", "Nombre", permiso.RolId);
-                        return View("_AgregarPermiso", permiso);
-                    }
-
-                    db.Permisos.Add(permiso);
-                    db.SaveChanges();
-                    TempData["SuccessMessage"] = "Permiso guardado correctamente.";
-                    return RedirectToAction("Index");
+                    ModelState.AddModelError("RolId", "El rol seleccionado no es válido.");
+                    model.Roles = db.Roles.ToList(); // Recargar roles si ocurre error
+                    return View("_AgregarPermiso", model);
                 }
-            }
-            catch (DbEntityValidationException ex)
-            {
-                // Manejo de errores de validación
-                foreach (var validationErrors in ex.EntityValidationErrors)
-                {
-                    foreach (var error in validationErrors.ValidationErrors)
-                    {
-                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Ocurrió un error inesperado: " + ex.Message;
+
+                db.Permisos.Add(model.Permiso);
+                db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Permiso guardado correctamente.";
+                return RedirectToAction("Index");
             }
 
-            ViewBag.RolId = new SelectList(db.Roles, "Id", "Nombre", permiso.RolId);
+            model.Roles = db.Roles.ToList(); // Recargar roles si falla la validación
             TempData["ErrorMessage"] = "Error al guardar el permiso. Intente de nuevo.";
-            return View("_AgregarPermiso", permiso);
+            return View("_AgregarPermiso", model);
         }
 
         // GET: UsuarioWeb/EditPermiso/5
@@ -347,29 +347,35 @@ namespace GestionColegios.Controllers
             if (permiso == null)
                 return HttpNotFound();
 
-            ViewBag.RolId = new SelectList(db.Roles, "Id", "Nombre", permiso.RolId);
-            return View("_AgregarPermiso", permiso); // Usar la vista compartida
+            var viewModel = new VMUsuario
+            {
+                Permiso = permiso,
+                Roles = db.Roles.ToList() // Cargar roles disponibles
+            };
+            ViewBag.EsEdicion = true;
+            return View("_AgregarPermiso", viewModel); // Usar la vista compartida
         }
 
         // POST: UsuarioWeb/EditPermiso/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPermiso(Permiso permiso)
+        public ActionResult EditPermiso(VMUsuario model)
         {
             if (ModelState.IsValid)
             {
-                var permisoExistente = db.Permisos.Find(permiso.Id);
+                var permisoExistente = db.Permisos.Find(model.Permiso.Id);
                 if (permisoExistente == null)
                     return HttpNotFound();
 
-                // Actualizar campos específicos
-                permisoExistente.Nombre = permiso.Nombre;
-                permisoExistente.Descripcion = permiso.Descripcion;
+                // Actualizar campos específicos del permiso
+                permisoExistente.Nombre = model.Permiso.Nombre;
+                permisoExistente.Descripcion = model.Permiso.Descripcion;
                 permisoExistente.FechaModificacion = DateTime.Now;
-                permisoExistente.Activo = permiso.Activo;
-                permisoExistente.RolId = permiso.RolId;
+                permisoExistente.Activo = model.Permiso.Activo;
+                permisoExistente.RolId = model.Permiso.RolId;
 
                 db.Entry(permisoExistente).State = EntityState.Modified;
+
                 try
                 {
                     db.SaveChanges();
@@ -382,41 +388,45 @@ namespace GestionColegios.Controllers
                 }
             }
 
-            ViewBag.RolId = new SelectList(db.Roles, "Id", "Nombre", permiso.RolId);
+            model.Roles = db.Roles.ToList(); // Recargar roles si falla la validación
             TempData["ErrorMessage"] = "Error al actualizar el permiso. Intente de nuevo.";
-            return View("_Create_EditPermiso", permiso);
+            return View("_AgregarPermiso", model);
         }
 
-        // GET: UsuarioWeb/DeletePermission/5
-        public ActionResult DeletePermission(int? id)
+        // GET: UsuarioWeb/DeletePermiso/5
+        public ActionResult DeletePermiso(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Permiso permiso = db.Permisos.Find(id);
+
+            var permiso = db.Permisos.Find(id);
             if (permiso == null)
-            {
                 return HttpNotFound();
-            }
-            return View(permiso); // Asegúrate de que estás usando la vista correcta
+
+            var viewModel = new VMUsuario
+            {
+                Permiso = permiso
+            };
+            return View(viewModel); // Vista adecuada para confirmar eliminación
         }
 
-        // POST: UsuarioWeb/DeletePermission/5
-        [HttpPost, ActionName("DeletePermission")]
+        // POST: UsuarioWeb/DeletePermiso/5
+        [HttpPost, ActionName("DeletePermiso")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeletePermissionConfirmed(int id)
+        public ActionResult DeletePermisoConfirmed(int id)
         {
-            Permiso permiso = db.Permisos.Find(id);
+            var permiso = db.Permisos.Find(id);
             if (permiso != null)
             {
-                permiso.Activo = false; // Marcar el permiso como inactivo
-                permiso.FechaModificacion = DateTime.Now; // Registrar la fecha de modificación
-                db.Entry(permiso).State = EntityState.Modified; // Marcar el estado como modificado
+                permiso.Activo = false; // Marcar como inactivo
+                permiso.FechaModificacion = DateTime.Now;
+                db.Entry(permiso).State = EntityState.Modified;
                 db.SaveChanges();
             }
+
             return RedirectToAction("Index");
         }
+
 
         [HttpGet]
         public ActionResult Login()

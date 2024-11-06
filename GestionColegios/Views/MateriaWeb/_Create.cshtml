@@ -101,25 +101,38 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        // Activa el modo de edición
-        function activateEdit() {
-            $('input, textarea, select').prop('readonly', false).prop('disabled', false);
-            $('#btn-save').show();
-            $('#btn-cancel-edit').text("Cancelar");
-            $('#btn-edit').hide();
-        }
-
-        // Cancela la edición o regresa a la vista anterior
-        function cancelOrReturn() {
-            if ($('#btn-cancel-edit').text() === "Cancelar") {
-                $('input, textarea, select').prop('readonly', true).prop('disabled', true);
-                $('#btn-save').hide();
-                $('#btn-edit').show();
-                $('#btn-cancel-edit').text("Regresar");
-            } else {
-                window.location.href = '@Url.Action("Index", "Materia")';
-            }
-        }
-    </script>
 }
+<script>
+    function activateEdit() {
+        $('input, select').each(function () {
+            $(this).prop('readonly', false);
+            $(this).prop('disabled', false);
+        });
+        $('#btn-save').show();
+        $('#btn-cancel-edit').text("Cancelar");
+        $('#btn-edit').hide();
+        $('#btn-delete').hide();
+    }
+
+    function cancelOrReturn() {
+        if ($('#btn-cancel-edit').text() === "Cancelar") {
+            $('input, select').each(function () {
+                $(this).prop('readonly', true);
+                $(this).prop('disabled', true);
+            });
+            $('#btn-save').hide();
+            $('#btn-edit').show();
+            $('#btn-cancel-edit').text("Regresar");
+            $('#btn-delete').show();
+        } else {
+            window.location.href = '@Url.Action("Index", "MateriaWeb")';
+        }
+    }
+
+    function deleteRecord() {
+        const deleteUrl = '@Url.Action("Delete", "MateriaWeb", new { id = Model.Materia.Id })';
+        if (confirm("¿Estás seguro de que deseas eliminar esta Materia?")) {
+            window.location.href = deleteUrl;
+        }
+    }
+</script>

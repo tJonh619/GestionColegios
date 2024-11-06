@@ -91,27 +91,38 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        // Activa el modo de edición
-        function activateEdit() {
-            $('input, textarea, select').prop('readonly', false).prop('disabled', false);
-            $('#btn-save').show();
-            $('#btn-cancel-edit').text("Cancelar");
-            $('#btn-edit').hide();
-        }
-
-        // Cancela la edición o regresa a la vista anterior
-        function cancelOrReturn() {
-            if ($('#btn-cancel-edit').text() === "Cancelar") {
-                // Revertir a solo lectura
-                $('input, textarea, select').prop('readonly', true).prop('disabled', true);
-                $('#btn-save').hide();
-                $('#btn-edit').show();
-                $('#btn-cancel-edit').text("Regresar");
-            } else {
-                // Redirigir a la página anterior
-                window.location.href = '@Url.Action("Index", "AñoAcademicoWeb")';
-            }
-        }
-    </script>
 }
+<script>
+    function activateEdit() {
+        $('input, select').each(function () {
+            $(this).prop('readonly', false);
+            $(this).prop('disabled', false);
+        });
+        $('#btn-save').show();
+        $('#btn-cancel-edit').text("Cancelar");
+        $('#btn-edit').hide();
+        $('#btn-delete').hide();
+    }
+
+    function cancelOrReturn() {
+        if ($('#btn-cancel-edit').text() === "Cancelar") {
+            $('input, select').each(function () {
+                $(this).prop('readonly', true);
+                $(this).prop('disabled', true);
+            });
+            $('#btn-save').hide();
+            $('#btn-edit').show();
+            $('#btn-cancel-edit').text("Regresar");
+            $('#btn-delete').show();
+        } else {
+            window.location.href = '@Url.Action("Index", "AñoAcademicoWeb")';
+        }
+    }
+
+    function deleteRecord() {
+        const deleteUrl = '@Url.Action("Delete", "AñoAcademicoWeb", new { id = Model.AñoAcademico.Id })';
+        if (confirm("¿Estás seguro de que deseas eliminar este Año Academico?")) {
+            window.location.href = deleteUrl;
+        }
+    }
+</script>
