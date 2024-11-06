@@ -98,32 +98,38 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        function activateEdit() {
-            $('input, select').prop('readonly', false).prop('disabled', false);
-            $('#btn-save').show();
-            $('#btn-cancel-edit').text("Cancelar");
-            $('#btn-edit').hide();
-            $('#btn-delete').hide();
-        }
-
-        function cancelOrReturn() {
-            if ($('#btn-cancel-edit').text() === "Cancelar") {
-                $('input, select').prop('readonly', true).prop('disabled', true);
-                $('#btn-save').hide();
-                $('#btn-edit').show();
-                $('#btn-cancel-edit').text("Regresar");
-                $('#btn-delete').show();
-            } else {
-                window.location.href = '@Url.Action("Index", "PeriodoWeb")';
-            }
-        }
-
-        function deleteRecord() {
-            const deleteUrl = '@Url.Action("DeletePeriodo", "PeriodoWeb", new { id = Model.Periodo.Id })';
-            if (confirm("¿Estás seguro de que deseas eliminar este periodo?")) {
-                window.location.href = deleteUrl;
-            }
-        }
-    </script>
 }
+<script>
+    function activateEdit() {
+        $('input, select').each(function () {
+            $(this).prop('readonly', false);
+            $(this).prop('disabled', false);
+        });
+        $('#btn-save').show();
+        $('#btn-cancel-edit').text("Cancelar");
+        $('#btn-edit').hide();
+        $('#btn-delete').hide();
+    }
+
+    function cancelOrReturn() {
+        if ($('#btn-cancel-edit').text() === "Cancelar") {
+            $('input, select').each(function () {
+                $(this).prop('readonly', true);
+                $(this).prop('disabled', true);
+            });
+            $('#btn-save').hide();
+            $('#btn-edit').show();
+            $('#btn-cancel-edit').text("Regresar");
+            $('#btn-delete').show();
+        } else {
+            window.location.href = '@Url.Action("Index", "PeriodoWeb")';
+        }
+    }
+
+    function deleteRecord() {
+        const deleteUrl = '@Url.Action("DeletePeriodo", "PeriodoWeb", new { id = Model.Periodo.Id })';
+        if (confirm("¿Estás seguro de que deseas eliminar este Periodo?")) {
+            window.location.href = deleteUrl;
+        }
+    }
+</script>

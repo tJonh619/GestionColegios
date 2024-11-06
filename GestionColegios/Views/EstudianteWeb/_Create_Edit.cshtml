@@ -212,34 +212,38 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        // Función para activar el modo de edición
-        function activateEdit() {
-            $('input, select').prop('readonly', false);  // Habilita los campos
-            $('#btn-save').show();  // Muestra el botón de Guardar Cambios
-            $('#btn-cancel-edit').text("Cancelar");  // Cambia el texto a "Cancelar" en modo edición
-            $('#btn-edit').hide();  // Oculta el botón Editar
-            $('#btn-delete').hide();  // Oculta el botón Eliminar
-        }
+}
+<script>
+    function activateEdit() {
+        $('input, select').each(function () {
+            $(this).prop('readonly', false);
+            $(this).prop('disabled', false);
+        });
+        $('#btn-save').show();
+        $('#btn-cancel-edit').text("Cancelar");
+        $('#btn-edit').hide();
+        $('#btn-delete').hide();
+    }
 
-        // Función para cancelar la edición y regresar los campos a solo lectura
-        function cancelOrReturn() {
-            if ($('#btn-cancel-edit').text() === "Cancelar") {
-                // Si está en modo edición, cancelar y revertir a solo lectura
-                $('input, select').prop('readonly', true);
-                $('#btn-save').hide();
-                $('#btn-edit').show();
-                $('#btn-cancel-edit').text("Regresar");
-                $('#btn-delete').show();  // Muestra el botón Eliminar
-            } else {
-                // Si no está en modo edición, regresar a la página anterior
-                window.location.href = '@Url.Action("Index", "EstudianteWeb")'; // Cambia "Index" según la página de destino
-            }
+    function cancelOrReturn() {
+        if ($('#btn-cancel-edit').text() === "Cancelar") {
+            $('input, select').each(function () {
+                $(this).prop('readonly', true);
+                $(this).prop('disabled', true);
+            });
+            $('#btn-save').hide();
+            $('#btn-edit').show();
+            $('#btn-cancel-edit').text("Regresar");
+            $('#btn-delete').show();
+        } else {
+            window.location.href = '@Url.Action("Index", "EstudianteWeb")';
         }
+    }
 
-        function deleteRecord() {
-            const deleteUrl = '@Url.Action("Delete", "EstudianteWeb", new { id = Model.Estudiante.Id })';
+    function deleteRecord() {
+        const deleteUrl = '@Url.Action("Delete", "EstudianteWeb", new { id = Model.Estudiante.Id })';
+        if (confirm("¿Estás seguro de que deseas eliminar este Estudiante?")) {
             window.location.href = deleteUrl;
         }
-    </script>
-}
+    }
+</script>
