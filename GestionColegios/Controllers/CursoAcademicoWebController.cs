@@ -16,14 +16,18 @@ namespace GestionColegios.Controllers
         private BDColegioContainer db = new BDColegioContainer();
 
         // GET: CursoAcademicoWeb
-        // GET: CursoAcademicoWeb
         public ActionResult Index()
         {
-            var cursosAcademicos = db.CursosAcademicos.Include(c => c.Maestro).Include(c => c.Año).Include(c => c.Seccion).Include(c => c.AñoAcademico).ToList();
+            var cursosAcademicos = db.CursosAcademicos
+                .Include(c => c.Maestro)
+                .Include(c => c.Seccion)
+                .Include(c => c.AñoAcademico)
+                .Include(c => c.Año)
+                .ToList();
 
-            var viewModel = new VMCursoAcademico.VMCursosAcademicos
+            var viewModel = new VMCursoAcademico
             {
-                Cursos = cursosAcademicos,  // Asegúrate de tener esta propiedad en el ViewModel
+                CursoAcademicos = cursosAcademicos,
                 Maestros = db.Maestros.ToList(),
                 Secciones = db.Secciones.ToList(),
                 AñosAcademicos = db.AñosAcademicos.ToList(),
@@ -45,41 +49,50 @@ namespace GestionColegios.Controllers
             {
                 return HttpNotFound();
             }
-            return View(cursoAcademico);
-        }
 
-        // GET: CursoAcademicoWeb/Create
-        public ActionResult Create()
-        {
-            var viewModel = new VMCursoAcademico.VMCursosAcademicos
+            var viewModel = new VMCursoAcademico
             {
+                CursoAcademico = cursoAcademico,
                 Maestros = db.Maestros.ToList(),
                 Secciones = db.Secciones.ToList(),
                 AñosAcademicos = db.AñosAcademicos.ToList(),
-                Años = db.Años.ToList(),
-                 CursoAcademico = new CursoAcademico()
+                Años = db.Años.ToList()
             };
 
             return View(viewModel);
         }
 
-        // POST: CursoAcademicoWeb/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
-        // POST: CursoAcademicoWeb/Create
+        // GET: CursoAcademicoWeb/Create
+        public ActionResult Create()
+        {
+            // Set ViewBag.EsEdicion to false if creating
+            ViewBag.EsEdicion = false;
+
+            var viewModel = new VMCursoAcademico
+            {
+                CursoAcademico = new CursoAcademico(),  // Asegúrate de inicializar CursoAcademico
+                Maestros = db.Maestros.ToList(),
+                Secciones = db.Secciones.ToList(),
+                AñosAcademicos = db.AñosAcademicos.ToList(),
+                Años = db.Años.ToList()
+            };
+            return View(viewModel);
+
+        }
+
         // POST: CursoAcademicoWeb/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(VMCursoAcademico.VMCursosAcademicos viewModel)
+        public ActionResult Create(VMCursoAcademico viewModel)
         {
             if (ModelState.IsValid)
             {
-                db.CursosAcademicos.Add(viewModel.CursoAcademico);
+                var cursoAcademico = viewModel.CursoAcademico;
+                db.CursosAcademicos.Add(cursoAcademico);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            // Si hay un error, volver a cargar los select lists
             viewModel.Maestros = db.Maestros.ToList();
             viewModel.Secciones = db.Secciones.ToList();
             viewModel.AñosAcademicos = db.AñosAcademicos.ToList();
@@ -102,7 +115,10 @@ namespace GestionColegios.Controllers
                 return HttpNotFound();
             }
 
-            var viewModel = new VMCursoAcademico.VMCursosAcademicos
+            // Set ViewBag.EsEdicion to true if editing
+            ViewBag.EsEdicion = true;
+
+            var viewModel = new VMCursoAcademico
             {
                 CursoAcademico = cursoAcademico,
                 Maestros = db.Maestros.ToList(),
@@ -117,16 +133,16 @@ namespace GestionColegios.Controllers
         // POST: CursoAcademicoWeb/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(VMCursoAcademico.VMCursosAcademicos viewModel)
+        public ActionResult Edit(VMCursoAcademico viewModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(viewModel.CursoAcademico).State = EntityState.Modified;
+                var cursoAcademico = viewModel.CursoAcademico;
+                db.Entry(cursoAcademico).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            // Si hay un error, volver a cargar los select lists
             viewModel.Maestros = db.Maestros.ToList();
             viewModel.Secciones = db.Secciones.ToList();
             viewModel.AñosAcademicos = db.AñosAcademicos.ToList();
@@ -147,7 +163,17 @@ namespace GestionColegios.Controllers
             {
                 return HttpNotFound();
             }
-            return View(cursoAcademico);
+
+            var viewModel = new VMCursoAcademico
+            {
+                CursoAcademico = cursoAcademico,
+                Maestros = db.Maestros.ToList(),
+                Secciones = db.Secciones.ToList(),
+                AñosAcademicos = db.AñosAcademicos.ToList(),
+                Años = db.Años.ToList()
+            };
+
+            return View(viewModel);
         }
 
         // POST: CursoAcademicoWeb/Delete/5
@@ -161,6 +187,45 @@ namespace GestionColegios.Controllers
             return RedirectToAction("Index");
         }
 
+        // Función para actualizar los campos cuando se edita un curso
+        public ActionResult UpdateCursoAcademico(int id, CursoAcademico cursoAcademico)
+        {
+            if (id != cursoAcademico.Id)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (ModelState.IsValid)
+            {
+                db.Entry(cursoAcademico).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(cursoAcademico);
+        }
+
+        // Función para activar la edición
+        public ActionResult ActivateEdit(int id)
+        {
+            var cursoAcademico = db.CursosAcademicos.Find(id);
+            if (cursoAcademico == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.EsEdicion = true;
+            var viewModel = new VMCursoAcademico
+            {
+                CursoAcademico = cursoAcademico,
+                Maestros = db.Maestros.ToList(),
+                Secciones = db.Secciones.ToList(),
+                AñosAcademicos = db.AñosAcademicos.ToList(),
+                Años = db.Años.ToList()
+            };
+
+            return View("Edit", viewModel);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -169,6 +234,5 @@ namespace GestionColegios.Controllers
             }
             base.Dispose(disposing);
         }
-
     }
-    }
+}
