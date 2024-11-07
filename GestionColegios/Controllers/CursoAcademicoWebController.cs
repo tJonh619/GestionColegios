@@ -28,12 +28,17 @@ namespace GestionColegios.Controllers
             var viewModel = new VMCursoAcademico
             {
                 CursoAcademicos = cursosAcademicos,
+                CursoAcademico = new CursoAcademico(),
                 Maestros = db.Maestros.ToList(),
+                Maestro = new Maestro(),
                 Secciones = db.Secciones.ToList(),
+                Seccion = new Seccion(),
                 AñosAcademicos = db.AñosAcademicos.ToList(),
-                Años = db.Años.ToList()
+                AñoAcademico = new AñoAcademico(),
+                Años = db.Años.ToList(),
+                Año = new Año()
             };
-
+            ViewBag.EsEdicion = false;
             return View(viewModel);
         }
 
@@ -76,6 +81,7 @@ namespace GestionColegios.Controllers
                 AñosAcademicos = db.AñosAcademicos.ToList(),
                 Años = db.Años.ToList()
             };
+            ViewBag.EsEdicion = false;
             return View(viewModel);
 
         }
@@ -88,6 +94,8 @@ namespace GestionColegios.Controllers
             if (ModelState.IsValid)
             {
                 var cursoAcademico = viewModel.CursoAcademico;
+                cursoAcademico.FechaModificacion = DateTime.Now;
+                cursoAcademico.Activo = true;
                 db.CursosAcademicos.Add(cursoAcademico);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -127,7 +135,7 @@ namespace GestionColegios.Controllers
                 Años = db.Años.ToList()
             };
 
-            return View(viewModel);
+            return View("_AgregarCursos", viewModel);
         }
 
         // POST: CursoAcademicoWeb/Edit/5
@@ -138,6 +146,8 @@ namespace GestionColegios.Controllers
             if (ModelState.IsValid)
             {
                 var cursoAcademico = viewModel.CursoAcademico;
+                cursoAcademico.FechaModificacion = DateTime.Now;
+                cursoAcademico.Activo = true;
                 db.Entry(cursoAcademico).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

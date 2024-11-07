@@ -13,17 +13,15 @@ namespace GestionColegios.ViewModels
 
             
             public List<Maestro> Maestros { get; set; }
-
             public Maestro Maestro { get; set; }
+
              public Seccion Seccion { get; set; }
             public List<Seccion> Secciones { get; set; }
 
             public AñoAcademico AñoAcademico { get; set; }
-
             public List<AñoAcademico> AñosAcademicos { get; set; }
 
             public Año Año { get; set; }
-
             public List<Año> Años { get; set; }
 
     }

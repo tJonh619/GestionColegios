@@ -1,4 +1,4 @@
-﻿// La generación de código T4 está habilitada para el modelo 'C:\Users\Moises\Source\Repos\GestionColegios\GestionColegios\Models\BDColegio.edmx'. 
+﻿// La generación de código T4 está habilitada para el modelo 'C:\Users\tjonh\Escritorio\Proyecto Sistema web de colegios publicos de Nicaragua\Proyecto\GestionColegios\GestionColegios\Models\BDColegio.edmx'. 
 // Para habilitar la generación de código heredada, cambie el valor de la propiedad del diseñador 'Estrategia de generación de código'
 // por 'ObjectContext heredado'. Esta propiedad está disponible en la ventana Propiedades cuando se abre
 // el modelo en el diseñador.
