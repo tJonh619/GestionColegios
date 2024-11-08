@@ -1,42 +1,39 @@
 ﻿@model GestionColegios.ViewModels.VMCursoAcademico
 
-<div class="tab-pane fade" id="listar-cursos" role="tabpanel" aria-labelledby="listar-cursos-tab">
-    <div class="panel panel-default mt-2">
-        <div class="panel-heading">
-            <h3 class="panel-title">Lista de Cursos Académicos</h3>
-        </div>
-        <div class="panel-body">
-            <table class="table table-bordered">
-                <thead>
+<div class="panel panel-default mt-2">
+    <div class="panel-heading">
+        <h3 class="panel-title">Lista de Cursos Académicos</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nombre del Curso</th>
+                    <th>Maestro</th>
+                    <th>Sección</th>
+                    <th>Año Académico</th>
+                    <th>Año</th>
+                    <th>Activo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var curso in Model.CursoAcademicos)
+                {
                     <tr>
-                        <th>Nombre del Curso</th>
-                        <th>Maestro</th>
-                        <th>Sección</th>
-                        <th>Año Académico</th>
-                        <th>Año</th>
-                        <th>Activo</th>
-                        <th>Acciones</th>
+                        <td>@Html.DisplayFor(modelItem => curso.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => curso.Maestro.Codigo)</td>
+                        <td>@Html.DisplayFor(modelItem => curso.Seccion.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => curso.AñoAcademico.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => curso.Año.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => curso.Activo)</td>
+                        <td>
+                            @Html.ActionLink("Editar", "Edit", new { id = curso.Id }, new { @class = "btn btn-warning" }) |
+                            @Html.ActionLink("Eliminar", "Delete", new { id = curso.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este curso?');" })
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var curso in Model.CursoAcademicos)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(modelItem => curso.Nombre)</td>
-                            <td>@Html.DisplayFor(modelItem => curso.Maestro.Codigo)</td>
-                            <td>@Html.DisplayFor(modelItem => curso.Seccion.Nombre)</td>
-                            <td>@Html.DisplayFor(modelItem => curso.AñoAcademico.Nombre)</td>
-                            <td>@Html.DisplayFor(modelItem => curso.Año.Id)</td>
-                            <td>@Html.DisplayFor(modelItem => curso.Activo)</td>
-                            <td>
-                                @Html.ActionLink("Editar", "Edit", new { id = curso.Id }, new { @class = "btn btn-warning" }) |
-                                @Html.ActionLink("Eliminar", "Delete", new { id = curso.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este curso?');" })
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
-

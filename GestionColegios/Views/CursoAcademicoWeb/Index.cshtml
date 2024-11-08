@@ -10,16 +10,20 @@
     <!-- Tabs -->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="listar-cursos-tab" data-bs-toggle="tab" data-bs-target="#listar-cursos" type="button" role="tab" aria-controls="listar-cursos" aria-selected="false">Listar Cursos</button>
+            <button class="nav-link active" id="listar-cursos-tab" data-bs-toggle="tab" data-bs-target="#listar-cursos" type="button" role="tab" aria-controls="listar-cursos" aria-selected="false">Listar Cursos</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="agregar-curso-tab" data-bs-toggle="tab" data-bs-target="#agregar-curso" type="button" role="tab" aria-controls="agregar-curso" aria-selected="true">Agregar Curso</button>
+            <button class="nav-link " id="agregar-curso-tab" data-bs-toggle="tab" data-bs-target="#agregar-curso" type="button" role="tab" aria-controls="agregar-curso" aria-selected="true">Agregar Curso</button>
         </li>
     </ul>
 
     <!-- Tab Content -->
     <div class="tab-content" id="myTabContent">
-        @Html.Partial("_ListarCursos", Model)
-        @Html.Partial("_AgregarCursos", Model)
+        <div class="tab-pane fade  show active" id="listar-cursos" role="tabpanel" aria-labelledby="listar-cursos-tab">
+            @Html.Partial("_ListarCursos", Model)
+        </div>
+        <div class="tab-pane fade" id="agregar-curso" role="tabpanel" aria-labelledby="agregar-curso-tab">
+            @Html.Partial("_AgregarCursos", Model)
+        </div>
     </div>
 </div>

@@ -16,7 +16,7 @@
 
 <div class="row mt-2">
     <div class="col-md-12">
-        @using (Html.BeginForm((ViewBag.EsEdicion ?? false) ? "Edit" : "Create", "CursoAcademicoWeb", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
+        @using (Html.BeginForm((ViewBag.EsEdicion ? "Edit" : "Create", "CursoAcademicoWeb", FormMethod.Post)))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.CursoAcademico.Id)
@@ -83,7 +83,7 @@
                     <div class="form-group mb-3">
                         <label for="AñoId">Año</label>
                         @Html.DropDownListFor(m => m.CursoAcademico.AñoId,
-                            new SelectList(Model.Años, "Id", "Id", Model.CursoAcademico.AñoId),
+                            new SelectList(Model.Años, "Id", "Nombre", Model.CursoAcademico.AñoId),
                             "Seleccione un año",
                             ObtenerAtributos(new Dictionary<string, object> {
                                 { "class", "form-control" }

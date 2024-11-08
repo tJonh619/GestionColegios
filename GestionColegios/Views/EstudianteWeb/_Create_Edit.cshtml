@@ -26,6 +26,18 @@
                         <label class="m-md-1" style="color:white">Información Personal</label>
                     </div>
 
+                    <!-- Codigo -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="Codigo Estudiantil">Codigo Estudiantil</label>
+                        @Html.TextBoxFor(model => model.Estudiante.CodigoEstudiante,
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" },
+                                { "placeholder", "Ingrese el codigo de estudiante" },
+                                { "required", "required" }
+                            }, esSoloLectura))
+                        @Html.ValidationMessageFor(model => model.Estudiante.CodigoEstudiante, "", new { @class = "text-danger" })
+                    </div>
+
                     <!-- Nombres -->
                     <div class="form-group mb-3 has-error">
                         <label for="Nombres">Nombres</label>
@@ -60,18 +72,6 @@
                                 { "required", "required" }
                             }, esSoloLectura))
                         @Html.ValidationMessageFor(model => model.Estudiante.FechaNacimiento, "", new { @class = "text-danger" })
-                    </div>
-
-                    <!-- Edad -->
-                    <div class="form-group mb-3 has-error">
-                        <label for="Edad">Edad</label>
-                        @Html.TextBoxFor(model => model.Estudiante.Edad,
-                            ObtenerAtributos(new Dictionary<string, object> {
-                                { "class", "form-control" },
-                                { "placeholder", "Ingrese la edad" },
-                                { "required", "required" }
-                            }, esSoloLectura))
-                        @Html.ValidationMessageFor(model => model.Estudiante.Edad, "", new { @class = "text-danger" })
                     </div>
 
                     <!-- Sexo -->
