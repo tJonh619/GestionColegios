@@ -62,6 +62,19 @@
                         @Html.ValidationMessageFor(model => model.Estudiante.Apellidos, "", new { @class = "text-danger" })
                     </div>
 
+                    <!-- Barrios -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="Apellidos">Barrio</label>
+                        @Html.TextBoxFor(model => model.Estudiante.Barrio,
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" },
+                                { "placeholder", "Ingrese los apellidos" },
+                                { "required", "required" }
+                            }, esSoloLectura))
+                        @Html.ValidationMessageFor(model => model.Estudiante.Barrio, "", new { @class = "text-danger" })
+                    </div>
+
+
                     <!-- Fecha de nacimiento -->
                     <div class="form-group mb-3 has-error">
                         <label for="FechaNacimiento">Fecha de Nacimiento</label>

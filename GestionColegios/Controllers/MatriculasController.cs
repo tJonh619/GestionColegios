@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using GestionColegios.Models;
+using GestionColegios.ViewModels;
 
 namespace GestionColegios.Controllers
 {
@@ -19,6 +20,8 @@ namespace GestionColegios.Controllers
         {
             var matriculas = db.Matriculas.Include(m => m.Estudiante).Include(m => m.Tutor).Include(m => m.Periodos).Include(m => m.AñoAcademico);
             return View(matriculas.ToList());
+
+
         }
 
         // GET: Matriculas/Details/5
@@ -83,7 +86,7 @@ namespace GestionColegios.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Codigo,Descripcion,Continuidad,Traslado,Repitente,FechaMatricula,FechaModificacion,Activo,EstudianteId,TutorId,PeriodosId,AñoAcademicoId,Aprobado")] Matricula matricula)
+        public ActionResult Create([Bind(Include = "Id,Codigo,Descripcion,Continuidad,Traslado,Repitente,FechaMatricula,FechaModificacion,Activo,EstudianteId,TutorId,PeriodosId,AñoAcademicoId,Aprobado,Grado")] Matricula matricula)
         {
             if (ModelState.IsValid)
             {
@@ -126,7 +129,7 @@ namespace GestionColegios.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Codigo,Descripcion,Continuidad,Traslado,Repitente,FechaMatricula,FechaModificacion,Activo,EstudianteId,TutorId,PeriodosId,AñoAcademicoId,Aprobado")] Matricula matricula)
+        public ActionResult Edit([Bind(Include = "Id,Codigo,Descripcion,Continuidad,Traslado,Repitente,FechaMatricula,FechaModificacion,Activo,EstudianteId,TutorId,PeriodosId,AñoAcademicoId,Aprobad,Grado")] Matricula matricula)
         {
             if (ModelState.IsValid)
             {
@@ -208,6 +211,69 @@ namespace GestionColegios.Controllers
 
             return View("Create", matricula); // Usamos la misma vista de Create pero pasamos el modelo existente
         }
+
+        public ActionResult ImprimirMatricula(int? AñoAcademicoId, DateTime? FechaInicio, DateTime? FechaFin)
+        {
+            // Obtener todas las matrículas, aplicando filtros si son proporcionados
+            var matriculas = db.Matriculas.Include(m => m.Estudiante)
+                                          .Include(m => m.Tutor)
+                                          .Include(m => m.Periodos)
+                                          .Include(m => m.AñoAcademico)
+                                          .AsQueryable(); // Usamos IQueryable para permitir filtrado dinámico
+
+            // Filtrar por Año Académico si se ha seleccionado
+            if (AñoAcademicoId.HasValue)
+            {
+                matriculas = matriculas.Where(m => m.AñoAcademicoId == AñoAcademicoId.Value);
+            }
+
+            // Filtrar por Fecha de Inicio si se ha proporcionado
+            if (FechaInicio.HasValue)
+            {
+                // Asegurarse de comparar solo la fecha, sin considerar las horas
+                var inicioSinHora = FechaInicio.Value.Date;
+                matriculas = matriculas.Where(m => m.FechaMatricula >= inicioSinHora);
+            }
+
+            // Filtrar por Fecha de Fin si se ha proporcionado
+            if (FechaFin.HasValue)
+            {
+                // Asegurarse de comparar solo la fecha, sin considerar las horas
+                var finSinHora = FechaFin.Value.Date.AddDays(1).AddTicks(-1); // Para incluir todo el día de la fecha final
+                matriculas = matriculas.Where(m => m.FechaMatricula <= finSinHora);
+            }
+
+            // Obtener la lista de matrículas filtradas
+            var matriculasList = matriculas.ToList();
+
+            // Obtener el nombre del Año Académico seleccionado
+            string añoAcademicoNombre = null;
+            if (AñoAcademicoId.HasValue)
+            {
+                var añoAcademico = db.AñosAcademicos.FirstOrDefault(a => a.Id == AñoAcademicoId.Value);
+                if (añoAcademico != null)
+                {
+                    añoAcademicoNombre = añoAcademico.Nombre; // Asumiendo que "Nombre" es la propiedad que contiene el nombre del año
+                }
+            }
+
+            // Pasar los datos de los años académicos al ViewBag para el dropdown
+            ViewBag.AñosAcademicos = db.AñosAcademicos.ToList();
+
+            // Pasar el nombre del Año Académico seleccionado al ViewBag
+            ViewBag.AñoAcademicoNombre = añoAcademicoNombre;
+
+            // Pasar las matrículas filtradas al modelo para la vista
+            var viewModel = new VMMatricula
+            {
+                Matriculas = matriculasList
+            };
+
+            return View(viewModel);
+        }
+
+
+
 
 
         protected override void Dispose(bool disposing)
