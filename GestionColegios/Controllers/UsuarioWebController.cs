@@ -372,6 +372,8 @@ namespace GestionColegios.Controllers
                 permisoExistente.Activo = model.Permiso.Activo;
                 permisoExistente.RolId = model.Permiso.RolId;
 
+                
+
                 db.Entry(permisoExistente).State = EntityState.Modified;
 
                 try

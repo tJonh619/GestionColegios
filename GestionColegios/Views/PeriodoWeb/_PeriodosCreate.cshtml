@@ -20,78 +20,90 @@
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.Periodo.Id)
 
-            <div class="row">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                <div class="col-md-6 card">
-                    <div class="row card" style="background-color: #001c7d">
-                        <label class="m-md-1" style="color:white">
-                            <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información del Periodo
-                        </label>
-                    </div>
-
-                    <!-- Nombre del Periodo -->
-                    <div class="form-group mb-3">
-                        <label for="Nombre">Nombre del Periodo</label>
-                        @Html.TextBoxFor(model => model.Periodo.Nombre,
-                            ObtenerAtributos(new Dictionary<string, object> {
-                                { "class", "form-control" },
-                                { "placeholder", "Ingrese el nombre del periodo" }
-                            }, esSoloLectura))
-                        @Html.ValidationMessageFor(model => model.Periodo.Nombre, "", new { @class = "text-danger" })
-                    </div>
-
-                    <!-- Número del Periodo -->
-                    <div class="form-group mb-3">
-                        <label for="Numero">Número del Periodo</label>
-                        @Html.TextBoxFor(model => model.Periodo.Numero,
-                            ObtenerAtributos(new Dictionary<string, object> {
-                                { "class", "form-control" },
-                                { "placeholder", "Ingrese el número del periodo" }
-                            }, esSoloLectura))
-                        @Html.ValidationMessageFor(model => model.Periodo.Numero, "", new { @class = "text-danger" })
-                    </div>
-
-                    <!-- Año Académico -->
-                    <div class="form-group mb-3">
-                        <label for="AñoId">Año Académico</label>
-                        @Html.DropDownListFor(model => model.Periodo.AñoId,
-                            new SelectList(Model.Años, "Id", "Nombre", Model.Periodo.AñoId),
-                            "Seleccione un año",
-                            ObtenerAtributos(new Dictionary<string, object> {
-                                { "class", "form-control" }
-                            }, esSoloLectura))
-                        @Html.ValidationMessageFor(model => model.Periodo.AñoId, "", new { @class = "text-danger" })
-                    </div>
+            <div class="col-md-6 card">
+                <div class="row card" style="background-color: #001c7d">
+                    <label class="m-md-1" style="color:white">
+                        <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información del Periodo
+                    </label>
                 </div>
 
-                <!-- Botones de Acción -->
-                <div class="form-group col-md-2 mt-4">
-                    <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
-                            style="@(ViewBag.EsEdicion ? "" : "display:none;")"
-                            onclick="activateEdit()">
-                        Editar
-                    </button>
+                <!-- Nombre del Periodo -->
+                <div class="form-group mb-3">
+                    <label for="Nombre">Nombre del Periodo</label>
+                    @Html.TextBoxFor(model => model.Periodo.Nombre,
+                        ObtenerAtributos(new Dictionary<string, object> {
+                            { "class", "form-control" },
+                            { "placeholder", "Ingrese el nombre del periodo" }
+                        }, esSoloLectura))
+                    @Html.ValidationMessageFor(model => model.Periodo.Nombre, "", new { @class = "text-danger" })
+                </div>
 
-                    @if (ViewBag.EsEdicion)
-                    {
-                        <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
-                                onclick="deleteRecord()">
-                            Eliminar
-                        </button>
-                    }
+                <!-- Número del Periodo -->
+                <div class="form-group mb-3">
+                    <label for="Numero">Número del Periodo</label>
+                    @Html.TextBoxFor(model => model.Periodo.Numero,
+                        ObtenerAtributos(new Dictionary<string, object> {
+                            { "class", "form-control" },
+                            { "placeholder", "Ingrese el número del periodo" }
+                        }, esSoloLectura))
+                    @Html.ValidationMessageFor(model => model.Periodo.Numero, "", new { @class = "text-danger" })
+                </div>
 
-                    <button type="submit" id="btn-save" class="btn btn-primary m-1"
-                            style="@(ViewBag.EsEdicion ? "display:none;" : "")">
-                        @(Model.Periodo.Id == 0 ? "Registrar" : "Guardar Cambios")
-                    </button>
-
-                    <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
-                            onclick="cancelOrReturn()">
-                        Regresar
-                    </button>
+                <!-- Año Académico -->
+                <div class="form-group mb-3">
+                    <label for="AñoId">Año Académico</label>
+                    @Html.DropDownListFor(model => model.Periodo.AñoId,
+                        new SelectList(Model.Años, "Id", "Nombre", Model.Periodo.AñoId),
+                        "Seleccione un año",
+                        ObtenerAtributos(new Dictionary<string, object> {
+                            { "class", "form-control" }
+                        }, esSoloLectura))
+                    @Html.ValidationMessageFor(model => model.Periodo.AñoId, "", new { @class = "text-danger" })
                 </div>
             </div>
+
+            <!-- Fecha de nacimiento -->
+            <div class="form-group mb-3 has-error">
+                <label for="FechaNacimiento">Fecha de Nacimiento</label>
+                @Html.TextBoxFor(model => model.Periodo.FechaModificacion, "{0:yyyy-MM-dd}",
+                    ObtenerAtributos(new Dictionary<string, object> {
+                        { "class", "form-control" },
+                        { "type", "date" },
+                        { "required", "required" }
+                    }, esSoloLectura))
+                @Html.ValidationMessageFor(model => model.Periodo.FechaModificacion, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="form-group col-md-2 mt-4">
+                <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
+                        style="@(ViewBag.EsEdicion ? "" : "display:none;")"
+                        onclick="activateEdit()">
+                    Editar
+                </button>
+
+                @if (ViewBag.EsEdicion)
+                {
+                    <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
+                            onclick="deleteRecord()">
+                        Eliminar
+                    </button>
+                }
+
+                <button type="submit" id="btn-save" class="btn btn-primary m-1"
+                        style="@(ViewBag.EsEdicion ? "display:none;" : "")">
+                    @(Model.Periodo.Id == 0 ? "Registrar" : "Guardar Cambios")
+                </button>
+
+                <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
+                        onclick="cancelOrReturn()">
+                    Regresar
+                </button>
+            </div>
+        </div>
         }
     </div>
 </div>

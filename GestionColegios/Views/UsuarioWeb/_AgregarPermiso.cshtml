@@ -16,7 +16,8 @@
 <div class="tab-pane fade show active" id="permiso-create" role="tabpanel" aria-labelledby="permiso-create-tab">
     <div class="row mt-2">
         <div class="col-md-12">
-            @using (Html.BeginForm(ViewBag.EsEdicion ? "EditPermiso" : "CreatePermiso", "UsuarioWeb", FormMethod.Post, new { @id = "form-permiso" }))
+            @using (Html.BeginForm(ViewBag.EsEdicion ? "EditPermiso" : "CreatePermiso", "UsuarioWeb", FormMethod.Post,
+                new { @id = "form-permiso" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model => model.Permiso.Id) <!-- Campo oculto para el Id -->
@@ -68,6 +69,28 @@
                                 }, esSoloLectura))
                             @Html.ValidationMessageFor(model => model.Permiso.RolId, "", new { @class = "text-danger" })
                         </div>
+
+                        <!-- Campo Activo -->
+                        <div class="form-group mb-3">
+                            @Html.Label("Activo", new { @for = "Activo" })
+                            @Html.CheckBox("Activo", Model.Permiso.Activo,
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-check-input" }
+                                }, esSoloLectura))
+                            @Html.ValidationMessageFor(model => model.Permiso.Activo, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!-- Fecha -->
+                        <div class="form-group mb-3">
+                            @Html.Label("Fecha", new { @for = "Fecha" })
+                            @Html.TextBox("Fecha", Model.Permiso.FechaModificacion.ToString("yyyy-MM-dd"),
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control" },
+                                    { "type", "date" },
+                                    { "required", "required" }
+                                }, esSoloLectura))
+                            @Html.ValidationMessageFor(model => model.Permiso.FechaModificacion, "", new { @class = "text-danger" })
+                        </div>
                     </div>
 
                     <!-- Botones de Acción -->
@@ -101,8 +124,6 @@
         </div>
     </div>
 </div>
-
-
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

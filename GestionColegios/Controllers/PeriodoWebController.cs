@@ -146,7 +146,7 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(model.Periodo).State = EntityState.Modified;
+                db.Entry(model.Periodo).State = EntityState.Modified;               
                 db.SaveChanges();
                 TempData["SuccessMessage"] = "Periodo actualizado correctamente.";
                 return RedirectToAction("Index");
