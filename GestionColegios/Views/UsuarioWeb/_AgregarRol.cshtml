@@ -29,20 +29,6 @@
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-
-            <!-- Código de Rol -->
-            <div class="form-group mb-3 has-error">
-                <label for="CodigoMateria">Código de Materia</label>
-                @Html.TextBoxFor(model => model.Rol.Codigo,
-                    ObtenerAtributos(new Dictionary<string, object> {
-                        { "class", "form-control" },
-                        { "placeholder", "Ingrese el código de la materia" },
-                        { "required", "required" }
-                    }, esSoloLectura))
-                @Html.ValidationMessageFor(model => model.Rol.Codigo, "", new { @class = "text-danger" })
-            </div>
-
-
             <!-- Nombre del Rol -->
             <div class="form-group">
                 @Html.LabelFor(m => m.Rol.Nombre, new { @class = "control-label col-md-2" })
@@ -69,24 +55,6 @@
                         }, esSoloLectura))
                     @Html.ValidationMessageFor(m => m.Rol.Descripcion, "", new { @class = "text-danger" })
                 </div>
-            </div>
-
-            <!-- Mostrar Fecha de Modificación solo en la edición -->
-            if (ViewBag.EsEdicion != null && ViewBag.EsEdicion.Equals(true))
-            {
-                <div class="form-group mb-3">
-                    <label for="FechaModificacion">Fecha de Modificación</label>
-                    <input type="text" id="FechaModificacion" class="form-control" value="@Model.Rol.FechaModificacion.ToString("dd/MM/yyyy HH:mm:ss")" readonly />
-                </div>
-            }
-
-
-            <!-- Campo Activo -->
-            <!-- Activo -->
-            <div class="form-group mb-3">
-                <label for="Activo">¿Está Activo?</label>
-                @Html.CheckBoxFor(model => model.Rol.Activo, new { @class = "form-check-input" })
-                @Html.ValidationMessageFor(model => model.Rol.Activo, "", new { @class = "text-danger" })
             </div>
 
             <!-- Botones -->

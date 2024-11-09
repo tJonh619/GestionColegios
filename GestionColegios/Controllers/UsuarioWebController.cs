@@ -330,7 +330,7 @@ namespace GestionColegios.Controllers
                 return RedirectToAction("Index");
             }
 
-            model.Roles = db.Roles.ToList(); // Recargar roles si falla la validación
+            model.Permisos = db.Permisos.ToList(); // Recargar permisos si falla la validación
             TempData["ErrorMessage"] = "Error al guardar el permiso. Intente de nuevo.";
             return View("_AgregarPermiso", model);
         }
