@@ -121,6 +121,7 @@ namespace GestionColegios.Controllers
                 // Actualiza los datos del estudiante
                 estudiante.Nombres = model.Estudiante.Nombres;
                 estudiante.Apellidos = model.Estudiante.Apellidos;
+                estudiante.Barrio = model.Estudiante.Barrio;
                 estudiante.FechaNacimiento = model.Estudiante.FechaNacimiento;
                 estudiante.Edad = model.Estudiante.Edad;
                 estudiante.Sexo = model.Estudiante.Sexo;

@@ -35,6 +35,7 @@ namespace GestionColegios.Models
         public System.DateTime FechaModificacion { get; set; }
         public bool Activo { get; set; }
         public int TutorId { get; set; }
+        public string Barrio { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CursoAcademicoEstudiante> CursoAcademicoEstudiante { get; set; }

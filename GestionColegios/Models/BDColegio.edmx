@@ -340,6 +340,7 @@
     <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
     <Property Name="Activo" Type="bit" Nullable="false" />
     <Property Name="TutorId" Type="int" Nullable="false" />
+    <Property Name="Barrio" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="Materias">
     <Key>
@@ -1418,6 +1419,7 @@
           <NavigationProperty Name="ControlMerienda" Relationship="BDColegio.EstudianteControlMerienda" FromRole="Estudiante" ToRole="ControlMerienda" />
           <NavigationProperty Name="Tutor" Relationship="BDColegio.TutorEstudiante" FromRole="Estudiante" ToRole="Tutor" />
           <Property Name="TutorId" Type="Int32" Nullable="false" />
+          <Property Name="Barrio" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="Materia">
           <Key>
@@ -2257,6 +2259,7 @@
           <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
           <ScalarProperty Name="Activo" ColumnName="Activo" />
           <ScalarProperty Name="TutorId" ColumnName="TutorId" />
+          <ScalarProperty Name="Barrio" ColumnName="Barrio" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -1,0 +1,169 @@
+﻿@model GestionColegios.ViewModels.VMMatricula
+
+@{
+    ViewBag.Title = "Lista de Matrículas";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header text-center" style="background-color: #4A90E2; color: white;">
+                    <h2 class="mb-0">Listado de Matrículas</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Filtros para búsqueda -->
+                    <form method="get" action="@Url.Action("ImprimirMatricula", "Matriculas")">
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="AñoAcademicoId">Año Académico</label>
+                                @Html.DropDownList("AñoAcademicoId", new SelectList(ViewBag.AñosAcademicos, "Id", "Nombre"), "Seleccione un Año", new { @class = "form-control" })
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="FechaInicio">Fecha de Inicio</label>
+                                @Html.TextBox("FechaInicio", null, new { @class = "form-control", type = "date" })
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="FechaFin">Fecha de Fin</label>
+                                @Html.TextBox("FechaFin", null, new { @class = "form-control", type = "date" })
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>&nbsp;</label>
+                                <button type="submit" class="btn btn-primary form-control">Filtrar</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Mostrar la tabla de matrículas filtradas -->
+                    @if (Model.Matriculas != null && Model.Matriculas.Any())
+                    {
+                        <div id="tablaImprimir">
+                            <!-- Encabezado que solo se mostrará en la impresión -->
+                            <div id="encabezadoImpresion" style="display:none;">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td style="width: 20%; text-align: left;">
+                                                <!-- Logo -->
+                                                <img src="@Url.Content("~/Content/Images/logo.png")" alt="Logo Colegio" style="max-width: 100px; max-height: 100px;">
+                                            </td>
+                                            <td style="width: 60%; text-align: center; font-size: 18px; font-weight: bold;">
+                                                <h3>COLEGIO FIDEL COLOMA GONZALEZ</h3>
+                                                <h4>MATRÍCULA @ViewBag.AñoAcademicoNombre</h4>
+                   
+                                            </td>
+                                            <td style="width: 20%; text-align: right;">
+                                                <!-- Fotos -->
+                                                <img src="@Url.Content("~/Content/Images/MINED.png")" alt="Foto1" style="max-width: 300px; max-height: 300px; margin-bottom: 5px;">
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+
+                            <!-- Tabla de Matrículas -->
+                            <table class="table table-striped table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Estudiante</th>
+                                        <th>Codigo Estudiantil</th>
+                                        <th>Fecha de Nacimiento</th>
+                                        <th>Barrio</th>
+                                        <th>Dirección</th>
+                                        <th>Teléfono</th>
+                                        <th>Tutor</th>
+                                        <th>Cédula Tutor</th>
+                                        <th>Continuidad/Traslado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var matricula in Model.Matriculas)
+                                    {
+                                        <tr>
+                                            <td>@matricula.Estudiante.Nombres @matricula.Estudiante.Apellidos</td>
+                                            <th>@matricula.Estudiante.CodigoEstudiante</th>
+                                            <td>@matricula.Estudiante.FechaNacimiento.ToString("yyyy-MM-dd")</td>
+                                            <td>@matricula.Estudiante.Barrio</td>
+                                            <td>@matricula.Estudiante.Direccion</td>
+                                            <td>@matricula.Estudiante.Tutor.Celular</td>
+                                            <td>@matricula.Tutor.Nombres @matricula.Tutor.Apellidos</td>
+                                            <td>@matricula.Tutor.Cedula</td>
+                                            <td>
+                                                @if (matricula.Continuidad)
+                                                {
+                                                    <span>Continuidad</span>
+                                                }
+                                                else if (matricula.Traslado)
+                                                {
+                                                    <span>Traslado</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Otro</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No hay matrículas registradas con los filtros seleccionados.</p>
+                    }
+
+                    <!-- Botón para imprimir la tabla -->
+                    <div class="text-center mt-4">
+                        <button class="btn btn-success" onclick="imprimirTabla()">Imprimir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function imprimirTabla() {
+        // Crear una nueva ventana
+        var ventanaImpresion = window.open('', '', 'height=800,width=800');
+
+        // Obtener el contenido de la tabla
+        var contenidoTabla = document.getElementById("tablaImprimir").innerHTML;
+
+        // Obtener el encabezado que solo debe aparecer al imprimir
+        var encabezadoImpresion = document.getElementById("encabezadoImpresion").innerHTML;
+
+        // Ingresar el contenido en la ventana
+        ventanaImpresion.document.write('<html><head><title>Listado de Matrículas</title>');
+
+        // Incluir estilos para la impresión
+        ventanaImpresion.document.write('<style>');
+        ventanaImpresion.document.write('body { font-family: Arial, sans-serif; }');
+        ventanaImpresion.document.write('table { width: 100%; border-collapse: collapse; }');
+        ventanaImpresion.document.write('th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }');
+        ventanaImpresion.document.write('th { background-color: #f2f2f2; }');
+
+        // Para la impresión en formato horizontal (landscape)
+        ventanaImpresion.document.write('media print {');
+        ventanaImpresion.document.write(' page { size: landscape; margin: 20mm; }');
+        ventanaImpresion.document.write('  body { transform: rotate(90deg); transform-origin: top left; margin: 0; padding: 0; width: 100%; height: 100%; }');
+        ventanaImpresion.document.write('  table { width: 100%; }');
+        ventanaImpresion.document.write('}');
+
+        ventanaImpresion.document.write('</style>');
+        ventanaImpresion.document.write('</head><body>');
+
+        // Insertar el encabezado solo en la impresión
+        ventanaImpresion.document.write(encabezadoImpresion);
+
+        // Insertar la tabla de matrículas
+        ventanaImpresion.document.write(contenidoTabla);
+
+        ventanaImpresion.document.write('</body></html>');
+
+        // Imprimir la ventana y luego cerrarla
+        ventanaImpresion.document.close();
+        ventanaImpresion.print();
+    }
+</script>
