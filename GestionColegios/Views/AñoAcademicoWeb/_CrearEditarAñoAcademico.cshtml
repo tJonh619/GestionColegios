@@ -19,6 +19,7 @@
             @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "AñoAcademicoWeb", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.AñoAcademico.Id)
 
                 <div class="row">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -41,13 +42,13 @@
                             @Html.ValidationMessageFor(model => model.AñoAcademico.Nombre, "", new { @class = "text-danger" })
                         </div>
 
-                        <!-- Descripción -->
+                        <!-- Nombre del Año Académico -->
                         <div class="form-group mb-3">
-                            <label for="Descripcion">Descripción</label>
-                            @Html.TextAreaFor(model => model.AñoAcademico.Descripcion,
+                            <label for="Descripción">Descripción del Año Académico</label>
+                            @Html.TextBoxFor(model => model.AñoAcademico.Descripcion,
                                 ObtenerAtributos(new Dictionary<string, object> {
                                     { "class", "form-control" },
-                                    { "placeholder", "Ingrese una descripción" }
+                                    { "placeholder", "Ingrese la descripcion del año académico" }
                                 }, esSoloLectura))
                             @Html.ValidationMessageFor(model => model.AñoAcademico.Descripcion, "", new { @class = "text-danger" })
                         </div>

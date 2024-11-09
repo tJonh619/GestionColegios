@@ -74,6 +74,22 @@
                             }, esSoloLectura))
                         @Html.ValidationMessageFor(model => model.Materia.AñoAcademicoId, "", new { @class = "text-danger" })
                     </div>
+
+                    <!-- Mostrar Fecha de Modificación solo en la edición -->
+                    @if (ViewBag.EsEdicion != null && ViewBag.EsEdicion.Equals(true))
+                    {
+                        <div class="form-group mb-3">
+                            <label for="FechaModificacion">Fecha de Modificación</label>
+                            <input type="text" id="FechaModificacion" class="form-control" value="@Model.Materia.FechaModificacion.ToString("dd/MM/yyyy HH:mm:ss")" readonly />
+                        </div>
+                    }
+
+                    <!-- Activo -->
+                    <div class="form-group mb-3">
+                        <label for="Activo">¿Está Activo?</label>
+                        @Html.CheckBoxFor(model => model.Materia.Activo, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.Materia.Activo, "", new { @class = "text-danger" })
+                    </div>
                 </div>
 
                 <!-- Botones de acción -->

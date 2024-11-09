@@ -54,6 +54,14 @@
                     @Html.ValidationMessageFor(m => m.Rol.Descripcion, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Rol.Activo, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.CheckBoxFor(m => m.Rol.Activo, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Rol.Activo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
