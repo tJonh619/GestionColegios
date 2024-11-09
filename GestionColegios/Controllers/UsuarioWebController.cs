@@ -162,9 +162,13 @@ namespace GestionColegios.Controllers
 
         public ActionResult CreateRole()
         {
-            var rol = new Rol();
+            var viewModel = new VMUsuario
+            {
+                Rol = new Rol(),
+                Roles = db.Roles.ToList()
+            };
             ViewBag.EsEdicion = false;
-            return View("_AgregarRol", rol); // Vista compartida para crear/editar roles
+            return View("_AgregarRol", viewModel); // Vista reutilizable para crear/editar
         }
 
         // POST: UsuarioWeb/CreateRole
@@ -174,6 +178,7 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.Rol.Codigo =  $"{model.Rol.Nombre.Substring(0, 4).ToUpper()}{new Random().Next(100, 999)}";
                 model.Rol.FechaModificacion = DateTime.Now;
                 model.Rol.Activo = true;
 
@@ -300,7 +305,9 @@ namespace GestionColegios.Controllers
         {
             var viewModel = new VMUsuario
             {
+
                 Permiso = new Permiso(),
+                Permisos = db.Permisos.ToList(),
                 Roles = db.Roles.ToList() // Cargar roles disponibles
             };
             ViewBag.EsEdicion = false;
@@ -316,15 +323,6 @@ namespace GestionColegios.Controllers
             {
                 model.Permiso.FechaModificacion = DateTime.Now;
                 model.Permiso.Activo = true;
-
-                // Validar la existencia del rol seleccionado
-                if (!db.Roles.Any(r => r.Id == model.Permiso.RolId))
-                {
-                    ModelState.AddModelError("RolId", "El rol seleccionado no es válido.");
-                    model.Roles = db.Roles.ToList(); // Recargar roles si ocurre error
-                    return View("_AgregarPermiso", model);
-                }
-
                 db.Permisos.Add(model.Permiso);
                 db.SaveChanges();
 

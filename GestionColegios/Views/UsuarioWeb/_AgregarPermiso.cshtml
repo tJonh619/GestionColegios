@@ -35,7 +35,7 @@
                         <!-- Nombre del Permiso -->
                         <div class="form-group mb-3">
                             @Html.Label("Nombre del Permiso", new { @for = "Nombre" })
-                            @Html.TextBox("Nombre", Model.Permiso.Nombre,
+                            @Html.TextBoxFor(m => m.Permiso.Nombre,
                                 ObtenerAtributos(new Dictionary<string, object> {
                                     { "class", "form-control" },
                                     { "placeholder", "Introduce el nombre del permiso" },
@@ -47,7 +47,7 @@
                         <!-- Descripción del Permiso -->
                         <div class="form-group mb-3">
                             @Html.Label("Descripción", new { @for = "Descripcion" })
-                            @Html.TextBox("Descripcion", Model.Permiso.Descripcion,
+                            @Html.TextBoxFor(m => m.Permiso.Descripcion,
                                 ObtenerAtributos(new Dictionary<string, object> {
                                     { "class", "form-control" },
                                     { "placeholder", "Introduce la descripción del permiso" },
@@ -59,7 +59,7 @@
                         <!-- Selección de Rol -->
                         <div class="form-group mb-3">
                             @Html.Label("Rol Asociado", new { @for = "RolId" })
-                            @Html.DropDownList("RolId",
+                            @Html.DropDownListFor(m => m.Permiso.RolId,
                                 new SelectList(Model.Roles, "Id", "Nombre", Model.Permiso.RolId),
                                 "Selecciona un Rol",
                                 ObtenerAtributos(new Dictionary<string, object> {
