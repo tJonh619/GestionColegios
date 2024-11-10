@@ -8,7 +8,7 @@ namespace GestionColegios.ViewModels
 {
     public class VMCalificaciones
     {
-        public List<Calificacion> Calificaciones { get; set; }
+        public List<Calificacion> Calificaciones { get; set; } = new List<Calificacion>(); // Asegúrate de que la lista esté inicializada
         public Calificacion Calificacion { get; set; }
 
         public List<Estudiante> Estudiantes { get; set; }
