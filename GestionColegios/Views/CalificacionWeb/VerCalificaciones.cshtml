@@ -35,10 +35,10 @@
                     <tbody>
                         @foreach (var materia in Model.Materias)
                         {
-                            var calificacionParcial1 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 2);
-                            var calificacionParcial2 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 3);
-                            var calificacionParcial3 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 4);
-                            var calificacionParcial4 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 5);
+                            var calificacionParcial1 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 1);
+                            var calificacionParcial2 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 2);
+                            var calificacionParcial3 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 3);
+                            var calificacionParcial4 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 4);
 
                             // Cálculo de la Nota Final con decimal?
                             decimal? notaFinal = null;
