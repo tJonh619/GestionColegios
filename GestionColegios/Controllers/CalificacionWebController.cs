@@ -29,7 +29,6 @@ namespace GestionColegios.Controllers
             return View(vm);
         }
 
-        // GET: CalificacionWeb/Create
         public ActionResult Create(int estudianteId, int parcialId = 1)
         {
             var estudiante = db.Estudiantes.Find(estudianteId);
@@ -37,6 +36,12 @@ namespace GestionColegios.Controllers
             {
                 return HttpNotFound();
             }
+
+            // Obtener los años académicos
+            var añosAcademicos = db.AñosAcademicos.ToList();  // Asegúrate de que este es el nombre correcto del modelo
+
+            // Obtener todas las materias asociadas al estudiante, no solo las de los años con calificaciones registradas
+            var materias = db.Materias.ToList();
 
             // Buscar calificaciones existentes para el parcial especificado
             var calificaciones = db.Calificaciones
@@ -46,7 +51,6 @@ namespace GestionColegios.Controllers
             // Si no existen calificaciones para el parcial especificado, inicializa una lista en blanco para cada materia
             if (!calificaciones.Any())
             {
-                var materias = db.Materias.ToList();
                 calificaciones = materias.Select(m => new Calificacion
                 {
                     EstudianteId = estudiante.Id,
@@ -59,25 +63,34 @@ namespace GestionColegios.Controllers
             {
                 Estudiante = estudiante,
                 Calificaciones = calificaciones,
-                Materias = db.Materias.ToList(),
-                Parciales = db.Parciales.ToList()
+                Materias = materias,
+                Parciales = db.Parciales.ToList(),
+                AñoAcademicos = añosAcademicos // Agregar los años académicos
             };
 
             return View(vm);
         }
 
 
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(VMCalificaciones vm)
         {
+            // Asegúrate de que vm.Calificaciones nunca sea null
+            if (vm.Calificaciones == null)
+            {
+                vm.Calificaciones = new List<Calificacion>();
+            }
+
             if (ModelState.IsValid)
             {
                 foreach (var calificacion in vm.Calificaciones)
                 {
                     if (calificacion.NCuantitativa > 0 || !string.IsNullOrEmpty(calificacion.NCualitativa))
                     {
-                        // Asegúrate de que cada calificación tiene el EstudianteId
                         calificacion.EstudianteId = vm.Estudiante.Id; // Asegúrate de establecer el ID del estudiante
                         db.Calificaciones.Add(calificacion);
                     }
@@ -99,6 +112,7 @@ namespace GestionColegios.Controllers
             CargarDatos(vm); // Asegúrate de volver a cargar los datos en caso de que haya errores
             return View(vm);
         }
+
         private void CargarDatos(VMCalificaciones vm)
         {
             vm.Estudiantes = db.Estudiantes.ToList();

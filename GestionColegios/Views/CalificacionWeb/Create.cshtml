@@ -1,25 +1,33 @@
 ﻿@model GestionColegios.ViewModels.VMCalificaciones
+@using GestionColegios.Models
 
 @{
     ViewBag.Title = "Registrar Notas";
 }
 
-<!-- Título principal -->
 <h2 class="text-center text-primary my-4">Registrar Notas para el Estudiante: @Model.Estudiante.Nombres @Model.Estudiante.Apellidos</h2>
 
-<!-- Formulario de registro de notas -->
 @using (Html.BeginForm("Create", "CalificacionWeb", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Estudiante.Id)
 
     <div class="container">
-        <!-- Card para el formulario -->
         <div class="card shadow-lg p-4">
             <div class="card-body">
+                <div class="mb-4">
+                    <label for="anioAcademico" class="form-label">Selecciona el Año Académico</label>
+                    <select id="anioAcademico" class="form-control" onchange="filterMateriasByAnio()">
+                        <option value="">Seleccionar Año Académico</option>
+                        @foreach (var anio in Model.AñoAcademicos)
+                        {
+                            <option value="@anio.Id">@anio.Nombre</option>
+                        }
+                    </select>
+                </div>
+
                 <div class="row">
                     <div class="col-12">
-                        <!-- Tabla de calificaciones -->
                         <table class="table table-responsive table-striped table-hover">
                             <thead class="bg-primary text-white">
                                 <tr>
@@ -30,55 +38,46 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for (int i = 0; i < Model.Calificaciones.Count; i++)
+                                @foreach (var materia in Model.Materias)
                                 {
-                                    var materiaNombre = Model.Materias.FirstOrDefault(m => m.Id == Model.Calificaciones[i].MateriaId)?.Nombre ?? "Materia no encontrada";
+                                    var calificacion = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id);
+                                    if (calificacion == null)
+                                    {
+                                        calificacion = new Calificacion
+                                        {
+                                            EstudianteId = Model.Estudiante.Id,
+                                            MateriaId = materia.Id,
+                                            ParcialId = 1 // Asignar el Parcial adecuado
+                                        };
+                                    }
 
-                                    <tr>
-                                        <!-- Columna de Materia -->
+                                    <tr data-anio-id="@materia.AñoAcademicoId">
                                         <td>
-                                            @Html.HiddenFor(m => Model.Calificaciones[i].MateriaId)
-                                            <strong>@materiaNombre</strong>
+                                            @Html.HiddenFor(m => calificacion.MateriaId)
+                                            <strong>@materia.Nombre</strong>
                                         </td>
 
-                                        <!-- Columna de Parcial -->
                                         <td>
-                                            @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, new { Value = "1" })
-                                            <span class="badge bg-info">Parcial I</span>
+                                            @Html.HiddenFor(m => calificacion.ParcialId)
+                                            <span class="badge bg-info">Parcial 1</span>
                                         </td>
 
-                                        <!-- Columna de Nota Cuantitativa -->
                                         <td>
-                                            @Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new
-                                            {
-                                                @class = "form-control",
-                                                type = "number",
-                                                step = "0.01",
-                                                min = "0",
-                                                max = "100",
-                                                oninput = "updateCualitativa(this, " + i + ")",
-                                                placeholder = "Ingrese la nota cuantitativa"
-                                            })
+                                            @Html.TextBoxFor(m => calificacion.NCuantitativa, new { @class = "form-control", type = "number", step = "0.01", min = "0", max = "100", oninput = "updateCualitativa(this)", placeholder = "Ingrese la nota cuantitativa" })
                                         </td>
 
-                                        <!-- Columna de Nota Cualitativa -->
                                         <td>
-                                            @Html.TextBoxFor(m => Model.Calificaciones[i].NCualitativa, new
-                                            {
-                                                @class = "form-control",
-                                                @readonly = "readonly",
-                                                placeholder = "Nota cualitativa"
-                                            })
+                                            @Html.TextBoxFor(m => calificacion.NCualitativa, new { @class = "form-control", @readonly = "readonly", placeholder = "Nota cualitativa" })
                                         </td>
                                     </tr>
                                 }
+
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Botón de guardar -->
             <div class="d-flex justify-content-center mt-4">
                 <button type="submit" class="btn btn-success btn-lg px-5 py-3">Guardar Notas</button>
             </div>
@@ -86,9 +85,8 @@
     </div>
 }
 
-<!-- Script para actualizar la nota cualitativa -->
 <script>
-    function updateCualitativa(input, index) {
+    function updateCualitativa(input) {
         var cuantitativa = parseFloat(input.value);
         var cualitativa = "";
 
@@ -103,9 +101,25 @@
         }
 
         // Actualizar la nota cualitativa
-        document.getElementsByName("Calificaciones[" + index + "].NCualitativa")[0].value = cualitativa;
+        input.closest('tr').querySelector('[name$=".NCualitativa"]').value = cualitativa;
+    }
+
+    function filterMateriasByAnio() {
+        var anioId = document.getElementById("anioAcademico").value;
+        var rows = document.querySelectorAll("table tbody tr");
+
+        rows.forEach(function (row) {
+            var materiaAnio = row.getAttribute("data-anio-id");
+
+            if (!anioId || materiaAnio == anioId) {
+                row.style.display = ""; // Mostrar la fila
+            } else {
+                row.style.display = "none"; // Ocultar la fila
+            }
+        });
     }
 </script>
+
 
 <!-- Estilos personalizados -->
 <style>
@@ -144,10 +158,10 @@
         transition: all 0.3s ease;
     }
 
-    .btn-success:hover {
-        background-color: #218838;
-        border-color: #218838;
-    }
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
 
     /* Tabla */
     .table {
@@ -155,10 +169,10 @@
         width: 100%;
     }
 
-    .table td, .table th {
-        text-align: center;
-        padding: 12px 15px;
-    }
+        .table td, .table th {
+            text-align: center;
+            padding: 12px 15px;
+        }
 
     .table-striped tbody tr:nth-child(odd) {
         background-color: #f9f9f9;
@@ -182,10 +196,10 @@
         border: 1px solid #ccc;
     }
 
-    .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
 
     /* Estilo de los badges */
     .badge {
@@ -194,9 +208,9 @@
         font-weight: bold;
     }
 
-    .badge.bg-info {
-        background-color: #17a2b8;
-    }
+        .badge.bg-info {
+            background-color: #17a2b8;
+        }
 
     /* Estilos de la fila de materia */
     td strong {
@@ -207,22 +221,24 @@
 
     /* Media Queries para adaptabilidad */
     media (max-width: 768px) {
-        h2 {
-            font-size: 1.8rem;
-        }
+        h2
 
-        .table td, .table th {
-            font-size: 0.9rem;
-        }
+    {
+        font-size: 1.8rem;
+    }
 
-        .form-control {
-            font-size: 0.9rem;
-            padding: 8px;
-        }
+    .table td, .table th {
+        font-size: 0.9rem;
+    }
 
-        .btn-success {
-            font-size: 1rem;
-            padding: 10px 20px;
-        }
+    .form-control {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .btn-success {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
     }
 </style>
