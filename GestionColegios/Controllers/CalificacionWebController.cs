@@ -30,7 +30,7 @@ namespace GestionColegios.Controllers
         }
 
         // GET: CalificacionWeb/Create
-        public ActionResult Create(int estudianteId, int parcialId = 2)
+        public ActionResult Create(int estudianteId, int parcialId = 1)
         {
             var estudiante = db.Estudiantes.Find(estudianteId);
             if (estudiante == null)
@@ -132,7 +132,7 @@ namespace GestionColegios.Controllers
             }
 
             var calificaciones = db.Calificaciones
-                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == 3)
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == 2)
                 .ToList();
 
             // Si no existen calificaciones para Parcial 2, inicializa una lista en blanco para cada materia
@@ -167,7 +167,7 @@ namespace GestionColegios.Controllers
             }
 
             var calificaciones = db.Calificaciones
-                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == 4)
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == 3)
                 .ToList();
 
             // Si no existen calificaciones para Parcial 3, inicializa una lista en blanco para cada materia
@@ -203,7 +203,7 @@ namespace GestionColegios.Controllers
             }
 
             var calificaciones = db.Calificaciones
-                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == 5)
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == 4)
                 .ToList();
 
             // Si no existen calificaciones para Parcial 4, inicializa una lista en blanco para cada materia
