@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <Import Project="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props" Condition="Exists('..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -46,10 +46,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.4\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -59,6 +59,12 @@
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.4\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.4.5.0\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.4.5.0\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -70,6 +76,9 @@
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.8.0.0\lib\net462\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -83,11 +92,17 @@
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=8.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.Metadata.8.0.1\lib\net462\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Text.Encoding.CodePages, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.8.0.0\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -197,7 +212,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AñoAcademicoWebController.cs" />
-    <Compile Include="Controllers\AñoWebController.cs" />
     <Compile Include="Controllers\CalificacionWebController.cs" />
     <Compile Include="Controllers\ConsolidadoEficienciaFisicaWebController.cs" />
     <Compile Include="Controllers\ControlMeriendasController.cs" />
@@ -213,11 +227,7 @@
     <Compile Include="Controllers\MateriaWebController.cs" />
     <Compile Include="Controllers\MatriculasController.cs" />
     <Compile Include="Controllers\PeriodoWebController.cs" />
-    <Compile Include="Controllers\PermisoWebController.cs" />
-    <Compile Include="Controllers\RolWebController.cs" />
     <Compile Include="Controllers\SeccionWebController.cs" />
-    <Compile Include="Controllers\SemestreWebController.cs" />
-    <Compile Include="Controllers\TutorWebController.cs" />
     <Compile Include="Controllers\UsuarioWebController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -260,6 +270,9 @@
       <DependentUpon>BDColegio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CursoAcademicoEstudiante.cs">
+      <DependentUpon>BDColegio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DetallePermiso.cs">
       <DependentUpon>BDColegio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EficienciaFisica.cs">
@@ -319,11 +332,15 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\VMAñosAcademicos.cs" />
     <Compile Include="ViewModels\VMAñosPeriodosSemestres.cs" />
+    <Compile Include="ViewModels\VMCalificaciones.cs" />
     <Compile Include="ViewModels\VMControlMerienda.cs" />
+    <Compile Include="ViewModels\VMCursoAcademico.cs" />
     <Compile Include="ViewModels\VMEstudiantes.cs" />
     <Compile Include="ViewModels\VMInventarioAlimento.cs" />
     <Compile Include="ViewModels\VMMaestros.cs" />
+    <Compile Include="ViewModels\VMMateria.cs" />
     <Compile Include="ViewModels\VMMatricula.cs" />
+    <Compile Include="ViewModels\VMSeccion.cs" />
     <Compile Include="ViewModels\VMTutor.cs" />
     <Compile Include="ViewModels\VMUsuario.cs" />
   </ItemGroup>
@@ -432,11 +449,6 @@
     <Content Include="Views\ConsolidadoEficienciaFisicaWeb\Details.cshtml" />
     <Content Include="Views\ConsolidadoEficienciaFisicaWeb\Edit.cshtml" />
     <Content Include="Views\ConsolidadoEficienciaFisicaWeb\Index.cshtml" />
-    <Content Include="Views\CursoAcademicoWeb\Create.cshtml" />
-    <Content Include="Views\CursoAcademicoWeb\Delete.cshtml" />
-    <Content Include="Views\CursoAcademicoWeb\Details.cshtml" />
-    <Content Include="Views\CursoAcademicoWeb\Edit.cshtml" />
-    <Content Include="Views\CursoAcademicoWeb\Index.cshtml" />
     <Content Include="Views\CursoAcademicoEstudianteWeb\Create.cshtml" />
     <Content Include="Views\CursoAcademicoEstudianteWeb\Delete.cshtml" />
     <Content Include="Views\CursoAcademicoEstudianteWeb\Details.cshtml" />
@@ -462,21 +474,11 @@
     <Content Include="Views\InventarioAlimentoWeb\Details.cshtml" />
     <Content Include="Views\InventarioAlimentoWeb\Edit.cshtml" />
     <Content Include="Views\InventarioAlimentoWeb\Index.cshtml" />
-    <Content Include="Views\MateriaWeb\Create.cshtml" />
+    <Content Include="Views\MateriaWeb\_Create.cshtml" />
     <Content Include="Views\MateriaWeb\Delete.cshtml" />
-    <Content Include="Views\MateriaWeb\Details.cshtml" />
+    <Content Include="Views\MateriaWeb\_List.cshtml" />
     <Content Include="Views\MateriaWeb\Edit.cshtml" />
     <Content Include="Views\MateriaWeb\Index.cshtml" />
-    <Content Include="Views\PermisoWeb\Create.cshtml" />
-    <Content Include="Views\PermisoWeb\Delete.cshtml" />
-    <Content Include="Views\PermisoWeb\Details.cshtml" />
-    <Content Include="Views\PermisoWeb\Edit.cshtml" />
-    <Content Include="Views\PermisoWeb\Index.cshtml" />
-    <Content Include="Views\RolWeb\Create.cshtml" />
-    <Content Include="Views\RolWeb\Delete.cshtml" />
-    <Content Include="Views\RolWeb\Details.cshtml" />
-    <Content Include="Views\RolWeb\Edit.cshtml" />
-    <Content Include="Views\RolWeb\Index.cshtml" />
     <Content Include="Views\SeccionWeb\Create.cshtml" />
     <Content Include="Views\SeccionWeb\Delete.cshtml" />
     <Content Include="Views\SeccionWeb\Details.cshtml" />
@@ -487,13 +489,7 @@
     <Content Include="Views\UsuarioWeb\Details.cshtml" />
     <Content Include="Views\UsuarioWeb\Edit.cshtml" />
     <Content Include="Views\UsuarioWeb\Index.cshtml" />
-    <Content Include="Views\TutorWeb\Create.cshtml" />
-    <Content Include="Views\TutorWeb\Delete.cshtml" />
-    <Content Include="Views\TutorWeb\Details.cshtml" />
-    <Content Include="Views\TutorWeb\Edit.cshtml" />
-    <Content Include="Views\TutorWeb\Index.cshtml" />
-    <Content Include="Views\PeriodoWeb\Create.cshtml" />
-    <Content Include="Views\PeriodoWeb\Delete.cshtml" />
+    <Content Include="Views\PeriodoWeb\Desactivar.cshtml" />
     <Content Include="Views\PeriodoWeb\Details.cshtml" />
     <Content Include="Views\PeriodoWeb\EditPeriodo.cshtml" />
     <Content Include="Views\PeriodoWeb\Index.cshtml" />
@@ -541,11 +537,30 @@
     <Content Include="Views\PeriodoWeb\_SemestresList.cshtml" />
     <Content Include="Views\PeriodoWeb\EditAño.cshtml" />
     <Content Include="Views\PeriodoWeb\EditSemestre.cshtml" />
+    <Content Include="Views\PeriodoWeb\DeleteAño.cshtml" />
+    <Content Include="Views\PeriodoWeb\DeleteSemestre.cshtml" />
+    <Content Include="Views\SeccionWeb\_ListarSecciones.cshtml" />
+    <Content Include="Views\SeccionWeb\_AgregarSecciones.cshtml" />
+    <Content Include="Views\SeccionWeb\_EditSecciones.cshtml" />
+    <Content Include="Views\CalificacionWeb\Parcial2.cshtml" />
+    <Content Include="Views\CalificacionWeb\Parcial3.cshtml" />
+    <Content Include="Views\CalificacionWeb\Parcial4.cshtml" />
+    <Content Include="Views\CalificacionWeb\SeleccionarParciales.cshtml" />
+    <Content Include="Views\CalificacionWeb\VerCalificaciones.cshtml" />
+    <Content Include="Views\ControlMeriendas\Historico.cshtml" />
+    <Content Include="Views\Shared\_NavBar.cshtml" />
+    <Content Include="Views\Shared\_SideBar.cshtml" />
+    <Content Include="Views\CursoAcademicoWeb\Create.cshtml" />
+    <Content Include="Views\CursoAcademicoWeb\Delete.cshtml" />
+    <Content Include="Views\CursoAcademicoWeb\Details.cshtml" />
+    <Content Include="Views\CursoAcademicoWeb\Edit.cshtml" />
+    <Content Include="Views\CursoAcademicoWeb\Index.cshtml" />
+    <Content Include="Views\CursoAcademicoWeb\_ListarCursos.cshtml" />
+    <Content Include="Views\CursoAcademicoWeb\_AgregarCursos.cshtml" />
+    <Content Include="Views\Matriculas\ImprimirMatricula.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\AñoWeb\" />
-    <Folder Include="Views\SemestreWeb\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -576,6 +591,10 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -609,12 +628,12 @@
     <PropertyGroup>
       <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets'))" />
   </Target>
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
   <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+  <Import Project="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets" Condition="Exists('..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

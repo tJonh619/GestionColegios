@@ -1,0 +1,30 @@
+﻿@model IEnumerable<GestionColegios.Models.Seccion>
+
+<div class="row mt-2">
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Capacidad Estudiantes</th>
+                    <th>Activo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var seccion in Model)
+                {
+                    <tr>
+                        <td>@seccion.Nombre</td>
+                        <td>@seccion.CapacidadEstudiantes</td>
+                        <td>@(seccion.Activo ? "Sí" : "No")</td>
+                        <td>
+                            <a href="@Url.Action("Edit", "SeccionWeb", new { id = seccion.Id })" class="btn btn-warning">Editar</a>
+                            <a href="@Url.Action("Delete", "SeccionWeb", new { id = seccion.Id })" class="btn btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

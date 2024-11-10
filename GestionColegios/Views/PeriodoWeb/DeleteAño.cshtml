@@ -1,0 +1,31 @@
+﻿@model GestionColegios.ViewModels.VMAñosPeriodosSemestres
+
+@{
+    ViewBag.Title = "Eliminar Año";
+}
+
+<h2>Eliminar Año</h2>
+
+<h3>¿Estás seguro de que deseas eliminar este año?</h3>
+<div>
+    <h4>Año</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Año.Nombre)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Año.Nombre)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm("DeleteAño", "PeriodoWeb", new { id = Model.Año.Id }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+            @Html.ActionLink("Regresar a la Lista", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

@@ -1,63 +1,62 @@
-﻿@model IEnumerable<GestionColegios.Models.Materia>
+﻿@model GestionColegios.ViewModels.VMMateria
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Gestionar Materias";
 }
 
-<h2>Index</h2>
+<style>
+    .tooltip {
+        display: none;
+        position: absolute;
+        background-color: #f9d6a8;
+        border: 1px solid #f0ad4e;
+        padding: 5px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CodigoMateria)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaModificacion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Activo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AñoAcademico.Nombre)
-        </th>
-        <th></th>
-    </tr>
+    .has-error {
+        position: relative;
+    }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CodigoMateria)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Descripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaModificacion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Activo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AñoAcademico.Nombre)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+        .has-error .tooltip {
+            display: block;
+        }
+</style>
 
-</table>
+<h2>Gestionar Materias</h2>
+
+<div class="container mt-1">
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="true">Lista Materias</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="crear-editar-tab" data-bs-toggle="tab" data-bs-target="#crear-editar" type="button" role="tab" aria-controls="crear-editar" aria-selected="false">Nueva Materia</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="listar" role="tabpanel" aria-labelledby="listar-tab">
+            @Html.Partial("_List")
+        </div>
+
+        <div class="tab-pane fade" id="crear-editar" role="tabpanel" aria-labelledby="crear-editar-tab">
+            @Html.Partial("_Create", Model)
+        </div>
+    </div>
+</div>

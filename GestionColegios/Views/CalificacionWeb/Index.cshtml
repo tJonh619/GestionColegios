@@ -1,93 +1,64 @@
-﻿@model IEnumerable<GestionColegios.Models.Calificacion>
+﻿@model GestionColegios.ViewModels.VMCalificaciones
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Lista de Estudiantes";
 }
 
-<h2>Index</h2>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="form-group w-25">
+            <label for="searchType" class="form-label">Buscar por:</label>
+            <select id="searchType" class="form-select">
+                <option value="nombres">Nombre Estudiante</option>
+                <option value="apellidos">Apellido Estudiante</option>
+                <option value="codigo">Código Estudiante</option>
+                <option value="direccion">Dirección</option>
+            </select>
+        </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.NParcial1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NCualitativa1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NParcial2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NCualitativa2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NParcial3)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NCualitativa3)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NParcial4)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NCualitativa4)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Activo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Estudiante.CodigoEstudiante)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Materia.CodigoMateria)
-        </th>
-        <th></th>
-    </tr>
+        <div class="form-group w-50">
+            <label for="search" class="form-label">Buscar</label>
+            <input type="text" id="search" class="form-control" placeholder="Ingrese su búsqueda..." />
+        </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.NParcial1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NCualitativa1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NParcial2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NCualitativa2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NParcial3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NCualitativa3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NParcial4)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NCualitativa4)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Activo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Estudiante.CodigoEstudiante)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Materia.CodigoMateria)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+        <div id="spinner" class="spinner-border text-primary" role="status" style="display: none;">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
 
-</table>
+    <!-- Tabla de estudiantes -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Nombres</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                @foreach (var estudiante in Model.Estudiantes)
+                {
+                    <tr>
+                        <td>@estudiante.Nombres</td>
+                        <td>@estudiante.Apellidos</td>
+                        <td class="text-center">
+                            @Html.ActionLink("Registrar Notas", "SeleccionarParciales", "CalificacionWeb", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-success me-2" })
+                            @Html.ActionLink("Pruebas de Eficiencia Física", "PruebasEficiencia", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-info" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Script para el spinner de carga (puedes añadir tu propia lógica de búsqueda)
+    $('#search').on('input', function () {
+        $('#spinner').show(); // Muestra el spinner
+        setTimeout(function() {
+            $('#spinner').hide(); // Esconde el spinner después de 1 segundo (simulando búsqueda)
+        }, 1000);
+    });
+</script>

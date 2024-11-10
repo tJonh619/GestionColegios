@@ -1,0 +1,105 @@
+﻿@model GestionColegios.ViewModels.VMCalificaciones
+
+@{
+    ViewBag.Title = "Ver Calificaciones";
+}
+
+<div class="container mt-5">
+    <!-- Título de la página -->
+    <h2 class="text-center mb-4">
+        <i class="bi bi-person-fill"></i> Calificaciones de @Model.Estudiante.Nombres @Model.Estudiante.Apellidos
+    </h2>
+
+    <!-- Tarjeta que contiene la tabla de calificaciones -->
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+            <h5 class="mb-0">Tabla de Calificaciones</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover align-middle">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Materia</th>
+                            <th>Parcial I (Cuantitativa)</th>
+                            <th>Parcial I (Cualitativa)</th>
+                            <th>Parcial II (Cuantitativa)</th>
+                            <th>Parcial II (Cualitativa)</th>
+                            <th>Parcial III (Cuantitativa)</th>
+                            <th>Parcial III (Cualitativa)</th>
+                            <th>Parcial IV (Cuantitativa)</th>
+                            <th>Parcial IV (Cualitativa)</th>
+                            <th>Nota Final</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var materia in Model.Materias)
+                        {
+                            var calificacionParcial1 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 1);
+                            var calificacionParcial2 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 2);
+                            var calificacionParcial3 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 3);
+                            var calificacionParcial4 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 4);
+
+                            // Cálculo de la Nota Final con decimal?
+                            decimal? notaFinal = null;
+                            if (calificacionParcial1 != null && calificacionParcial2 != null && calificacionParcial3 != null && calificacionParcial4 != null)
+                            {
+                                notaFinal = (calificacionParcial1.NCuantitativa + calificacionParcial2.NCuantitativa + calificacionParcial3.NCuantitativa + calificacionParcial4.NCuantitativa) / 4;
+                            }
+
+                            <tr>
+                                <td>@materia.Nombre</td>
+                                <td class="@((calificacionParcial1 == null) ? "bg-light" : "")">@((calificacionParcial1 != null) ? calificacionParcial1.NCuantitativa.ToString() : "N/A")</td>
+                                <td class="@((calificacionParcial1 == null) ? "bg-light" : "")">@((calificacionParcial1 != null) ? calificacionParcial1.NCualitativa : "N/A")</td>
+                                <td class="@((calificacionParcial2 == null) ? "bg-light" : "")">@((calificacionParcial2 != null) ? calificacionParcial2.NCuantitativa.ToString() : "N/A")</td>
+                                <td class="@((calificacionParcial2 == null) ? "bg-light" : "")">@((calificacionParcial2 != null) ? calificacionParcial2.NCualitativa : "N/A")</td>
+                                <td class="@((calificacionParcial3 == null) ? "bg-light" : "")">@((calificacionParcial3 != null) ? calificacionParcial3.NCuantitativa.ToString() : "N/A")</td>
+                                <td class="@((calificacionParcial3 == null) ? "bg-light" : "")">@((calificacionParcial3 != null) ? calificacionParcial3.NCualitativa : "N/A")</td>
+                                <td class="@((calificacionParcial4 == null) ? "bg-light" : "")">@((calificacionParcial4 != null) ? calificacionParcial4.NCuantitativa.ToString() : "N/A")</td>
+                                <td class="@((calificacionParcial4 == null) ? "bg-light" : "")">@((calificacionParcial4 != null) ? calificacionParcial4.NCualitativa : "N/A")</td>
+                                <td>@(notaFinal.HasValue ? notaFinal.Value.ToString("0.00") : "N/A")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Iconos Bootstrap para mostrar íconos junto al título -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
+
+<style>
+    /* Estilo para las celdas N/A */
+    .bg-light {
+        background-color: #f8d7da !important; /* Fondo para celdas con "N/A" */
+        color: #721c24;
+    }
+
+    /* Estilo para las filas al pasar el ratón por encima */
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+
+    /* Alineación de las celdas */
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    /* Estilo para las filas de la tabla */
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table-bordered {
+        border: 1px solid #ddd;
+    }
+
+    /* Títulos de la tabla */
+    .thead-dark th {
+        background-color: #343a40;
+        color: white;
+    }
+</style>

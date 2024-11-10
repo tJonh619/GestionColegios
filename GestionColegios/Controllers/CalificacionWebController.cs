@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using GestionColegios.Models;
+using GestionColegios.ViewModels;
 
 namespace GestionColegios.Controllers
 {
@@ -17,112 +19,255 @@ namespace GestionColegios.Controllers
         // GET: CalificacionWeb
         public ActionResult Index()
         {
-            var calificaciones = db.Calificaciones.Include(c => c.Estudiante).Include(c => c.Materia);
-            return View(calificaciones.ToList());
+            var vm = new VMCalificaciones
+            {
+                Calificaciones = db.Calificaciones.Include(c => c.Estudiante).Include(c => c.Materia).ToList(),
+                Estudiantes = db.Estudiantes.ToList(),
+                Materias = db.Materias.ToList(),
+                Parciales = db.Parciales.ToList() // Asegúrate de tener una entidad Parcial
+            };
+            return View(vm);
         }
 
-        // GET: CalificacionWeb/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Create(int estudianteId, int parcialId = 1)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Calificacion calificacion = db.Calificaciones.Find(id);
-            if (calificacion == null)
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
             {
                 return HttpNotFound();
             }
-            return View(calificacion);
+
+            // Obtener los años académicos
+            var añosAcademicos = db.AñosAcademicos.ToList();  // Asegúrate de que este es el nombre correcto del modelo
+
+            // Obtener todas las materias asociadas al estudiante, no solo las de los años con calificaciones registradas
+            var materias = db.Materias.ToList();
+
+            // Buscar calificaciones existentes para el parcial especificado
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .ToList();
+
+            // Si no existen calificaciones para el parcial especificado, inicializa una lista en blanco para cada materia
+            if (!calificaciones.Any())
+            {
+                calificaciones = materias.Select(m => new Calificacion
+                {
+                    EstudianteId = estudiante.Id,
+                    MateriaId = m.Id,
+                    ParcialId = parcialId // Asignar el parcial proporcionado
+                }).ToList();
+            }
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Calificaciones = calificaciones,
+                Materias = materias,
+                Parciales = db.Parciales.ToList(),
+                AñoAcademicos = añosAcademicos // Agregar los años académicos
+            };
+
+            return View(vm);
         }
 
-        // GET: CalificacionWeb/Create
-        public ActionResult Create()
-        {
-            ViewBag.EstudianteId = new SelectList(db.Estudiantes, "Id", "CodigoEstudiante");
-            ViewBag.MateriaId = new SelectList(db.Materias, "Id", "CodigoMateria");
-            return View();
-        }
 
-        // POST: CalificacionWeb/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,NParcial1,NCualitativa1,NParcial2,NCualitativa2,NParcial3,NCualitativa3,NParcial4,NCualitativa4,Activo,EstudianteId,MateriaId")] Calificacion calificacion)
+        public ActionResult Create(VMCalificaciones vm)
         {
+            // Asegúrate de que vm.Calificaciones nunca sea null
+            if (vm.Calificaciones == null)
+            {
+                vm.Calificaciones = new List<Calificacion>();
+            }
+
             if (ModelState.IsValid)
             {
-                db.Calificaciones.Add(calificacion);
+                foreach (var calificacion in vm.Calificaciones)
+                {
+                    if (calificacion.NCuantitativa > 0 || !string.IsNullOrEmpty(calificacion.NCualitativa))
+                    {
+                        calificacion.EstudianteId = vm.Estudiante.Id; // Asegúrate de establecer el ID del estudiante
+                        db.Calificaciones.Add(calificacion);
+                    }
+                }
+
+                // Guardar cambios en la base de datos
                 db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Calificaciones registradas exitosamente.";
                 return RedirectToAction("Index");
             }
+            else
+            {
+                // Log de errores
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                // Puedes manejar los errores aquí, por ejemplo, guardarlos en el registro
+            }
 
-            ViewBag.EstudianteId = new SelectList(db.Estudiantes, "Id", "CodigoEstudiante", calificacion.EstudianteId);
-            ViewBag.MateriaId = new SelectList(db.Materias, "Id", "CodigoMateria", calificacion.MateriaId);
-            return View(calificacion);
+            CargarDatos(vm); // Asegúrate de volver a cargar los datos en caso de que haya errores
+            return View(vm);
         }
 
-        // GET: CalificacionWeb/Edit/5
-        public ActionResult Edit(int? id)
+        private void CargarDatos(VMCalificaciones vm)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Calificacion calificacion = db.Calificaciones.Find(id);
-            if (calificacion == null)
+            vm.Estudiantes = db.Estudiantes.ToList();
+            vm.Materias = db.Materias.ToList();
+            vm.Parciales = db.Parciales.ToList();
+        }
+
+        public ActionResult SeleccionarParciales(int estudianteId)
+        {
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.EstudianteId = new SelectList(db.Estudiantes, "Id", "CodigoEstudiante", calificacion.EstudianteId);
-            ViewBag.MateriaId = new SelectList(db.Materias, "Id", "CodigoMateria", calificacion.MateriaId);
-            return View(calificacion);
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Parciales = db.Parciales.ToList() // Asegúrate de tener la lista de parciales
+            };
+
+            return View(vm); // Retorna el modelo adecuado a la vista
         }
 
-        // POST: CalificacionWeb/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,NParcial1,NCualitativa1,NParcial2,NCualitativa2,NParcial3,NCualitativa3,NParcial4,NCualitativa4,Activo,EstudianteId,MateriaId")] Calificacion calificacion)
+        public ActionResult Parcial2(int estudianteId)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(calificacion).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.EstudianteId = new SelectList(db.Estudiantes, "Id", "CodigoEstudiante", calificacion.EstudianteId);
-            ViewBag.MateriaId = new SelectList(db.Materias, "Id", "CodigoMateria", calificacion.MateriaId);
-            return View(calificacion);
-        }
-
-        // GET: CalificacionWeb/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Calificacion calificacion = db.Calificaciones.Find(id);
-            if (calificacion == null)
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
             {
                 return HttpNotFound();
             }
-            return View(calificacion);
+
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == 2)
+                .ToList();
+
+            // Si no existen calificaciones para Parcial 2, inicializa una lista en blanco para cada materia
+            if (!calificaciones.Any())
+            {
+                var materias = db.Materias.ToList();
+                calificaciones = materias.Select(m => new Calificacion
+                {
+                    EstudianteId = estudiante.Id,
+                    MateriaId = m.Id,
+                    ParcialId = 3
+                }).ToList();
+            }
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Materias = db.Materias.ToList(),
+                Calificaciones = calificaciones,
+                Parciales = db.Parciales.ToList()
+            };
+
+            return View(vm);
         }
 
-        // POST: CalificacionWeb/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Parcial3(int estudianteId)
         {
-            Calificacion calificacion = db.Calificaciones.Find(id);
-            db.Calificaciones.Remove(calificacion);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
+            {
+                return HttpNotFound();
+            }
+
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == 3)
+                .ToList();
+
+            // Si no existen calificaciones para Parcial 3, inicializa una lista en blanco para cada materia
+            if (!calificaciones.Any())
+            {
+                var materias = db.Materias.ToList();
+                calificaciones = materias.Select(m => new Calificacion
+                {
+                    EstudianteId = estudiante.Id,
+                    MateriaId = m.Id,
+                    ParcialId = 4
+                }).ToList();
+            }
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Materias = db.Materias.ToList(),
+                Calificaciones = calificaciones,
+                Parciales = db.Parciales.ToList()
+            };
+
+            return View(vm);
         }
+
+
+        public ActionResult Parcial4(int estudianteId)
+        {
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
+            {
+                return HttpNotFound();
+            }
+
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == 4)
+                .ToList();
+
+            // Si no existen calificaciones para Parcial 4, inicializa una lista en blanco para cada materia
+            if (!calificaciones.Any())
+            {
+                var materias = db.Materias.ToList();
+                calificaciones = materias.Select(m => new Calificacion
+                {
+                    EstudianteId = estudiante.Id,
+                    MateriaId = m.Id,
+                    ParcialId = 5
+                }).ToList();
+            }
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Materias = db.Materias.ToList(),
+                Calificaciones = calificaciones,
+                Parciales = db.Parciales.ToList()
+            };
+
+            return View(vm);
+        }
+
+        public ActionResult VerCalificaciones(int estudianteId)
+        {
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Obtener todas las calificaciones del estudiante
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudianteId)
+                .Include(c => c.Materia) // Asegúrate de que Materia está incluido para acceder a su nombre
+                .ToList();
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Calificaciones = calificaciones,
+                Materias = db.Materias.ToList(),
+                Parciales = db.Parciales.ToList()
+            };
+
+            return View(vm);
+        }
+
 
         protected override void Dispose(bool disposing)
         {

@@ -1,69 +1,29 @@
-﻿@model IEnumerable<GestionColegios.Models.CursoAcademico>
+﻿@model GestionColegios.ViewModels.VMCursoAcademico
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Gestión de Cursos Académicos";
 }
 
-<h2>Index</h2>
+<h2>Gestión de Cursos Académicos</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Año)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaModificacion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Activo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Maestro.Codigo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Seccion.Nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AñoAcademico.Nombre)
-        </th>
-        <th></th>
-    </tr>
+<div class="container mt-1">
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="listar-cursos-tab" data-bs-toggle="tab" data-bs-target="#listar-cursos" type="button" role="tab" aria-controls="listar-cursos" aria-selected="false">Listar Cursos</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link " id="agregar-curso-tab" data-bs-toggle="tab" data-bs-target="#agregar-curso" type="button" role="tab" aria-controls="agregar-curso" aria-selected="true">Agregar Curso</button>
+        </li>
+    </ul>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Año)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaModificacion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Activo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Maestro.Codigo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Seccion.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AñoAcademico.Nombre)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
+    <!-- Tab Content -->
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade  show active" id="listar-cursos" role="tabpanel" aria-labelledby="listar-cursos-tab">
+            @Html.Partial("_ListarCursos", Model)
+        </div>
+        <div class="tab-pane fade" id="agregar-curso" role="tabpanel" aria-labelledby="agregar-curso-tab">
+            @Html.Partial("_AgregarCursos", Model)
+        </div>
+    </div>
+</div>

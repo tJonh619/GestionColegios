@@ -8,39 +8,49 @@
 
 <div class="container mt-1">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="años-list-tab" data-bs-toggle="tab" data-bs-target="#años-list" type="button" role="tab" aria-controls="años-list" aria-selected="false">Lista de Años Académicos</button>
+            <button class="nav-link active" id="años-list-tab" data-bs-toggle="tab" data-bs-target="#años-list" type="button" role="tab" aria-controls="años-list" aria-selected="true">Lista de Años Académicos</button>
         </li>
-
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="años-create-tab" data-bs-toggle="tab" data-bs-target="#años-create" type="button" role="tab" aria-controls="años-create" aria-selected="true">Agregar Años Académicos</button>
+            <button class="nav-link " id="años-create-tab" data-bs-toggle="tab" data-bs-target="#años-create" type="button" role="tab" aria-controls="años-create" aria-selected="false">Agregar Años Académicos</button>
         </li>
-
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="periodos-list-tab" data-bs-toggle="tab" data-bs-target="#periodos-list" type="button" role="tab" aria-controls="periodos-list" aria-selected="false">Lista de Periodos</button>
         </li>
-
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="periodos-create-tab" data-bs-toggle="tab" data-bs-target="#periodos-create" type="button" role="tab" aria-controls="periodos-create" aria-selected="false">Agregar Periodos</button>
         </li>
-
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="semestres-list-tab" data-bs-toggle="tab" data-bs-target="#semestres-list" type="button" role="tab" aria-controls="semestres-list" aria-selected="false">Lista de Semestres</button>
         </li>
-
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="semestres-create-tab" data-bs-toggle="tab" data-bs-target="#semestres-create" type="button" role="tab" aria-controls="semestres-create" aria-selected="false">Agregar Semestres</button>
         </li>
-
     </ul>
 
     <div class="tab-content" id="myTabContent">
-        @Html.Partial("_AñosCreate", Model)
-        @Html.Partial("_AñosList", Model)
-        @Html.Partial("_PeriodosCreate", Model)
-        @Html.Partial("_PeriodosList", Model)
-        @Html.Partial("_SemestresCreate", Model)
-        @Html.Partial("_SemestresList", Model)
+        <div class="tab-pane fade show active" id="años-list" role="tabpanel" aria-labelledby="años-list-tab">
+            @Html.Partial("_AñosList", Model)
+        </div>
+
+        <div class="tab-pane fade" id="años-create" role="tabpanel" aria-labelledby="años-create-tab">
+            @Html.Partial("_AñosCreate", Model)
+        </div>
+
+        <div class="tab-pane fade" id="periodos-list" role="tabpanel" aria-labelledby="periodos-list-tab">
+            @Html.Partial("_PeriodosList", Model)
+        </div>
+
+        <div class="tab-pane fade" id="periodos-create" role="tabpanel" aria-labelledby="periodos-create-tab">
+            @Html.Partial("_PeriodosCreate", Model)
+        </div>
+
+        <div class="tab-pane fade" id="semestres-list" role="tabpanel" aria-labelledby="semestres-list-tab">
+            @Html.Partial("_SemestresList", Model)
+        </div>
+
+        <div class="tab-pane fade" id="semestres-create" role="tabpanel" aria-labelledby="semestres-create-tab">
+            @Html.Partial("_SemestresCreate", Model)
+        </div>
     </div>
 </div>

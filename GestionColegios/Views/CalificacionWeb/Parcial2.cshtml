@@ -1,0 +1,230 @@
+﻿@model GestionColegios.ViewModels.VMCalificaciones
+
+@{
+    ViewBag.Title = "Registrar Notas - Parcial II";
+}
+
+<!-- Título principal -->
+<h2 class="text-center text-primary my-4">Registrar Notas - Parcial II</h2>
+
+@using (Html.BeginForm("Create", "CalificacionWeb", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Estudiante.Id)
+
+    <div class="container">
+        <!-- Card para el formulario -->
+        <div class="card shadow-lg p-4">
+            <div class="card-body">
+                <!-- Tabla de calificaciones -->
+                <table class="table table-responsive table-striped table-hover">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Materia</th>
+                            <th>Parcial</th>
+                            <th>Nota Cuantitativa</th>
+                            <th>Nota Cualitativa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Calificaciones.Count; i++)
+                        {
+                            var materiaNombre = Model.Materias.FirstOrDefault(m => m.Id == Model.Calificaciones[i].MateriaId)?.Nombre ?? "Materia no encontrada";
+
+                            <tr>
+                                <!-- Columna de Materia -->
+                                <td>
+                                    @Html.HiddenFor(m => Model.Calificaciones[i].MateriaId)
+                                    <strong>@materiaNombre</strong>
+                                </td>
+
+                                <!-- Columna de Parcial -->
+                                <td>
+                                    @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, new { Value = 2 }) <!-- Parcial II -->
+                                    <span class="badge bg-info">Parcial II</span>
+                                </td>
+
+                                <!-- Columna de Nota Cuantitativa -->
+                                <td>
+                                    @Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new
+                                    {
+                                        @class = "form-control",
+                                        type = "number",
+                                        step = "0.01",
+                                        min = "0",
+                                        max = "100",
+                                        oninput = "updateCualitativa(this, " + i + ")",
+                                        placeholder = "Ingrese la nota cuantitativa"
+                                    })
+                                </td>
+
+                                <!-- Columna de Nota Cualitativa -->
+                                <td>
+                                    @Html.TextBoxFor(m => Model.Calificaciones[i].NCualitativa, new
+                                    {
+                                        @class = "form-control",
+                                        @readonly = "readonly",
+                                        placeholder = "Nota cualitativa"
+                                    })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Botón de guardar -->
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-success btn-lg px-5 py-3">Guardar Notas</button>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    function updateCualitativa(input, index) {
+        var cuantitativa = parseFloat(input.value);
+        var cualitativa = "";
+
+        if (cuantitativa >= 0 && cuantitativa <= 59) {
+            cualitativa = "AI";
+        } else if (cuantitativa >= 60 && cuantitativa <= 75) {
+            cualitativa = "AF";
+        } else if (cuantitativa >= 76 && cuantitativa <= 89) {
+            cualitativa = "AS";
+        } else if (cuantitativa >= 90 && cuantitativa <= 100) {
+            cualitativa = "AA";
+        }
+
+        // Actualizar la nota cualitativa
+        document.getElementsByName("Calificaciones[" + index + "].NCualitativa")[0].value = cualitativa;
+    }
+</script>
+
+<!-- Mensaje de éxito -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<!-- Estilos personalizados -->
+<style>
+    /* General */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f7fc;
+    }
+
+    h2 {
+        font-size: 2.2rem;
+        color: #007bff;
+        font-weight: 700;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding-top: 20px;
+    }
+
+    /* Tarjeta que envuelve el formulario */
+    .card {
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Botón de guardar */
+    .btn-success {
+        font-size: 1.2rem;
+        padding: 12px 24px;
+        border-radius: 50px;
+        background-color: #28a745;
+        border-color: #28a745;
+        transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #218838;
+    }
+
+    /* Tabla */
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .table td, .table th {
+        text-align: center;
+        padding: 12px 15px;
+    }
+
+    .table-striped tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .thead-light {
+        background-color: #007bff;
+        color: white;
+    }
+
+    /* Estilo de los inputs */
+    .form-control {
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 1rem;
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    /* Estilo de los badges */
+    .badge {
+        padding: 6px 15px;
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+
+    .badge.bg-info {
+        background-color: #17a2b8;
+    }
+
+    /* Estilos de la fila de materia */
+    td strong {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* Media Queries para adaptabilidad */
+    media (max-width: 768px) {
+        h2 {
+            font-size: 1.8rem;
+        }
+
+        .table td, .table th {
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            font-size: 0.9rem;
+            padding: 8px;
+        }
+
+        .btn-success {
+            font-size: 1rem;
+            padding: 10px 20px;
+        }
+    }
+</style>

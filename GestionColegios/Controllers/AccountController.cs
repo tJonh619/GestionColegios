@@ -9,12 +9,15 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using GestionColegios.Models;
+using System.Data.Entity;
 
 namespace GestionColegios.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private readonly BDColegioContainer db = new BDColegioContainer(); // Tu contexto de base de datos
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -73,23 +76,34 @@ namespace GestionColegios.Controllers
                 return View(model);
             }
 
-            // No cuenta los errores de inicio de sesión para el bloqueo de la cuenta
-            // Para permitir que los errores de contraseña desencadenen el bloqueo de la cuenta, cambie a shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            // Busca al usuario por su nombre de usuario o correo
+            var usuario = await db.Usuarios.SingleOrDefaultAsync(u =>
+                (u.NombreUsuario == model.NombreUsuario || u.CorreoRecuperacion == model.NombreUsuario)
+                && u.ClaveHash == model.Password); // Ajusta según tu sistema de hashing
+            // Guarda el rol en la sesión
+
+            if (usuario == null)
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Intento de inicio de sesión no válido.");
-                    return View(model);
+                ModelState.AddModelError("", "Usuario o contraseña incorrectos.");
+                return View(model);
             }
+
+            // Establece el ClaimsIdentity manualmente
+            var identity = new ClaimsIdentity(new[]
+            {
+        new Claim(ClaimTypes.Name, usuario.NombreUsuario),
+        new Claim(ClaimTypes.Role, usuario.Rol.Nombre), 
+        new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()), // Guarda el ID del usuario
+        new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "nombreDelProveedor") // Agrega el proveedor de identidad si es necesario
+    }, DefaultAuthenticationTypes.ApplicationCookie);
+
+            // Inicia sesión
+            AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = model.RememberMe }, identity);
+
+            // Redirige a la página de destino o a la página principal
+            return RedirectToLocal(returnUrl);
         }
+
 
         //
         // GET: /Account/VerifyCode

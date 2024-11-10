@@ -1,0 +1,155 @@
+﻿@model GestionColegios.ViewModels.VMMateria
+
+@{
+    var esSoloLectura = ViewBag.EsEdicion
+        ? new Dictionary<string, object> { { "readonly", "readonly" }, { "disabled", "disabled" } }
+        : new Dictionary<string, object>();
+}
+
+@functions {
+    IDictionary<string, object> ObtenerAtributos(Dictionary<string, object> atributosBase, Dictionary<string, object> soloLectura)
+    {
+        return atributosBase.Concat(soloLectura).ToDictionary(k => k.Key, v => v.Value);
+    }
+}
+
+<div class="row mt-2">
+    <div class="col-md-12">
+        @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "MateriaWeb", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Materia.Id)
+
+            <div class="row">
+                <div class="col-md-5 card">
+                    <div class="row card" style="background-color: #001c7d">
+                        <label class="m-md-1" style="color: white">
+                            <i class="fa fa-book me-2" aria-hidden="true"></i> Información de la Materia
+                        </label>
+                    </div>
+
+                    <!-- Código de Materia -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="CodigoMateria">Código de Materia</label>
+                        @Html.TextBoxFor(model => model.Materia.CodigoMateria,
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" },
+                                { "placeholder", "Ingrese el código de la materia" },
+                                { "required", "required" }
+                            }, esSoloLectura))
+                        @Html.ValidationMessageFor(model => model.Materia.CodigoMateria, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Nombre de la Materia -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="Nombre">Nombre</label>
+                        @Html.TextBoxFor(model => model.Materia.Nombre,
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" },
+                                { "placeholder", "Ingrese el nombre de la materia" },
+                                { "required", "required" }
+                            }, esSoloLectura))
+                        @Html.ValidationMessageFor(model => model.Materia.Nombre, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Descripción -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="Nombre">Nombre</label>
+                        @Html.TextBoxFor(model => model.Materia.Descripcion,
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" },
+                                { "placeholder", "Ingrese el nombre de la materia" },
+                                { "required", "required" }
+                            }, esSoloLectura))
+                        @Html.ValidationMessageFor(model => model.Materia.Descripcion, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Año Académico -->
+                    <div class="form-group mb-3 has-error">
+                        <label for="AñoAcademicoId">Año Académico</label>
+                        @Html.DropDownListFor(model => model.Materia.AñoAcademicoId,
+                            new SelectList(Model.AñosAcademicos, "Id", "Nombre"),
+                            "Seleccione el Año Académico",
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" }
+                            }, esSoloLectura))
+                        @Html.ValidationMessageFor(model => model.Materia.AñoAcademicoId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Mostrar Fecha de Modificación solo en la edición -->
+                    @if (ViewBag.EsEdicion != null && ViewBag.EsEdicion.Equals(true))
+                    {
+                        <div class="form-group mb-3">
+                            <label for="FechaModificacion">Fecha de Modificación</label>
+                            <input type="text" id="FechaModificacion" class="form-control" value="@Model.Materia.FechaModificacion.ToString("dd/MM/yyyy HH:mm:ss")" readonly />
+                        </div>
+                    }
+
+                    <!-- Activo -->
+                    <div class="form-group mb-3">
+                        <label for="Activo">¿Está Activo?</label>
+                        @Html.CheckBoxFor(model => model.Materia.Activo, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.Materia.Activo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="form-group col-md-2 mt-4">
+                    <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
+                            style="@(ViewBag.EsEdicion ? "" : "display:none;")"
+                            onclick="activateEdit()">
+                        Editar
+                    </button>
+
+                    <button type="submit" id="btn-save" class="btn btn-primary m-1"
+                            style="@(ViewBag.EsEdicion ? "display:none;" : "")">
+                        @(Model.Materia.Id == 0 ? "Registrar" : "Guardar Cambios")
+                    </button>
+
+                    <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
+                            onclick="cancelOrReturn()">
+                        Regresar
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    function activateEdit() {
+        $('input, select').each(function () {
+            $(this).prop('readonly', false);
+            $(this).prop('disabled', false);
+        });
+        $('#btn-save').show();
+        $('#btn-cancel-edit').text("Cancelar");
+        $('#btn-edit').hide();
+        $('#btn-delete').hide();
+    }
+
+    function cancelOrReturn() {
+        if ($('#btn-cancel-edit').text() === "Cancelar") {
+            $('input, select').each(function () {
+                $(this).prop('readonly', true);
+                $(this).prop('disabled', true);
+            });
+            $('#btn-save').hide();
+            $('#btn-edit').show();
+            $('#btn-cancel-edit').text("Regresar");
+            $('#btn-delete').show();
+        } else {
+            window.location.href = '@Url.Action("Index", "MateriaWeb")';
+        }
+    }
+
+    function deleteRecord() {
+        const deleteUrl = '@Url.Action("Delete", "MateriaWeb", new { id = Model.Materia.Id })';
+        if (confirm("¿Estás seguro de que deseas eliminar esta Materia?")) {
+            window.location.href = deleteUrl;
+        }
+    }
+</script>

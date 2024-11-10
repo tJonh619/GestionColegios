@@ -1,36 +1,123 @@
 ﻿@model GestionColegios.ViewModels.VMAñosPeriodosSemestres
 
-<div class="tab-pane fade" id="semestres-create" role="tabpanel" aria-labelledby="semestres-create-tab">
-    <div class="row mt-2">
-        <div class="col-md-12">
-            @using (Html.BeginForm("CreateSemestre", "PeriodoWeb", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                <div class="row">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@{
+    var esSoloLectura = ViewBag.EsEdicion
+        ? new Dictionary<string, object> { { "readonly", "readonly" }, { "disabled", "disabled" } }
+        : new Dictionary<string, object>();
+}
 
-                    <div class="col-md-6 card">
-                        <div class="row card" style="background-color: #001c7d">
-                            <label class="m-md-1" style="color:white">
-                                <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información del Semestre
-                            </label>
-                        </div>
+@functions {
+    IDictionary<string, object> ObtenerAtributos(Dictionary<string, object> atributosBase, Dictionary<string, object> soloLectura)
+    {
+        return atributosBase.Concat(soloLectura).ToDictionary(k => k.Key, v => v.Value);
+    }
+}
 
-                        <div class="form-group mb-3">
-                            <label for="Nombre">Nombre del Semestre</label>
-                            @Html.TextBoxFor(model => model.Semestre.Nombre, new { @class = "form-control", placeholder = "Ingrese el nombre del semestre" })
-                            @Html.ValidationMessageFor(model => model.Semestre.Nombre, "", new { @class = "text-danger" })
-                        </div>
+<div class="row mt-2">
+    <div class="col-md-12">
+        @using (Html.BeginForm(ViewBag.EsEdicion ? "EditSemestre" : "CreateSemestre", "PeriodoWeb", FormMethod.Post, new { id = "form-semestre" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Semestre.Id)
+
+            <div class="row">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="col-md-6 card">
+                    <div class="row card" style="background-color: #001c7d">
+                        <label class="m-md-1" style="color:white">
+                            <i class="fa fa-upload mr-md-2" aria-hidden="true"></i>Información del Semestre
+                        </label>
                     </div>
 
-                    <div class="form-group col-md-2 mt-4">
-                        <button type="submit" class="btn btn-primary">
-                            @(Model.Semestre.Id == 0 ? "Registrar" : "Guardar Cambios")
-                        </button>
+                    <!-- Nombre del Semestre -->
+                    <div class="form-group mb-3">
+                        <label for="Nombre">Nombre del Semestre</label>
+                        @Html.TextBoxFor(model => model.Semestre.Nombre,
+                            ObtenerAtributos(new Dictionary<string, object> {
+                                { "class", "form-control" },
+                                { "placeholder", "Ingrese el nombre del semestre" }
+                            }, esSoloLectura))
+                        @Html.ValidationMessageFor(model => model.Semestre.Nombre, "", new { @class = "text-danger" })
                     </div>
                 </div>
-            }
-        </div>
+
+                <!-- Botones de Acción -->
+                <div class="form-group col-md-2 mt-4">
+                    <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
+                            style="@(ViewBag.EsEdicion ? "" : "display:none;")"
+                            onclick="activateEdit()">
+                        Editar
+                    </button>
+
+                    <button type="submit" id="btn-save" class="btn btn-primary m-1"
+                            style="@(ViewBag.EsEdicion ? "display:none;" : "")">
+                        @(Model.Semestre.Id == 0 ? "Registrar" : "Guardar Cambios")
+                    </button>
+
+                    <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
+                            onclick="cancelOrReturn()">
+                        Regresar
+                    </button>
+                </div>
+            </div>
+        }
     </div>
 </div>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function activateEdit() {
+            $('input').prop('readonly', false).prop('disabled', false);
+            $('#btn-save').show();
+            $('#btn-cancel-edit').text("Cancelar");
+            $('#btn-edit').hide();
+        }
+
+        function cancelOrReturn() {
+            if ($('#btn-cancel-edit').text() === "Cancelar") {
+                $('input').prop('readonly', true).prop('disabled', true);
+                $('#btn-save').hide();
+                $('#btn-edit').show();
+                $('#btn-cancel-edit').text("Regresar");
+            } else {
+                window.location.href = '@Url.Action("Index", "PeriodoWeb")';
+            }
+        }
+    </script>
+}
+<script>
+    function activateEdit() {
+        $('input, select').each(function () {
+            $(this).prop('readonly', false);
+            $(this).prop('disabled', false);
+        });
+        $('#btn-save').show();
+        $('#btn-cancel-edit').text("Cancelar");
+        $('#btn-edit').hide();
+        $('#btn-delete').hide();
+    }
+
+    function cancelOrReturn() {
+        if ($('#btn-cancel-edit').text() === "Cancelar") {
+            $('input, select').each(function () {
+                $(this).prop('readonly', true);
+                $(this).prop('disabled', true);
+            });
+            $('#btn-save').hide();
+            $('#btn-edit').show();
+            $('#btn-cancel-edit').text("Regresar");
+            $('#btn-delete').show();
+        } else {
+            window.location.href = '@Url.Action("Index", "PeriodoWeb")';
+        }
+    }
+
+    function deleteRecord() {
+        const deleteUrl = '@Url.Action("DeleteSemestre", "PeriodoWeb", new { id = Model.Semestre.Id })';
+        if (confirm("¿Estás seguro de que deseas eliminar este Semestre?")) {
+            window.location.href = deleteUrl;
+        }
+    }
+</script>

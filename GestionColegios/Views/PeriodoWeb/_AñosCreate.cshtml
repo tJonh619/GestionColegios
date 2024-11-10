@@ -1,11 +1,26 @@
 ﻿@model GestionColegios.ViewModels.VMAñosPeriodosSemestres
 
+@{
+    var esSoloLectura = ViewBag.EsEdicion
+        ? new Dictionary<string, object> { { "readonly", "readonly" }, { "disabled", "disabled" } }
+        : new Dictionary<string, object>();
+}
+
+@functions {
+    IDictionary<string, object> ObtenerAtributos(Dictionary<string, object> atributosBase, Dictionary<string, object> soloLectura)
+    {
+        return atributosBase.Concat(soloLectura).ToDictionary(k => k.Key, v => v.Value);
+    }
+}
+
 <div class="tab-pane fade show active" id="años-create" role="tabpanel" aria-labelledby="años-create-tab">
     <div class="row mt-2">
         <div class="col-md-12">
-            @using (Html.BeginForm("CreateAño", "PeriodoWeb", FormMethod.Post))
+            @using (Html.BeginForm(ViewBag.EsEdicion ? "EditAño" : "CreateAño", "PeriodoWeb", FormMethod.Post, new { @id = "form-año" }))
             {
                 @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Año.Id)
+
                 <div class="row">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -16,16 +31,43 @@
                             </label>
                         </div>
 
+                        <!-- Nombre del Año Académico -->
                         <div class="form-group mb-3">
                             <label for="Nombre">Nombre del Año Académico</label>
-                            @Html.TextBoxFor(model => model.Año.Nombre, new { @class = "form-control", placeholder = "Ingrese el nombre del año académico" })
+                            @Html.TextBoxFor(model => model.Año.Nombre,
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control" },
+                                    { "placeholder", "Ingrese el nombre del año académico" },
+                                    { "required", "required" }
+                                }, esSoloLectura))
                             @Html.ValidationMessageFor(model => model.Año.Nombre, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
+                    <!-- Botones de Acción -->
                     <div class="form-group col-md-2 mt-4">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
+                                style="@(ViewBag.EsEdicion ? "" : "display:none;")"
+                                onclick="activateEdit()">
+                            Editar
+                        </button>
+
+                        @if (ViewBag.EsEdicion)
+                        {
+                            <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
+                                    onclick="deleteRecord()">
+                                Eliminar
+                            </button>
+                        }
+
+                        <button type="submit" id="btn-save" class="btn btn-primary m-1"
+                                style="@(ViewBag.EsEdicion ? "display:none;" : "")">
                             @(Model.Año.Id == 0 ? "Registrar" : "Guardar Cambios")
+                        </button>
+
+                        <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
+                                onclick="cancelOrReturn()">
+                            Regresar
                         </button>
                     </div>
                 </div>
@@ -34,3 +76,40 @@
     </div>
 </div>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    function activateEdit() {
+        $('input, select').each(function () {
+            $(this).prop('readonly', false);
+            $(this).prop('disabled', false);
+        });
+        $('#btn-save').show();
+        $('#btn-cancel-edit').text("Cancelar");
+        $('#btn-edit').hide();
+        $('#btn-delete').hide();
+    }
+
+    function cancelOrReturn() {
+        if ($('#btn-cancel-edit').text() === "Cancelar") {
+            $('input, select').each(function () {
+                $(this).prop('readonly', true);
+                $(this).prop('disabled', true);
+            });
+            $('#btn-save').hide();
+            $('#btn-edit').show();
+            $('#btn-cancel-edit').text("Regresar");
+            $('#btn-delete').show();
+        } else {
+            window.location.href = '@Url.Action("Index", "PeriodoWeb")';
+        }
+    }
+
+    function deleteRecord() {
+        const deleteUrl = '@Url.Action("DeleteAño", "PeriodoWeb", new { id = Model.Año.Id })';
+        if (confirm("¿Estás seguro de que deseas eliminar este Año?")) {
+            window.location.href = deleteUrl;
+        }
+    }
+</script>

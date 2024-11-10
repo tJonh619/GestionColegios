@@ -31,15 +31,6 @@ namespace GestionColegios.Controllers
             return View(viewModel);
         }
 
-        // Método para listar los estudiantes
-        public ActionResult Listar()
-        {
-            var estudiantes = db.Estudiantes
-                                .Include(e => e.Tutor)
-                                .Where(e => e.Activo) // Filtrar solo estudiantes activos
-                                .ToList();
-            return PartialView("_ListaEstudiantes", estudiantes); // Asegúrate de que la vista parcial existe y se llama _ListaEstudiantes.cshtml
-        }
 
         // GET: EstudianteWeb/Create
         public ActionResult Create()
@@ -59,52 +50,35 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Verificar si estamos creando un nuevo estudiante o editando uno existente
+                // Verificar si estamos creando un nuevo estudiante
                 if (model.Estudiante.Id == 0)
                 {
-                    // Código para creación
                     model.Estudiante.FechaModificacion = DateTime.Now;
+                    model.Estudiante.Edad = DateTime.Today.Year - model.Estudiante.FechaNacimiento.Year - (DateTime.Today.DayOfYear < model.Estudiante.FechaNacimiento.DayOfYear ? 1 : 0);
                     model.Estudiante.Activo = true;
-                    db.Estudiantes.Add(model.Estudiante);
-                }
-                else
-                {
-                    // Código para edición
-                    var estudiante = db.Estudiantes.Include(e => e.Tutor).SingleOrDefault(e => e.Id == model.Estudiante.Id);
-                    if (estudiante == null) return HttpNotFound();
 
-                    estudiante.Nombres = model.Estudiante.Nombres;
-                    estudiante.Apellidos = model.Estudiante.Apellidos;
-                    estudiante.FechaNacimiento = model.Estudiante.FechaNacimiento;
-                    estudiante.Edad = model.Estudiante.Edad;
-                    estudiante.Sexo = model.Estudiante.Sexo;
-                    estudiante.Direccion = model.Estudiante.Direccion;
-                    estudiante.FechaModificacion = DateTime.Now;
-
-                    // Actualización de tutor (si aplica)
+                    // Si hay información del tutor, asociarla con el estudiante
                     if (model.Tutor != null)
                     {
-                        var tutorExistente = db.Tutores.Find(model.Tutor.Id);
-                        if (tutorExistente != null)
-                        {
-                            tutorExistente.Nombres = model.Tutor.Nombres;
-                            tutorExistente.Apellidos = model.Tutor.Apellidos;
-                            tutorExistente.Cedula = model.Tutor.Cedula;
-                            tutorExistente.RelacionConElEstudiante = model.Tutor.RelacionConElEstudiante;
-                            tutorExistente.Direccion = model.Tutor.Direccion;
-                            tutorExistente.Celular = model.Tutor.Celular;
-                            tutorExistente.FechaModificacion = DateTime.Now;
-                        }
-                    }
-                }
+                        model.Tutor.FechaModificacion = DateTime.Now;
+                        model.Tutor.Activo = true;
 
-                db.SaveChanges();
-                TempData["SuccessMessage"] = "Estudiante guardado correctamente.";
-                return RedirectToAction("Index");
+                        db.Tutores.Add(model.Tutor); // Agregar el tutor a la base de datos
+                        model.Estudiante.Tutor = model.Tutor; // Asociar el tutor al estudiante
+                    }
+
+                    db.Estudiantes.Add(model.Estudiante); // Agregar el estudiante a la base de datos
+                    db.SaveChanges();
+
+                    TempData["SuccessMessage"] = "Estudiante creado correctamente.";
+                    return RedirectToAction("Index");
+                }
             }
 
-            TempData["ErrorMessage"] = "Error al guardar el estudiante. Intente nuevamente.";
-            return View("_Create_Edit", model); // Retorna a la misma vista en caso de error
+            // Si el modelo no es válido, mostrar errores
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            TempData["ErrorMessage"] = "Error al guardar el estudiante: " + string.Join(", ", errors);
+            return View("_Create_Edit", model);
         }
 
 
@@ -147,6 +121,7 @@ namespace GestionColegios.Controllers
                 // Actualiza los datos del estudiante
                 estudiante.Nombres = model.Estudiante.Nombres;
                 estudiante.Apellidos = model.Estudiante.Apellidos;
+                estudiante.Barrio = model.Estudiante.Barrio;
                 estudiante.FechaNacimiento = model.Estudiante.FechaNacimiento;
                 estudiante.Edad = model.Estudiante.Edad;
                 estudiante.Sexo = model.Estudiante.Sexo;

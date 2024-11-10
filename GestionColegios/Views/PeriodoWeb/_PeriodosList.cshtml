@@ -1,34 +1,33 @@
 ﻿@model GestionColegios.ViewModels.VMAñosPeriodosSemestres
 
-<div class="tab-pane fade" id="periodos-list" role="tabpanel" aria-labelledby="periodos-list-tab">
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <h4>Lista de Periodos</h4>
-            <table class="table table-bordered">
-                <thead>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h4>Lista de Periodos</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Número</th>
+                    <th>Año Académico</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var periodo in Model.Periodos)
+                {
                     <tr>
-                        <th>Nombre</th>
-                        <th>Número</th>
-                        <th>Año Académico</th>
-                        <th>Acciones</th>
+                        <td>@Html.DisplayFor(modelItem => periodo.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => periodo.Numero)</td>
+                        <td>@Html.DisplayFor(modelItem => periodo.Año.Nombre)</td>
+                        <td>
+                            @Html.ActionLink("Editar", "EditPeriodo", new { id = periodo.Id }, new { @class = "btn btn-warning" }) |
+                            @Html.ActionLink("Desactivar", "Desactivar", new { id = periodo.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este periodo?');" })
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var periodo in Model.Periodos)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(modelItem => periodo.Nombre)</td>
-                            <td>@Html.DisplayFor(modelItem => periodo.Numero)</td>
-                            <td>@Html.DisplayFor(modelItem => periodo.Año.Nombre)</td>
-                            <td>
-                                @Html.ActionLink("Editar", "EditPeriodo", new { id = periodo.Id }, new { @class = "btn btn-warning" }) |
-                                @Html.ActionLink("Eliminar", "DeletePeriodo", new { id = periodo.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este periodo?');" })
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 

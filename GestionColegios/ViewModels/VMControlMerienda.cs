@@ -15,5 +15,9 @@ namespace GestionColegios.ViewModels
         public CursoAcademico cursoAcademico { get; set; }
         public List<ControlMerienda> ControlesMeriendas { get; set; }
         public ControlMerienda ControlMerienda { get; set; }
+
+        public InventarioAlimento inventarioAlimento { get; set; }
+        public List<InventarioAlimento> InventarioAlimentos { get; set; }
+
     }
 }

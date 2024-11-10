@@ -44,11 +44,11 @@
 <ul class="nav nav-tabs" id="myTab" role="tablist">
 
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="listar-usuarios-tab" data-bs-toggle="tab" data-bs-target="#listar-usuarios" type="button" role="tab" aria-controls="listar-usuarios" aria-selected="false">Listar Usuarios</button>
+        <button class="nav-link active" id="listar-usuarios-tab" data-bs-toggle="tab" data-bs-target="#listar-usuarios" type="button" role="tab" aria-controls="listar-usuarios" aria-selected="true">Listar Usuarios</button>
     </li>
 
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="agregar-usuario-tab" data-bs-toggle="tab" data-bs-target="#agregar-usuario" type="button" role="tab" aria-controls="agregar-usuario" aria-selected="true">Agregar Usuario</button>
+        <button class="nav-link " id="agregar-usuario-tab" data-bs-toggle="tab" data-bs-target="#agregar-usuario" type="button" role="tab" aria-controls="agregar-usuario" aria-selected="false">Agregar Usuario</button>
     </li>
 
     <li class="nav-item" role="presentation">
@@ -72,11 +72,11 @@
     <div class="tab-content" id="myTabContent">
 
 
-        <div class="tab-pane fade" id="listar-usuarios" role="tabpanel" aria-labelledby="listar-usuarios-tab">
+        <div class="tab-pane fade show active" id="listar-usuarios" role="tabpanel" aria-labelledby="listar-usuarios-tab">
             @Html.Partial("_ListarUsuarios", Model)
         </div>
 
-        <div class="tab-pane fade show active" id="agregar-usuario" role="tabpanel" aria-labelledby="agregar-usuario-tab">
+        <div class="tab-pane fade " id="agregar-usuario" role="tabpanel" aria-labelledby="agregar-usuario-tab">
             @Html.Partial("_AgregarUsuario", Model)
         </div>
 

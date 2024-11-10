@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using GestionColegios.Models;
 using GestionColegios.ViewModels;
@@ -18,193 +15,61 @@ namespace GestionColegios.Controllers
         // GET: PeriodoWeb
         public ActionResult Index()
         {
-
-
-
             var viewModel = new VMAñosPeriodosSemestres
             {
                 Años = db.Años.ToList(),
-                Año = new Año(),
                 Periodos = db.Periodos.ToList(),
-                Periodo = new Periodo(),
                 Semestres = db.Semestres.ToList(),
+                Año = new Año(),
+                Periodo = new Periodo(),
                 Semestre = new Semestre()
             };
-            return View(viewModel);
-        }
-        // GET: PeriodoWeb/Details/5
-        public ActionResult DetailsPeriodo(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Periodo periodo = db.Periodos.Find(id);
-            if (periodo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(periodo);
-        }
-
-        // GET: PeriodoWeb/Create
-        public ActionResult CreatePeriodo()
-        {
-            ViewBag.AñoId = new SelectList(db.Años, "Id", "Id");
-            return View();
-        }
-
-        // POST: PeriodoWeb/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Nombre,Numero,FechaModificacion,Activo,AñoId")] Periodo periodo)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Periodos.Add(periodo);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.AñoId = new SelectList(db.Años, "Id", "Id", periodo.AñoId);
-            return View(periodo);
-        }
-
-        // GET: PeriodoWeb/Edit/5
-        public ActionResult EditPeriodo(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Periodo periodo = db.Periodos.Find(id);
-            if (periodo == null)
-            {
-                return HttpNotFound();
-            }
-
-            var viewModel = new VMAñosPeriodosSemestres
-            {
-                Periodo = periodo,
-                Años = db.Años.ToList() // Asegúrate de llenar esta propiedad
-            };
-
+            ViewBag.EsEdicion = false;
             return View(viewModel);
         }
 
+        // CRUD para Años
 
-        // POST: PeriodoWeb/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditPeriodo(VMAñosPeriodosSemestres viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(viewModel.Periodo).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            viewModel.Años = db.Años.ToList(); // Repetimos para rellenar la lista de años en caso de error
-            return View(viewModel);
-        }
-
-        // GET: PeriodoWeb/Delete/5
-        public ActionResult DeletePeriodo(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Periodo periodo = db.Periodos.Find(id);
-            if (periodo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(periodo);
-        }
-
-        // POST: PeriodoWeb/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmedPeriodo(int id)
-        {
-            Periodo periodo = db.Periodos.Find(id);
-            db.Periodos.Remove(periodo);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-
-
-
-        public ActionResult DetailsAño(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Año año = db.Años.Find(id);
-            if (año == null)
-            {
-                return HttpNotFound();
-            }
-            return View(año);
-        }
-
-        // GET: AñoWeb/Create
+        // GET: PeriodoWeb/CreateAño
         public ActionResult CreateAño()
         {
-            return View();
+            var viewModel = new VMAñosPeriodosSemestres { Año = new Año() };
+            ViewBag.EsEdicion = false;
+            return View("_AñosCreate", viewModel);
         }
 
-        // POST: AñoWeb/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: PeriodoWeb/CreateAño
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateAño([Bind(Include = "Id,Nombre")] Año año)
+        public ActionResult CreateAño(VMAñosPeriodosSemestres model)
         {
             if (ModelState.IsValid)
             {
-                db.Años.Add(año);
+                db.Años.Add(model.Año);
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Año creado correctamente.";
                 return RedirectToAction("Index");
             }
 
-            return View(año);
+            TempData["ErrorMessage"] = "Error al crear el Año. Intente de nuevo.";
+            ViewBag.EsEdicion = false;
+            return View("_AñosCreate", model);
         }
-        // GET: AñoWeb/Edit/5
+
+        // GET: PeriodoWeb/EditAño/5
         public ActionResult EditAño(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Año año = db.Años.Find(id);
-            if (año == null)
-            {
-                return HttpNotFound();
-            }
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            // Crea una vista de modelo
-            var viewModel = new VMAñosPeriodosSemestres
-            {
-                Año = año
-            };
+            var año = db.Años.Find(id);
+            if (año == null) return HttpNotFound();
 
-            return View(viewModel);
+            var viewModel = new VMAñosPeriodosSemestres { Año = año };
+            ViewBag.EsEdicion = true;
+            return View("_AñosCreate", viewModel);
         }
 
-        // POST: AñoWeb/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
-        // POST: AñoWeb/Edit/5
+        // POST: PeriodoWeb/EditAño/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditAño(VMAñosPeriodosSemestres model)
@@ -213,140 +78,142 @@ namespace GestionColegios.Controllers
             {
                 db.Entry(model.Año).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Año actualizado correctamente.";
                 return RedirectToAction("Index");
             }
-            return View(model);
+            TempData["ErrorMessage"] = "Error al actualizar el Año. Intente de nuevo.";
+            ViewBag.EsEdicion = true;
+            return View("_AñosCreate", model);
         }
 
-        // GET: AñoWeb/Delete/5
-        public ActionResult DeleteAño(int? id)
+        // CRUD para Periodos
+
+        // GET: PeriodoWeb/CreatePeriodo
+        public ActionResult CreatePeriodo()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Año año = db.Años.Find(id);
-            if (año == null)
-            {
-                return HttpNotFound();
-            }
-            return View(año);
-        }
-
-        // POST: AñoWeb/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmedAño(int id)
-        {
-            Año año = db.Años.Find(id);
-            db.Años.Remove(año);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-
-
-
-
-        public ActionResult DetailsSemestre(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Semestre semestre = db.Semestres.Find(id);
-            if (semestre == null)
-            {
-                return HttpNotFound();
-            }
-            return View(semestre);
-        }
-
-        // GET: SemestreWeb/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: SemestreWeb/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateSemestre([Bind(Include = "Id,Nombre")] Semestre semestre)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Semestres.Add(semestre);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(semestre);
-        }
-
-        // GET: SemestreWeb/Edit/5
-        public ActionResult EditSemestre(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            var semestre = db.Semestres.Find(id);
-            if (semestre == null)
-            {
-                return HttpNotFound();
-            }
-
             var viewModel = new VMAñosPeriodosSemestres
             {
-                Semestre = semestre,
-               
+                Años = db.Años.ToList(), // Aquí inicializas Años
+                Periodo = new Periodo()
             };
-
-            return View(viewModel);
+            ViewBag.EsEdicion = false;
+            return View("_PeriodosCreate", viewModel);
         }
-        // POST: SemestreWeb/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        
+
+        // POST: PeriodoWeb/CreatePeriodo
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditSemestre(VMAñosPeriodosSemestres viewModel)
+        public ActionResult CreatePeriodo(VMAñosPeriodosSemestres model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(viewModel.Semestre).State = EntityState.Modified;
+                db.Periodos.Add(model.Periodo);
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Periodo creado correctamente.";
                 return RedirectToAction("Index");
             }
 
-            return View(viewModel);
-        }
-        // GET: SemestreWeb/Delete/5
-        public ActionResult DeleteSemestre(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Semestre semestre = db.Semestres.Find(id);
-            if (semestre == null)
-            {
-                return HttpNotFound();
-            }
-            return View(semestre);
+            TempData["ErrorMessage"] = "Error al crear el Periodo. Intente de nuevo.";
+            ViewBag.EsEdicion = false;
+            return View("_PeriodosCreate", model);
         }
 
-        // POST: SemestreWeb/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmedSemestre(int id)
+        // GET: PeriodoWeb/EditPeriodo/5
+        // GET: PeriodoWeb/EditPeriodo/5
+        public ActionResult EditPeriodo(int? id)
         {
-            Semestre semestre = db.Semestres.Find(id);
-            db.Semestres.Remove(semestre);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var periodo = db.Periodos.Find(id);
+            if (periodo == null) return HttpNotFound();
+
+            // Cargar la lista de años para que esté disponible en el ViewModel
+            var viewModel = new VMAñosPeriodosSemestres
+            {
+                Periodo = periodo,
+                Años = db.Años.ToList() // Cargar los Años desde la base de datos
+            };
+
+            ViewBag.EsEdicion = true;
+            return View("_PeriodosCreate", viewModel);
+        }
+
+
+        // POST: PeriodoWeb/EditPeriodo/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditPeriodo(VMAñosPeriodosSemestres model)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(model.Periodo).State = EntityState.Modified;               
+                db.SaveChanges();
+                TempData["SuccessMessage"] = "Periodo actualizado correctamente.";
+                return RedirectToAction("Index");
+            }
+
+            TempData["ErrorMessage"] = "Error al actualizar el Periodo. Intente de nuevo.";
+            ViewBag.EsEdicion = true;
+            return View("_PeriodosCreate", model);
+        }
+
+        // CRUD para Semestres
+
+        // GET: PeriodoWeb/CreateSemestre
+        public ActionResult CreateSemestre()
+        {
+            var viewModel = new VMAñosPeriodosSemestres { Semestre = new Semestre() };
+            ViewBag.EsEdicion = false;
+            return View("_SemestresCreate", viewModel);
+        }
+
+        // POST: PeriodoWeb/CreateSemestre
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateSemestre(VMAñosPeriodosSemestres model)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Semestres.Add(model.Semestre);
+                db.SaveChanges();
+                TempData["SuccessMessage"] = "Semestre creado correctamente.";
+                return RedirectToAction("Index");
+            }
+
+            TempData["ErrorMessage"] = "Error al crear el Semestre. Intente de nuevo.";
+            ViewBag.EsEdicion = false;
+            return View("_SemestresCreate", model);
+        }
+
+        // GET: PeriodoWeb/EditSemestre/5
+        public ActionResult EditSemestre(int? id)
+        {
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var semestre = db.Semestres.Find(id);
+            if (semestre == null) return HttpNotFound();
+
+            var viewModel = new VMAñosPeriodosSemestres { Semestre = semestre };
+            ViewBag.EsEdicion = true;
+            return View("_SemestresCreate", viewModel);
+        }
+
+        // POST: PeriodoWeb/EditSemestre/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditSemestre(VMAñosPeriodosSemestres model)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(model.Semestre).State = EntityState.Modified;
+                db.SaveChanges();
+                TempData["SuccessMessage"] = "Semestre actualizado correctamente.";
+                return RedirectToAction("Index");
+            }
+
+            TempData["ErrorMessage"] = "Error al actualizar el Semestre. Intente de nuevo.";
+            ViewBag.EsEdicion = true;
+            return View("_SemestresCreate", model);
         }
 
         protected override void Dispose(bool disposing)
@@ -357,6 +224,5 @@ namespace GestionColegios.Controllers
             }
             base.Dispose(disposing);
         }
-
     }
 }
