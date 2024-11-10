@@ -56,19 +56,6 @@
                                 }, esSoloLectura))
                             @Html.ValidationMessageFor(model => model.Permiso.Descripcion, "", new { @class = "text-danger" })
                         </div>
-
-                        <!-- Selección de Rol -->
-                        <div class="form-group mb-3">
-                            @Html.Label("Rol Asociado", new { @for = "RolId" })
-                            @Html.DropDownListFor(m => m.Permiso.RolId,
-                                new SelectList(Model.Roles, "Id", "Nombre", Model.Permiso.RolId),
-                                "Selecciona un Rol",
-                                ObtenerAtributos(new Dictionary<string, object> {
-                                    { "class", "form-control" },
-                                    { "required", "required" }
-                                }, esSoloLectura))
-                            @Html.ValidationMessageFor(model => model.Permiso.RolId, "", new { @class = "text-danger" })
-                        </div>
                         
                     </div>
 

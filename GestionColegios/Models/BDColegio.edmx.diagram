@@ -4,12 +4,19 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b6c7ab075203471e86a18fd0e4b2950a" Name="Diagram1" ZoomLevel="77" >
-        <EntityTypeShape EntityType="BDColegio.Rol" Width="1.75" PointX="37.875" PointY="14.125" />
-        <EntityTypeShape EntityType="BDColegio.Permiso" Width="1.875" PointX="34.875" PointY="15.125" />
-        <AssociationConnector Association="BDColegio.RolPermiso" />
-        <EntityTypeShape EntityType="BDColegio.Usuario" Width="2" PointX="37.5" PointY="19.625" />
-        <AssociationConnector Association="BDColegio.RolUsuario" />
+      <Diagram DiagramId="b6c7ab075203471e86a18fd0e4b2950a" Name="Diagram1" ZoomLevel="88" >
+        <EntityTypeShape EntityType="BDColegio.Rol" Width="1.75" PointX="39.125" PointY="13.875" />
+        <EntityTypeShape EntityType="BDColegio.Permiso" Width="1.875" PointX="41.875" PointY="18.5" />
+        <EntityTypeShape EntityType="BDColegio.Usuario" Width="2" PointX="36.375" PointY="17.75" />
+        <AssociationConnector Association="BDColegio.RolUsuario" ManuallyRouted="true" >
+          <ConnectorPoint PointX="40" PointY="16.239889322916667" />
+          <ConnectorPoint PointX="40" PointY="18.095206739702807" />
+          <ConnectorPoint PointX="38.91125" PointY="18.095206739702807" />
+          <ConnectorPoint PointX="38.91125" PointY="18.501301266574846" />
+          <ConnectorPoint PointX="38.5519625" PointY="18.501301266574846" />
+          <ConnectorPoint PointX="38.5519625" PointY="19.12474609375" />
+          <ConnectorPoint PointX="38.375" PointY="19.12474609375" />
+        </AssociationConnector>
         <EntityTypeShape EntityType="BDColegio.Maestro" Width="1.5" PointX="24.75" PointY="17.625" />
         <EntityTypeShape EntityType="BDColegio.CursoAcademico" Width="2.375" PointX="20.875" PointY="19.625" />
         <EntityTypeShape EntityType="BDColegio.EficienciaFisica" Width="2.125" PointX="21.875" PointY="11.25" />
@@ -77,6 +84,9 @@
         <AssociationConnector Association="BDColegio.InventarioAlimentoControlEntrada2" />
         <AssociationConnector Association="BDColegio.InventarioAlimentoControlEntrada3" />
         <AssociationConnector Association="BDColegio.InventarioAlimentoControlEntrada4" />
+        <EntityTypeShape EntityType="BDColegio.DetallePermiso" Width="1.5" PointX="39.375" PointY="18.625" />
+        <AssociationConnector Association="BDColegio.UsuarioDetallePermisos" />
+        <AssociationConnector Association="BDColegio.PermisoDetallePermisos" />
         <AssociationConnector Association="BDColegio.UsuarioMaestro" />
       </Diagram>
     </edmx:Diagrams>

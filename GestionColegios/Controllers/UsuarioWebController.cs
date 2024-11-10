@@ -370,7 +370,6 @@ namespace GestionColegios.Controllers
                 permisoExistente.Descripcion = model.Permiso.Descripcion;
                 permisoExistente.FechaModificacion = DateTime.Now;
                 permisoExistente.Activo = model.Permiso.Activo;
-                permisoExistente.RolId = model.Permiso.RolId;
 
                 
 
