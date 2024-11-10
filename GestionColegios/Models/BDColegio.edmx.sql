@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/08/2024 19:57:29
--- Generated from EDMX file: C:\Users\Moises\source\repos\GestionColegios\GestionColegios\Models\BDColegio.edmx
+-- Date Created: 11/09/2024 19:22:25
+-- Generated from EDMX file: C:\Users\tjonh\Escritorio\Proyecto Sistema web de colegios publicos de Nicaragua\Proyecto\GestionColegios\GestionColegios\Models\BDColegio.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -17,9 +17,6 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_RolPermiso]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Permisos] DROP CONSTRAINT [FK_RolPermiso];
-GO
 IF OBJECT_ID(N'[dbo].[FK_RolUsuario]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Usuarios] DROP CONSTRAINT [FK_RolUsuario];
 GO
@@ -134,8 +131,14 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_InventarioAlimentoControlEntrada4]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ControlEntradas] DROP CONSTRAINT [FK_InventarioAlimentoControlEntrada4];
 GO
+IF OBJECT_ID(N'[dbo].[FK_UsuarioDetallePermisos]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DetallesPermisos] DROP CONSTRAINT [FK_UsuarioDetallePermisos];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PermisoDetallePermisos]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DetallesPermisos] DROP CONSTRAINT [FK_PermisoDetallePermisos];
+GO
 IF OBJECT_ID(N'[dbo].[FK_UsuarioMaestro]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Usuarios] DROP CONSTRAINT [FK_UsuarioMaestro];
+    ALTER TABLE [dbo].[Maestros] DROP CONSTRAINT [FK_UsuarioMaestro];
 GO
 
 -- --------------------------------------------------
@@ -211,6 +214,9 @@ GO
 IF OBJECT_ID(N'[dbo].[ControlEntradas]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ControlEntradas];
 GO
+IF OBJECT_ID(N'[dbo].[DetallesPermisos]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DetallesPermisos];
+GO
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -233,8 +239,7 @@ CREATE TABLE [dbo].[Permisos] (
     [Nombre] nvarchar(max)  NOT NULL,
     [Descripcion] nvarchar(max)  NOT NULL,
     [FechaModificacion] datetime  NOT NULL,
-    [Activo] bit  NOT NULL,
-    [RolId] int  NOT NULL
+    [Activo] bit  NOT NULL
 );
 GO
 
@@ -247,29 +252,30 @@ CREATE TABLE [dbo].[Usuarios] (
     [CorreoRecuperacion] nvarchar(max)  NOT NULL,
     [FechaModificacion] datetime  NOT NULL,
     [Activo] bit  NOT NULL,
-    [RolId] int  NOT NULL,
-    [Maestro_Id] int  NOT NULL
+    [RolId] int  NOT NULL
 );
 GO
 
 -- Creating table 'Maestros'
 CREATE TABLE [dbo].[Maestros] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Codigo] nvarchar(max)  NOT NULL,
-    [Cedula] nvarchar(max)  NOT NULL,
-    [Nombres] nvarchar(max)  NOT NULL,
-    [Apellidos] nvarchar(max)  NOT NULL,
-    [Sexo] nvarchar(max)  NOT NULL,
-    [Celular] nvarchar(max)  NOT NULL,
-    [Direccion] nvarchar(max)  NOT NULL,
-    [Especialidad] nvarchar(max)  NOT NULL,
-    [FechaContratacion] datetime  NOT NULL,
-    [HorarioTrabajo] nvarchar(max)  NOT NULL,
-    [Nivel] nvarchar(max)  NOT NULL,
-    [FechaModificacion] datetime  NOT NULL,
-    [Activo] bit  NOT NULL
+    [Codigo] nvarchar(max) NOT NULL,
+    [Cedula] nvarchar(max) NOT NULL,
+    [Nombres] nvarchar(max) NOT NULL,
+    [Apellidos] nvarchar(max) NOT NULL,
+    [Sexo] nvarchar(max) NOT NULL,
+    [Celular] nvarchar(max) NOT NULL,
+    [Direccion] nvarchar(max) NOT NULL,
+    [Especialidad] nvarchar(max) NOT NULL,
+    [FechaContratacion] datetime NOT NULL,
+    [HorarioTrabajo] nvarchar(max) NOT NULL,
+    [Nivel] nvarchar(max) NOT NULL,
+    [FechaModificacion] datetime NOT NULL,
+    [Activo] bit NOT NULL,
+    [UsuarioId] int NOT NULL UNIQUE
 );
 GO
+
 
 -- Creating table 'CursosAcademicos'
 CREATE TABLE [dbo].[CursosAcademicos] (
@@ -538,6 +544,14 @@ CREATE TABLE [dbo].[ControlEntradas] (
 );
 GO
 
+-- Creating table 'DetallesPermisos'
+CREATE TABLE [dbo].[DetallesPermisos] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [UsuarioId] int  NOT NULL,
+    [PermisoId] int  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -680,24 +694,15 @@ ADD CONSTRAINT [PK_ControlEntradas]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
+-- Creating primary key on [Id] in table 'DetallesPermisos'
+ALTER TABLE [dbo].[DetallesPermisos]
+ADD CONSTRAINT [PK_DetallesPermisos]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
-
--- Creating foreign key on [RolId] in table 'Permisos'
-ALTER TABLE [dbo].[Permisos]
-ADD CONSTRAINT [FK_RolPermiso]
-    FOREIGN KEY ([RolId])
-    REFERENCES [dbo].[Roles]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_RolPermiso'
-CREATE INDEX [IX_FK_RolPermiso]
-ON [dbo].[Permisos]
-    ([RolId]);
-GO
 
 -- Creating foreign key on [RolId] in table 'Usuarios'
 ALTER TABLE [dbo].[Usuarios]
@@ -1269,19 +1274,49 @@ ON [dbo].[ControlEntradas]
     ([MaizId]);
 GO
 
--- Creating foreign key on [Maestro_Id] in table 'Usuarios'
-ALTER TABLE [dbo].[Usuarios]
+-- Creating foreign key on [UsuarioId] in table 'DetallesPermisos'
+ALTER TABLE [dbo].[DetallesPermisos]
+ADD CONSTRAINT [FK_UsuarioDetallePermisos]
+    FOREIGN KEY ([UsuarioId])
+    REFERENCES [dbo].[Usuarios]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UsuarioDetallePermisos'
+CREATE INDEX [IX_FK_UsuarioDetallePermisos]
+ON [dbo].[DetallesPermisos]
+    ([UsuarioId]);
+GO
+
+-- Creating foreign key on [PermisoId] in table 'DetallesPermisos'
+ALTER TABLE [dbo].[DetallesPermisos]
+ADD CONSTRAINT [FK_PermisoDetallePermisos]
+    FOREIGN KEY ([PermisoId])
+    REFERENCES [dbo].[Permisos]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PermisoDetallePermisos'
+CREATE INDEX [IX_FK_PermisoDetallePermisos]
+ON [dbo].[DetallesPermisos]
+    ([PermisoId]);
+GO
+
+-- Creating foreign key on [UsuarioId] in table 'Maestros'
+ALTER TABLE [dbo].[Maestros]
 ADD CONSTRAINT [FK_UsuarioMaestro]
-    FOREIGN KEY ([Maestro_Id])
-    REFERENCES [dbo].[Maestros]
+    FOREIGN KEY ([UsuarioId])
+    REFERENCES [dbo].[Usuarios]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_UsuarioMaestro'
 CREATE INDEX [IX_FK_UsuarioMaestro]
-ON [dbo].[Usuarios]
-    ([Maestro_Id]);
+ON [dbo].[Maestros]
+    ([UsuarioId]);
 GO
 
 -- --------------------------------------------------

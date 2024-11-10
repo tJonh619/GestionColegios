@@ -29,10 +29,7 @@
     <EntitySet Name="Semestres" EntityType="BDColegio.Store.Semestres" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Años" EntityType="BDColegio.Store.Años" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ControlEntradas" EntityType="BDColegio.Store.ControlEntradas" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="RolPermiso" Association="BDColegio.Store.RolPermiso">
-      <End Role="Rol" EntitySet="Roles" />
-      <End Role="Permiso" EntitySet="Permisos" />
-    </AssociationSet>
+    <EntitySet Name="DetallesPermisos" EntityType="BDColegio.Store.DetallesPermisos" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="RolUsuario" Association="BDColegio.Store.RolUsuario">
       <End Role="Rol" EntitySet="Roles" />
       <End Role="Usuario" EntitySet="Usuarios" />
@@ -185,6 +182,14 @@
       <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
       <End Role="ControlEntrada" EntitySet="ControlEntradas" />
     </AssociationSet>
+    <AssociationSet Name="UsuarioDetallePermisos" Association="BDColegio.Store.UsuarioDetallePermisos">
+      <End Role="Usuario" EntitySet="Usuarios" />
+      <End Role="DetallePermisos" EntitySet="DetallesPermisos" />
+    </AssociationSet>
+    <AssociationSet Name="PermisoDetallePermisos" Association="BDColegio.Store.PermisoDetallePermisos">
+      <End Role="Permiso" EntitySet="Permisos" />
+      <End Role="DetallePermisos" EntitySet="DetallesPermisos" />
+    </AssociationSet>
     <AssociationSet Name="UsuarioMaestro" Association="BDColegio.Store.UsuarioMaestro">
       <End Role="Usuario" EntitySet="Usuarios" />
       <End Role="Maestro" EntitySet="Maestros" />
@@ -210,7 +215,6 @@
     <Property Name="Descripcion" Type="nvarchar(max)" Nullable="false" />
     <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
     <Property Name="Activo" Type="bit" Nullable="false" />
-    <Property Name="RolId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Usuarios">
     <Key>
@@ -224,7 +228,6 @@
     <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
     <Property Name="Activo" Type="bit" Nullable="false" />
     <Property Name="RolId" Type="int" Nullable="false" />
-    <Property Name="Maestro_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Maestros">
     <Key>
@@ -244,6 +247,7 @@
     <Property Name="Nivel" Type="nvarchar(max)" Nullable="false" />
     <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
     <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="UsuarioId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="CursosAcademicos">
     <Key>
@@ -512,18 +516,14 @@
     <Property Name="FrijolesId" Type="int" Nullable="false" />
     <Property Name="MaizId" Type="int" Nullable="false" />
   </EntityType>
-  <Association Name="RolPermiso">
-    <End Role="Rol" Type="BDColegio.Store.Roles" Multiplicity="1" />
-    <End Role="Permiso" Type="BDColegio.Store.Permisos" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Rol">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Permiso">
-        <PropertyRef Name="RolId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
+  <EntityType Name="DetallesPermisos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UsuarioId" Type="int" Nullable="false" />
+    <Property Name="PermisoId" Type="int" Nullable="false" />
+  </EntityType>
   <Association Name="RolUsuario">
     <End Role="Rol" Type="BDColegio.Store.Roles" Multiplicity="1" />
     <End Role="Usuario" Type="BDColegio.Store.Usuarios" Multiplicity="*" />
@@ -980,15 +980,39 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="UsuarioMaestro">
-    <End Role="Usuario" Type="BDColegio.Store.Usuarios" Multiplicity="*" />
-    <End Role="Maestro" Type="BDColegio.Store.Maestros" Multiplicity="1" />
+  <Association Name="UsuarioDetallePermisos">
+    <End Role="Usuario" Type="BDColegio.Store.Usuarios" Multiplicity="1" />
+    <End Role="DetallePermisos" Type="BDColegio.Store.DetallesPermisos" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Maestro">
+      <Principal Role="Usuario">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="Usuario">
-        <PropertyRef Name="Maestro_Id" />
+      <Dependent Role="DetallePermisos">
+        <PropertyRef Name="UsuarioId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PermisoDetallePermisos">
+    <End Role="Permiso" Type="BDColegio.Store.Permisos" Multiplicity="1" />
+    <End Role="DetallePermisos" Type="BDColegio.Store.DetallesPermisos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Permiso">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DetallePermisos">
+        <PropertyRef Name="PermisoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsuarioMaestro">
+    <End Role="Usuario" Type="BDColegio.Store.Usuarios" Multiplicity="1" />
+    <End Role="Maestro" Type="BDColegio.Store.Maestros" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Maestro">
+        <PropertyRef Name="UsuarioId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -999,10 +1023,6 @@
         <EntityContainer Name="BDColegioContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Roles" EntityType="BDColegio.Rol" />
           <EntitySet Name="Permisos" EntityType="BDColegio.Permiso" />
-          <AssociationSet Name="RolPermiso" Association="BDColegio.RolPermiso">
-            <End Role="Rol" EntitySet="Roles" />
-            <End Role="Permiso" EntitySet="Permisos" />
-          </AssociationSet>
           <EntitySet Name="Usuarios" EntityType="BDColegio.Usuario" />
           <AssociationSet Name="RolUsuario" Association="BDColegio.RolUsuario">
             <End Role="Rol" EntitySet="Roles" />
@@ -1206,6 +1226,15 @@
             <End Role="InventarioAlimento" EntitySet="InventariosAlimentos" />
             <End Role="ControlEntrada" EntitySet="ControlEntradas" />
           </AssociationSet>
+          <EntitySet Name="DetallesPermisos" EntityType="BDColegio.DetallePermiso" />
+          <AssociationSet Name="UsuarioDetallePermisos" Association="BDColegio.UsuarioDetallePermisos">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="DetallePermisos" EntitySet="DetallesPermisos" />
+          </AssociationSet>
+          <AssociationSet Name="PermisoDetallePermisos" Association="BDColegio.PermisoDetallePermisos">
+            <End Role="Permiso" EntitySet="Permisos" />
+            <End Role="DetallePermisos" EntitySet="DetallesPermisos" />
+          </AssociationSet>
           <AssociationSet Name="UsuarioMaestro" Association="BDColegio.UsuarioMaestro">
             <End Role="Usuario" EntitySet="Usuarios" />
             <End Role="Maestro" EntitySet="Maestros" />
@@ -1221,7 +1250,6 @@
           <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Activo" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Permiso" Relationship="BDColegio.RolPermiso" FromRole="Rol" ToRole="Permiso" />
           <NavigationProperty Name="Usuario" Relationship="BDColegio.RolUsuario" FromRole="Rol" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="Permiso">
@@ -1233,21 +1261,8 @@
           <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Activo" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Rol" Relationship="BDColegio.RolPermiso" FromRole="Permiso" ToRole="Rol" />
-          <Property Name="RolId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DetallePermisos" Relationship="BDColegio.PermisoDetallePermisos" FromRole="Permiso" ToRole="DetallePermisos" />
         </EntityType>
-        <Association Name="RolPermiso">
-          <End Type="BDColegio.Rol" Role="Rol" Multiplicity="1" />
-          <End Type="BDColegio.Permiso" Role="Permiso" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Rol">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Permiso">
-              <PropertyRef Name="RolId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Usuario">
           <Key>
             <PropertyRef Name="Id" />
@@ -1261,6 +1276,7 @@
           <Property Name="Activo" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Rol" Relationship="BDColegio.RolUsuario" FromRole="Usuario" ToRole="Rol" />
           <Property Name="RolId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DetallePermisos" Relationship="BDColegio.UsuarioDetallePermisos" FromRole="Usuario" ToRole="DetallePermisos" />
           <NavigationProperty Name="Maestro" Relationship="BDColegio.UsuarioMaestro" FromRole="Usuario" ToRole="Maestro" />
         </EntityType>
         <Association Name="RolUsuario">
@@ -1295,6 +1311,7 @@
           <Property Name="Activo" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CursoAcademico" Relationship="BDColegio.MaestroCursoAcademico" FromRole="Maestro" ToRole="CursoAcademico" />
           <NavigationProperty Name="Usuario" Relationship="BDColegio.UsuarioMaestro" FromRole="Maestro" ToRole="Usuario" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
         </EntityType>
         <EntityType Name="CursoAcademico">
           <Key>
@@ -2091,9 +2108,51 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DetallePermiso">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Usuario" Relationship="BDColegio.UsuarioDetallePermisos" FromRole="DetallePermisos" ToRole="Usuario" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Permiso" Relationship="BDColegio.PermisoDetallePermisos" FromRole="DetallePermisos" ToRole="Permiso" />
+          <Property Name="PermisoId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="UsuarioDetallePermisos">
+          <End Type="BDColegio.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="BDColegio.DetallePermiso" Role="DetallePermisos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DetallePermisos">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PermisoDetallePermisos">
+          <End Type="BDColegio.Permiso" Role="Permiso" Multiplicity="1" />
+          <End Type="BDColegio.DetallePermiso" Role="DetallePermisos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permiso">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DetallePermisos">
+              <PropertyRef Name="PermisoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="UsuarioMaestro">
           <End Type="BDColegio.Usuario" Role="Usuario" Multiplicity="1" />
-          <End Type="BDColegio.Maestro" Role="Maestro" Multiplicity="1" />
+          <End Type="BDColegio.Maestro" Role="Maestro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Maestro">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -2121,7 +2180,6 @@
           <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
           <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
           <ScalarProperty Name="Activo" ColumnName="Activo" />
-          <ScalarProperty Name="RolId" ColumnName="RolId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -2156,6 +2214,7 @@
           <ScalarProperty Name="Nivel" ColumnName="Nivel" />
           <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
           <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -2445,14 +2504,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="UsuarioMaestro" TypeName="BDColegio.UsuarioMaestro" StoreEntitySet="Usuarios">
-      <EndProperty Name="Maestro">
-        <ScalarProperty Name="Id" ColumnName="Maestro_Id" />
-      </EndProperty>
-      <EndProperty Name="Usuario">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
+    <EntitySetMapping Name="DetallesPermisos">
+      <EntityTypeMapping TypeName="IsTypeOf(BDColegio.DetallePermiso)">
+        <MappingFragment StoreEntitySet="DetallesPermisos">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+          <ScalarProperty Name="PermisoId" ColumnName="PermisoId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

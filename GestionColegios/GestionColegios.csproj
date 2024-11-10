@@ -272,6 +272,9 @@
     <Compile Include="Models\CursoAcademicoEstudiante.cs">
       <DependentUpon>BDColegio.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DetallePermiso.cs">
+      <DependentUpon>BDColegio.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EficienciaFisica.cs">
       <DependentUpon>BDColegio.tt</DependentUpon>
     </Compile>
