@@ -20,7 +20,7 @@
             <!-- Sidebar -->
             @Html.Partial("_SideBar")
             <!-- Contenido principal -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 vh-100 custom-scroll-main">
                 @RenderBody()
             </main>
         </div>
@@ -38,3 +38,37 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+<style>
+    /* Contenedor del sidebar */
+    .custom-scrollbar, .custom-scroll-main {
+        overflow: hidden; /* Ocultar el scroll por defecto */
+        height: 100%; /* Asegurarse que el contenedor tenga altura completa */
+        position: relative; /* Para que funcione el efecto del hover */
+    }
+
+        /* Mostrar el scroll cuando se pasa el cursor sobre el contenedor */
+        .custom-scrollbar:hover, .custom-scroll-main:hover {
+            overflow-y: scroll; /* Activar el scroll solo al pasar el mouse */
+        }
+
+        /* Estilo de la barra de desplazamiento en navegadores WebKit (Chrome, Safari) */
+        .custom-scrollbar::-webkit-scrollbar, .custom-scroll-main::-webkit-scrollbar {
+            width: 8px; /* Ancho del scroll */
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb, .custom-scroll-main::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.4); /* Color con opacidad */
+            border-radius: 4px; /* Bordes redondeados */
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track, .custom-scroll-main::-webkit-scrollbar-track {
+            background-color: transparent; /* Fondo transparente */
+        }
+
+    /* Compatibilidad con Firefox para el estilo del scroll */
+    .custom-scrollbar, .custom-scroll-main {
+        scrollbar-width: thin; /* Scroll delgado */
+        scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+    }
+</style>

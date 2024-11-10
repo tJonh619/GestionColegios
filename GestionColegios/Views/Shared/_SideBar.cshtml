@@ -5,17 +5,18 @@
     var rolUsuario = claimsIdentity?.FindFirst(ClaimTypes.Role)?.Value;
     var idUsuario = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 }
+<head>
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+</head>
 
 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse vh-100">
-    <div class="position-sticky">
+    <div class="position-sticky vh-100 custom-scrollbar">
         <!-- Perfil del usuario (opcional) -->
         <div class="user-profile text-center py-4">
             <img src="https://via.placeholder.com/50" alt="Usuario" class="rounded-circle" width="50" height="50">
 
-            <head>
-                <!-- Font Awesome CSS -->
-                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-            </head>
+
 
             <h6 class="text-white mt-2">@nombreUsuario</h6>
         </div>
@@ -23,7 +24,7 @@
         <!-- Menú lateral -->
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link text-white" href="@Url.Action("Index", "Home")">
+                <a class="nav-link text-white bg-dark-hover" href="@Url.Action("Index", "Home")">
                     <i class="fas fa-home me-2"></i> Inicio
                 </a>
             </li>
@@ -131,3 +132,7 @@
         margin-right: 10px; /* Espacio entre el ícono y el texto */
     }
 </style>
+
+
+
+
