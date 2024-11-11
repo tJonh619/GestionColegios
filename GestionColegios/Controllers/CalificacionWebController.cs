@@ -37,35 +37,28 @@ namespace GestionColegios.Controllers
                 return HttpNotFound();
             }
 
-            // Obtener los años académicos
-            var añosAcademicos = db.AñosAcademicos.ToList();  // Asegúrate de que este es el nombre correcto del modelo
-
-            // Obtener todas las materias asociadas al estudiante, no solo las de los años con calificaciones registradas
-            var materias = db.Materias.ToList();
-
-            // Buscar calificaciones existentes para el parcial especificado
             var calificaciones = db.Calificaciones
-                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == 1)
                 .ToList();
 
-            // Si no existen calificaciones para el parcial especificado, inicializa una lista en blanco para cada materia
+            // Si no existen calificaciones para Parcial 2, inicializa una lista en blanco para cada materia
             if (!calificaciones.Any())
             {
+                var materias = db.Materias.ToList();
                 calificaciones = materias.Select(m => new Calificacion
                 {
                     EstudianteId = estudiante.Id,
                     MateriaId = m.Id,
-                    ParcialId = parcialId // Asignar el parcial proporcionado
+                    ParcialId = 3
                 }).ToList();
             }
 
             var vm = new VMCalificaciones
             {
                 Estudiante = estudiante,
+                Materias = db.Materias.ToList(),
                 Calificaciones = calificaciones,
-                Materias = materias,
-                Parciales = db.Parciales.ToList(),
-                AñoAcademicos = añosAcademicos // Agregar los años académicos
+                Parciales = db.Parciales.ToList()
             };
 
             return View(vm);
