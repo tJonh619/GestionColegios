@@ -5,7 +5,31 @@
 }
 
 <!-- Título principal -->
-<h2 class="text-center text-primary my-4">Registrar Notas - Parcial III</h2>
+<h2 class="text-center text-primary my-4">Registrar Notas - Parcial I</h2>
+
+<!-- Mensaje de éxito -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<!-- Mostrar errores -->
+@foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+{
+    <div class="alert alert-danger">
+        @error.ErrorMessage
+    </div>
+}
+
+<!-- Mostrar errores -->
+@foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+{
+    <div class="alert alert-danger">
+        @error.ErrorMessage
+    </div>
+}
 
 @using (Html.BeginForm("Create", "CalificacionWeb", FormMethod.Post))
 {
@@ -40,32 +64,46 @@
 
                                 <!-- Columna de Parcial -->
                                 <td>
-                                    @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, new { Value = 3 }) <!-- Parcial III -->
+                                    @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, new { Value = 3 }) <!-- Parcial I -->
                                     <span class="badge bg-info">Parcial III</span>
                                 </td>
 
                                 <!-- Columna de Nota Cuantitativa -->
                                 <td>
-                                    @Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new
+                                    @if (Model.Calificaciones[i].NCuantitativa != 0 && Model.Calificaciones[i].NCuantitativa != null)
                                     {
-                                        @class = "form-control",
-                                        type = "number",
-                                        step = "0.01",
-                                        min = "0",
-                                        max = "100",
-                                        oninput = "updateCualitativa(this, " + i + ")",
-                                        placeholder = "Ingrese la nota cuantitativa"
-                                    })
+                                        <span class="form-control" readonly>@Model.Calificaciones[i].NCuantitativa</span>
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new
+                                        {
+                                            @class = "form-control",
+                                            type = "number",
+                                            step = "0.01",
+                                            min = "0",
+                                            max = "100",
+                                            oninput = "updateCualitativa(this, " + i + ")",
+                                            placeholder = "Ingrese la nota cuantitativa"
+                                        })
+                                    }
                                 </td>
 
                                 <!-- Columna de Nota Cualitativa -->
                                 <td>
-                                    @Html.TextBoxFor(m => Model.Calificaciones[i].NCualitativa, new
+                                    @if (Model.Calificaciones[i].NCualitativa != null)
                                     {
-                                        @class = "form-control",
-                                        @readonly = "readonly",
-                                        placeholder = "Nota cualitativa"
-                                    })
+                                        <span class="form-control" readonly>@Model.Calificaciones[i].NCualitativa</span>
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => Model.Calificaciones[i].NCualitativa, new
+                                        {
+                                            @class = "form-control",
+                                            @readonly = "readonly",
+                                            placeholder = "Nota cualitativa"
+                                        })
+                                    }
                                 </td>
                             </tr>
                         }
@@ -80,7 +118,6 @@
         </div>
     </div>
 }
-
 <script>
     function updateCualitativa(input, index) {
         var cuantitativa = parseFloat(input.value);
@@ -99,15 +136,31 @@
         // Actualizar la nota cualitativa
         document.getElementsByName("Calificaciones[" + index + "].NCualitativa")[0].value = cualitativa;
     }
-</script>
 
-<!-- Mensaje de éxito -->
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success mt-3">
-        @TempData["SuccessMessage"]
-    </div>
-}
+    // Validar formulario antes de enviarlo
+    function validateForm(event) {
+        var isValid = true;
+        var formElements = document.querySelectorAll('.form-control[type="number"]');
+
+        // Validar que todos los campos de notas cuantitativas estén completos
+        formElements.forEach(function (input, index) {
+            if (input.value.trim() === "") {
+                isValid = false;
+                input.classList.add('is-invalid');  // Estilo de error (si no está vacío)
+            } else {
+                input.classList.remove('is-invalid');
+            }
+        });
+
+        if (!isValid) {
+            event.preventDefault();  // Prevenir el envío si algún campo está vacío
+            alert("Por favor, complete todos los campos de notas cuantitativas.");
+        }
+    }
+
+    // Añadir evento de validación antes de enviar el formulario
+    document.querySelector("form").addEventListener("submit", validateForm);
+</script>
 
 <!-- Estilos personalizados -->
 <style>
@@ -146,10 +199,10 @@
         transition: all 0.3s ease;
     }
 
-    .btn-success:hover {
-        background-color: #218838;
-        border-color: #218838;
-    }
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
 
     /* Tabla */
     .table {
@@ -157,10 +210,10 @@
         width: 100%;
     }
 
-    .table td, .table th {
-        text-align: center;
-        padding: 12px 15px;
-    }
+        .table td, .table th {
+            text-align: center;
+            padding: 12px 15px;
+        }
 
     .table-striped tbody tr:nth-child(odd) {
         background-color: #f9f9f9;
@@ -184,10 +237,10 @@
         border: 1px solid #ccc;
     }
 
-    .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
 
     /* Estilo de los badges */
     .badge {
@@ -196,9 +249,9 @@
         font-weight: bold;
     }
 
-    .badge.bg-info {
-        background-color: #17a2b8;
-    }
+        .badge.bg-info {
+            background-color: #17a2b8;
+        }
 
     /* Estilos de la fila de materia */
     td strong {
@@ -209,22 +262,30 @@
 
     /* Media Queries para adaptabilidad */
     media (max-width: 768px) {
-        h2 {
-            font-size: 1.8rem;
-        }
+        h2
 
-        .table td, .table th {
-            font-size: 0.9rem;
-        }
+    {
+        font-size: 1.8rem;
+    }
 
-        .form-control {
-            font-size: 0.9rem;
-            padding: 8px;
-        }
+    .table td, .table th {
+        font-size: 0.9rem;
+    }
 
-        .btn-success {
-            font-size: 1rem;
-            padding: 10px 20px;
-        }
+    .form-control {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .btn-success {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+
+    }
+
+    .is-invalid {
+        border-color: #dc3545;
+        box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
     }
 </style>
