@@ -71,15 +71,10 @@ namespace GestionColegios.Controllers
             return View(vm);
         }
 
-
-
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(VMCalificaciones vm)
         {
-            // Asegúrate de que vm.Calificaciones nunca sea null
             if (vm.Calificaciones == null)
             {
                 vm.Calificaciones = new List<Calificacion>();
@@ -89,29 +84,33 @@ namespace GestionColegios.Controllers
             {
                 foreach (var calificacion in vm.Calificaciones)
                 {
+                    // Aquí verificamos que la calificación tenga un valor válido
                     if (calificacion.NCuantitativa > 0 || !string.IsNullOrEmpty(calificacion.NCualitativa))
                     {
-                        calificacion.EstudianteId = vm.Estudiante.Id; // Asegúrate de establecer el ID del estudiante
-                        db.Calificaciones.Add(calificacion);
+                        // Establecer los valores de EstudianteId, MateriaId y ParcialId correctamente
+                        calificacion.EstudianteId = vm.Estudiante.Id; // El ID del estudiante
+                        calificacion.MateriaId = calificacion.MateriaId; // Este ya lo tienes bien, es parte del formulario
+
+                        db.Calificaciones.Add(calificacion); // Agregar la calificación al contexto
                     }
                 }
 
-                // Guardar cambios en la base de datos
-                db.SaveChanges();
+                db.SaveChanges(); // Guardar cambios en la base de datos
 
                 TempData["SuccessMessage"] = "Calificaciones registradas exitosamente.";
-                return RedirectToAction("Index");
+                return RedirectToAction("Index"); // Redirigir a la lista de calificaciones
             }
             else
             {
-                // Log de errores
+                // Log de errores en caso de que el ModelState no sea válido
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                // Puedes manejar los errores aquí, por ejemplo, guardarlos en el registro
             }
 
-            CargarDatos(vm); // Asegúrate de volver a cargar los datos en caso de que haya errores
+            // Si no es válido, recargar los datos necesarios para que se muestren en la vista
+            CargarDatos(vm);
             return View(vm);
         }
+
 
         private void CargarDatos(VMCalificaciones vm)
         {

@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/09/2024 19:22:25
--- Generated from EDMX file: C:\Users\tjonh\Escritorio\Proyecto Sistema web de colegios publicos de Nicaragua\Proyecto\GestionColegios\GestionColegios\Models\BDColegio.edmx
+-- Date Created: 11/10/2024 15:12:38
+-- Generated from EDMX file: C:\Users\Moises\source\repos\GestionColegios\GestionColegios\Models\BDColegio.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -259,23 +259,22 @@ GO
 -- Creating table 'Maestros'
 CREATE TABLE [dbo].[Maestros] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Codigo] nvarchar(max) NOT NULL,
-    [Cedula] nvarchar(max) NOT NULL,
-    [Nombres] nvarchar(max) NOT NULL,
-    [Apellidos] nvarchar(max) NOT NULL,
-    [Sexo] nvarchar(max) NOT NULL,
-    [Celular] nvarchar(max) NOT NULL,
-    [Direccion] nvarchar(max) NOT NULL,
-    [Especialidad] nvarchar(max) NOT NULL,
-    [FechaContratacion] datetime NOT NULL,
-    [HorarioTrabajo] nvarchar(max) NOT NULL,
-    [Nivel] nvarchar(max) NOT NULL,
-    [FechaModificacion] datetime NOT NULL,
-    [Activo] bit NOT NULL,
-    [UsuarioId] int NOT NULL UNIQUE
+    [Codigo] nvarchar(max)  NOT NULL,
+    [Cedula] nvarchar(max)  NOT NULL,
+    [Nombres] nvarchar(max)  NOT NULL,
+    [Apellidos] nvarchar(max)  NOT NULL,
+    [Sexo] nvarchar(max)  NOT NULL,
+    [Celular] nvarchar(max)  NOT NULL,
+    [Direccion] nvarchar(max)  NOT NULL,
+    [Especialidad] nvarchar(max)  NOT NULL,
+    [FechaContratacion] datetime  NOT NULL,
+    [HorarioTrabajo] nvarchar(max)  NOT NULL,
+    [Nivel] nvarchar(max)  NOT NULL,
+    [FechaModificacion] datetime  NOT NULL,
+    [Activo] bit  NOT NULL,
+    [UsuarioId] int  NOT NULL
 );
 GO
-
 
 -- Creating table 'CursosAcademicos'
 CREATE TABLE [dbo].[CursosAcademicos] (
