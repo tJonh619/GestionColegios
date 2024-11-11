@@ -29,6 +29,20 @@ namespace GestionColegios.Controllers
             return View(vm);
         }
 
+
+        public ActionResult GestionAcademica()
+        {
+            var vm = new VMCalificaciones
+            {
+                Calificaciones = db.Calificaciones.Include(c => c.Estudiante).Include(c => c.Materia).ToList(),
+                Estudiantes = db.Estudiantes.ToList(),
+                Materias = db.Materias.ToList(),
+                Parciales = db.Parciales.ToList(),
+                CursosAcademicos = db.CursosAcademicos.ToList()// Asegúrate de tener una entidad Parcial
+            };
+            return View(vm);
+        }
+
         public ActionResult Create(int estudianteId, int parcialId = 1)
         {
             var estudiante = db.Estudiantes.Find(estudianteId);

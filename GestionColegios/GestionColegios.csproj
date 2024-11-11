@@ -558,6 +558,7 @@
     <Content Include="Views\CursoAcademicoWeb\_ListarCursos.cshtml" />
     <Content Include="Views\CursoAcademicoWeb\_AgregarCursos.cshtml" />
     <Content Include="Views\Matriculas\ImprimirMatricula.cshtml" />
+    <Content Include="Views\CalificacionWeb\GestionAcademica.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
