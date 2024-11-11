@@ -40,37 +40,50 @@
                             <tbody>
                                 @foreach (var materia in Model.Materias)
                                 {
-                                    var calificacion = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id);
-                                    if (calificacion == null)
+                                    var calificacion = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id) ?? new Calificacion
                                     {
-                                        calificacion = new Calificacion
+                                        EstudianteId = Model.Estudiante.Id,
+                                        MateriaId = materia.Id,
+                                        ParcialId = 1 // Asignar el Parcial adecuado
+                                    };
+
+                                <tr data-anio-id="@materia.AñoAcademicoId">
+                                    <td>
+                                        @Html.HiddenFor(m => calificacion.MateriaId) <!-- Esto está bien -->
+                                        @Html.HiddenFor(m => calificacion.EstudianteId) <!-- Asegúrate de que EstudianteId esté presente -->
+                                        @Html.HiddenFor(m => calificacion.ParcialId) <!-- Esto también es correcto -->
+                                        <strong>@materia.Nombre</strong>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-info">Parcial 1</span>
+                                    </td>
+
+                                    <td>
+                                        @Html.TextBoxFor(m => calificacion.NCuantitativa, new
                                         {
-                                            EstudianteId = Model.Estudiante.Id,
-                                            MateriaId = materia.Id,
-                                            ParcialId = 1 // Asignar el Parcial adecuado
-                                        };
-                                    }
+                                            @class = "form-control",
+                                            type = "number",
+                                            step = "0.01",
+                                            min = "0",
+                                            max = "100",
+                                            placeholder = "Ingrese la nota cuantitativa",
+                                            oninput = "updateCualitativa(this)" // Añadido el evento oninput
+                                        })
+                                    </td>
 
-                                    <tr data-anio-id="@materia.AñoAcademicoId">
-                                        <td>
-                                            @Html.HiddenFor(m => calificacion.MateriaId)
-                                            <strong>@materia.Nombre</strong>
-                                        </td>
-
-                                        <td>
-                                            @Html.HiddenFor(m => calificacion.ParcialId)
-                                            <span class="badge bg-info">Parcial 1</span>
-                                        </td>
-
-                                        <td>
-                                            @Html.TextBoxFor(m => calificacion.NCuantitativa, new { @class = "form-control", type = "number", step = "0.01", min = "0", max = "100", oninput = "updateCualitativa(this)", placeholder = "Ingrese la nota cuantitativa" })
-                                        </td>
-
-                                        <td>
-                                            @Html.TextBoxFor(m => calificacion.NCualitativa, new { @class = "form-control", @readonly = "readonly", placeholder = "Nota cualitativa" })
-                                        </td>
-                                    </tr>
+                                    <td>
+                                        @Html.TextBoxFor(m => calificacion.NCualitativa, new
+                                        {
+                                            @class = "form-control",
+                                            @readonly = "readonly",
+                                            placeholder = "Nota cualitativa"
+                                        })
+                                    </td>
+                                </tr>
                                 }
+
+
 
                             </tbody>
                         </table>

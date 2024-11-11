@@ -27,9 +27,12 @@ namespace GestionColegios.Controllers
         // GET: MaestrosWeb/Create
         public ActionResult Create()
         {
+        
             var viewModel = new VMMaestros
             {
-                Maestro = new Maestro()
+                Maestro = new Maestro(),
+                Usuarios = db.Usuarios.ToList() // Aquí cargamos la lista de usuarios
+
             };
             ViewBag.EsEdicion = false;
             return View("_Create_Edit", viewModel);
@@ -38,16 +41,16 @@ namespace GestionColegios.Controllers
         // POST: MaestrosWeb/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: MaestrosWeb/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(VMMaestros model)
         {
             if (ModelState.IsValid)
             {
-                // Verificar si estamos creando un nuevo maestro o editando uno existente
                 if (model.Maestro.Id == 0)
                 {
-                    // Código para creación
+                    // Creación del maestro
                     model.Maestro.Codigo = model.Maestro.Nombres.Substring(0, 3).ToUpper() +
                                            model.Maestro.Apellidos.Substring(0, 2).ToUpper() +
                                            new Random().Next(100, 1000).ToString();
@@ -57,7 +60,7 @@ namespace GestionColegios.Controllers
                 }
                 else
                 {
-                    // Código para edición
+                    // Edición de maestro existente
                     var maestro = db.Maestros.SingleOrDefault(m => m.Id == model.Maestro.Id);
                     if (maestro == null) return HttpNotFound();
 
@@ -71,6 +74,7 @@ namespace GestionColegios.Controllers
                     maestro.FechaContratacion = model.Maestro.FechaContratacion;
                     maestro.HorarioTrabajo = model.Maestro.HorarioTrabajo;
                     maestro.Nivel = model.Maestro.Nivel;
+                    maestro.UsuarioId = model.Maestro.UsuarioId;  // Actualiza el UsuarioId
                     maestro.FechaModificacion = DateTime.Now;
                     maestro.Activo = model.Maestro.Activo;
                 }
@@ -81,6 +85,7 @@ namespace GestionColegios.Controllers
             }
 
             TempData["ErrorMessage"] = "Error al guardar el maestro. Intente de nuevo.";
+            model.Usuarios = db.Usuarios.ToList(); // Asegurarse de volver a pasar la lista de usuarios
             return View("_Create_Edit", model); // Retorna a la misma vista en caso de error
         }
         // GET: MaestrosWeb/Edit/5
@@ -101,8 +106,10 @@ namespace GestionColegios.Controllers
             // Crea el ViewModel para pasar los datos a la vista
             var viewModel = new VMMaestros
             {
-                Maestro = maestro
+                Maestro = maestro, // Maestro ya existente
+                Usuarios = db.Usuarios.ToList() // Lista de usuarios
             };
+
 
             ViewBag.EsEdicion = true;
             return View("_Create_Edit", viewModel);
@@ -147,6 +154,7 @@ namespace GestionColegios.Controllers
             }
 
             TempData["ErrorMessage"] = "Error al actualizar el maestro. Intente de nuevo.";
+            model.Usuarios = db.Usuarios.ToList(); // Asegúrate de volver a cargar la lista de usuarios
             return View(model);
         }
 

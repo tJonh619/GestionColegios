@@ -57,6 +57,18 @@
                 </div>
             </div>
 
+            <!-- Estado Activo del Rol -->
+            <div class="form-group">
+                @Html.LabelFor(m => m.Rol.Activo, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.CheckBoxFor(m => m.Rol.Activo,
+                        ObtenerAtributos(new Dictionary<string, object> {
+                            { "class", "form-check-input" }
+                        }, esSoloLectura))
+                    @Html.ValidationMessageFor(m => m.Rol.Activo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
             <!-- Botones -->
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
@@ -92,6 +104,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
 <script>
     function activateEdit() {
         $('input, select').each(function () {

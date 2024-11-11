@@ -240,8 +240,7 @@ namespace GestionColegios.Controllers
                 if (rolExistente == null)
                     return HttpNotFound();
 
-                // Actualiza los campos necesarios
-                rolExistente.Codigo = model.Rol.Codigo;
+ 
                 rolExistente.Nombre = model.Rol.Nombre;
                 rolExistente.Descripcion = model.Rol.Descripcion;
                 rolExistente.FechaModificacion = DateTime.Now;
