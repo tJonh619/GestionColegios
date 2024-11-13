@@ -107,16 +107,26 @@ namespace GestionColegios.Controllers
             {
                 vm.Calificaciones = new List<Calificacion>();
             }
-
             // Validación de que todos los campos de notas cuantitativas estén llenos
+            var errorMessage = "";
             foreach (var calificacion in vm.Calificaciones)
             {
                 if (calificacion.NCuantitativa == 0)
                 {
-                    ModelState.AddModelError("Calificaciones", "Error Campos vacios o nota duplicada");
+                    errorMessage = "Error: Notas duplicadas o campos vacios.";                 
+                    break; // Salir del bucle después de encontrar el primer error
+                    return RedirectToAction("Create", new { estudianteId = vm.Estudiante.Id });
+
                 }
             }
 
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                ModelState.AddModelError("Calificaciones", errorMessage);
+            }
+
+
+            // Realiza el guardado solo si el ModelState es válido después de validar los campos
             if (ModelState.IsValid)
             {
                 foreach (var calificacion in vm.Calificaciones)
@@ -129,29 +139,34 @@ namespace GestionColegios.Controllers
 
                     if (calificacionExistente != null && calificacionExistente.NCuantitativa != 0)
                     {
-                        // Si ya existe, mostrar un mensaje de error y no guardar la calificación
+                        // Si ya existe, muestra un mensaje de error y omite el registro
                         ModelState.AddModelError("Calificaciones",
                             $"La materia {calificacionExistente.Materia.Nombre} ya tiene una calificación registrada para este parcial.");
+                        continue; // Omitir registro duplicado
                     }
                     else
                     {
-                        // Si no existe, agregar la nueva calificación solo si tiene valores
+                        // Si no existe, agrega la nueva calificación solo si tiene valores
                         if (calificacion.NCuantitativa > 0 || !string.IsNullOrEmpty(calificacion.NCualitativa))
                         {
                             calificacion.EstudianteId = vm.Estudiante.Id;
-                            calificacion.MateriaId = calificacion.MateriaId;
-                            calificacion.ParcialId = calificacion.ParcialId;
-
                             db.Calificaciones.Add(calificacion); // Agregar la calificación al contexto
                         }
                     }
                 }
 
-                if (ModelState.IsValid)
+                if (ModelState.IsValid) // Verifica si ModelState sigue siendo válido después de los registros
                 {
-                    db.SaveChanges(); // Guardar cambios en la base de datos
                     TempData["SuccessMessage"] = "Calificaciones registradas exitosamente.";
-                    return RedirectToAction("Index"); // Redirigir a la lista de calificaciones
+                    db.SaveChanges(); // Guardar cambios en la base de datos                    
+                    return RedirectToAction("Create", new { estudianteId = vm.Estudiante.Id });
+                    return RedirectToAction("Parcial1", new { estudianteId = vm.Estudiante.Id });
+                    return RedirectToAction("Parcial2", new { estudianteId = vm.Estudiante.Id });
+                    return RedirectToAction("Parcial3", new { estudianteId = vm.Estudiante.Id });
+                    return RedirectToAction("Parcial4", new { estudianteId = vm.Estudiante.Id });
+
+
+                    // Redirigir a la lista de calificaciones
                 }
             }
 
@@ -160,7 +175,7 @@ namespace GestionColegios.Controllers
             return View(vm);
         }
 
-
+  
 
 
         private void CargarDatos(VMCalificaciones vm)
