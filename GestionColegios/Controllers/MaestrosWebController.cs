@@ -18,7 +18,7 @@ namespace GestionColegios.Controllers
         // GET: MaestrosWeb
         public ActionResult Index()
         {
-            var viewModel = new VMMaestros { Maestros = db.Maestros.ToList(), Maestro = new Maestro() };
+            var viewModel = new VMMaestros { Maestros = db.Maestros.ToList(), Maestro = new Maestro(), Usuarios = db.Usuarios.ToList() };
             ViewBag.EsEdicion = false;
             return View(viewModel);
         }

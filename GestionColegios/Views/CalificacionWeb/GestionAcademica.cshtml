@@ -9,38 +9,28 @@
 }
 <div class="panel panel-default mt-2">
     <div class="panel-heading">
-        <h3 class="panel-title">Lista de Cursos Académicos</h3>
+        <h3 class="panel-title">Mis Cursos Asignados</h3>
     </div>
     <div class="panel-body">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Nombre del Curso</th>
-                    <th>Maestro</th>
-                    <th>Sección</th>
-                    <th>Año Académico</th>
-                    <th>Año</th>
-                    <th>Activo</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var curso in Model.CursosAcademicos.Where(c => c.Maestro.UsuarioId == idUsuario))
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => curso.Nombre)</td>
-                        <td>@Html.DisplayFor(modelItem => curso.Maestro.Nombres)</td>
-                        <td>@Html.DisplayFor(modelItem => curso.Seccion.Nombre)</td>
-                        <td>@Html.DisplayFor(modelItem => curso.AñoAcademico.Nombre)</td>
-                        <td>@Html.DisplayFor(modelItem => curso.Año.Id)</td>
-                        <td>@Html.DisplayFor(modelItem => curso.Activo)</td>
-                        <td>
-                            @Html.ActionLink("Editar", "Edit", new { id = curso.Id }, new { @class = "btn btn-warning" }) |
-                            @Html.ActionLink("Eliminar", "Delete", new { id = curso.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este curso?');" })
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <div class="row">
+            @foreach (var curso in Model.CursosAcademicos.Where(c => c.Maestro.UsuarioId == idUsuario))
+            {
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">@Html.DisplayFor(modelItem => curso.Nombre)</h5>
+                            <p class="card-text">
+                                <strong>Año Académico:</strong> @Html.DisplayFor(modelItem => curso.AñoAcademico.Nombre)<br />
+                                <strong>Año:</strong> @Html.DisplayFor(modelItem => curso.Año.Nombre)
+                            </p>
+                            <div>
+                                <a href="@Url.Action("index", "CalificacionWeb", new { id = curso.Id })" class="btn btn-sm btn-warning">Detalles</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>

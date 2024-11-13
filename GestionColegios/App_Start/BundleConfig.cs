@@ -20,11 +20,18 @@ namespace GestionColegios
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                      "~/Scripts/bootstrap.js",
+                      "~/Content/Js/SideBar.js",
+                      "~/Content/Js/reloj.js",
+                      "~/Content/Js/Home.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css"
+                      ));
+            bundles.Add(new StyleBundle("~/Home/css").Include(
+                      "~/Content/Css/Home.css"
+                      ));
         }
     }
 }
