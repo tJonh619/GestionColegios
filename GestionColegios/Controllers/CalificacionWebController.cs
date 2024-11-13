@@ -14,17 +14,47 @@ namespace GestionColegios.Controllers
 {
     public class CalificacionWebController : Controller
     {
-        private BDColegioContainer db = new BDColegioContainer();
+        private readonly BDColegioContainer db = new BDColegioContainer();
 
         // GET: CalificacionWeb
-        public ActionResult Index()
+        public ActionResult Index(int id)
+        {
+            ViewBag.idCurso = id;
+            var vm = new VMCalificaciones
+            {
+                Calificaciones = db.Calificaciones.Include(c => c.Estudiante).Include(c => c.Materia).ToList(),
+                Estudiantes = db.Estudiantes.ToList(),
+                Materias = db.Materias.ToList(),
+                Parciales = db.Parciales.ToList(),
+                CursosAcademicos = db.CursosAcademicos.ToList()// Asegúrate de tener una entidad Parcial
+            };
+            return View(vm);
+        }
+
+
+        public ActionResult GestionAcademica()
         {
             var vm = new VMCalificaciones
             {
                 Calificaciones = db.Calificaciones.Include(c => c.Estudiante).Include(c => c.Materia).ToList(),
                 Estudiantes = db.Estudiantes.ToList(),
                 Materias = db.Materias.ToList(),
-                Parciales = db.Parciales.ToList() // Asegúrate de tener una entidad Parcial
+                Parciales = db.Parciales.ToList(),
+                CursosAcademicos = db.CursosAcademicos.ToList()// Asegúrate de tener una entidad Parcial
+            };
+            return View(vm);
+        }
+
+        public ActionResult EstudiantesCurso(int id)
+        {
+            ViewBag.idCurso = id;
+            var vm = new VMCalificaciones
+            {
+                Calificaciones = db.Calificaciones.Include(c => c.Estudiante).Include(c => c.Materia).ToList(),
+                Estudiantes = db.Estudiantes.ToList(),
+                Materias = db.Materias.ToList(),
+                Parciales = db.Parciales.ToList(),
+                CursosAcademicos = db.CursosAcademicos.ToList()// Asegúrate de tener una entidad Parcial
             };
             return View(vm);
         }
@@ -81,7 +111,7 @@ namespace GestionColegios.Controllers
             // Validación de que todos los campos de notas cuantitativas estén llenos
             foreach (var calificacion in vm.Calificaciones)
             {
-                if (calificacion.NCuantitativa == 0 || calificacion.NCuantitativa == null)
+                if (calificacion.NCuantitativa == 0)
                 {
                     ModelState.AddModelError("Calificaciones", "Error Campos vacios o nota duplicada");
                 }
@@ -97,7 +127,7 @@ namespace GestionColegios.Controllers
                                               && c.MateriaId == calificacion.MateriaId
                                               && c.ParcialId == calificacion.ParcialId);
 
-                    if (calificacionExistente != null && calificacionExistente.NCuantitativa != 0 && calificacionExistente.NCuantitativa != null)
+                    if (calificacionExistente != null && calificacionExistente.NCuantitativa != 0)
                     {
                         // Si ya existe, mostrar un mensaje de error y no guardar la calificación
                         ModelState.AddModelError("Calificaciones",

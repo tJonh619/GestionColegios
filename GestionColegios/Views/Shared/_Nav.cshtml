@@ -1,0 +1,30 @@
+﻿<header class="hea-der">
+
+    <section class="flex">
+        <a href=@Url.Action("Index", "Home") class="logo">Sistema Escolar</a>
+
+        <form action="search.html" method="post" class="search-form">
+            <input type="text" name="search_box" required placeholder="Buscar modulos..." maxlength="100">
+            <button type="submit" class="fas fa-search"></button>
+        </form>
+
+        <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            <div id="search-btn" class="fas fa-search"></div>
+            <div id="user-btn" class="fas fa-user"></div>
+            <div id="toggle-btn" class="fas fa-sun"></div>
+        </div>
+
+        <div class="profile">
+            <img src="~/Content/Recursos/pic-1.jpg" class="image" alt="" />
+            <h3 class="name">Jonh Torrez</h3>
+            <p class="role">Estudiante</p>
+            <a href=@Url.Action("~/Views/Shared/Profile.cshtml") class="btn">Ver Perfil</a>
+            <div class="flex-btn">
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+
+    </section>
+
+</header>

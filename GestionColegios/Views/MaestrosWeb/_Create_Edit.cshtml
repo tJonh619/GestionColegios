@@ -108,20 +108,7 @@
                     @Html.ValidationMessageFor(model => model.Maestro.Celular, "", new { @class = "text-danger" })
                 </div>
 
-                <!-- Usuario (Nuevo campo) -->
-                <div class="form-group mb-3 has-error">
-                    <label for="UsuarioId">Usuario</label>
-                    @Html.DropDownListFor(model => model.Maestro.UsuarioId,
-                        new SelectList(Model.Usuarios ?? new List<Usuario>(), "Id", "NombreUsuario", Model.Maestro.UsuarioId), // Aseguramos que la lista no sea nula
-                        "Seleccione un usuario",
-                        ObtenerAtributos(new Dictionary<string, object>
-                        {
-                            { "class", "form-control" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Maestro.UsuarioId, "", new { @class = "text-danger" })
-                </div>
-
+              
 
 
             </div>
@@ -186,6 +173,25 @@
                         }, esSoloLectura))
                     @Html.ValidationMessageFor(model => model.Maestro.Nivel, "", new { @class = "text-danger" })
                 </div>
+
+
+                <!-- Usuario (Nuevo campo) -->
+                <div class="form-group mb-3 has-error">
+                    <label for="UsuarioId">Usuario</label>
+                    @Html.DropDownListFor(model => model.Maestro.UsuarioId,
+                        new SelectList(Model.Usuarios ?? new List<Usuario>(), "Id", "NombreUsuario", Model.Maestro.UsuarioId), // Aseguramos que la lista no sea nula
+                        "Seleccione un usuario",
+                        ObtenerAtributos(new Dictionary<string, object>
+                        {
+                            { "class", "form-control" },
+                            { "required", "required" }
+                        }, esSoloLectura))
+                    @Html.ValidationMessageFor(model => model.Maestro.UsuarioId, "", new { @class = "text-danger" })
+                </div>
+
+
+
+
             </div>
 
           

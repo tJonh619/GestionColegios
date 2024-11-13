@@ -37,7 +37,7 @@
                 </tr>
             </thead>
             <tbody id="tableBody">
-                @foreach (var estudiante in Model.Estudiantes)
+                @foreach (var estudiante in Model.Estudiantes.Where(e => e.CursoAcademicoEstudiante.Any(c => c.CursoAcademico.Id == ViewBag.idCurso && c.EstudianteId == e.Id)))
                 {
                     <tr>
                         <td>@estudiante.Nombres</td>
