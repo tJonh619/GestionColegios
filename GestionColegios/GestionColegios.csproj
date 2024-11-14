@@ -336,6 +336,7 @@
     <Compile Include="ViewModels\VMControlMerienda.cs" />
     <Compile Include="ViewModels\VMCursoAcademico.cs" />
     <Compile Include="ViewModels\VMEstudiantes.cs" />
+    <Compile Include="ViewModels\VMIndex.cs" />
     <Compile Include="ViewModels\VMInventarioAlimento.cs" />
     <Compile Include="ViewModels\VMMaestros.cs" />
     <Compile Include="ViewModels\VMMateria.cs" />
@@ -365,15 +366,15 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
-    <Content Include="Content\Css\Cabecera.css" />
-    <Content Include="Content\Css\Cursos.css" />
+    <Content Include="Content\Css\Botones.css" />
+    <Content Include="Content\Css\Colores.css" />
     <Content Include="Content\Css\Home.css" />
-    <Content Include="Content\Css\Index.css" />
+    <Content Include="Content\Css\Barra_Navegacion.css" />
+    <Content Include="Content\Css\Barra_lateral.css" />
     <Content Include="Content\Css\Styles.css" />
+    <Content Include="Content\Images\Colegio.jpg" />
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\Js\Home.js" />
-    <Content Include="Content\Js\reloj.js" />
-    <Content Include="Content\Js\SideBar.js" />
     <Content Include="Content\Recursos\about-img.svg" />
     <Content Include="Content\Recursos\contact-img.svg" />
     <Content Include="Content\Recursos\cuadrologin.jpg" />
@@ -627,6 +628,7 @@
     <Content Include="Views\Shared\_DashBoard.cshtml" />
     <Content Include="Views\Shared\_Side.cshtml" />
     <Content Include="Views\Shared\_Nav.cshtml" />
+    <Content Include="Views\Home\Home.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
