@@ -52,12 +52,14 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var seccion = new Seccion
                 {
                     Nombre = vmSeccion.Nombre,
                     CapacidadEstudiantes = vmSeccion.CapacidadEstudiantes,
-                    Activo = vmSeccion.Activo,
+                    Activo = true,
                     FechaModificacion = DateTime.Now // Asegúrate de setear la fecha
+                    
                 };
 
                 db.Secciones.Add(seccion);
@@ -109,7 +111,7 @@ namespace GestionColegios.Controllers
 
                 seccion.Nombre = vmSeccion.Nombre;
                 seccion.CapacidadEstudiantes = vmSeccion.CapacidadEstudiantes;
-                seccion.Activo = vmSeccion.Activo;
+                //seccion.Activo = vmSeccion.Activo;
                 seccion.FechaModificacion = DateTime.Now; // Asegúrate de setear la fecha
 
                 db.Entry(seccion).State = EntityState.Modified;

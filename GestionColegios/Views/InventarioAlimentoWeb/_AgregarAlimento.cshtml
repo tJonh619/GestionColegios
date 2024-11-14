@@ -13,6 +13,22 @@
     }
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+
+
 <div class="tab-pane fade show active" id="agregar-alimento" role="tabpanel" aria-labelledby="agregar-alimento-tab">
     <div class="panel panel-default mt-2">
         <div class="panel-heading bg-primary text-white">
@@ -89,6 +105,9 @@
                         @Html.ValidationMessageFor(m => m.InventarioAlimento.UnidadDeMedida, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+      
+
 
                 <!-- Botones de Acción -->
                 <div class="form-group">
