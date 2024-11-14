@@ -8,7 +8,7 @@
         ViewBag.Title = "Página Principal del Sistema de Gestión Escolar";
     }
 
-<section class="home-grid">
+    <section class="home-grid">
 
         <h1 class="heading">Opciones Rapidas</h1>
 
@@ -55,17 +55,17 @@
 
 
             <!--
-    <div class="box">
-        <h4 class="title">Idiomas Populares</h4>
-        <div class="flex">
-            <a href="#"><i class="fab fa-html5"></i><span>Inglés</span></a>
-            <a href="#"><i class="fab fa-css3"></i><span>Francés</span></a>
-            <a href="#"><i class="fab fa-js"></i><span>Japonés</span></a>
-            <a href="#"><i class="fab fa-react"></i><span>Mandarín</span></a>
-            <a href="#"><i class="fab fa-php"></i><span>Alemán</span></a>
-        </div>
-    </div>
-    -->
+            <div class="box">
+                <h4 class="title">Idiomas Populares</h4>
+                <div class="flex">
+                    <a href="#"><i class="fab fa-html5"></i><span>Inglés</span></a>
+                    <a href="#"><i class="fab fa-css3"></i><span>Francés</span></a>
+                    <a href="#"><i class="fab fa-js"></i><span>Japonés</span></a>
+                    <a href="#"><i class="fab fa-react"></i><span>Mandarín</span></a>
+                    <a href="#"><i class="fab fa-php"></i><span>Alemán</span></a>
+                </div>
+            </div>
+            -->
         </div>
     </section>
 }
@@ -75,7 +75,7 @@ else
         ViewBag.Title = "Inicia Sesion";
     }
 
-    @Html.Partial("~/Views/Account/Login.cshtml")
+    Html.RenderPartial("~/Views/Account/Login.cshtml", new GestionColegios.Models.LoginViewModel()); 
 }
 
 
