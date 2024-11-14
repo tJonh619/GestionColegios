@@ -51,6 +51,7 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.Usuario.Activo = true;
                 model.Usuario.FechaModificacion = DateTime.Now;
                 db.Usuarios.Add(model.Usuario);
                 db.SaveChanges();

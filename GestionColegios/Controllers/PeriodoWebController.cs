@@ -107,6 +107,7 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.Periodo.Activo = true;
                 db.Periodos.Add(model.Periodo);
                 db.SaveChanges();
                 TempData["SuccessMessage"] = "Periodo creado correctamente.";

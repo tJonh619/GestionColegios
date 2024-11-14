@@ -60,37 +60,37 @@
                                             @if (Model.Calificaciones[i].NCuantitativa != 0 && Model.Calificaciones[i].NCuantitativa != null)
                                             {
                         <span class="form-control" readonly>@Model.Calificaciones[i].NCuantitativa</span> }
-                    else
-                    {
-@Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new
-{
-    @class = "form-control",
-    type = "number",
-    step = "0.01",
-    min = "0",
-    max = "100",
-    oninput = "updateCualitativa(this, " + i + ")",
-    placeholder = "Ingrese la nota cuantitativa",
-    required = "required",
-    id = "calificacion_" + i
-})}
-                                        </td>
+                                                else
+                                                        {
+                                                        @Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new
+                                                        {
+                                                        @class = "form-control",
+                                                        type = "number",
+                                                        step = "0.01",
+                                                        min = "0",
+                                                        max = "100",
+                                                        oninput = "updateCualitativa(this, " + i + ")",
+                                                        placeholder = "Ingrese la nota cuantitativa",
+                                                        required = "required",
+                                                        id = "calificacion_" + i
+                                                        })}
+                                                </td>
 
                                         <td>
                                             @if (Model.Calificaciones[i].NCualitativa != null)
                                             {
                         <span class="form-control" readonly>@Model.Calificaciones[i].NCualitativa</span> }
-                    else
-                    {
-@Html.TextBoxFor(m => Model.Calificaciones[i].NCualitativa, new
-{
-    @class = "form-control",
-    @readonly = "readonly",
-    placeholder = "Nota cualitativa",
-    required = "required"
-})}
-                                        </td>
-                                    </tr>
+                                                else
+                                                {
+                                @Html.TextBoxFor(m => Model.Calificaciones[i].NCualitativa, new
+                                {
+                                @class = "form-control",
+                                @readonly = "readonly",
+                                placeholder = "Nota cualitativa",
+                                required = "required"
+                                })}
+                                                                    </td>
+                                                                </tr>
 }
                                                 </tbody>
                                             </table>

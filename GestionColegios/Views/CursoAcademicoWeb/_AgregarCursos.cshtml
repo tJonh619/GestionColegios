@@ -47,7 +47,7 @@
                     <div class="form-group mb-3">
                         <label for="MaestroId">Maestro</label>
                         @Html.DropDownListFor(m => m.CursoAcademico.MaestroId,
-                            new SelectList(Model.Maestros, "Id", "Codigo", Model.CursoAcademico.MaestroId),
+                            new SelectList(Model.Maestros, "Id", "Nombres", Model.CursoAcademico.MaestroId),
                             "Seleccione un maestro",
                             ObtenerAtributos(new Dictionary<string, object> {
                                 { "class", "form-control" }
@@ -90,6 +90,8 @@
                             }, esSoloLectura))
                         @Html.ValidationMessageFor(m => m.CursoAcademico.AñoId, "", new { @class = "text-danger" })
                     </div>
+
+
 
                     <!-- Botones de Acción -->
                     <div class="form-group col-md-2 mt-4">
