@@ -13,7 +13,6 @@
                     <th>Sección</th>
                     <th>Año Académico</th>
                     <th>Año</th>
-                    <th>Activo</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -26,7 +25,6 @@
                         <td>@Html.DisplayFor(modelItem => curso.Seccion.Nombre)</td>
                         <td>@Html.DisplayFor(modelItem => curso.AñoAcademico.Nombre)</td>
                         <td>@Html.DisplayFor(modelItem => curso.Año.Id)</td>
-                        <td>@Html.DisplayFor(modelItem => curso.Activo)</td>
                         <td>
                             @Html.ActionLink("Editar", "Edit", new { id = curso.Id }, new { @class = "btn btn-warning" }) |
                             @Html.ActionLink("Eliminar", "Delete", new { id = curso.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este curso?');" })

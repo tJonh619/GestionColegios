@@ -36,7 +36,6 @@
                         <th scope="col">Especialidad</th>
                         <th scope="col">Fecha de Contratación</th>
                         <th scope="col">Nivel</th>
-                        <th scope="col">Activo</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
@@ -51,7 +50,6 @@
                             <td>@maestro.Especialidad</td>
                             <td>@maestro.FechaContratacion.ToString("yyyy-MM-dd")</td>
                             <td>@maestro.Nivel</td>
-                            <td>@(maestro.Activo ? "Sí" : "No")</td>
                             <td>
                                 <a href="@Url.Action("Edit", "MaestrosWeb", new { id = maestro.Id })" class="btn btn-sm btn-warning">
                                     <i class="fas fa-edit"></i> Editar
