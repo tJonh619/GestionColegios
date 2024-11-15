@@ -55,26 +55,26 @@
                 <tbody>
                     @foreach (var control in Model.ControlesMeriendas)
                     {
-                        <tr>
-                            <td>@control.CursoAcademico.Nombre</td>
-                            <td>@control.FechaEntrega.ToShortDateString()</td>
-                            <td>@control.Estudiante.Nombres</td>
-                            <td>@control.AsistenciaEsperadaMujeres</td>
-                            <td>@control.AsistenciaEsperadaTotal</td>
-                            <td>@control.AsistenciaRealMujeres</td>
-                            <td>@control.AsistenciaRealTotal</td>
-                            <td>@control.SAceite</td>
-                            <td>@control.SArroz</td>
-                            <td>@control.SCereal</td>
-                            <td>@control.SFrijoles</td>
-                            <td>@control.SMaiz</td>
-                            <td>@control.FirmaDocente</td>
-                            <td>@control.CedulaTutor</td>
-                            <td>@control.FirmaTutor</td>
-                            <td class="print-hide">
-                                <a href="@Url.Action("Edit", "ControlMeriendas", new { id = control.Id })" class="btn btn-primary btn-sm">Editar</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>@control.CursoAcademico.Nombre</td>
+                        <td>@control.FechaEntrega.ToShortDateString()</td>
+                        <td>@control.Estudiante.Nombres</td>
+                        <td>@control.AsistenciaEsperadaMujeres</td>
+                        <td>@control.AsistenciaEsperadaTotal</td>
+                        <td>@(control.AsistenciaRealMujeres == 0 ? "" : control.AsistenciaRealMujeres)</td>
+                        <td>@(control.AsistenciaRealTotal == 0 ? "" : control.AsistenciaRealTotal)</td>
+                        <td>@control.SAceite</td>
+                        <td>@control.SArroz</td>
+                        <td>@control.SCereal</td>
+                        <td>@control.SFrijoles</td>
+                        <td>@control.SMaiz</td>
+                        <td>@control.FirmaDocente</td>
+                        <td>@control.CedulaTutor</td>
+                        <td>@control.FirmaTutor</td>
+                        <td class="print-hide">
+                            <a href="@Url.Action("Edit", "ControlMeriendas", new { id = control.Id })" class="btn btn-primary btn-sm">Editar</a>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>
