@@ -3,7 +3,7 @@
     top: 0;
     left: 0;
     right: 0;
-    background-color: var(--white);
+    background-color: var(--azul-bandera);
     z-index: 1000;
     border-bottom: var(--border);
     text-decoration: none;

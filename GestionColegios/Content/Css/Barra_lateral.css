@@ -3,10 +3,11 @@
     top: 0;
     left: 0;
     width: 25rem;
-    background-color: var(--white);
+    background-color: var(--azul-bandera);
     height: 100vh;
     border-right: var(--border);
     z-index: 1200;
+    overflow-y: hidden; 
 }
 
     .side-bar #close-btn {
@@ -78,7 +79,8 @@
         }
 
         .side-bar .navbarr a:hover {
-            background-color: var(--light-bg);
+            border-radius: 10rem;
+            background-color: var(--orange);
         }
 
             .side-bar .navbarr a:hover i {
@@ -88,7 +90,6 @@
     .side-bar.active {
         left: -25rem;
     }
-
 
 @media (max-width:1200px) {
     .side-bar {
