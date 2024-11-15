@@ -123,7 +123,9 @@ namespace GestionColegios.Controllers
                 estudiante.Apellidos = model.Estudiante.Apellidos;
                 estudiante.Barrio = model.Estudiante.Barrio;
                 estudiante.FechaNacimiento = model.Estudiante.FechaNacimiento;
-                estudiante.Edad = model.Estudiante.Edad;
+                // Calcula la edad del estudiante basado en la fecha de nacimiento
+                estudiante.Edad = DateTime.Today.Year - model.Estudiante.FechaNacimiento.Year -
+                                 (DateTime.Today.DayOfYear < model.Estudiante.FechaNacimiento.DayOfYear ? 1 : 0);
                 estudiante.Sexo = model.Estudiante.Sexo;
                 estudiante.Direccion = model.Estudiante.Direccion;
                 estudiante.FechaModificacion = DateTime.Now;
