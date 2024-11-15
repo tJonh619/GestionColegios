@@ -57,6 +57,7 @@ namespace GestionColegios.Controllers
                 }
                 else
                 {
+                    
                     model.InventarioAlimento.Activo = true;
                     model.InventarioAlimento.FechaModificacion = DateTime.Now;
                     db.InventariosAlimentos.Add(model.InventarioAlimento);
