@@ -1,7 +1,15 @@
-﻿<header class="header">
+﻿@using System.Security.Claims
+@{
+    var claimsIdentity = User.Identity as ClaimsIdentity;
+    var nombreUsuario = claimsIdentity?.FindFirst(ClaimTypes.Name)?.Value;
+    var rolUsuario = claimsIdentity?.FindFirst(ClaimTypes.Role)?.Value;
+    var idUsuario = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+}
+
+<header class="header">
 
     <section class="flex">
-        <a href=@Url.Action("Index", "Home") class="logo">Sistema Escolar</a>
+        <a href=@Url.Action("Index", "Home") class="logo"><span>Sistema Escolar</span></a>
 
         <form action="search.html" method="post" class="search-form">
             <input type="text" name="search_box" required placeholder="Buscar modulos..." maxlength="100">
@@ -17,9 +25,8 @@
 
         <div class="profile">
             <img src="~/Content/Recursos/pic-1.jpg" class="image" alt="" />
-            <h3 class="name">Jonh Torrez</h3>
-            <p class="role">Estudiante</p>
-            <a href=@Url.Action("~/Views/Shared/Profile.cshtml") class="btn">Ver Perfil</a>
+            <h3 class="name">@nombreUsuario</h3>
+            <p class="role">@rolUsuario</p>
             <div class="flex-btn">
                 @Html.Partial("_LoginPartial")
             </div>

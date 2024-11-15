@@ -7,7 +7,7 @@
     height: 100vh;
     border-right: var(--border);
     z-index: 1200;
-    overflow-y: hidden; 
+    overflow-y: hidden; /* Evita que se muestre la barra de scroll */
 }
 
     .side-bar #close-btn {
@@ -48,7 +48,7 @@
 
         .side-bar .profile .name {
             font-size: 2rem;
-            color: var(--black);
+            color: var(--white-side);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -56,7 +56,7 @@
 
         .side-bar .profile .role {
             font-size: 1.8rem;
-            color: var(--light-color);
+            color: var(--white-side);
         }
 
     .side-bar .navbarr a {
@@ -74,7 +74,7 @@
         }
 
         .side-bar .navbarr a span {
-            color: var(--light-color);
+            color: var(--white-side);
             text-decoration: none !important;
         }
 

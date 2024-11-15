@@ -17,6 +17,9 @@
         padding: 1.5rem 2rem;
         text-decoration: none;
     }
+        .header .flex a span{
+            color: var(--white-side)
+        }
 
         .header .flex .logo {
             font-size: 2.5rem;
@@ -87,6 +90,12 @@
             transition: .2s linear;
             width: 30rem;
         }
+            .header .flex .profile .flex-btn {
+                display: flex; /* Habilita el modo flexbox */
+                justify-content: center; /* Centra horizontalmente los elementos hijos */
+                align-items: center; /* Centra verticalmente los elementos hijos */
+                height: 100%; /* Asegúrate de que el contenedor tenga altura */
+            }
 
             .header .flex .profile.active {
                 transform: scale(1);

@@ -1,5 +1,5 @@
 ﻿:root {
-    --main-color: #eee;
+    --main-color: #f39c12;
     --red: #e74c3c;
     --orange: #f39c12;
     --light-color: #888;
@@ -12,6 +12,7 @@
     --color-light: #e0e0e0;
     --azul-bandera: #0038A8;
     --border: .1rem solid rgba(0,0,0,.2);
+    --white-side: #fff;
     text-decoration: none;
 }
 
@@ -21,6 +22,7 @@ body.dark {
     --light-bg: #333;
     --black: #fff;
     --white: #222;
+    --azul-bandera: #222;
     --border: .1rem solid rgba(255,255,255,.2);
     text-decoration: none;
 }
