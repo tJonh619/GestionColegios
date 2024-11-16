@@ -27,5 +27,8 @@ namespace GestionColegios.ViewModels
         public List<CursoAcademico> CursosAcademicos { get; set; } = new List<CursoAcademico>(); // Asegúrate de que la lista esté inicializada
         public CursoAcademico CursoAcademico { get; set; }
 
+        public List<Matricula> Matriculas { get; set; }
+        public Matricula Matricula { get; set; }
+
     }
 }

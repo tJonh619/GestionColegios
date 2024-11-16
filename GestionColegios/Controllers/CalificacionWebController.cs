@@ -20,16 +20,45 @@ namespace GestionColegios.Controllers
         public ActionResult Index(int id)
         {
             ViewBag.idCurso = id;
+
+            // Obtener el estudiante por el id
+            var estudiante = db.Estudiantes.Find(id);
+            if (estudiante == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Obtener la última matrícula del estudiante, ordenando por fecha (descendente)
+            var ultimaMatricula = db.Matriculas
+                                    .Where(m => m.EstudianteId == estudiante.Id)
+                                    .OrderByDescending(m => m.FechaMatricula) // Ordenamos por fecha para obtener la más reciente
+                                    .FirstOrDefault(); // Tomamos la primera, es decir, la más reciente
+
+            if (ultimaMatricula == null)
+            {
+                return HttpNotFound(); // Si no existe una matrícula, devolvemos un error
+            }
+
+            // Obtener el año académico asociado a esa última matrícula
+            var cursoAcademicoId = ultimaMatricula.AñoAcademicoId;
+
+            // Obtener las materias que pertenecen al año académico de la última matrícula
+            var materiasDelCurso = db.Materias
+                                      .Where(m => m.AñoAcademicoId == cursoAcademicoId) // Filtramos las materias según el curso académico
+                                      .ToList();
+
+            // Crear un ViewModel y asignar los datos necesarios
             var vm = new VMCalificaciones
             {
-                Calificaciones = db.Calificaciones.Include(c => c.Estudiante).Include(c => c.Materia).ToList(),
                 Estudiantes = db.Estudiantes.ToList(),
-                Materias = db.Materias.ToList(),
+                Materias = materiasDelCurso, // Solo las materias del curso académico actual
                 Parciales = db.Parciales.ToList(),
-                CursosAcademicos = db.CursosAcademicos.ToList()// Asegúrate de tener una entidad Parcial
+                CursosAcademicos = db.CursosAcademicos.ToList()
             };
-            return View(vm);
+
+            return View(vm); // Retornamos la vista con el ViewModel
         }
+
 
 
         public ActionResult GestionAcademica()
@@ -67,6 +96,25 @@ namespace GestionColegios.Controllers
                 return HttpNotFound();
             }
 
+            // Obtener la última matrícula del estudiante (la más reciente por fecha)
+            var ultimaMatricula = db.Matriculas
+                .Where(m => m.EstudianteId == estudiante.Id)
+                .OrderByDescending(m => m.FechaMatricula) // Asumiendo que Fecha es la propiedad que indica la fecha de matrícula
+                .FirstOrDefault();
+
+            if (ultimaMatricula == null)
+            {
+                return HttpNotFound(); // Si no hay matrícula, se retorna un error
+            }
+
+            // Obtener el año académico de la última matrícula
+            var anioAcademico = ultimaMatricula.AñoAcademicoId;
+
+            // Obtener las materias correspondientes a ese año académico
+            var materiasPorAnioAcademico = db.Materias
+                .Where(m => m.AñoAcademicoId == anioAcademico) // Asumiendo que Materia tiene la propiedad AnioAcademico
+                .ToList();
+
             // Obtener las calificaciones para el estudiante y el parcial actual
             var calificaciones = db.Calificaciones
                 .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
@@ -75,8 +123,7 @@ namespace GestionColegios.Controllers
             // Si no existen calificaciones para ese parcial, inicializa una lista vacía para cada materia
             if (!calificaciones.Any())
             {
-                var materias = db.Materias.ToList();
-                calificaciones = materias.Select(m => new Calificacion
+                calificaciones = materiasPorAnioAcademico.Select(m => new Calificacion
                 {
                     EstudianteId = estudiante.Id,
                     MateriaId = m.Id,
@@ -89,7 +136,7 @@ namespace GestionColegios.Controllers
             var vm = new VMCalificaciones
             {
                 Estudiante = estudiante,
-                Materias = db.Materias.ToList(),
+                Materias = materiasPorAnioAcademico, // Aquí solo pasamos las materias del año académico de la última matrícula
                 Calificaciones = calificaciones,
                 Parciales = db.Parciales.ToList()
             };
@@ -205,7 +252,7 @@ namespace GestionColegios.Controllers
             return View(vm); // Retorna el modelo adecuado a la vista
         }
 
-        public ActionResult Parcial2(int estudianteId)
+        public ActionResult Parcial2(int estudianteId, int parcialId = 2)
         {
             var estudiante = db.Estudiantes.Find(estudianteId);
             if (estudiante == null)
@@ -213,26 +260,47 @@ namespace GestionColegios.Controllers
                 return HttpNotFound();
             }
 
-            var calificaciones = db.Calificaciones
-                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == 2)
+            // Obtener la última matrícula del estudiante (la más reciente por fecha)
+            var ultimaMatricula = db.Matriculas
+                .Where(m => m.EstudianteId == estudiante.Id)
+                .OrderByDescending(m => m.FechaMatricula) // Asumiendo que Fecha es la propiedad que indica la fecha de matrícula
+                .FirstOrDefault();
+
+            if (ultimaMatricula == null)
+            {
+                return HttpNotFound(); // Si no hay matrícula, se retorna un error
+            }
+
+            // Obtener el año académico de la última matrícula
+            var anioAcademico = ultimaMatricula.AñoAcademicoId;
+
+            // Obtener las materias correspondientes a ese año académico
+            var materiasPorAnioAcademico = db.Materias
+                .Where(m => m.AñoAcademicoId == anioAcademico) // Asumiendo que Materia tiene la propiedad AnioAcademico
                 .ToList();
 
-            // Si no existen calificaciones para Parcial 2, inicializa una lista en blanco para cada materia
+            // Obtener las calificaciones para el estudiante y el parcial actual
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .ToList();
+
+            // Si no existen calificaciones para ese parcial, inicializa una lista vacía para cada materia
             if (!calificaciones.Any())
             {
-                var materias = db.Materias.ToList();
-                calificaciones = materias.Select(m => new Calificacion
+                calificaciones = materiasPorAnioAcademico.Select(m => new Calificacion
                 {
                     EstudianteId = estudiante.Id,
                     MateriaId = m.Id,
-                    ParcialId = 3
+                    ParcialId = parcialId,
+                    NCuantitativa = 0, // Inicializa con 0 o null, según lo que sea necesario
+                    NCualitativa = null // Puede ser null si no hay calificación cualitativa
                 }).ToList();
             }
 
             var vm = new VMCalificaciones
             {
                 Estudiante = estudiante,
-                Materias = db.Materias.ToList(),
+                Materias = materiasPorAnioAcademico, // Aquí solo pasamos las materias del año académico de la última matrícula
                 Calificaciones = calificaciones,
                 Parciales = db.Parciales.ToList()
             };
@@ -240,7 +308,7 @@ namespace GestionColegios.Controllers
             return View(vm);
         }
 
-        public ActionResult Parcial3(int estudianteId)
+        public ActionResult Parcial3(int estudianteId, int parcialId = 3)
         {
             var estudiante = db.Estudiantes.Find(estudianteId);
             if (estudiante == null)
@@ -248,26 +316,47 @@ namespace GestionColegios.Controllers
                 return HttpNotFound();
             }
 
-            var calificaciones = db.Calificaciones
-                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == 3)
+            // Obtener la última matrícula del estudiante (la más reciente por fecha)
+            var ultimaMatricula = db.Matriculas
+                .Where(m => m.EstudianteId == estudiante.Id)
+                .OrderByDescending(m => m.FechaMatricula) // Asumiendo que Fecha es la propiedad que indica la fecha de matrícula
+                .FirstOrDefault();
+
+            if (ultimaMatricula == null)
+            {
+                return HttpNotFound(); // Si no hay matrícula, se retorna un error
+            }
+
+            // Obtener el año académico de la última matrícula
+            var anioAcademico = ultimaMatricula.AñoAcademicoId;
+
+            // Obtener las materias correspondientes a ese año académico
+            var materiasPorAnioAcademico = db.Materias
+                .Where(m => m.AñoAcademicoId == anioAcademico) // Asumiendo que Materia tiene la propiedad AnioAcademico
                 .ToList();
 
-            // Si no existen calificaciones para Parcial 3, inicializa una lista en blanco para cada materia
+            // Obtener las calificaciones para el estudiante y el parcial actual
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .ToList();
+
+            // Si no existen calificaciones para ese parcial, inicializa una lista vacía para cada materia
             if (!calificaciones.Any())
             {
-                var materias = db.Materias.ToList();
-                calificaciones = materias.Select(m => new Calificacion
+                calificaciones = materiasPorAnioAcademico.Select(m => new Calificacion
                 {
                     EstudianteId = estudiante.Id,
                     MateriaId = m.Id,
-                    ParcialId = 4
+                    ParcialId = parcialId,
+                    NCuantitativa = 0, // Inicializa con 0 o null, según lo que sea necesario
+                    NCualitativa = null // Puede ser null si no hay calificación cualitativa
                 }).ToList();
             }
 
             var vm = new VMCalificaciones
             {
                 Estudiante = estudiante,
-                Materias = db.Materias.ToList(),
+                Materias = materiasPorAnioAcademico, // Aquí solo pasamos las materias del año académico de la última matrícula
                 Calificaciones = calificaciones,
                 Parciales = db.Parciales.ToList()
             };
@@ -276,7 +365,7 @@ namespace GestionColegios.Controllers
         }
 
 
-        public ActionResult Parcial4(int estudianteId)
+        public ActionResult Parcial4(int estudianteId, int parcialId = 4)
         {
             var estudiante = db.Estudiantes.Find(estudianteId);
             if (estudiante == null)
@@ -284,26 +373,47 @@ namespace GestionColegios.Controllers
                 return HttpNotFound();
             }
 
-            var calificaciones = db.Calificaciones
-                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == 4)
+            // Obtener la última matrícula del estudiante (la más reciente por fecha)
+            var ultimaMatricula = db.Matriculas
+                .Where(m => m.EstudianteId == estudiante.Id)
+                .OrderByDescending(m => m.FechaMatricula) // Asumiendo que Fecha es la propiedad que indica la fecha de matrícula
+                .FirstOrDefault();
+
+            if (ultimaMatricula == null)
+            {
+                return HttpNotFound(); // Si no hay matrícula, se retorna un error
+            }
+
+            // Obtener el año académico de la última matrícula
+            var anioAcademico = ultimaMatricula.AñoAcademicoId;
+
+            // Obtener las materias correspondientes a ese año académico
+            var materiasPorAnioAcademico = db.Materias
+                .Where(m => m.AñoAcademicoId == anioAcademico) // Asumiendo que Materia tiene la propiedad AnioAcademico
                 .ToList();
 
-            // Si no existen calificaciones para Parcial 4, inicializa una lista en blanco para cada materia
+            // Obtener las calificaciones para el estudiante y el parcial actual
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .ToList();
+
+            // Si no existen calificaciones para ese parcial, inicializa una lista vacía para cada materia
             if (!calificaciones.Any())
             {
-                var materias = db.Materias.ToList();
-                calificaciones = materias.Select(m => new Calificacion
+                calificaciones = materiasPorAnioAcademico.Select(m => new Calificacion
                 {
                     EstudianteId = estudiante.Id,
                     MateriaId = m.Id,
-                    ParcialId = 5
+                    ParcialId = parcialId,
+                    NCuantitativa = 0, // Inicializa con 0 o null, según lo que sea necesario
+                    NCualitativa = null // Puede ser null si no hay calificación cualitativa
                 }).ToList();
             }
 
             var vm = new VMCalificaciones
             {
                 Estudiante = estudiante,
-                Materias = db.Materias.ToList(),
+                Materias = materiasPorAnioAcademico, // Aquí solo pasamos las materias del año académico de la última matrícula
                 Calificaciones = calificaciones,
                 Parciales = db.Parciales.ToList()
             };
