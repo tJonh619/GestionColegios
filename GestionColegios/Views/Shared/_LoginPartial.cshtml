@@ -1,22 +1,27 @@
 ﻿@using Microsoft.AspNet.Identity
+@using System.Security.Claims
+@{
+    var claimsIdentity = User.Identity as ClaimsIdentity;
+    var nombreUsuario = claimsIdentity?.FindFirst(ClaimTypes.Name)?.Value;
+    var rolUsuario = claimsIdentity?.FindFirst(ClaimTypes.Role)?.Value;
+    var idUsuario = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+}
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    <ul class="navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class="nav-link" })
-        </li>
-        <li><a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión</a></li>
-    </ul>
+        <ul class="navbar-nav justify-content-center navbar-right">
+            <li>@Html.ActionLink("Ver Perfil", "Profile", "Account", routeValues: null, htmlAttributes: new { title = "Manage", @class = "boton" })</li>
+            <li>@Html.ActionLink("Hola " + nombreUsuario +"!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "boton" }) </li>
+            <li><a class="delete-btn" href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión</a></li>
+        </ul>
     }
 }
 else
 {
-    <ul class="navbar-nav navbar-right">
-        <li>@Html.ActionLink("Registrarse", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class="nav-link" })</li>
-        <li>@Html.ActionLink("Iniciar sesión", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class="nav-link" })</li>
-    </ul>
+    <div class="navbar-nav navbar-right">
+        <button class="login-btn">Inicia sesion</button>
+    </div>
 }

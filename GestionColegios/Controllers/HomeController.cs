@@ -12,11 +12,18 @@ namespace GestionColegios.Controllers
     {
         private BDColegioContainer db = new BDColegioContainer();
 
+
         public ActionResult Index()
         {
-            var viewModel = new VMIndex { Maestros = db.Maestros.ToList(), Estudiantes = db.Estudiantes.ToList(), Tutores = db.Tutores.ToList(), Alimentos = db.InventariosAlimentos.ToList()};
-            return View(viewModel);
+            return View();
         }
+
+        public ActionResult Home()
+        {
+            var viewModel = new VMIndex { Maestros = db.Maestros.ToList(), Estudiantes = db.Estudiantes.ToList(), Tutores = db.Tutores.ToList(), Alimentos = db.InventariosAlimentos.ToList()};
+            return PartialView(viewModel);
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

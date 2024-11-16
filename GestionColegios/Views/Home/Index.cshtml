@@ -1,5 +1,4 @@
-﻿@model GestionColegios.ViewModels.VMIndex
-@using GestionColegios.Models
+﻿@using GestionColegios.Models
 @using Microsoft.AspNet.Identity
 
 @if (Request.IsAuthenticated)
@@ -7,67 +6,7 @@
     {
         ViewBag.Title = "Página Principal del Sistema de Gestión Escolar";
     }
-
-    <section class="home-grid">
-
-        <h1 class="heading">Opciones Rapidas</h1>
-
-        <div class="box-container">
-
-            <div class="box">
-                <h4 class="title">Informacion</h4>
-                <p class="likes">Estudiantes : <span>  @Model.Estudiantes.Count(e => e.Activo)</span></p>
-                <a href="@Url.Action("Index", "EstudianteWeb")" class="inline-btn">Ver estudiantes</a>
-                <p class="likes">
-                    Alimentos con bajo stock:
-                    <span>
-                        @{
-                            var bajoStock = Model.Alimentos.Count(a => a.Stock < 25);
-                        }
-                        @if (bajoStock > 0)
-                        {
-                            @bajoStock
-                        }
-                        else
-                        {
-                            @:Ninguno
-                        }
-                    </span>
-                </p>
-                <a href="#" class="inline-btn">Ver inventario</a>
-                <p class="likes">Maestros : <span>@Model.Maestros.Count(m => m.Activo)</span></p>
-                <a href="@Url.Action("Index", "MaestrosWeb")" class="inline-btn">Ver Maestros</a>
-            </div>
-
-            <div class="box">
-                <h3 class="title">Accesos Rapidos</h3>
-                <div class="flex">
-                    <a href="@Url.Action("Index", "UsuarioWeb")"><i class="fas fa-code"></i><span>Usuarios</span></a>
-                    <a href="@Url.Action("Index", "MaestrosWeb")"><i class="fas fa-chart-simple"></i><span>Maestros</span></a>
-                    <a href="@Url.Action("Index", "EstudianteWeb")"><i class="fas fa-chart-simple"></i><span>Estudiantes</span></a>
-                    <a href="@Url.Action("Index", "ControlMeriendas")"><i class="fas fa-cookie-bite"></i><span>Control de Meriendas</span></a>
-                    <a href="@Url.Action("Index", "InventarioAlimento")"><i class="fas fa-pen"></i><span></span>Inventario</a>
-                    <a href="#"><i class="fas fa-chart-line"></i><span>Años-Periodos</span></a>
-                    <a href="#"><i class="fas fa-music"></i><span>Grados</span></a>
-                    <a href="#"><i class="fas fa-cog"></i><span>Materias</span></a>
-                </div>
-            </div>
-
-
-            <!--
-            <div class="box">
-                <h4 class="title">Idiomas Populares</h4>
-                <div class="flex">
-                    <a href="#"><i class="fab fa-html5"></i><span>Inglés</span></a>
-                    <a href="#"><i class="fab fa-css3"></i><span>Francés</span></a>
-                    <a href="#"><i class="fab fa-js"></i><span>Japonés</span></a>
-                    <a href="#"><i class="fab fa-react"></i><span>Mandarín</span></a>
-                    <a href="#"><i class="fab fa-php"></i><span>Alemán</span></a>
-                </div>
-            </div>
-            -->
-        </div>
-    </section>
+    Html.RenderAction("Home", "Home");
 }
 else
 {
@@ -75,8 +14,5 @@ else
         ViewBag.Title = "Inicia Sesion";
     }
 
-    Html.RenderPartial("~/Views/Account/Login.cshtml", new GestionColegios.Models.LoginViewModel()); 
+    Html.RenderAction("Login", "Account");
 }
-
-
-
