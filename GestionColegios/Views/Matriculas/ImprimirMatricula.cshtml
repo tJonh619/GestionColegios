@@ -47,14 +47,13 @@
                                                 <!-- Logo -->
                                                 <img src="@Url.Content("~/Content/Images/logo.png")" alt="Logo Colegio" style="max-width: 100px; max-height: 100px;">
                                             </td>
-                                            <td style="width: 60%; text-align: center; font-size: 18px; font-weight: bold;">
+                                            <td style="width: 60%; text-align: center; font-size: 16px; font-weight: bold;">
                                                 <h3>COLEGIO FIDEL COLOMA GONZALEZ</h3>
                                                 <h4>MATRÍCULA @ViewBag.AñoAcademicoNombre</h4>
-                   
                                             </td>
                                             <td style="width: 20%; text-align: right;">
                                                 <!-- Fotos -->
-                                                <img src="@Url.Content("~/Content/Images/MINED.png")" alt="Foto1" style="max-width: 300px; max-height: 300px; margin-bottom: 5px;">
+                                                <img src="@Url.Content("~/Content/Images/MINED.png")" alt="Foto1" style="max-width: 100px; max-height: 100px; margin-bottom: 5px;">
                                             </td>
                                         </tr>
                                     </thead>
@@ -62,18 +61,18 @@
                             </div>
 
                             <!-- Tabla de Matrículas -->
-                            <table class="table table-striped table-bordered">
+                            <table class="table table-striped table-bordered" id="tablaMatriculas">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th>Estudiante</th>
-                                        <th>Codigo Estudiantil</th>
-                                        <th>Fecha de Nacimiento</th>
-                                        <th>Barrio</th>
-                                        <th>Dirección</th>
-                                        <th>Teléfono</th>
-                                        <th>Tutor</th>
-                                        <th>Cédula Tutor</th>
-                                        <th>Continuidad/Traslado</th>
+                                        <th style="width: 12%;">Estudiante</th>
+                                        <th style="width: 12%;">Código Estudiantil</th>
+                                        <th style="width: 10%;">Fecha de Nacimiento</th>
+                                        <th style="width: 12%;">Barrio</th>
+                                        <th style="width: 12%;">Dirección</th>
+                                        <th style="width: 10%;">Teléfono</th>
+                                        <th style="width: 12%;">Tutor</th>
+                                        <th style="width: 12%;">Cédula Tutor</th>
+                                        <th style="width: 10%;">Continuidad/Traslado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -139,18 +138,18 @@
 
         // Incluir estilos para la impresión
         ventanaImpresion.document.write('<style>');
-        ventanaImpresion.document.write('body { font-family: Arial, sans-serif; }');
-        ventanaImpresion.document.write('table { width: 100%; border-collapse: collapse; }');
-        ventanaImpresion.document.write('th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }');
+        ventanaImpresion.document.write('body { font-family: Arial, sans-serif; font-size: 10px; }');
+        ventanaImpresion.document.write('table { width: 100%; border-collapse: collapse; font-size: 10px; }');
+        ventanaImpresion.document.write('th, td { padding: 5px; text-align: left; border: 1px solid #ddd; }');
         ventanaImpresion.document.write('th { background-color: #f2f2f2; }');
 
         // Para la impresión en formato horizontal (landscape)
         ventanaImpresion.document.write('media print {');
-        ventanaImpresion.document.write(' page { size: landscape; margin: 20mm; }');
+        ventanaImpresion.document.write('  page { size: landscape; margin: 5mm; }');
         ventanaImpresion.document.write('  body { transform: rotate(90deg); transform-origin: top left; margin: 0; padding: 0; width: 100%; height: 100%; }');
-        ventanaImpresion.document.write('  table { width: 100%; }');
+        ventanaImpresion.document.write('  table { width: 100%; font-size: 8px; }');
+        ventanaImpresion.document.write('  th, td { padding: 3px; text-align: left; font-size: 8px; }');
         ventanaImpresion.document.write('}');
-
         ventanaImpresion.document.write('</style>');
         ventanaImpresion.document.write('</head><body>');
 

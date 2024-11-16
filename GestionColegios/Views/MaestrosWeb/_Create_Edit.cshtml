@@ -164,7 +164,7 @@
                 <div class="form-group mb-3 has-error">
                     <label for="Nivel">Nivel</label>
                     @Html.DropDownListFor(model => model.Maestro.Nivel,
-                        new SelectList(new List<string> { "Primaria", "Secundaria", "Ambos" }),
+                        new SelectList(new List<string> {"Educación Inicial", "Primaria", "Secundaria", "Ambos" }),
                         "Seleccione el Nivel",
                         ObtenerAtributos(new Dictionary<string, object>
                         {
