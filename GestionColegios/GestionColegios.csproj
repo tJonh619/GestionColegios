@@ -629,6 +629,9 @@
     <Content Include="Views\Shared\_Side.cshtml" />
     <Content Include="Views\Shared\_Nav.cshtml" />
     <Content Include="Views\Home\Home.cshtml" />
+    <Content Include="Views\CalificacionWeb\Edit2.cshtml" />
+    <Content Include="Views\CalificacionWeb\Edit3.cshtml" />
+    <Content Include="Views\CalificacionWeb\Edit4.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
