@@ -134,20 +134,33 @@ namespace GestionColegios.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Codigo,Descripcion,Continuidad,Traslado,Repitente,FechaMatricula,FechaModificacion,Activo,EstudianteId,TutorId,PeriodosId,AñoAcademicoId,Aprobad,Grado")] Matricula matricula)
+        public ActionResult Edit([Bind(Include = "Id,Codigo,Descripcion,Continuidad,Traslado,Repitente,FechaModificacion,Activo,EstudianteId,TutorId,PeriodosId,AñoAcademicoId,Aprobad,Grado")] Matricula matricula)
         {
             if (ModelState.IsValid)
             {
+                // Mantener la FechaMatricula original del registro en la base de datos
+                var matriculaOriginal = db.Matriculas.AsNoTracking().FirstOrDefault(m => m.Id == matricula.Id);
+                if (matriculaOriginal != null)
+                {
+                    matricula.FechaMatricula = matriculaOriginal.FechaMatricula;
+                }
+
+                matricula.FechaModificacion = DateTime.Now;
+
                 db.Entry(matricula).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
+
             ViewBag.EstudianteId = new SelectList(db.Estudiantes, "Id", "CodigoEstudiante", matricula.EstudianteId);
             ViewBag.TutorId = new SelectList(db.Tutores, "Id", "Nombres", matricula.TutorId);
             ViewBag.PeriodosId = new SelectList(db.Periodos, "Id", "Nombre", matricula.PeriodosId);
             ViewBag.AñoAcademicoId = new SelectList(db.AñosAcademicos, "Id", "Nombre", matricula.AñoAcademicoId);
+
             return View(matricula);
         }
+
 
         // GET: Matriculas/Delete/5
         public ActionResult Delete(int? id)
