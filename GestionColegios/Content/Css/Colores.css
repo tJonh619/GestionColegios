@@ -13,6 +13,7 @@
     --azul-bandera: #0038A8;
     --border: .1rem solid rgba(0,0,0,.2);
     --white-side: #fff;
+    --hover: #00BFFF;
     text-decoration: none;
 }
 
@@ -24,6 +25,7 @@ body.dark {
     --black: #fff;
     --white: #222;
     --azul-bandera: #222;
+    --hover: #00BFFF;
     --border: .1rem solid rgba(255,255,255,.2);
     text-decoration: none;
 }
