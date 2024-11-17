@@ -1,5 +1,5 @@
 ﻿:root {
-    --main-color: #f39c12;
+    --main-color: #32DFA7;
     --red: #e74c3c;
     --orange: #f39c12;
     --light-color: #888;
@@ -18,6 +18,7 @@
 
 
 body.dark {
+    --main-color: #0038A8;
     --light-color: #aaa;
     --light-bg: #333;
     --black: #fff;

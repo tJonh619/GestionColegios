@@ -361,6 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/GestionColegios/App_Data/aspnet-GestionColegios-20240830053851_log.ldf
 /GestionColegios/App_Data/aspnet-GestionColegios-20240830053851.mdf
 /GestionColegios/App_Data/aspnet-GestionColegios-20240830053851_log.ldf
