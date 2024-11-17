@@ -7,8 +7,13 @@
     height: 100vh;
     border-right: var(--border);
     z-index: 1200;
-    overflow-y: hidden; /* Evita que se muestre la barra de scroll */
+    overflow-y: scroll; /* Habilita el scroll vertical */
+    scrollbar-width: none; /* Para navegadores como Firefox */
 }
+
+    .side-bar::-webkit-scrollbar {
+        display: none; /* Para navegadores basados en WebKit */
+    }
 
     .side-bar #close-btn {
         text-align: right;
