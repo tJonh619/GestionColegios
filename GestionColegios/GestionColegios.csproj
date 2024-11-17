@@ -632,6 +632,7 @@
     <Content Include="Views\CalificacionWeb\Edit2.cshtml" />
     <Content Include="Views\CalificacionWeb\Edit3.cshtml" />
     <Content Include="Views\CalificacionWeb\Edit4.cshtml" />
+    <Content Include="Views\CalificacionWeb\_TablaEstudianteModal.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
