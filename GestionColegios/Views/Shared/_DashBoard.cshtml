@@ -16,10 +16,66 @@
 <body class="@(Request.IsAuthenticated ? "authenticated" : "login-page")">
     @if (Request.IsAuthenticated)
     {
-        @Html.AntiForgeryToken()
+        
+            <div class="modal fade" id="sessionTimeoutModal" tabindex="-1" role="dialog" aria-labelledby="sessionTimeoutModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="sessionTimeoutModalLabel">Tu sesión está por caducar</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Tu sesión está a punto de expirar. ¿Quieres seguir trabajando?</p>
+                        </div>
+                        <div class="modal-footer">
+                            @using (Html.BeginForm("ExtendSession", "Account", FormMethod.Post, new { id = "extendSessionForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit">Extender Sesión</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        
+
         @Html.Partial("~/Views/Shared/_Nav.cshtml");
         @Html.Partial("~/Views/Shared/_Side.cshtml")
         @RenderBody();
+
+
+        <script>
+            var sessionTimeoutWarning = 1 * 60 * 1000; // 2 minutos antes de la expiración
+            var timeoutWarningShown = false; // Para evitar mostrar múltiples advertencias
+            var sessionExpiryTime; // Temporizador para la sesión
+
+            // Función para mostrar el modal de advertencia
+            function showSessionExpiryWarning() {
+                if (!timeoutWarningShown) {
+                    timeoutWarningShown = true;
+                    // Mostrar el modal de advertencia
+                    $('#sessionTimeoutModal').modal('show');
+                }
+            }
+
+            // Configurar el temporizador para mostrar advertencia antes de que la sesión expire
+            sessionExpiryTime = setTimeout(function () {
+                showSessionExpiryWarning();
+            }, sessionTimeoutWarning);
+
+            // Llamar a esta función cada vez que el usuario realice una acción (para reiniciar el temporizador)
+            $(document).on('mousemove keydown click', function () {
+                clearTimeout(sessionExpiryTime); // Limpiar el temporizador anterior
+                timeoutWarningShown = false; // Restablecer el aviso
+                sessionExpiryTime = setTimeout(function () {
+                    showSessionExpiryWarning();
+                }, sessionTimeoutWarning);
+            });
+        </script>
     }
     else
     {
