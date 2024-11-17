@@ -30,7 +30,7 @@ namespace GestionColegios
                 Provider = new CookieAuthenticationProvider
                 {
                     OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
-                    validateInterval: TimeSpan.FromMinutes(2),  // Valida el token cada 2 minutos
+                    validateInterval: TimeSpan.FromMinutes(60),  // Valida el token cada 2 minutos
                     regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 },
                 CookieHttpOnly = true,
