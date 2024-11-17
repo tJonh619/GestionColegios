@@ -85,7 +85,7 @@
 
         .side-bar .navbarr a:hover {
             border-radius: 10rem;
-            background-color: var(--orange);
+            background-color: var(--hover);
         }
 
             .side-bar .navbarr a:hover i {
