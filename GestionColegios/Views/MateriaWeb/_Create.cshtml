@@ -54,11 +54,12 @@
 
                     <!-- Descripción -->
                     <div class="form-group mb-3 has-error">
-                        <label for="Descripcion">Descripción</label>
-                        @Html.TextAreaFor(model => model.Materia.Descripcion,
+                        <label for="Nombre">Nombre</label>
+                        @Html.TextBoxFor(model => model.Materia.Descripcion,
                             ObtenerAtributos(new Dictionary<string, object> {
                                 { "class", "form-control" },
-                                { "placeholder", "Ingrese una descripción" }
+                                { "placeholder", "Ingrese el nombre de la materia" },
+                                { "required", "required" }
                             }, esSoloLectura))
                         @Html.ValidationMessageFor(model => model.Materia.Descripcion, "", new { @class = "text-danger" })
                     </div>
@@ -74,6 +75,17 @@
                             }, esSoloLectura))
                         @Html.ValidationMessageFor(model => model.Materia.AñoAcademicoId, "", new { @class = "text-danger" })
                     </div>
+
+                    <!-- Mostrar Fecha de Modificación solo en la edición -->
+                    @if (ViewBag.EsEdicion != null && ViewBag.EsEdicion.Equals(true))
+                    {
+                        <div class="form-group mb-3">
+                            <label for="FechaModificacion">Fecha de Modificación</label>
+                            <input type="text" id="FechaModificacion" class="form-control" value="@Model.Materia.FechaModificacion.ToString("dd/MM/yyyy HH:mm:ss")" readonly />
+                        </div>
+                    }
+
+          
                 </div>
 
                 <!-- Botones de acción -->
@@ -101,25 +113,38 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        // Activa el modo de edición
-        function activateEdit() {
-            $('input, textarea, select').prop('readonly', false).prop('disabled', false);
-            $('#btn-save').show();
-            $('#btn-cancel-edit').text("Cancelar");
-            $('#btn-edit').hide();
-        }
-
-        // Cancela la edición o regresa a la vista anterior
-        function cancelOrReturn() {
-            if ($('#btn-cancel-edit').text() === "Cancelar") {
-                $('input, textarea, select').prop('readonly', true).prop('disabled', true);
-                $('#btn-save').hide();
-                $('#btn-edit').show();
-                $('#btn-cancel-edit').text("Regresar");
-            } else {
-                window.location.href = '@Url.Action("Index", "Materia")';
-            }
-        }
-    </script>
 }
+<script>
+    function activateEdit() {
+        $('input, select').each(function () {
+            $(this).prop('readonly', false);
+            $(this).prop('disabled', false);
+        });
+        $('#btn-save').show();
+        $('#btn-cancel-edit').text("Cancelar");
+        $('#btn-edit').hide();
+        $('#btn-delete').hide();
+    }
+
+    function cancelOrReturn() {
+        if ($('#btn-cancel-edit').text() === "Cancelar") {
+            $('input, select').each(function () {
+                $(this).prop('readonly', true);
+                $(this).prop('disabled', true);
+            });
+            $('#btn-save').hide();
+            $('#btn-edit').show();
+            $('#btn-cancel-edit').text("Regresar");
+            $('#btn-delete').show();
+        } else {
+            window.location.href = '@Url.Action("Index", "MateriaWeb")';
+        }
+    }
+
+    function deleteRecord() {
+        const deleteUrl = '@Url.Action("Delete", "MateriaWeb", new { id = Model.Materia.Id })';
+        if (confirm("¿Estás seguro de que deseas eliminar esta Materia?")) {
+            window.location.href = deleteUrl;
+        }
+    }
+</script>

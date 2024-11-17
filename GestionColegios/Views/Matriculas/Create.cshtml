@@ -4,80 +4,83 @@
     ViewBag.Title = "Matrícula";
 }
 
-<div class="container-fluid" style="background-color: #f9f9f9; padding: 2rem;">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card shadow-sm" style="border-radius: 15px;">
-                <div class="card-header text-center" style="background-color: #4A90E2; color: white; border-radius: 15px 15px 0 0;">
-                    <h2 class="mb-0">Registrar Matrícula</h2>
-                </div>
-                <div class="card-body" style="padding: 2rem;">
-                    @using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
+<div class="container" style="min-height: 100vh; display: flex; justify-content: center; align-items: center; background-color: #f0f4f7; padding: 3rem;">
+    <div class="col-md-10 col-lg-8">
+        <div class="card shadow-lg" style="border-radius: 15px;">
+            <div class="card-header text-center" style="background-color: #1E3A8A; color: white; border-radius: 10px 10px 0 0;">
+                <h2 class="mb-0">Registrar Matrícula</h2>
+            </div>
+            <div class="card-body" style="padding: 2rem;">
+                @using (Html.BeginForm())
+                {
+              
+
+                    @Html.AntiForgeryToken()
 
                     <div class="form-group">
-                        <h4 class="mb-4">Datos de la Matrícula</h4>
-                        <div class="form-row">
-                            <div class="col-md-6 mb-3">
+                        <h4 class="mb-4 text-muted">Datos de la Matrícula</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3" style="display: none;">
                                 @Html.LabelFor(model => model.Codigo, "Código")
-                                @Html.TextBoxFor(model => model.Codigo, new { @class = "form-control", placeholder = "Ingrese el código" })
+                                @Html.TextBoxFor(model => model.Codigo, new { @class = "form-control form-control-lg", placeholder = "Ingrese el código" })
                                 @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
                             </div>
+
                             <div class="col-md-6 mb-3">
                                 @Html.LabelFor(model => model.Descripcion, "Descripción")
-                                @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = 2, placeholder = "Descripción breve" })
+                                @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control form-control-lg", rows = 2, placeholder = "Descripción breve" })
                                 @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
-                        <h4 class="mb-4">Estado de la Matrícula</h4>
-                        <div class="form-row">
+                        <h4 class="mb-4 text-muted">Estado de la Matrícula</h4>
+                        <div class="row">
                             <div class="col-md-4 mb-3">
                                 @Html.LabelFor(model => model.Continuidad, "Continuidad")
-                                @Html.CheckBoxFor(model => model.Continuidad, new { @class = "form-check-input" })
+                                @Html.CheckBoxFor(model => model.Continuidad, new { @class = "form-check-input", id = "chkContinuidad" })
                                 @Html.ValidationMessageFor(model => model.Continuidad, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-md-4 mb-3">
                                 @Html.LabelFor(model => model.Traslado, "Traslado")
-                                @Html.CheckBoxFor(model => model.Traslado, new { @class = "form-check-input" })
+                                @Html.CheckBoxFor(model => model.Traslado, new { @class = "form-check-input", id = "chkTraslado" })
                                 @Html.ValidationMessageFor(model => model.Traslado, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-md-4 mb-3">
                                 @Html.LabelFor(model => model.Repitente, "Repitente")
-                                @Html.CheckBoxFor(model => model.Repitente, new { @class = "form-check-input" })
+                                @Html.CheckBoxFor(model => model.Repitente, new { @class = "form-check-input", id = "chkRepitente" })
                                 @Html.ValidationMessageFor(model => model.Repitente, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
-                        <h4 class="mb-4">Datos del Estudiante</h4>
+                        <h4 class="mb-4 text-muted">Datos del Estudiante</h4>
                         <div class="form-group">
                             <label for="EstudianteId">Estudiante</label>
-                            <input type="text" class="form-control" value="@ViewBag.Estudiante.Nombres @ViewBag.Estudiante.Apellidos" readonly />
+                            <input type="text" class="form-control form-control-lg" value="@ViewBag.Estudiante.Nombres @ViewBag.Estudiante.Apellidos" readonly />
                             @Html.HiddenFor(m => m.EstudianteId)
                         </div>
 
                         <div class="form-group">
                             <label for="TutorId">Tutor</label>
-                            <input type="text" class="form-control" value="@ViewBag.Tutor.Nombres @ViewBag.Tutor.Apellidos" readonly />
+                            <input type="text" class="form-control form-control-lg" value="@ViewBag.Tutor.Nombres @ViewBag.Tutor.Apellidos" readonly />
                             @Html.HiddenFor(m => m.TutorId)
                         </div>
-                        <h4 class="mb-4">Periodo Académico</h4>
-                        <div class="form-row">
+
+                        <h4 class="mb-4 text-muted">Periodo Académico</h4>
+                        <div class="row">
                             <div class="col-md-6 mb-3">
                                 @Html.LabelFor(model => model.PeriodosId, "Periodo")
-                                @Html.DropDownList("PeriodosId", null, new { @class = "form-control" })
+                                @Html.DropDownList("PeriodosId", null, new { @class = "form-control form-control-lg" })
                                 @Html.ValidationMessageFor(model => model.PeriodosId, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-md-6 mb-3">
                                 @Html.LabelFor(model => model.AñoAcademicoId, "Año Académico")
-                                @Html.DropDownList("AñoAcademicoId", null, new { @class = "form-control" })
+                                @Html.DropDownList("AñoAcademicoId", null, new { @class = "form-control form-control-lg" })
                                 @Html.ValidationMessageFor(model => model.AñoAcademicoId, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
-                        <h4 class="mb-4">Aprobación</h4>
-                        <div class="form-row">
+                        <h4 class="mb-4 text-muted" style="display: none;">Aprobación</h4>
+                        <div class="row" style="display: none;">
                             <div class="col-md-12 mb-3">
                                 @Html.LabelFor(model => model.Aprobado, "Aprobado")
                                 @Html.CheckBoxFor(model => model.Aprobado, new { @class = "form-check-input" })
@@ -85,13 +88,16 @@
                             </div>
                         </div>
 
+
+
                         <div class="form-group text-center mt-4">
-                            <button type="submit" class="btn btn-primary px-5 py-2" style="border-radius: 25px;">Guardar Matrícula</button>
-                            @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-secondary px-5 py-2", style = "border-radius: 25px;" })
+                            <button type="submit" class="btn btn-primary btn-lg px-5 py-3" style="border-radius: 25px;" id="btnGuardar">
+                                <span id="btnGuardarText">Guardar Matrícula</span>
+                            </button>
+                            @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-secondary btn-lg px-5 py-3", style = "border-radius: 25px;" })
                         </div>
                     </div>
-                    }
-                </div>
+                }
             </div>
         </div>
     </div>
@@ -101,13 +107,28 @@
     @Scripts.Render("~/bundles/jqueryval")
 }
 
-<style>
-    .form-check-input {
-        width: 20px;
-        height: 20px;
-        margin-right: 10px;
-        vertical-align: middle;
-        cursor: pointer;
-        
-    }
-</style>
+<script>
+    $(document).ready(function () {
+        // Controlar la selección de los checkboxes
+        $("input[type='checkbox']").change(function () {
+            var continuidad = $("#chkContinuidad").prop("checked");
+            var traslado = $("#chkTraslado").prop("checked");
+            var repitente = $("#chkRepitente").prop("checked");
+
+            if (continuidad) {
+                $("#chkTraslado").prop("disabled", true);
+                $("#chkRepitente").prop("disabled", true);
+            } else if (traslado) {
+                $("#chkContinuidad").prop("disabled", true);
+                $("#chkRepitente").prop("disabled", true);
+            } else if (repitente) {
+                $("#chkContinuidad").prop("disabled", true);
+                $("#chkTraslado").prop("disabled", true);
+            } else {
+                $("#chkContinuidad").prop("disabled", false);
+                $("#chkTraslado").prop("disabled", false);
+                $("#chkRepitente").prop("disabled", false);
+            }
+        });
+    });
+</script>

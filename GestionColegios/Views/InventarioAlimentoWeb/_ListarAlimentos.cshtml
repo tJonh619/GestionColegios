@@ -15,7 +15,6 @@
                         <th>Stock</th>
                         <th>Unidad de Medida</th>
                         <th>Fecha de Reabastecimiento</th>
-                        <th>Activo</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -28,7 +27,6 @@
                             <td>@Html.DisplayFor(modelItem => alimento.Stock)</td>
                             <td>@Html.DisplayFor(modelItem => alimento.UnidadDeMedida)</td>
                             <td>@Html.DisplayFor(modelItem => alimento.FechaModificacion)</td>
-                            <td>@Html.DisplayFor(modelItem => alimento.Activo)</td>
 
                             <td>
                                 @Html.ActionLink("Editar", "Edit", new { id = alimento.Id }, new { @class = "btn btn-warning" }) |

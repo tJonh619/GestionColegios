@@ -1,0 +1,154 @@
+﻿@model GestionColegios.ViewModels.VMControlMerienda
+
+@{
+    Layout = Layout;
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Historial de Control de Meriendas</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" action="@Url.Action("Historico", "ControlMeriendas")" class="mb-3">
+                <div class="form-row align-items-end">
+                    <div class="form-group col-md-4">
+                        <label for="fecha">Seleccionar Fecha:</label>
+                        <input type="date" name="fecha" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type="submit" class="btn btn-primary btn-block">Aplicar Filtro</button>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type="button" class="btn btn-secondary btn-block" onclick="printTable()" id="printButton">
+                            <i class="fas fa-print"></i> Imprimir
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (Model.ControlesMeriendas.Any()) // Verificamos si hay datos
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered mt-3" id="controlMeriendasTable">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Curso Académico</th>
+                        <th>Fecha Entrega</th>
+                        <th>Estudiante</th>
+                        <th>A.E Mujeres</th>
+                        <th>A.E Total</th>
+                        <th>A.R Mujeres</th>
+                        <th>A.R Total</th>
+                        <th>Aceite</th>
+                        <th>Arroz</th>
+                        <th>Cereal</th>
+                        <th>Frijoles</th>
+                        <th>Maíz</th>
+                        <th>Firma Docente</th>
+                        <th>Cédula Tutor</th>
+                        <th>Firma Tutor</th>
+                        <th class="print-hide">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var control in Model.ControlesMeriendas)
+                    {
+                    <tr>
+                        <td>@control.CursoAcademico.Nombre</td>
+                        <td>@control.FechaEntrega.ToShortDateString()</td>
+                        <td>@control.Estudiante.Nombres</td>
+                        <td>@control.AsistenciaEsperadaMujeres</td>
+                        <td>@control.AsistenciaEsperadaTotal</td>
+                        <td>@(control.AsistenciaRealMujeres == 0 ? "" : control.AsistenciaRealMujeres)</td>
+                        <td>@(control.AsistenciaRealTotal == 0 ? "" : control.AsistenciaRealTotal)</td>
+                        <td>@control.SAceite</td>
+                        <td>@control.SArroz</td>
+                        <td>@control.SCereal</td>
+                        <td>@control.SFrijoles</td>
+                        <td>@control.SMaiz</td>
+                        <td>@control.FirmaDocente</td>
+                        <td>@control.CedulaTutor</td>
+                        <td>@control.FirmaTutor</td>
+                        <td class="print-hide">
+                            <a href="@Url.Action("Edit", "ControlMeriendas", new { id = control.Id })" class="btn btn-primary btn-sm">Editar</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<style>
+    h2 {
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .table {
+        margin-top: 20px;
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+
+        .table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table-striped tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .btn {
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .btn:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+</style>
+
+<script>
+    function printTable() {
+        var printContents = document.getElementById('controlMeriendasTable').outerHTML;
+        var win = window.open('', '', 'height=700,width=900');
+        win.document.write('<html><head><title>Imprimir</title>');
+        win.document.write('<style>');
+        win.document.write('table { width: 100%; border-collapse: collapse; }');
+        win.document.write('th, td { border: 1px solid black; padding: 8px; text-align: left; }');
+        win.document.write('th { background-color: #f2f2f2; }');
+        win.document.write('body { margin: 0; }'); // Ajuste del margen
+        win.document.write('.signature-section { display: none; }'); // Ocultar firma por defecto
+        win.document.write('.print-hide { display: none; }'); // Ocultar botones de edición
+        win.document.write('</style>');
+        win.document.write('</head><body>');
+        win.document.write('<h2>COLEGIO PUBLICO FIDEL COLOMA       CONTROL DE MERIENDAS</h2>');
+
+        win.document.write(printContents);
+
+        // Sección para firmas (solo al imprimir)
+        win.document.write('<div class="signature-section" style="margin-top: 50px; display: flex; justify-content: space-between;">');
+        win.document.write('<div style="text-align: center; width: 300px;">');
+        win.document.write('<div style="border-top: 1px solid black; margin: 0 auto;"></div>');
+        win.document.write('<p>Firma de la Directora</p>');
+        win.document.write('</div>');
+        win.document.write('<div style="text-align: center; width: 300px;">');
+        win.document.write('<div style="border-top: 1px solid black; margin: 0 auto;"></div>');
+        win.document.write('<p>Firma del Subdirector</p>');
+        win.document.write('</div>');
+        win.document.write('</div>');
+
+        win.document.write('</body></html>');
+        win.document.close();
+        win.print();
+    }
+</script>

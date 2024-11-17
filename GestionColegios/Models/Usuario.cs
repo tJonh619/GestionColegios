@@ -14,6 +14,13 @@ namespace GestionColegios.Models
     
     public partial class Usuario
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Usuario()
+        {
+            this.DetallePermisos = new HashSet<DetallePermiso>();
+            this.Maestro = new HashSet<Maestro>();
+        }
+    
         public string CodigoUsuario { get; set; }
         public int Id { get; set; }
         public string NombreUsuario { get; set; }
@@ -24,5 +31,9 @@ namespace GestionColegios.Models
         public int RolId { get; set; }
     
         public virtual Rol Rol { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DetallePermiso> DetallePermisos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Maestro> Maestro { get; set; }
     }
 }

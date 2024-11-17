@@ -1,0 +1,66 @@
+﻿.inline-btn,
+.inline-option-btn,
+.inline-delete-btn,
+.boton,
+.delete-btn,
+.option-btn {
+    border-radius: .5rem;
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+    text-transform: capitalize;
+    padding: 1rem 3rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.boton,
+.delete-btn,
+.option-btn {
+    display: block;
+    width: 100%;
+}
+
+.inline-btn,
+.inline-option-btn,
+.inline-delete-btn {
+    display: inline-block;
+}
+
+.boton,
+.inline-btn {
+    background-color: var(--main-color);
+}
+
+.option-btn,
+.inline-option-btn {
+    background-color: var(--orange);
+}
+
+.delete-btn,
+.inline-delete-btn {
+    background-color: var(--red);
+}
+
+    .inline-btn:hover,
+    .inline-option-btn:hover,
+    .inline-delete-btn:hover,
+    .boton:hover,
+    .delete-btn:hover,
+    .option-btn:hover {
+        background-color: var(--black);
+        color: var(--white);
+    }
+
+.boton {
+    text-decoration: none;
+}
+
+.flex-btn {
+    display: flex;
+    gap: 1rem;
+}
+
+#search-btn {
+    display: none;
+}

@@ -38,7 +38,7 @@ namespace GestionColegios.Controllers
 
             ViewBag.EsEdicion = false;
             ViewBag.UnidadesDeMedida = new SelectList(new List<string> { "libras", "cuartas" });
-            return View("_Create_Edit", viewModel);
+            return View("_AgregarAlimento", viewModel);
         }
 
         [HttpPost]
@@ -57,6 +57,7 @@ namespace GestionColegios.Controllers
                 }
                 else
                 {
+                    
                     model.InventarioAlimento.Activo = true;
                     model.InventarioAlimento.FechaModificacion = DateTime.Now;
                     db.InventariosAlimentos.Add(model.InventarioAlimento);
@@ -69,7 +70,7 @@ namespace GestionColegios.Controllers
 
             TempData["ErrorMessage"] = "Error al agregar el alimento. Verifique los datos.";
             ViewBag.UnidadesDeMedida = new SelectList(new List<string> { "libras", "cuartas" });
-            return View("_Create_Edit", model);
+            return View("_AgregarAlimento", model);
         }
 
         // GET: InventarioAlimentoWeb/Edit/5
@@ -93,7 +94,7 @@ namespace GestionColegios.Controllers
 
             ViewBag.EsEdicion = true;
             ViewBag.UnidadesDeMedida = new SelectList(new List<string> { "libras", "cuartas" }, inventarioAlimento.UnidadDeMedida);
-            return View("_Create_Edit", viewModel);
+            return View("_AgregarAlimento", viewModel);
         }
 
         [HttpPost]
@@ -120,7 +121,7 @@ namespace GestionColegios.Controllers
 
             TempData["ErrorMessage"] = "Error al actualizar el alimento.";
             ViewBag.UnidadesDeMedida = new SelectList(new List<string> { "libras", "cuartas" }, model.InventarioAlimento.UnidadDeMedida);
-            return View("_Create_Edit", model);
+            return View("_AgregarAlimento", model);
         }
 
         // GET: InventarioAlimentoWeb/Delete/5

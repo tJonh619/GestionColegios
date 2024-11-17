@@ -4,7 +4,15 @@
     var esSoloLectura = ViewBag.EsEdicion
         ? new Dictionary<string, object> { { "readonly", "readonly" }, { "disabled", "disabled" } }
         : new Dictionary<string, object>();
+
+
+
 }
+
+@{
+    var esSoloLecturacodigo = new Dictionary<string, object> { { "readonly", "readonly" }, { "disabled", "disabled" } };
+}
+
 
 @functions {
     IDictionary<string, object> ObtenerAtributos(Dictionary<string, object> atributosBase, Dictionary<string, object> soloLectura)
@@ -12,6 +20,22 @@
         return atributosBase.Concat(soloLectura).ToDictionary(k => k.Key, v => v.Value);
     }
 }
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+
 
 <div class="tab-pane fade show active" id="agregar-alimento" role="tabpanel" aria-labelledby="agregar-alimento-tab">
     <div class="panel panel-default mt-2">
@@ -30,16 +54,17 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                 <!-- Código de Alimento -->
-                <div class="form-group">
+                <div class="form-group" style="display:none;">
                     @Html.LabelFor(m => m.InventarioAlimento.Codigo, new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.TextBoxFor(m => m.InventarioAlimento.Codigo,
                             ObtenerAtributos(new Dictionary<string, object> {
-                                { "class", "form-control" }, { "required", "required" }, { "placeholder", "Introduce el código del alimento" }
+                                { "class", "form-control" }, { "required", "required" }, { "placeholder", "Código del alimento" }
                             }, esSoloLectura))
                         @Html.ValidationMessageFor(m => m.InventarioAlimento.Codigo, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
 
                 <!-- Nombre de Alimento -->
                 <div class="form-group">
@@ -90,6 +115,9 @@
                     </div>
                 </div>
 
+
+
+
                 <!-- Botones de Acción -->
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
@@ -122,32 +150,81 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        function activateEdit() {
-            $('input, select').prop('readonly', false).prop('disabled', false);
-            $('#btn-save').show();
-            $('#btn-cancel-edit').text("Cancelar");
-            $('#btn-edit').hide();
-            $('#btn-delete').hide();
-        }
-
-        function cancelOrReturn() {
-            if ($('#btn-cancel-edit').text() === "Cancelar") {
-                $('input, select').prop('readonly', true).prop('disabled', true);
-                $('#btn-save').hide();
-                $('#btn-edit').show();
-                $('#btn-cancel-edit').text("Regresar");
-                $('#btn-delete').show();
-            } else {
-                window.location.href = '@Url.Action("Index", "InventarioAlimentoWeb")';
-            }
-        }
-
-        function deleteRecord() {
-            const deleteUrl = '@Url.Action("Delete", "InventarioAlimentoWeb", new { id = Model.InventarioAlimento.Id })';
-            if (confirm("¿Estás seguro de que deseas eliminar este alimento?")) {
-                window.location.href = deleteUrl;
-            }
-        }
-    </script>
 }
+<script>
+    function activateEdit() {
+        $('input, select').each(function () {
+            $(this).prop('readonly', false);
+            $(this).prop('disabled', false);
+        });
+        $('#btn-save').show();
+        $('#btn-cancel-edit').text("Cancelar");
+        $('#btn-edit').hide();
+        $('#btn-delete').hide();
+    }
+
+    function cancelOrReturn() {
+        if ($('#btn-cancel-edit').text() === "Cancelar") {
+            $('input, select').each(function () {
+                $(this).prop('readonly', true);
+                $(this).prop('disabled', true);
+            });
+            $('#btn-save').hide();
+            $('#btn-edit').show();
+            $('#btn-cancel-edit').text("Regresar");
+            $('#btn-delete').show();
+        } else {
+            window.location.href = '@Url.Action("Index", "InventarioAlimentoWeb")';
+        }
+    }
+
+    function deleteRecord() {
+        const deleteUrl = '@Url.Action("Delete", "InventarioAlimentoWeb", new { id = Model.InventarioAlimento.Id })';
+        if (confirm("¿Estás seguro de que deseas eliminar este Alimento?")) {
+            window.location.href = deleteUrl;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdown = document.getElementById('InventarioAlimento_NombreAlimento');
+        const codigoInput = document.getElementById('InventarioAlimento_Codigo');
+
+        // Función que actualiza el código basado en el nombre del alimento seleccionado
+        function actualizarCodigo() {
+            const seleccionado = dropdown.value;
+            let codigo = '';
+
+            switch (seleccionado) {
+                case 'Arroz':
+                    codigo = 'AR-001';
+                    break;
+                case 'Aceite':
+                    codigo = 'AC-002';
+                    break;
+                case 'Cereal':
+                    codigo = 'CE-003';
+                    break;
+                case 'Frijoles':
+                    codigo = 'FR-004';
+                    break;
+                case 'Maíz':
+                    codigo = 'MA-005';
+                    break;
+                default:
+                    codigo = '';
+                    break;
+            }
+
+            // Asignar el código al campo correspondiente
+            codigoInput.value = codigo;
+        }
+
+        // Escuchar cambios en el dropdown y actualizar el código
+        dropdown.addEventListener('change', actualizarCodigo);
+
+        // Llamar a la función de actualización en caso de que ya haya un valor al cargar la página
+        actualizarCodigo();
+    });
+
+
+</script>

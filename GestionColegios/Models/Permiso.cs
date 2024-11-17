@@ -14,13 +14,19 @@ namespace GestionColegios.Models
     
     public partial class Permiso
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Permiso()
+        {
+            this.DetallePermisos = new HashSet<DetallePermiso>();
+        }
+    
         public int Id { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public System.DateTime FechaModificacion { get; set; }
         public bool Activo { get; set; }
-        public int RolId { get; set; }
     
-        public virtual Rol Rol { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DetallePermiso> DetallePermisos { get; set; }
     }
 }

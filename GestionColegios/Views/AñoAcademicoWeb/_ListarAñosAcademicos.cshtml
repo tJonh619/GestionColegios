@@ -28,7 +28,6 @@
                             <th scope="col">Nombre</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Nivel</th>
-                            <th scope="col">Estado</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
@@ -39,12 +38,11 @@
                                 <td>@añoAcademico.Nombre</td>
                                 <td>@añoAcademico.Descripcion</td>
                                 <td>@añoAcademico.Nivel</td>
-                                <td>@(añoAcademico.Activo ? "Activo" : "Inactivo")</td>
                                 <td>
-                                    <a href="@Url.Action("Edit", "AñoAcademico", new { id = añoAcademico.Id })" class="btn btn-sm btn-warning">
+                                    <a href="@Url.Action("Edit", "AñoAcademicoWeb", new { id = añoAcademico.Id })" class="btn btn-sm btn-warning">
                                         <i class="fas fa-edit"></i> Editar
                                     </a>
-                                    <a href="@Url.Action("Delete", "AñoAcademico", new { id = añoAcademico.Id })" class="btn btn-sm btn-danger">
+                                    <a href="@Url.Action("Delete", "AñoAcademicoWeb", new { id = añoAcademico.Id })" class="btn btn-sm btn-danger">
                                         <i class="fas fa-trash-alt"></i> Eliminar
                                     </a>
                                 </td>

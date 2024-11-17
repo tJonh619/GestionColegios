@@ -16,7 +16,8 @@
 <div class="tab-pane fade show active" id="permiso-create" role="tabpanel" aria-labelledby="permiso-create-tab">
     <div class="row mt-2">
         <div class="col-md-12">
-            @using (Html.BeginForm(ViewBag.EsEdicion ? "EditPermiso" : "CreatePermiso", "UsuarioWeb", FormMethod.Post, new { @id = "form-permiso" }))
+            @using (Html.BeginForm(ViewBag.EsEdicion ? "EditPermiso" : "CreatePermiso", "UsuarioWeb", FormMethod.Post,
+                new { @id = "form-permiso" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model => model.Permiso.Id) <!-- Campo oculto para el Id -->
@@ -35,7 +36,7 @@
                         <!-- Nombre del Permiso -->
                         <div class="form-group mb-3">
                             @Html.Label("Nombre del Permiso", new { @for = "Nombre" })
-                            @Html.TextBox("Nombre", Model.Permiso.Nombre,
+                            @Html.TextBoxFor(m => m.Permiso.Nombre,
                                 ObtenerAtributos(new Dictionary<string, object> {
                                     { "class", "form-control" },
                                     { "placeholder", "Introduce el nombre del permiso" },
@@ -47,7 +48,7 @@
                         <!-- Descripción del Permiso -->
                         <div class="form-group mb-3">
                             @Html.Label("Descripción", new { @for = "Descripcion" })
-                            @Html.TextBox("Descripcion", Model.Permiso.Descripcion,
+                            @Html.TextBoxFor(m => m.Permiso.Descripcion,
                                 ObtenerAtributos(new Dictionary<string, object> {
                                     { "class", "form-control" },
                                     { "placeholder", "Introduce la descripción del permiso" },
@@ -56,18 +57,10 @@
                             @Html.ValidationMessageFor(model => model.Permiso.Descripcion, "", new { @class = "text-danger" })
                         </div>
 
-                        <!-- Selección de Rol -->
-                        <div class="form-group mb-3">
-                            @Html.Label("Rol Asociado", new { @for = "RolId" })
-                            @Html.DropDownList("RolId",
-                                new SelectList(Model.Roles, "Id", "Nombre", Model.Permiso.RolId),
-                                "Selecciona un Rol",
-                                ObtenerAtributos(new Dictionary<string, object> {
-                                    { "class", "form-control" },
-                                    { "required", "required" }
-                                }, esSoloLectura))
-                            @Html.ValidationMessageFor(model => model.Permiso.RolId, "", new { @class = "text-danger" })
-                        </div>
+
+
+
+
                     </div>
 
                     <!-- Botones de Acción -->
@@ -81,15 +74,13 @@
                         <button type="submit" id="btn-save" class="btn btn-primary m-1"
                                 style="@(ViewBag.EsEdicion ? "display:none;" : "")">
                             @(Model.Permiso.Id == 0 ? "Registrar" : "Guardar Cambios")
-                        </button>
-
-                        @if (ViewBag.EsEdicion)
-                        {
+                        </button>                    
+                        
                             <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
                                     onclick="deleteRecord()">
                                 Eliminar
                             </button>
-                        }
+                            
 
                         <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
                                 onclick="cancelOrReturn()">
@@ -104,32 +95,39 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        function activateEdit() {
-            $('input, select').prop('readonly', false).prop('disabled', false);
-            $('#btn-save').show();
-            $('#btn-cancel-edit').text("Cancelar");
-            $('#btn-edit').hide();
-            $('#btn-delete').hide();
-        }
-
-        function cancelOrReturn() {
-            if ($('#btn-cancel-edit').text() === "Cancelar") {
-                $('input, select').prop('readonly', true).prop('disabled', true);
-                $('#btn-save').hide();
-                $('#btn-edit').show();
-                $('#btn-cancel-edit').text("Regresar");
-                $('#btn-delete').show();
-            } else {
-                window.location.href = '@Url.Action("Index", "UsuarioWeb")';
-            }
-        }
-
-        function deleteRecord() {
-            const deleteUrl = '@Url.Action("DeletePermiso", "UsuarioWeb", new { id = Model.Permiso.Id })';
-            if (confirm("¿Estás seguro de que deseas eliminar este permiso?")) {
-                window.location.href = deleteUrl;
-            }
-        }
-    </script>
 }
+
+<script>
+    function activateEdit() {
+        $('input, select').each(function () {
+            $(this).prop('readonly', false);
+            $(this).prop('disabled', false);
+        });
+        $('#btn-save').show();
+        $('#btn-cancel-edit').text("Cancelar");
+        $('#btn-edit').hide();
+        $('#btn-delete').hide();
+    }
+
+    function cancelOrReturn() {
+        if ($('#btn-cancel-edit').text() === "Cancelar") {
+            $('input, select').each(function () {
+                $(this).prop('readonly', true);
+                $(this).prop('disabled', true);
+            });
+            $('#btn-save').hide();
+            $('#btn-edit').show();
+            $('#btn-cancel-edit').text("Regresar");
+            $('#btn-delete').show();
+        } else {
+            window.location.href = '@Url.Action("Index", "UsuarioWeb")';
+        }
+    }
+
+    function deleteRecord() {
+        const deleteUrl = '@Url.Action("DeletePermiso", "UsuarioWeb", new { id = Model.Permiso.Id })';
+        if (confirm("¿Estás seguro de que deseas eliminar este Permiso?")) {
+            window.location.href = deleteUrl;
+        }
+    }
+</script>

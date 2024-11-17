@@ -10,5 +10,9 @@ namespace GestionColegios.ViewModels
     {
         public List<Maestro> Maestros { get; set; }
         public Maestro Maestro { get; set; }
+
+        public List<Usuario> Usuarios { get; set; }
+
+        public Usuario Usuario { get; set; }
     }
 }

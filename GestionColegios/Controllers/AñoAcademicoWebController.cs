@@ -35,7 +35,7 @@ namespace GestionColegios.Controllers
                 AñoAcademico = new AñoAcademico()
             };
             ViewBag.EsEdicion = false;
-            return View("_Create_Edit", viewModel);
+            return View("_CrearEditarAñoAcademico", viewModel);
         }
 
         [HttpPost]
@@ -53,7 +53,7 @@ namespace GestionColegios.Controllers
             }
 
             TempData["ErrorMessage"] = "Error al crear el año académico. Intente nuevamente.";
-            return View("_Create_Edit", model);
+            return View("_CrearEditarAñoAcademico", model);
         }
 
         // GET: AñoAcademicoWeb/Edit/5
@@ -75,7 +75,7 @@ namespace GestionColegios.Controllers
                 AñoAcademico = añoAcademico
             };
             ViewBag.EsEdicion = true;
-            return View("_Create_Edit", viewModel);
+            return View("_CrearEditarAñoAcademico", viewModel);
         }
 
         [HttpPost]
@@ -100,7 +100,7 @@ namespace GestionColegios.Controllers
             }
 
             TempData["ErrorMessage"] = "Error al actualizar el año académico. Intente de nuevo.";
-            return View("_Create_Edit", model);
+            return View("_CrearEditarAñoAcademico", model);
         }
 
         // GET: AñoAcademicoWeb/Delete/5

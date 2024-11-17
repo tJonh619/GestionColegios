@@ -91,7 +91,11 @@ namespace GestionColegios.Controllers
         // GET: PeriodoWeb/CreatePeriodo
         public ActionResult CreatePeriodo()
         {
-            var viewModel = new VMAñosPeriodosSemestres { Periodo = new Periodo() };
+            var viewModel = new VMAñosPeriodosSemestres
+            {
+                Años = db.Años.ToList(), // Aquí inicializas Años
+                Periodo = new Periodo()
+            };
             ViewBag.EsEdicion = false;
             return View("_PeriodosCreate", viewModel);
         }
@@ -103,6 +107,7 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.Periodo.Activo = true;
                 db.Periodos.Add(model.Periodo);
                 db.SaveChanges();
                 TempData["SuccessMessage"] = "Periodo creado correctamente.";
@@ -115,6 +120,7 @@ namespace GestionColegios.Controllers
         }
 
         // GET: PeriodoWeb/EditPeriodo/5
+        // GET: PeriodoWeb/EditPeriodo/5
         public ActionResult EditPeriodo(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -122,10 +128,17 @@ namespace GestionColegios.Controllers
             var periodo = db.Periodos.Find(id);
             if (periodo == null) return HttpNotFound();
 
-            var viewModel = new VMAñosPeriodosSemestres { Periodo = periodo };
+            // Cargar la lista de años para que esté disponible en el ViewModel
+            var viewModel = new VMAñosPeriodosSemestres
+            {
+                Periodo = periodo,
+                Años = db.Años.ToList() // Cargar los Años desde la base de datos
+            };
+
             ViewBag.EsEdicion = true;
             return View("_PeriodosCreate", viewModel);
         }
+
 
         // POST: PeriodoWeb/EditPeriodo/5
         [HttpPost]
@@ -134,7 +147,7 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(model.Periodo).State = EntityState.Modified;
+                db.Entry(model.Periodo).State = EntityState.Modified;               
                 db.SaveChanges();
                 TempData["SuccessMessage"] = "Periodo actualizado correctamente.";
                 return RedirectToAction("Index");

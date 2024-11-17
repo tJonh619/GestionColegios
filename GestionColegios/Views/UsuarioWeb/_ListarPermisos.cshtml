@@ -21,7 +21,7 @@
                         <td>@Html.DisplayFor(modelItem => permiso.Descripcion)</td>
                         <td>
                             @Html.ActionLink("Editar", "EditPermiso", new { id = permiso.Id }, new { @class = "btn btn-warning" }) |
-                            @Html.ActionLink("Eliminar", "DeletePermiso", new { id = permiso.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este permiso?');" })
+                            @Html.ActionLink("Desactivar", "DeletePermiso", new { id = permiso.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este permiso?');" })
                         </td>
                     </tr>
                 }

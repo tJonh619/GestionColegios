@@ -34,8 +34,10 @@ namespace GestionColegios.Models
         public string Nivel { get; set; }
         public System.DateTime FechaModificacion { get; set; }
         public bool Activo { get; set; }
+        public int UsuarioId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CursoAcademico> CursoAcademico { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

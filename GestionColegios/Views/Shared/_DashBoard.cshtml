@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @Styles.Render("~/Styles/css")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+</head>
+<body class="@(Request.IsAuthenticated ? "authenticated" : "login-page")">
+    @if (Request.IsAuthenticated)
+    {
+        @Html.AntiForgeryToken()
+        @Html.Partial("~/Views/Shared/_Nav.cshtml");
+        @Html.Partial("~/Views/Shared/_Side.cshtml")
+        @RenderBody();
+    }
+    else
+    {
+        @RenderBody();
+    }
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -4,30 +4,32 @@
     ViewBag.Title = "Lista de Estudiantes";
 }
 
-<div class="row mt-4">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="form-group">
-                <label for="searchType">Buscar por:</label>
-                <select id="searchType" class="form-select">
-                    <option value="nombres">Nombre Estudiante</option>
-                    <option value="apellidos">Apellido Estudiante</option>
-                    <option value="codigo">Código Estudiante</option>
-                    <option value="direccion">Dirección</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <input type="text" id="search" class="form-control" placeholder="Buscar...">
-            </div>
-
-            <div id="spinner" class="spinner-border text-primary" role="status" style="display: none;">
-                <span class="visually-hidden">Cargando...</span>
-            </div>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="form-group w-25">
+            <label for="searchType" class="form-label">Buscar por:</label>
+            <select id="searchType" class="form-select">
+                <option value="nombres">Nombre Estudiante</option>
+                <option value="apellidos">Apellido Estudiante</option>
+                <option value="codigo">Código Estudiante</option>
+                <option value="direccion">Dirección</option>
+            </select>
         </div>
 
-        <table style="width: 100%;" class="table-responsive table-striped table-hover table-bordered align-middle">
-            <thead style="background-color: #001c7d; color: white;">
+        <div class="form-group w-50">
+            <label for="search" class="form-label">Buscar</label>
+            <input type="text" id="search" class="form-control" placeholder="Ingrese su búsqueda..." />
+        </div>
+
+        <div id="spinner" class="spinner-border text-primary" role="status" style="display: none;">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Tabla de estudiantes -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover align-middle">
+            <thead class="table-dark">
                 <tr>
                     <th scope="col">Nombres</th>
                     <th scope="col">Apellidos</th>
@@ -35,13 +37,13 @@
                 </tr>
             </thead>
             <tbody id="tableBody">
-                @foreach (var estudiante in Model.Estudiantes)
+                @foreach (var estudiante in Model.Estudiantes.Where(e => e.CursoAcademicoEstudiante.Any(c => c.CursoAcademico.Id == ViewBag.idCurso && c.EstudianteId == e.Id)))
                 {
                     <tr>
                         <td>@estudiante.Nombres</td>
                         <td>@estudiante.Apellidos</td>
-                        <td>
-                            @Html.ActionLink("Registrar Notas", "Create", "CalificacionWeb", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-success" })
+                        <td class="text-center">
+                            @Html.ActionLink("Registrar Notas", "SeleccionarParciales", "CalificacionWeb", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-success me-2" })
                             @Html.ActionLink("Pruebas de Eficiencia Física", "PruebasEficiencia", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-info" })
                         </td>
                     </tr>
@@ -50,3 +52,13 @@
         </table>
     </div>
 </div>
+
+<script>
+    // Script para el spinner de carga (puedes añadir tu propia lógica de búsqueda)
+    $('#search').on('input', function () {
+        $('#spinner').show(); // Muestra el spinner
+        setTimeout(function() {
+            $('#spinner').hide(); // Esconde el spinner después de 1 segundo (simulando búsqueda)
+        }, 1000);
+    });
+</script>

@@ -32,28 +32,28 @@
                             <tbody>
                                 @foreach (var matricula in Model)
                                 {
-                                    <tr>
-                                        <td>@matricula.Codigo</td>
-                                        <td>@matricula.Descripcion</td>
-                                        <td>@matricula.Estudiante.Nombres @matricula.Estudiante.Apellidos</td>
-                                        <td>@matricula.Tutor.Nombres @matricula.Tutor.Apellidos</td>
-                                        <td>@matricula.Periodos.Nombre</td>
-                                        <td>@matricula.AñoAcademico.Nombre</td>
-                                        <td>@(matricula.Continuidad ? "Sí" : "No")</td>
-                                        <td>@(matricula.Traslado ? "Sí" : "No")</td>
-                                        <td>@(matricula.Repitente ? "Sí" : "No")</td>
-                                        <td>@(matricula.Aprobado ? "Sí" : "No")</td>
-                                        <td>
-                                            <!-- Botón para editar la matrícula -->
-                                            @Html.ActionLink("Editar", "Edit", new { id = matricula.Id }, new { @class = "btn btn-primary btn-sm" })
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td>@matricula.Codigo</td>
+                                    <td>@matricula.Descripcion</td>
+                                    <td>@matricula.Estudiante.Nombres @matricula.Estudiante.Apellidos</td>
+                                    <td>@matricula.Tutor.Nombres @matricula.Tutor.Apellidos</td>
+                                    <td>@matricula.Periodos.Nombre</td>
+                                    <td>@matricula.AñoAcademico.Nombre</td>
+                                    <td>@(matricula.Continuidad ? "Sí" : "No")</td>
+                                    <td>@(matricula.Traslado ? "Sí" : "No")</td>
+                                    <td>@(matricula.Repitente ? "Sí" : "No")</td>
+                                    <td>@(matricula.Aprobado ? "Sí" : "No")</td>
+                                    <td>
+                                        <!-- Botón para editar la matrícula -->
+                                        @Html.ActionLink("Editar", "Edit", new { id = matricula.Id }, new { @class = "btn btn-primary btn-sm" })
+                                    </td>
+                                </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
                     <div class="text-center mt-4">
-                        @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary px-5 py-2", style = "border-radius: 25px;" })
+                        @Html.ActionLink("Volver", "Index","EstudianteWeb", null, new { @class = "btn btn-secondary px-5 py-2", style = "border-radius: 25px;" })
                     </div>
                 </div>
             </div>

@@ -1,0 +1,97 @@
+@import url('Home.css');
+@import url('Barra_Navegacion.css');
+@import url('Barra_lateral.css');
+@import url('Colores.css');
+@import url('Botones.css');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+    *::selection {
+        background-color: var(--main-color);
+        color: #fff;
+    }
+
+html {
+    font-size: 62.5%;
+    overflow-x: hidden;
+}
+
+    html::-webkit-scrollbar {
+        width: 1rem;
+        height: .5rem;
+    }
+
+    html::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    html::-webkit-scrollbar-thumb {
+        background-color: var(--main-color);
+    }
+
+body {
+    background-color: var(--light-bg);
+    padding-left: 25rem;
+    text-decoration: none;
+    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+
+
+    body.active {
+        padding-left: 0rem;
+    }
+
+    body.login-page {
+        padding-left: 0rem;
+    }
+
+
+
+
+
+
+/*Media Queries*/
+@media (max-width:1200px) {
+    body {
+        padding-left: 0;
+    }
+}
+
+@media (max-width:991px) {
+
+    html {
+        font-size: 55%;
+    }
+}
+
+@media (max-width:450px) {
+
+    html {
+        font-size: 50%;
+    }
+
+    .flex-btn {
+        gap: 0;
+        flex-flow: column;
+    }
+
+    .home-grid .box-container {
+        grid-template-columns: 1fr;
+    }
+
+    .about .row .image img {
+        height: 25rem;
+    }
+}

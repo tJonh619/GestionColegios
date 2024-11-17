@@ -14,26 +14,230 @@ namespace GestionColegios.Controllers
 {
     public class CalificacionWebController : Controller
     {
-        private BDColegioContainer db = new BDColegioContainer();
+        private readonly BDColegioContainer db = new BDColegioContainer();
 
         // GET: CalificacionWeb
-        public ActionResult Index()
+        public ActionResult Index(int id)
+        {
+            ViewBag.idCurso = id;
+
+            // Obtener el estudiante por el id
+            var estudiante = db.Estudiantes.Find(id);
+            if (estudiante == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Obtener la última matrícula del estudiante, ordenando por fecha (descendente)
+            var ultimaMatricula = db.Matriculas
+                                    .Where(m => m.EstudianteId == estudiante.Id)
+                                    .OrderByDescending(m => m.FechaMatricula) // Ordenamos por fecha para obtener la más reciente
+                                    .FirstOrDefault(); // Tomamos la primera, es decir, la más reciente
+
+            if (ultimaMatricula == null)
+            {
+                return HttpNotFound(); // Si no existe una matrícula, devolvemos un error
+            }
+
+            // Obtener el año académico asociado a esa última matrícula
+            var cursoAcademicoId = ultimaMatricula.AñoAcademicoId;
+
+            // Obtener las materias que pertenecen al año académico de la última matrícula
+            var materiasDelCurso = db.Materias
+                                      .Where(m => m.AñoAcademicoId == cursoAcademicoId) // Filtramos las materias según el curso académico
+                                      .ToList();
+
+            // Crear un ViewModel y asignar los datos necesarios
+            var vm = new VMCalificaciones
+            {
+                Estudiantes = db.Estudiantes.ToList(),
+                Materias = materiasDelCurso, // Solo las materias del curso académico actual
+                Parciales = db.Parciales.ToList(),
+                CursosAcademicos = db.CursosAcademicos.ToList()
+            };
+
+            return View(vm); // Retornamos la vista con el ViewModel
+        }
+
+
+
+        public ActionResult GestionAcademica()
         {
             var vm = new VMCalificaciones
             {
                 Calificaciones = db.Calificaciones.Include(c => c.Estudiante).Include(c => c.Materia).ToList(),
                 Estudiantes = db.Estudiantes.ToList(),
                 Materias = db.Materias.ToList(),
-                Parciales = db.Parciales.ToList() // Asegúrate de tener una entidad Parcial
+                Parciales = db.Parciales.ToList(),
+                CursosAcademicos = db.CursosAcademicos.ToList()// Asegúrate de tener una entidad Parcial
             };
             return View(vm);
         }
 
-        // GET: CalificacionWeb/Create
-        public ActionResult Create(int estudianteId)
+        public ActionResult EstudiantesCurso(int id)
         {
-            var estudiante = db.Estudiantes.AsNoTracking().FirstOrDefault(e => e.Id == estudianteId);
+            ViewBag.idCurso = id;
+            var vm = new VMCalificaciones
+            {
+                Calificaciones = db.Calificaciones.Include(c => c.Estudiante).Include(c => c.Materia).ToList(),
+                Estudiantes = db.Estudiantes.ToList(),
+                Materias = db.Materias.ToList(),
+                Parciales = db.Parciales.ToList(),
+                CursosAcademicos = db.CursosAcademicos.ToList()// Asegúrate de tener una entidad Parcial
+            };
+            return View(vm);
+        }
 
+        public ActionResult Create(int estudianteId, int parcialId = 1)
+        {
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Obtener la última matrícula del estudiante (la más reciente por fecha)
+            var ultimaMatricula = db.Matriculas
+                .Where(m => m.EstudianteId == estudiante.Id)
+                .OrderByDescending(m => m.FechaMatricula) // Asumiendo que Fecha es la propiedad que indica la fecha de matrícula
+                .FirstOrDefault();
+
+            if (ultimaMatricula == null)
+            {
+                return HttpNotFound(); // Si no hay matrícula, se retorna un error
+            }
+
+            // Obtener el año académico de la última matrícula
+            var anioAcademico = ultimaMatricula.AñoAcademicoId;
+
+            // Obtener las materias correspondientes a ese año académico
+            var materiasPorAnioAcademico = db.Materias
+                .Where(m => m.AñoAcademicoId == anioAcademico) // Asumiendo que Materia tiene la propiedad AnioAcademico
+                .ToList();
+
+            // Obtener las calificaciones para el estudiante y el parcial actual
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .ToList();
+
+            // Si no existen calificaciones para ese parcial, inicializa una lista vacía para cada materia
+            if (!calificaciones.Any())
+            {
+                calificaciones = materiasPorAnioAcademico.Select(m => new Calificacion
+                {
+                    EstudianteId = estudiante.Id,
+                    MateriaId = m.Id,
+                    ParcialId = parcialId,
+                    NCuantitativa = 0, // Inicializa con 0 o null, según lo que sea necesario
+                    NCualitativa = null // Puede ser null si no hay calificación cualitativa
+                }).ToList();
+            }
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Materias = materiasPorAnioAcademico, // Aquí solo pasamos las materias del año académico de la última matrícula
+                Calificaciones = calificaciones,
+                Parciales = db.Parciales.ToList()
+            };
+
+            return View(vm);
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(VMCalificaciones vm)
+        {
+            if (vm.Calificaciones == null)
+            {
+                vm.Calificaciones = new List<Calificacion>();
+            }
+
+            var errorMessage = "";
+            foreach (var calificacion in vm.Calificaciones)
+            {
+                if (calificacion.NCuantitativa == 0)
+                {
+                    errorMessage = "Error: Notas duplicadas o campos vacíos.";
+                    break; // Salir del bucle después de encontrar el primer error
+                }
+
+                // Validar duplicados en el mismo parcial para el mismo estudiante y materia
+                var calificacionExistente = db.Calificaciones
+                    .FirstOrDefault(c => c.EstudianteId == calificacion.EstudianteId
+                                          && c.MateriaId == calificacion.MateriaId
+                                          && c.ParcialId == calificacion.ParcialId);
+
+                if (calificacionExistente != null && calificacionExistente.NCuantitativa != 0)
+                {
+                    errorMessage = $"La materia {calificacionExistente.Materia.Nombre} ya tiene una calificación registrada para este parcial.";
+                    break;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                // Pasar el mensaje de error a TempData para usarlo en la siguiente vista
+                TempData["ErrorMessage"] = errorMessage;
+
+                // Redirigir a la vista SeleccionarParciales con el Id del estudiante
+                return RedirectToAction("SeleccionarParciales", new { estudianteId = vm.Estudiante.Id });
+            }
+
+            if (ModelState.IsValid)
+            {
+                foreach (var calificacion in vm.Calificaciones)
+                {
+                    var calificacionExistente = db.Calificaciones
+                        .FirstOrDefault(c => c.EstudianteId == calificacion.EstudianteId
+                                              && c.MateriaId == calificacion.MateriaId
+                                              && c.ParcialId == calificacion.ParcialId);
+
+                    if (calificacionExistente != null && calificacionExistente.NCuantitativa != 0)
+                    {
+                        ModelState.AddModelError("Calificaciones", $"La materia {calificacionExistente.Materia.Nombre} ya tiene una calificación registrada para este parcial.");
+                        continue;
+                    }
+                    else
+                    {
+                        if (calificacion.NCuantitativa > 0 || !string.IsNullOrEmpty(calificacion.NCualitativa))
+                        {
+                            calificacion.EstudianteId = vm.Estudiante.Id;
+                            db.Calificaciones.Add(calificacion);
+                        }
+                    }
+                }
+
+                if (ModelState.IsValid)
+                {
+                    TempData["SuccessMessage"] = "Calificaciones registradas exitosamente.";
+                    db.SaveChanges();
+                    return RedirectToAction("Create", new { estudianteId = vm.Estudiante.Id });
+                }
+
+                CargarDatos(vm);
+                return View(vm);
+            }
+
+            CargarDatos(vm);
+            return View(vm);
+        }
+
+
+
+
+        private void CargarDatos(VMCalificaciones vm)
+        {
+            vm.Estudiantes = db.Estudiantes.ToList();
+            vm.Materias = db.Materias.ToList();
+            vm.Parciales = db.Parciales.ToList();
+        }
+
+        public ActionResult SeleccionarParciales(int estudianteId)
+        {
+            var estudiante = db.Estudiantes.Find(estudianteId);
             if (estudiante == null)
             {
                 return HttpNotFound();
@@ -42,122 +246,199 @@ namespace GestionColegios.Controllers
             var vm = new VMCalificaciones
             {
                 Estudiante = estudiante,
-                Calificacion = new Calificacion
-                {
-                    EstudianteId = estudiante.Id
-                },
-                Materias = db.Materias.ToList(),
-                Parciales = db.Parciales.ToList()
+                Parciales = db.Parciales.ToList() // Asegúrate de tener la lista de parciales
             };
 
-            return View(vm);
+            return View(vm); // Retorna el modelo adecuado a la vista
         }
 
-
-        // POST: CalificacionWeb/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(VMCalificaciones vm)
+        public ActionResult Parcial2(int estudianteId, int parcialId = 2)
         {
-            // Cargar datos en caso de que Materias sea null
-            if (vm.Materias == null)
-            {
-                CargarDatos(vm);
-            }
-
-            if (ModelState.IsValid)
-            {
-                if (vm.Calificacion.EstudianteId == 0)
-                {
-                    ModelState.AddModelError("", "El estudiante no se encontró o no fue seleccionado.");
-                    CargarDatos(vm);
-                    return View(vm);
-                }
-
-                // Iterar sobre las calificaciones y asignar el EstudianteId y MateriaId
-                for (int i = 0; i < vm.Materias.Count; i++)
-                {
-                    // Crear una nueva calificación para cada materia
-                    for (int j = 0; j < 4; j++) // Asumiendo que hay 4 parciales
-                    {
-                        var calificacion = new Calificacion
-                        {
-                            EstudianteId = vm.Calificacion.EstudianteId,
-                            MateriaId = vm.Materias[i].Id,
-                            ParcialId = j + 2, // Ajusta según tu lógica de ParcialId
-                            NCuantitativa = vm.Calificaciones[i * 4 + j].NCuantitativa,
-                            NCualitativa = vm.Calificaciones[i * 4 + j].NCualitativa,
-                            Activo = true
-                        };
-
-                        // Solo agregar si hay alguna nota
-                        if (calificacion.NCuantitativa != 0 || !string.IsNullOrEmpty(calificacion.NCualitativa))
-                        {
-                            db.Calificaciones.Add(calificacion);
-                        }
-                    }
-                }
-
-                // Guarda los cambios en la base de datos
-                try
-                {
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                catch (DbUpdateException ex)
-                {
-                    ModelState.AddModelError("", "Error al guardar los datos: " + ex.InnerException?.Message);
-                }
-            }
-
-            CargarDatos(vm);
-            return View(vm);
-        }
-
-        private void CargarDatos(VMCalificaciones vm)
-        {
-            vm.Estudiantes = db.Estudiantes.ToList();
-            vm.Materias = db.Materias.ToList();
-            vm.Parciales = db.Parciales.ToList();
-
-
-        }
-        // POST: CalificacionWeb/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "Id,NParcial1,NCualitativa1,NParcial2,NCualitativa2,NParcial3,NCualitativa3,NParcial4,NCualitativa4,Activo,EstudianteId,MateriaId")] Calificacion calificacion)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Calificaciones.Add(calificacion);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    ViewBag.EstudianteId = new SelectList(db.Estudiantes, "Id", "Nombres", calificacion.EstudianteId);
-        //    ViewBag.MateriaId = new SelectList(db.Materias, "Id", "Nombre", calificacion.MateriaId);
-        //    return View(calificacion);
-        //}
-
-        // GET: CalificacionWeb/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Calificacion calificacion = db.Calificaciones.Find(id);
-            if (calificacion == null)
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
             {
                 return HttpNotFound();
+            }
+
+            // Obtener la última matrícula del estudiante (la más reciente por fecha)
+            var ultimaMatricula = db.Matriculas
+                .Where(m => m.EstudianteId == estudiante.Id)
+                .OrderByDescending(m => m.FechaMatricula) // Asumiendo que Fecha es la propiedad que indica la fecha de matrícula
+                .FirstOrDefault();
+
+            if (ultimaMatricula == null)
+            {
+                return HttpNotFound(); // Si no hay matrícula, se retorna un error
+            }
+
+            // Obtener el año académico de la última matrícula
+            var anioAcademico = ultimaMatricula.AñoAcademicoId;
+
+            // Obtener las materias correspondientes a ese año académico
+            var materiasPorAnioAcademico = db.Materias
+                .Where(m => m.AñoAcademicoId == anioAcademico) // Asumiendo que Materia tiene la propiedad AnioAcademico
+                .ToList();
+
+            // Obtener las calificaciones para el estudiante y el parcial actual
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .ToList();
+
+            // Si no existen calificaciones para ese parcial, inicializa una lista vacía para cada materia
+            if (!calificaciones.Any())
+            {
+                calificaciones = materiasPorAnioAcademico.Select(m => new Calificacion
+                {
+                    EstudianteId = estudiante.Id,
+                    MateriaId = m.Id,
+                    ParcialId = parcialId,
+                    NCuantitativa = 0, // Inicializa con 0 o null, según lo que sea necesario
+                    NCualitativa = null // Puede ser null si no hay calificación cualitativa
+                }).ToList();
             }
 
             var vm = new VMCalificaciones
             {
-                Calificacion = calificacion,
-                Estudiantes = db.Estudiantes.ToList(),
+                Estudiante = estudiante,
+                Materias = materiasPorAnioAcademico, // Aquí solo pasamos las materias del año académico de la última matrícula
+                Calificaciones = calificaciones,
+                Parciales = db.Parciales.ToList()
+            };
+
+            return View(vm);
+        }
+
+        public ActionResult Parcial3(int estudianteId, int parcialId = 3)
+        {
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Obtener la última matrícula del estudiante (la más reciente por fecha)
+            var ultimaMatricula = db.Matriculas
+                .Where(m => m.EstudianteId == estudiante.Id)
+                .OrderByDescending(m => m.FechaMatricula) // Asumiendo que Fecha es la propiedad que indica la fecha de matrícula
+                .FirstOrDefault();
+
+            if (ultimaMatricula == null)
+            {
+                return HttpNotFound(); // Si no hay matrícula, se retorna un error
+            }
+
+            // Obtener el año académico de la última matrícula
+            var anioAcademico = ultimaMatricula.AñoAcademicoId;
+
+            // Obtener las materias correspondientes a ese año académico
+            var materiasPorAnioAcademico = db.Materias
+                .Where(m => m.AñoAcademicoId == anioAcademico) // Asumiendo que Materia tiene la propiedad AnioAcademico
+                .ToList();
+
+            // Obtener las calificaciones para el estudiante y el parcial actual
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .ToList();
+
+            // Si no existen calificaciones para ese parcial, inicializa una lista vacía para cada materia
+            if (!calificaciones.Any())
+            {
+                calificaciones = materiasPorAnioAcademico.Select(m => new Calificacion
+                {
+                    EstudianteId = estudiante.Id,
+                    MateriaId = m.Id,
+                    ParcialId = parcialId,
+                    NCuantitativa = 0, // Inicializa con 0 o null, según lo que sea necesario
+                    NCualitativa = null // Puede ser null si no hay calificación cualitativa
+                }).ToList();
+            }
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Materias = materiasPorAnioAcademico, // Aquí solo pasamos las materias del año académico de la última matrícula
+                Calificaciones = calificaciones,
+                Parciales = db.Parciales.ToList()
+            };
+
+            return View(vm);
+        }
+
+
+        public ActionResult Parcial4(int estudianteId, int parcialId = 4)
+        {
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Obtener la última matrícula del estudiante (la más reciente por fecha)
+            var ultimaMatricula = db.Matriculas
+                .Where(m => m.EstudianteId == estudiante.Id)
+                .OrderByDescending(m => m.FechaMatricula) // Asumiendo que Fecha es la propiedad que indica la fecha de matrícula
+                .FirstOrDefault();
+
+            if (ultimaMatricula == null)
+            {
+                return HttpNotFound(); // Si no hay matrícula, se retorna un error
+            }
+
+            // Obtener el año académico de la última matrícula
+            var anioAcademico = ultimaMatricula.AñoAcademicoId;
+
+            // Obtener las materias correspondientes a ese año académico
+            var materiasPorAnioAcademico = db.Materias
+                .Where(m => m.AñoAcademicoId == anioAcademico) // Asumiendo que Materia tiene la propiedad AnioAcademico
+                .ToList();
+
+            // Obtener las calificaciones para el estudiante y el parcial actual
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .ToList();
+
+            // Si no existen calificaciones para ese parcial, inicializa una lista vacía para cada materia
+            if (!calificaciones.Any())
+            {
+                calificaciones = materiasPorAnioAcademico.Select(m => new Calificacion
+                {
+                    EstudianteId = estudiante.Id,
+                    MateriaId = m.Id,
+                    ParcialId = parcialId,
+                    NCuantitativa = 0, // Inicializa con 0 o null, según lo que sea necesario
+                    NCualitativa = null // Puede ser null si no hay calificación cualitativa
+                }).ToList();
+            }
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Materias = materiasPorAnioAcademico, // Aquí solo pasamos las materias del año académico de la última matrícula
+                Calificaciones = calificaciones,
+                Parciales = db.Parciales.ToList()
+            };
+
+            return View(vm);
+        }
+
+        public ActionResult VerCalificaciones(int estudianteId)
+        {
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Obtener todas las calificaciones del estudiante
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudianteId)
+                .Include(c => c.Materia) // Asegúrate de que Materia está incluido para acceder a su nombre
+                .ToList();
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Calificaciones = calificaciones,
                 Materias = db.Materias.ToList(),
                 Parciales = db.Parciales.ToList()
             };
@@ -165,49 +446,202 @@ namespace GestionColegios.Controllers
             return View(vm);
         }
 
-        // POST: CalificacionWeb/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(VMCalificaciones vm)
+        public ActionResult Edit(int estudianteId, int parcialId = 1)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(vm.Calificacion).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            vm.Estudiantes = db.Estudiantes.ToList();
-            vm.Materias = db.Materias.ToList();
-            vm.Parciales = db.Parciales.ToList();
-            return View(vm);
-        }
-
-        // GET: CalificacionWeb/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Calificacion calificacion = db.Calificaciones.Find(id);
-            if (calificacion == null)
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
             {
                 return HttpNotFound();
             }
-            return View(calificacion);
+
+            // Obtener las calificaciones actualizadas del estudiante y el parcial
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .ToList();
+
+            // Si no existen calificaciones para ese parcial, inicializa una lista vacía para cada materia
+            if (!calificaciones.Any())
+            {
+                var materias = db.Materias.ToList();
+                calificaciones = materias.Select(m => new Calificacion
+                {
+                    Estudiante = estudiante,
+                    EstudianteId = estudiante.Id,
+                    MateriaId = m.Id,
+                    ParcialId = parcialId,
+                    NCuantitativa = 0, // Inicializa con 0 o null, según lo que sea necesario
+                    NCualitativa = null // Puede ser null si no hay calificación cualitativa
+                }).ToList();
+            }
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Materias = db.Materias.ToList(),
+                Calificaciones = calificaciones,
+                Parciales = db.Parciales.ToList()
+            };
+
+            return View(vm);
         }
 
-        // POST: CalificacionWeb/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Edit2(int estudianteId, int parcialId = 2)
         {
-            Calificacion calificacion = db.Calificaciones.Find(id);
-            db.Calificaciones.Remove(calificacion);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Obtener las calificaciones actualizadas del estudiante y el parcial
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .ToList();
+
+            // Si no existen calificaciones para ese parcial, inicializa una lista vacía para cada materia
+            if (!calificaciones.Any())
+            {
+                var materias = db.Materias.ToList();
+                calificaciones = materias.Select(m => new Calificacion
+                {
+                    Estudiante = estudiante,
+                    EstudianteId = estudiante.Id,
+                    MateriaId = m.Id,
+                    ParcialId = parcialId,
+                    NCuantitativa = 0, // Inicializa con 0 o null, según lo que sea necesario
+                    NCualitativa = null // Puede ser null si no hay calificación cualitativa
+                }).ToList();
+            }
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Materias = db.Materias.ToList(),
+                Calificaciones = calificaciones,
+                Parciales = db.Parciales.ToList()
+            };
+
+            return View(vm);
         }
+
+        public ActionResult Edit3(int estudianteId, int parcialId = 3)
+        {
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Obtener las calificaciones actualizadas del estudiante y el parcial
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .ToList();
+
+            // Si no existen calificaciones para ese parcial, inicializa una lista vacía para cada materia
+            if (!calificaciones.Any())
+            {
+                var materias = db.Materias.ToList();
+                calificaciones = materias.Select(m => new Calificacion
+                {
+                    Estudiante = estudiante,
+                    EstudianteId = estudiante.Id,
+                    MateriaId = m.Id,
+                    ParcialId = parcialId,
+                    NCuantitativa = 0, // Inicializa con 0 o null, según lo que sea necesario
+                    NCualitativa = null // Puede ser null si no hay calificación cualitativa
+                }).ToList();
+            }
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Materias = db.Materias.ToList(),
+                Calificaciones = calificaciones,
+                Parciales = db.Parciales.ToList()
+            };
+
+            return View(vm);
+        }
+
+        public ActionResult Edit4(int estudianteId, int parcialId = 4)
+        {
+            var estudiante = db.Estudiantes.Find(estudianteId);
+            if (estudiante == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Obtener las calificaciones actualizadas del estudiante y el parcial
+            var calificaciones = db.Calificaciones
+                .Where(c => c.EstudianteId == estudiante.Id && c.ParcialId == parcialId)
+                .ToList();
+
+            // Si no existen calificaciones para ese parcial, inicializa una lista vacía para cada materia
+            if (!calificaciones.Any())
+            {
+                var materias = db.Materias.ToList();
+                calificaciones = materias.Select(m => new Calificacion
+                {
+                    Estudiante = estudiante,
+                    EstudianteId = estudiante.Id,
+                    MateriaId = m.Id,
+                    ParcialId = parcialId,
+                    NCuantitativa = 0, // Inicializa con 0 o null, según lo que sea necesario
+                    NCualitativa = null // Puede ser null si no hay calificación cualitativa
+                }).ToList();
+            }
+
+            var vm = new VMCalificaciones
+            {
+                Estudiante = estudiante,
+                Materias = db.Materias.ToList(),
+                Calificaciones = calificaciones,
+                Parciales = db.Parciales.ToList()
+            };
+
+            return View(vm);
+        }
+
+
+        [HttpPost]
+        public ActionResult Edit(int estudianteId, VMCalificaciones vm)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var calificacion in vm.Calificaciones)
+                {
+                 
+                    var calificacionExistente = db.Calificaciones
+                        .FirstOrDefault(c => c.EstudianteId == estudianteId
+                                              && c.MateriaId == calificacion.MateriaId
+                                              && c.ParcialId == calificacion.ParcialId);
+
+                    if (calificacionExistente != null)
+                    {
+                        calificacionExistente.NCuantitativa = calificacion.NCuantitativa;
+                        calificacionExistente.NCualitativa = calificacion.NCualitativa;
+                    }
+                    else
+                    {
+                        calificacion.EstudianteId = estudianteId; // Asegúrate de asignarlo aquí
+                        db.Calificaciones.Add(calificacion);
+                    }
+                }
+
+                db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Las calificaciones se han actualizado correctamente.";
+
+                return RedirectToAction("SeleccionarParciales", new { estudianteId = vm.Estudiante.Id });
+
+            }
+
+            return View(vm);
+        }
+
+
+
+
 
         protected override void Dispose(bool disposing)
         {

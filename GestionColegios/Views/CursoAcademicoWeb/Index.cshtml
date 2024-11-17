@@ -1,25 +1,29 @@
-﻿@model GestionColegios.ViewModels.VMCursoAcademico.VMCursosAcademicos
+﻿@model GestionColegios.ViewModels.VMCursoAcademico
 
 @{
-    ViewBag.Title = "Gestionar Cursos Académicos";
+    ViewBag.Title = "Gestión de Cursos Académicos";
 }
 
-<h2>Gestionar Cursos Académicos</h2>
+<h2>Gestión de Cursos Académicos</h2>
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="true">Listar Cursos</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="agregar-tab" data-bs-toggle="tab" data-bs-target="#agregar" type="button" role="tab" aria-controls="agregar" aria-selected="false">Agregar Curso</button>
-    </li>
-</ul>
+<div class="container mt-1">
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="listar-cursos-tab" data-bs-toggle="tab" data-bs-target="#listar-cursos" type="button" role="tab" aria-controls="listar-cursos" aria-selected="false">Listar Cursos</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link " id="agregar-curso-tab" data-bs-toggle="tab" data-bs-target="#agregar-curso" type="button" role="tab" aria-controls="agregar-curso" aria-selected="true">Agregar Curso</button>
+        </li>
+    </ul>
 
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="listar" role="tabpanel" aria-labelledby="listar-tab">
-        @Html.Partial("_CursosList", Model.Cursos) 
-    </div>
-    <div class="tab-pane fade" id="agregar" role="tabpanel" aria-labelledby="agregar-tab">
-        @Html.Partial("_CursosCreate", Model) 
+    <!-- Tab Content -->
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade  show active" id="listar-cursos" role="tabpanel" aria-labelledby="listar-cursos-tab">
+            @Html.Partial("_ListarCursos", Model)
+        </div>
+        <div class="tab-pane fade" id="agregar-curso" role="tabpanel" aria-labelledby="agregar-curso-tab">
+            @Html.Partial("_AgregarCursos", Model)
+        </div>
     </div>
 </div>

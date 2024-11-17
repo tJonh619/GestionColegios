@@ -1,32 +1,18 @@
-﻿@{
-    ViewBag.Title = "Página Principal del Sistema de Gestión Escolar";
+﻿@using GestionColegios.Models
+@using Microsoft.AspNet.Identity
+
+@if (Request.IsAuthenticated)
+{
+    {
+        ViewBag.Title = "Página Principal del Sistema de Gestión Escolar";
+    }
+    Html.RenderAction("Home", "Home");
 }
+else
+{
+    {
+        ViewBag.Title = "Inicia Sesion";
+    }
 
-<div class="jumbotron text-center">
-    <h1>Bienvenido al Sistema de Gestión Escolar</h1>
-    <p class="lead">Un sistema integral diseñado para la gestión académica y el control eficiente de recursos alimenticios en colegios públicos.</p>
-    <p>Explora nuestras funcionalidades y mejora la experiencia educativa en tu institución.</p>
-   
-</div>
-
-<div class="text-center">
-    <img src="~/Content/Images/Colegio.png" alt="Imagen del Colegio" class="img-fluid" style="width: 100%; height: auto; max-height: 400px; object-fit: cover;" />
-</div>
-
-<div class="row text-center mt-4">
-    <div class="col-md-4">
-        <h2>Gestión de Docentes</h2>
-        <p>Administra de manera eficiente los registros de los docentes, incluyendo su especialidad, horarios y más. Mantén un control detallado sobre el rendimiento de cada docente.</p>
-        <p><a class="btn btn-default" href="@Url.Action("Gestionar", "Maestros")"></a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Gestión de Estudiantes</h2>
-        <p>Controla la información de los estudiantes, desde su registro hasta el seguimiento de su rendimiento académico. Asegúrate de que cada estudiante reciba la atención que necesita para sobresalir.</p>
-        <p><a class="btn btn-default" href="@Url.Action("Gestionar", "Estudiantes")"></a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Control de Recursos Alimenticios</h2>
-        <p>Monitorea la distribución de recursos alimenticios y gestiona eficientemente la merienda escolar. Asegura una alimentación balanceada para todos los estudiantes.</p>
-        <p><a class="btn btn-default" href="@Url.Action("Gestionar", "RecursosAlimenticios")">;</a></p>
-    </div>
-</div>
+    Html.RenderAction("Login", "Account");
+}
