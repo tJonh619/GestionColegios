@@ -1,5 +1,13 @@
 ﻿@model GestionColegios.ViewModels.VMCalificaciones
 
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["SuccessMessage"]
+    </div>}
+
+
 @using System.Security.Claims
 @{
     var claimsIdentity = User.Identity as ClaimsIdentity;

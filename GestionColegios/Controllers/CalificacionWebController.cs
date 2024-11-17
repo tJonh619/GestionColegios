@@ -42,10 +42,15 @@ namespace GestionColegios.Controllers
             // Obtener el año académico asociado a esa última matrícula
             var cursoAcademicoId = ultimaMatricula.AñoAcademicoId;
 
+            
+
             // Obtener las materias que pertenecen al año académico de la última matrícula
             var materiasDelCurso = db.Materias
                                       .Where(m => m.AñoAcademicoId == cursoAcademicoId) // Filtramos las materias según el curso académico
                                       .ToList();
+
+            // Obtener la lista de años académicos (asegúrate de que tienes esta tabla en tu base de datos)
+            var aniosAcademicos = db.AñosAcademicos.ToList();
 
             // Crear un ViewModel y asignar los datos necesarios
             var vm = new VMCalificaciones
@@ -53,7 +58,8 @@ namespace GestionColegios.Controllers
                 Estudiantes = db.Estudiantes.ToList(),
                 Materias = materiasDelCurso, // Solo las materias del curso académico actual
                 Parciales = db.Parciales.ToList(),
-                CursosAcademicos = db.CursosAcademicos.ToList()
+                CursosAcademicos = db.CursosAcademicos.ToList(),
+                AñoAcademicos = aniosAcademicos // Agregar la lista de años académicos
             };
 
             return View(vm); // Retornamos la vista con el ViewModel
@@ -639,6 +645,63 @@ namespace GestionColegios.Controllers
             return View(vm);
         }
 
+        [HttpPost]
+        public ActionResult SeleccionarEstudiantes(int? anioAcademico, DateTime? fechaMatricula)
+        {
+            // Filtra los estudiantes según los parámetros recibidos
+            var estudiantes = db.Estudiantes.AsQueryable();
+
+            if (anioAcademico.HasValue)
+            {
+                estudiantes = estudiantes.Where(e => e.Matricula.Any(m => m.AñoAcademicoId == anioAcademico.Value));
+            }
+
+            if (fechaMatricula.HasValue)
+            {
+                estudiantes = estudiantes.Where(e => e.Matricula.Any(m => m.FechaMatricula >= fechaMatricula.Value));
+            }
+
+            // Devuelve solo el partial view con los estudiantes filtrados
+            return PartialView("_TablaEstudianteModal", estudiantes.ToList());
+        }
+
+
+
+        [HttpPost]
+        public ActionResult AgregarEstudiantes(List<int> estudiantesSeleccionados,VMCalificaciones vm)
+        {
+            if (estudiantesSeleccionados != null && estudiantesSeleccionados.Any())
+            {
+                foreach (var estudianteId in estudiantesSeleccionados)
+                {
+                    // Lógica para asociar los estudiantes seleccionados con el curso académico
+                    var estudiante = db.Estudiantes.Find(estudianteId);
+                    if (estudiante != null)
+                    {
+                        var cursoAcademicoEstudiante = new CursoAcademicoEstudiante
+                        {
+                            EstudianteId = estudianteId,
+                            CursoAcademicoId = 1, /* Aquí debes definir el curso académico al que se asocia */
+                            Estado = "Activo", // O el valor adecuado según tu lógica
+                            FechaModificacion = DateTime.Now,
+                            Activo = true
+                        };
+
+                        db.CursosAcademicosEstudiantes.Add(cursoAcademicoEstudiante);
+                    }
+                }
+
+                db.SaveChanges();
+                TempData["SuccessMessage"] = "Los estudiantes se han agregado correctamente.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "No se seleccionaron estudiantes.";
+            }
+
+            return RedirectToAction("GestionAcademica");
+
+        }
 
 
 

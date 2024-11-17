@@ -30,5 +30,9 @@ namespace GestionColegios.ViewModels
         public List<Matricula> Matriculas { get; set; }
         public Matricula Matricula { get; set; }
 
+        public List<CursoAcademicoEstudiante> CursoAcademicoEstudiantes { get; set; }
+
+        public CursoAcademicoEstudiante cursoAcademicoEstudiante { get; set; }
+
     }
 }
