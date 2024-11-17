@@ -1,0 +1,30 @@
+﻿@model List<GestionColegios.Models.Estudiante>
+
+<table class="table table-bordered" id="tablaEstudiantes">
+    <thead>
+        <tr>
+            <th><input type="checkbox" id="selectAll" /></th>
+            <th>Nombre</th>
+            <th>Año Académico</th>
+            <th>Fecha Matrícula</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var estudiante in Model)
+        {
+            var ultimaMatricula = estudiante.Matricula
+                .OrderByDescending(m => m.FechaMatricula)
+                .FirstOrDefault();
+
+            if (ultimaMatricula != null)
+            {
+                <tr>
+                    <td><input type="checkbox" name="estudiantesSeleccionados" value="@estudiante.Id" /></td>
+                    <td>@estudiante.Nombres</td>
+                    <td>@ultimaMatricula.AñoAcademico.Nombre</td>
+                    <td>@ultimaMatricula.FechaMatricula.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

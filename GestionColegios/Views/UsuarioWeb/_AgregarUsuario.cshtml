@@ -30,7 +30,7 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <!-- Código de Usuario -->
-            <div class="form-group">
+            @*<div class="form-group">
                 @Html.LabelFor(m => m.Usuario.CodigoUsuario, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.Usuario.CodigoUsuario,
@@ -39,7 +39,7 @@
                           }, esSoloLectura))
                     @Html.ValidationMessageFor(m => m.Usuario.CodigoUsuario, "", new { @class = "text-danger" })
                 </div>
-            </div>
+            </div>*@
 
             <!-- Nombre de Usuario -->
             <div class="form-group">
@@ -90,6 +90,9 @@
                     @Html.ValidationMessageFor(m => m.Usuario.RolId, "", new { @class = "text-danger" })
                 </div>
             </div>
+
+
+
 
             <!-- Botones de Acción -->
             <div class="form-group">

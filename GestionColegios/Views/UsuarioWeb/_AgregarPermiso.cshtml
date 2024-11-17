@@ -56,7 +56,11 @@
                                 }, esSoloLectura))
                             @Html.ValidationMessageFor(model => model.Permiso.Descripcion, "", new { @class = "text-danger" })
                         </div>
-                        
+
+
+
+
+
                     </div>
 
                     <!-- Botones de Acción -->
@@ -70,15 +74,13 @@
                         <button type="submit" id="btn-save" class="btn btn-primary m-1"
                                 style="@(ViewBag.EsEdicion ? "display:none;" : "")">
                             @(Model.Permiso.Id == 0 ? "Registrar" : "Guardar Cambios")
-                        </button>
-
-                        @if (ViewBag.EsEdicion)
-                        {
+                        </button>                    
+                        
                             <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
                                     onclick="deleteRecord()">
                                 Eliminar
                             </button>
-                        }
+                            
 
                         <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
                                 onclick="cancelOrReturn()">

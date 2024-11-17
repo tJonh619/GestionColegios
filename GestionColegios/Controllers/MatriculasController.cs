@@ -62,6 +62,9 @@ namespace GestionColegios.Controllers
                 return HttpNotFound("El estudiante no tiene un tutor asignado");
             }
 
+            // Autogenerar el código de la matrícula
+            string Codigo = "MATRICULA-" + DateTime.Now.Year + "-" + (db.Matriculas.Count() + 1).ToString("D4");
+
             // Prellenar los campos de estudiante y tutor
             ViewBag.PeriodosId = new SelectList(db.Periodos, "Id", "Nombre");
             ViewBag.AñoAcademicoId = new SelectList(db.AñosAcademicos, "Id", "Nombre");
@@ -70,7 +73,8 @@ namespace GestionColegios.Controllers
             Matricula matricula = new Matricula
             {
                 EstudianteId = estudiante.Id,
-                TutorId = estudiante.Tutor.Id // Usa el ID del tutor directamente
+                TutorId = estudiante.Tutor.Id, // Usa el ID del tutor directamente
+                Codigo = Codigo // Asignamos el código autogenerado
             };
 
             // Pasar el estudiante y el tutor a la vista
@@ -90,12 +94,13 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 matricula.FechaMatricula = DateTime.Now;
                 matricula.FechaModificacion = DateTime.Now;
                 matricula.Activo = true;
                 db.Matriculas.Add(matricula);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","EstudianteWeb");
             }
 
             ViewBag.EstudianteId = new SelectList(db.Estudiantes, "Id", "CodigoEstudiante", matricula.EstudianteId);
@@ -129,20 +134,33 @@ namespace GestionColegios.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Codigo,Descripcion,Continuidad,Traslado,Repitente,FechaMatricula,FechaModificacion,Activo,EstudianteId,TutorId,PeriodosId,AñoAcademicoId,Aprobad,Grado")] Matricula matricula)
+        public ActionResult Edit([Bind(Include = "Id,Codigo,Descripcion,Continuidad,Traslado,Repitente,FechaModificacion,Activo,EstudianteId,TutorId,PeriodosId,AñoAcademicoId,Aprobad,Grado")] Matricula matricula)
         {
             if (ModelState.IsValid)
             {
+                // Mantener la FechaMatricula original del registro en la base de datos
+                var matriculaOriginal = db.Matriculas.AsNoTracking().FirstOrDefault(m => m.Id == matricula.Id);
+                if (matriculaOriginal != null)
+                {
+                    matricula.FechaMatricula = matriculaOriginal.FechaMatricula;
+                }
+
+                matricula.FechaModificacion = DateTime.Now;
+
                 db.Entry(matricula).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
+
             ViewBag.EstudianteId = new SelectList(db.Estudiantes, "Id", "CodigoEstudiante", matricula.EstudianteId);
             ViewBag.TutorId = new SelectList(db.Tutores, "Id", "Nombres", matricula.TutorId);
             ViewBag.PeriodosId = new SelectList(db.Periodos, "Id", "Nombre", matricula.PeriodosId);
             ViewBag.AñoAcademicoId = new SelectList(db.AñosAcademicos, "Id", "Nombre", matricula.AñoAcademicoId);
+
             return View(matricula);
         }
+
 
         // GET: Matriculas/Delete/5
         public ActionResult Delete(int? id)

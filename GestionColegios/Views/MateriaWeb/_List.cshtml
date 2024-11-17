@@ -31,7 +31,6 @@
                     <th scope="col">Código</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Descripción</th>
-                    <th scope="col">Activo</th>
                     <th scope="col">Acciones</th>
                 </tr>
             </thead>
@@ -42,7 +41,6 @@
                         <td>@materia.CodigoMateria</td>
                         <td>@materia.Nombre</td>
                         <td>@materia.Descripcion</td>
-                        <td>@(materia.Activo ? "Sí" : "No")</td>
                         <td>
                             <a href="@Url.Action("Edit", "MateriaWeb", new { id = materia.Id })" class="btn btn-sm btn-warning">Detalles</a>
                             <a href="@Url.Action("EstudiantesInscritos", "MateriaWeb", new { materiaId = materia.Id })" class="btn btn-sm btn-primary">Estudiantes</a>

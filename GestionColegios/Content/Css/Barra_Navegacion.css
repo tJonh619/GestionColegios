@@ -1,0 +1,151 @@
+﻿.header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--azul-bandera);
+    z-index: 1000;
+    border-bottom: var(--border);
+    text-decoration: none;
+}
+
+    .header .flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        padding: 1.5rem 2rem;
+        text-decoration: none;
+    }
+        .header .flex a span{
+            color: var(--white-side)
+        }
+
+        .header .flex .logo {
+            font-size: 2.5rem;
+            color: var(--black);
+            text-decoration: none;
+        }
+
+        .header .flex .search-form {
+            width: 50rem;
+            border-radius: .5rem;
+            background-color: var(--light-bg);
+            padding: 1.5rem 2rem;
+            display: flex;
+            gap: 2rem;
+            text-decoration: none;
+        }
+
+            .header .flex .search-form input {
+                width: 100%;
+                font-size: 1.8rem;
+                color: var(--black);
+                background: none;
+                text-decoration: none;
+            }
+
+            .header .flex .search-form button {
+                background: none;
+                font-size: 2rem;
+                cursor: pointer;
+                color: var(--black);
+                text-decoration: none;
+            }
+
+                .header .flex .search-form button:hover {
+                    color: var(--main-color);
+                }
+
+        .header .flex .icons div {
+            font-size: 2rem;
+            color: var(--black);
+            background-color: var(--light-bg);
+            border-radius: .5rem;
+            height: 4.5rem;
+            width: 4.5rem;
+            line-height: 4.5rem;
+            cursor: pointer;
+            text-align: center;
+            margin-left: .7rem;
+            text-decoration: none;
+        }
+
+            .header .flex .icons div:hover {
+                background-color: var(--black);
+                color: var(--white);
+            }
+
+        .header .flex .profile {
+            position: absolute;
+            top: 120%;
+            right: 2rem;
+            background-color: var(--white);
+            border-radius: .5rem;
+            padding: 1.5rem;
+            text-align: center;
+            overflow: hidden;
+            transform-origin: top right;
+            transform: scale(0);
+            transition: .2s linear;
+            width: 30rem;
+        }
+            .header .flex .profile .flex-btn {
+                display: flex; /* Habilita el modo flexbox */
+                justify-content: center; /* Centra horizontalmente los elementos hijos */
+                align-items: center; /* Centra verticalmente los elementos hijos */
+                height: 100%; /* Asegúrate de que el contenedor tenga altura */
+            }
+
+            .header .flex .profile.active {
+                transform: scale(1);
+            }
+
+            .header .flex .profile .image {
+                height: 10rem;
+                width: 10rem;
+                border-radius: 50%;
+                object-fit: contain;
+                margin-bottom: 1rem;
+            }
+
+            .header .flex .profile .name {
+                font-size: 2rem;
+                color: var(--black);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .header .flex .profile .role {
+                font-size: 1.8rem;
+                color: var(--light-color);
+            }
+
+
+
+@media (max-width:768px) {
+
+    #search-btn {
+        display: inline-block;
+    }
+
+    .header .flex .search-form {
+        position: absolute;
+        top: 99%;
+        left: 0;
+        right: 0;
+        border-top: var(--border);
+        border-bottom: var(--border);
+        background-color: var(--white);
+        border-radius: 0;
+        width: auto;
+        padding: 2rem;
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: .2s linear;
+    }
+
+        .header .flex .search-form.active {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+}

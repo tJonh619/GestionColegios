@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using GestionColegios.Models;
+using Microsoft.Owin.Security;
 
 namespace GestionColegios
 {
@@ -28,22 +29,44 @@ namespace GestionColegios
                 LoginPath = new PathString("/Account/Login"),
                 Provider = new CookieAuthenticationProvider
                 {
-                    // Permite a la aplicación validar la marca de seguridad cuando el usuario inicia sesión.
-                    // Es una característica de seguridad que se usa cuando se cambia una contraseña o se agrega un inicio de sesión externo a la cuenta.  
                     OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
-                        validateInterval: TimeSpan.FromMinutes(30),
-                        regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
-                }
-            });            
+                    validateInterval: TimeSpan.FromMinutes(2),  // Valida el token cada 2 minutos
+                    regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
+                },
+                CookieHttpOnly = true,
+                ExpireTimeSpan = TimeSpan.FromMinutes(60), // Tiempo de expiración de la cookie
+                SlidingExpiration = true,
+            });
+
+            // Permite que la aplicación use una cookie de inicio de sesión externa
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Permite que la aplicación almacene temporalmente la información del usuario cuando se verifica el segundo factor en el proceso de autenticación de dos factores.
             app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
 
             // Permite que la aplicación recuerde el segundo factor de verificación de inicio de sesión, como el teléfono o correo electrónico.
-            // Cuando selecciona esta opción, el segundo paso de la verificación del proceso de inicio de sesión se recordará en el dispositivo desde el que ha iniciado sesión.
-            // Es similar a la opción Recordarme al iniciar sesión.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
+
+            // Middleware para actualizar el SecurityStamp mientras el usuario está activo
+            app.Use(async (context, next) =>
+            {
+                if (context.Authentication.User.Identity.IsAuthenticated)
+                {
+                    var user = context.Authentication.User;
+                    var signInManager = context.Get<ApplicationSignInManager>();
+                    var userManager = context.Get<ApplicationUserManager>();
+
+                    var applicationUser = await userManager.FindByIdAsync(user.Identity.GetUserId());
+                    if (applicationUser != null)
+                    {
+                        // Regenera la identidad y vuelve a iniciar sesión para renovar el SecurityStamp
+                        var identity = await userManager.CreateIdentityAsync(applicationUser, DefaultAuthenticationTypes.ApplicationCookie);
+                        context.Authentication.SignIn(new AuthenticationProperties { IsPersistent = true }, identity);
+                    }
+                }
+
+                await next.Invoke();
+            });
 
             // Quitar los comentarios de las siguientes líneas para habilitar el inicio de sesión con proveedores de inicio de sesión de terceros
             //app.UseMicrosoftAccountAuthentication(
@@ -64,5 +87,6 @@ namespace GestionColegios
             //    ClientSecret = ""
             //});
         }
+
     }
 }

@@ -1,124 +1,202 @@
-﻿@model GestionColegios.Models.Calificacion
+﻿@model GestionColegios.ViewModels.VMCalificaciones
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar Notas - Parcial I";
 }
 
-<h2>Edit</h2>
+<h2 class="text-center text-primary my-4">
+    Editar Notas - Parcial I
+    <span class="text-muted">
+        @(Model.Estudiante != null
+            ? $"{Model.Estudiante.Nombres} {Model.Estudiante.Apellidos}"
+            : "Estudiante no encontrado")
+    </span>
+</h2>
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["SuccessMessage"]
+    </div>
+}
 
-@using (Html.BeginForm())
+@foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+{
+    <div class="alert alert-danger">
+        @error.ErrorMessage
+    </div>
+}
+
+@using (Html.BeginForm("Edit", "CalificacionWeb", FormMethod.Post, new { id = "formCalificaciones" }))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Calificacion</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Estudiante.Id)
+    @Html.Hidden("estudianteId", Model.Estudiante.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.NParcial1, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NParcial1, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NParcial1, "", new { @class = "text-danger" })
+    <div class="container">
+        <div class="card shadow-lg p-4">
+            <div class="card-body">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Materia</th>
+                            <th>Parcial</th>
+                            <th>Nota Cuantitativa</th>
+                            <th>Nota Cualitativa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Calificaciones.Count; i++)
+                        {
+                            var materiaNombre = Model.Materias.FirstOrDefault(m => m.Id == Model.Calificaciones[i].MateriaId)?.Nombre ?? "Materia no encontrada";
+
+                            <tr>
+                                <td>
+                                    @Html.HiddenFor(m => Model.Calificaciones[i].MateriaId)
+                                    <strong>@materiaNombre</strong>
+                                </td>
+
+                                <td>
+                                    @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, new { Value = 1 }) <!-- Parcial I -->
+                                    <span class="badge bg-info">Parcial I</span>
+                                </td>
+
+                                <td>
+                                    <!-- Nota Cuantitativa editable -->
+                                    @Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new
+                                    {
+                                        @class = "form-control",
+                                        type = "number",
+                                        step = "0.01",
+                                        min = "0",
+                                        max = "100",
+                                        oninput = "updateCualitativa(this, " + i + ")",
+                                        placeholder = "Ingrese la nota cuantitativa",
+                                        required = "required",
+                                        id = "calificacion_" + i
+                                    })
+                                </td>
+
+                                <td>
+                                    <!-- Nota Cualitativa solo lectura -->
+                                    @Html.TextBoxFor(m => Model.Calificaciones[i].NCualitativa, new
+                                    {
+                                        @class = "form-control",
+                                        @readonly = "readonly",
+                                        placeholder = "Nota cualitativa",
+                                        required = "required"
+                                    })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.NCualitativa1, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NCualitativa1, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NCualitativa1, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.NParcial2, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NParcial2, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NParcial2, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.NCualitativa2, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NCualitativa2, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NCualitativa2, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.NParcial3, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NParcial3, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NParcial3, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.NCualitativa3, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NCualitativa3, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NCualitativa3, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.NParcial4, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NParcial4, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NParcial4, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.NCualitativa4, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NCualitativa4, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NCualitativa4, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Activo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Activo)
-                    @Html.ValidationMessageFor(model => model.Activo, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EstudianteId, "EstudianteId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("EstudianteId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.EstudianteId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.MateriaId, "MateriaId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("MateriaId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.MateriaId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-success btn-lg px-5 py-3" onclick="showConfirmationModal()">Guardar Notas</button>
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<!-- Modal de confirmación antes de guardar -->
+<div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-labelledby="confirmSaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmSaveModalLabel">Confirmar Guardado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas guardar estas notas?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="submitForm()">Guardar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<!-- Modal de éxito después de guardar -->
+<div class="modal fade" id="successSaveModal" tabindex="-1" aria-labelledby="successSaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successSaveModalLabel">¡Nota Guardada Correctamente!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                La nota se ha guardado correctamente en el sistema.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Función para actualizar la nota cualitativa cuando cambia la nota cuantitativa
+    function updateCualitativa(input, index) {
+        var cuantitativa = parseFloat(input.value);
+        var cualitativa = "";
+
+        if (cuantitativa >= 0 && cuantitativa <= 59) {
+            cualitativa = "AI";
+        } else if (cuantitativa >= 60 && cuantitativa <= 75) {
+            cualitativa = "AF";
+        } else if (cuantitativa >= 76 && cuantitativa <= 89) {
+            cualitativa = "AS";
+        } else if (cuantitativa >= 90 && cuantitativa <= 100) {
+            cualitativa = "AA";
+        }
+
+        // Establecer el valor de la nota cualitativa
+        document.getElementsByName("Calificaciones[" + index + "].NCualitativa")[0].value = cualitativa;
+    }
+
+    // Confirmación antes de guardar
+    function showConfirmationModal() {
+        var formValid = true;
+        var formElements = document.querySelectorAll('.form-control[type="number"]');
+
+        formElements.forEach(function (input) {
+            var value = parseFloat(input.value);
+
+            // Validación para números negativos o fuera de rango
+            if (isNaN(value) || value < 0 || value > 100) {
+                input.classList.add('is-invalid');
+                input.setCustomValidity('Por favor ingrese una nota válida entre 0 y 100.');
+                formValid = false;
+            } else {
+                input.classList.remove('is-invalid');
+                input.setCustomValidity('');
+            }
+        });
+
+        if (formValid) {
+            // Mostrar modal de confirmación si las notas son válidas
+            var myModal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
+            myModal.show();
+        } else {
+            alert("Por favor, corrija los errores antes de guardar.");
+        }
+    }
+
+    // Función para enviar el formulario si el usuario confirma
+    function submitForm() {
+        var form = document.getElementById('formCalificaciones');
+        form.submit();
+    }
+
+    // Función para mostrar el modal de éxito después de guardar
+    $(document).ready(function () {
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage != '') {
+            var myModal = new bootstrap.Modal(document.getElementById('successSaveModal'));
+            myModal.show();
+        }
+    });
+</script>

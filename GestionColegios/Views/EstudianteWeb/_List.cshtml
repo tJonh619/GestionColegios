@@ -37,7 +37,6 @@
                     <th scope="col">Edad</th>
                     <th scope="col">Sexo</th>
                     <th scope="col">Dirección</th>
-                    <th scope="col">Activo</th>
                     <th scope="col">Acciones</th>
                 </tr>
             </thead>
@@ -53,7 +52,6 @@
                     <td>@estudiante.Edad</td>
                     <td>@estudiante.Sexo</td>
                     <td>@estudiante.Direccion</td>
-                    <td>@(estudiante.Activo ? "Sí" : "No")</td>
                     <td>
                         <a href="@Url.Action("Edit", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-warning">Detalles</a>
 

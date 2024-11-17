@@ -51,6 +51,12 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Creación del usuario
+                model.Usuario.CodigoUsuario = model.Usuario.NombreUsuario.Substring(0, 3).ToUpper() +
+                                               new Random().Next(100, 1000).ToString();
+
+
+                model.Usuario.Activo = true;
                 model.Usuario.FechaModificacion = DateTime.Now;
                 db.Usuarios.Add(model.Usuario);
                 db.SaveChanges();
@@ -240,8 +246,7 @@ namespace GestionColegios.Controllers
                 if (rolExistente == null)
                     return HttpNotFound();
 
-                // Actualiza los campos necesarios
-                rolExistente.Codigo = model.Rol.Codigo;
+ 
                 rolExistente.Nombre = model.Rol.Nombre;
                 rolExistente.Descripcion = model.Rol.Descripcion;
                 rolExistente.FechaModificacion = DateTime.Now;

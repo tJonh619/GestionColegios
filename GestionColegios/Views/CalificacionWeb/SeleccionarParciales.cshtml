@@ -4,6 +4,19 @@
     ViewBag.Title = "Seleccionar Parcial";
 }
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger mt-3">
+        @TempData["ErrorMessage"]
+    </div>}
+
+
+@if (TempData["SuccessMessage"] != null)
+{
+<div class="alert alert-success mt-3">
+    @TempData["SuccessMessage"]
+</div>}
+
 <div class="container mt-4">
     <!-- Título principal con nombre del estudiante -->
     <h2 class="text-center mb-4">Seleccionar Parcial para el Estudiante: <span class="text-primary">@Model.Estudiante.Nombres @Model.Estudiante.Apellidos</span></h2>

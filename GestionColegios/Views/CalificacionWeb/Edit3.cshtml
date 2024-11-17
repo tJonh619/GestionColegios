@@ -1,0 +1,131 @@
+﻿@model GestionColegios.ViewModels.VMCalificaciones
+
+@{
+    ViewBag.Title = "Editar Notas";
+}
+
+<h2 class="text-center text-primary my-4">
+    Editar Notas - Parcial II
+    <span class="text-muted">
+        @(Model.Estudiante != null
+            ? $"{Model.Estudiante.Nombres} {Model.Estudiante.Apellidos}"
+            : "Estudiante no encontrado")
+    </span>
+</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+{
+    <div class="alert alert-danger">
+        @error.ErrorMessage
+    </div>
+}
+
+@using (Html.BeginForm("Edit", "CalificacionWeb", FormMethod.Post, new { id = "formCalificaciones" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Estudiante.Id)
+    @Html.Hidden("estudianteId", Model.Estudiante.Id)
+
+    <div class="container">
+        <div class="card shadow-lg p-4">
+            <div class="card-body">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="bg-primary text-white">
+                        <p>EstudianteId: @Model.Estudiante.Id</p>
+                        <tr>
+                            <th>Materia</th>
+                            <th>Parcial</th>
+                            <th>Nota Cuantitativa</th>
+                            <th>Nota Cualitativa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Calificaciones.Count; i++)
+                        {
+                            var materiaNombre = Model.Materias.FirstOrDefault(m => m.Id == Model.Calificaciones[i].MateriaId)?.Nombre ?? "Materia no encontrada";
+
+                            <tr>
+                                <td>
+                                    @Html.HiddenFor(m => Model.Calificaciones[i].MateriaId)
+                                    <strong>@materiaNombre</strong>
+                                </td>
+
+                                <td>
+                                    @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, new { Value = 3 }) <!-- Parcial II -->
+                                    <span class="badge bg-info">Parcial III</span>
+                                </td>
+
+                                <td>
+                                    <!-- Nota Cuantitativa editable -->
+                                    @Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new
+                                    {
+                                        @class = "form-control",
+                                        type = "number",
+                                        step = "0.01",
+                                        min = "0",
+                                        max = "100",
+                                        placeholder = "Ingrese la nota cuantitativa",
+                                        required = "required",
+                                        oninput = "updateCualitativa(this, " + i + ")",  // Llamada para actualizar la cualitativa
+                                        id = "calificacion_" + i
+                                    })
+                                </td>
+
+                                <td>
+                                    <!-- Nota Cualitativa solo lectura -->
+                                    @Html.TextBoxFor(m => Model.Calificaciones[i].NCualitativa, new
+                                    {
+                                        @class = "form-control",
+                                        @readonly = "readonly",
+                                        placeholder = "Nota cualitativa",
+                                        required = "required"
+                                    })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-success btn-lg px-5 py-3">Guardar Notas</button>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    // Función para actualizar la nota cualitativa cuando cambia la nota cuantitativa
+    function updateCualitativa(input, index) {
+        var cuantitativa = parseFloat(input.value);
+        var cualitativa = "";
+
+        if (cuantitativa >= 0 && cuantitativa <= 59) {
+            cualitativa = "AI"; // Aprobado Insuficiente
+        } else if (cuantitativa >= 60 && cuantitativa <= 75) {
+            cualitativa = "AF"; // Aprobado Fundamental
+        } else if (cuantitativa >= 76 && cuantitativa <= 89) {
+            cualitativa = "AS"; // Aprobado Sobresaliente
+        } else if (cuantitativa >= 90 && cuantitativa <= 100) {
+            cualitativa = "AA"; // Aprobado Excelente
+        }
+
+        // Establecer el valor de la nota cualitativa en el campo correspondiente
+        document.getElementsByName("Calificaciones[" + index + "].NCualitativa")[0].value = cualitativa;
+    }
+
+    // Mostrar el mensaje de éxito usando el modal
+    $(document).ready(function () {
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage) {
+            alert(successMessage);  // O mostrar el mensaje en un modal
+        }
+    });
+</script>
