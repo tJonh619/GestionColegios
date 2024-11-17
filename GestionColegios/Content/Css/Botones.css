@@ -14,6 +14,7 @@
     margin-top: 1rem;
 }
 
+
 .boton,
 .delete-btn,
 .option-btn {
@@ -21,26 +22,31 @@
     width: 100%;
 }
 
+
 .inline-btn,
 .inline-option-btn,
 .inline-delete-btn {
     display: inline-block;
 }
 
+
 .boton,
 .inline-btn {
     background-color: var(--main-color);
 }
+
 
 .option-btn,
 .inline-option-btn {
     background-color: var(--orange);
 }
 
+
 .delete-btn,
 .inline-delete-btn {
     background-color: var(--red);
 }
+
 
     .inline-btn:hover,
     .inline-option-btn:hover,
@@ -52,15 +58,19 @@
         color: var(--white);
     }
 
+
 .boton {
     text-decoration: none;
 }
+
 
 .flex-btn {
     display: flex;
     gap: 1rem;
 }
 
+
 #search-btn {
     display: none;
 }
+
