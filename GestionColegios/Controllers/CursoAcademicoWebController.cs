@@ -101,12 +101,7 @@ namespace GestionColegios.Controllers
                 return RedirectToAction("Index");
             }
 
-            viewModel.Maestros = db.Maestros.ToList();
-            viewModel.Secciones = db.Secciones.ToList();
-            viewModel.AñosAcademicos = db.AñosAcademicos.ToList();
-            viewModel.Años = db.Años.ToList();
-
-            return View(viewModel);
+            return View("_AgregarCursos", viewModel);
         }
 
         // GET: CursoAcademicoWeb/Edit/5

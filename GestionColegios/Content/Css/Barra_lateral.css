@@ -64,6 +64,11 @@
             color: var(--white-side);
         }
 
+        .side-bar .profile .boton {
+            font-size: 1.8rem;
+            color: var(--profile-font);
+        }
+
     .side-bar .navbarr a {
         display: block;
         padding: 2rem;
