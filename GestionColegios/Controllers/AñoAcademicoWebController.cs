@@ -18,13 +18,21 @@ namespace GestionColegios.Controllers
         // GET: AñoAcademicoWeb
         public ActionResult Index()
         {
-            var viewModel = new VMAñosAcademicos
+            if (!User.Identity.IsAuthenticated)
             {
-                AñosAcademicos = db.AñosAcademicos.Where(a => a.Activo).ToList(),
-                AñoAcademico = new AñoAcademico()
-            };
-            ViewBag.EsEdicion = false;
-            return View(viewModel);
+                return RedirectToAction("Login", "Account");
+            }
+            else
+            {
+                var viewModel = new VMAñosAcademicos
+                {
+                    AñosAcademicos = db.AñosAcademicos.Where(a => a.Activo).ToList(),
+                    AñoAcademico = new AñoAcademico()
+                };
+                ViewBag.EsEdicion = false;
+                return View(viewModel);
+            }
+            
         }
 
         // GET: AñoAcademicoWeb/Create
@@ -42,6 +50,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(VMAñosAcademicos model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 model.AñoAcademico.Activo = true;
@@ -59,6 +71,10 @@ namespace GestionColegios.Controllers
         // GET: AñoAcademicoWeb/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -82,6 +98,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(VMAñosAcademicos model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 var añoAcademico = db.AñosAcademicos.SingleOrDefault(a => a.Id == model.AñoAcademico.Id);
@@ -106,6 +126,10 @@ namespace GestionColegios.Controllers
         // GET: AñoAcademicoWeb/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -130,6 +154,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var añoAcademico = db.AñosAcademicos.Find(id);
             if (añoAcademico != null)
             {

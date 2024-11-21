@@ -18,6 +18,10 @@ namespace GestionColegios.Controllers
         // GET: EstudianteWeb
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMEstudiantes
             {
                 Estudiantes = db.Estudiantes
@@ -35,6 +39,10 @@ namespace GestionColegios.Controllers
         // GET: EstudianteWeb/Create
         public ActionResult Create()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMEstudiantes
             {
                 Estudiante = new Estudiante(),
@@ -48,6 +56,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(VMEstudiantes model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 // Verificar si estamos creando un nuevo estudiante
@@ -85,6 +97,10 @@ namespace GestionColegios.Controllers
         // GET: EstudianteWeb/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -109,6 +125,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(VMEstudiantes model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 // Busca el estudiante
@@ -167,6 +187,10 @@ namespace GestionColegios.Controllers
         // GET: EstudianteWeb/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -197,6 +221,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             // Buscar el estudiante
             Estudiante estudiante = db.Estudiantes.Find(id);
             if (estudiante != null)

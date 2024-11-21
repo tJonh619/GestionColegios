@@ -18,6 +18,10 @@ namespace GestionColegios.Controllers
         // GET: MaestrosWeb
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMMaestros { Maestros = db.Maestros.ToList(), Maestro = new Maestro(), Usuarios = db.Usuarios.ToList() };
             ViewBag.EsEdicion = false;
             return View(viewModel);
@@ -27,7 +31,10 @@ namespace GestionColegios.Controllers
         // GET: MaestrosWeb/Create
         public ActionResult Create()
         {
-        
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMMaestros
             {
                 Maestro = new Maestro(),
@@ -46,6 +53,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(VMMaestros model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 if (model.Maestro.Id == 0)
@@ -91,6 +102,10 @@ namespace GestionColegios.Controllers
         // GET: MaestrosWeb/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -122,6 +137,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(VMMaestros model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 // Busca el maestro
@@ -161,6 +180,10 @@ namespace GestionColegios.Controllers
         // GET: MaestrosWeb/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -178,6 +201,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             Maestro maestro = db.Maestros.Find(id);
             db.Maestros.Remove(maestro);
             db.SaveChanges();

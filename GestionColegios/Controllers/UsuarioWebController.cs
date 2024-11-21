@@ -19,6 +19,10 @@ namespace GestionColegios.Controllers
         // GET: UsuarioWeb
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMUsuario
             {
                 Usuarios = db.Usuarios.Include(u => u.Rol).ToList(),
@@ -35,6 +39,10 @@ namespace GestionColegios.Controllers
         // GET: UsuarioWeb/Create
         public ActionResult Create()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMUsuario
             {
                 Usuario = new Usuario(),
@@ -49,6 +57,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(VMUsuario model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 // Creación del usuario
@@ -73,6 +85,10 @@ namespace GestionColegios.Controllers
         // GET: UsuarioWeb/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -94,6 +110,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(VMUsuario model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 var usuario = db.Usuarios.Find(model.Usuario.Id);
@@ -123,6 +143,10 @@ namespace GestionColegios.Controllers
         // GET: UsuarioWeb/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -150,6 +174,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             Usuario usuario = db.Usuarios.Find(id);
 
             if (usuario != null)
@@ -168,6 +196,10 @@ namespace GestionColegios.Controllers
 
         public ActionResult CreateRole()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMUsuario
             {
                 Rol = new Rol(),
@@ -182,6 +214,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateRole(VMUsuario model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 model.Rol.Codigo =  $"{model.Rol.Nombre.Substring(0, 4).ToUpper()}{new Random().Next(100, 999)}";
@@ -219,6 +255,10 @@ namespace GestionColegios.Controllers
         // GET: UsuarioWeb/EditRole/5
         public ActionResult EditRole(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -240,6 +280,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditRole(VMUsuario model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 var rolExistente = db.Roles.Find(model.Rol.Id);
@@ -273,6 +317,10 @@ namespace GestionColegios.Controllers
         // GET: UsuarioWeb/DeleteRole/5
         public ActionResult DeleteRole(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -292,6 +340,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteRoleConfirmed(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var rol = db.Roles.Find(id);
             if (rol != null)
             {
@@ -308,6 +360,10 @@ namespace GestionColegios.Controllers
         // GET: UsuarioWeb/CreatePermiso
         public ActionResult CreatePermiso()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMUsuario
             {
 
@@ -324,6 +380,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreatePermiso(VMUsuario model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 model.Permiso.FechaModificacion = DateTime.Now;
@@ -343,6 +403,10 @@ namespace GestionColegios.Controllers
         // GET: UsuarioWeb/EditPermiso/5
         public ActionResult EditPermiso(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -364,6 +428,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditPermiso(VMUsuario model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 var permisoExistente = db.Permisos.Find(model.Permiso.Id);
@@ -400,6 +468,10 @@ namespace GestionColegios.Controllers
         // GET: UsuarioWeb/DeletePermiso/5
         public ActionResult DeletePermiso(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -419,6 +491,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeletePermisoConfirmed(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var permiso = db.Permisos.Find(id);
             if (permiso != null)
             {
@@ -430,102 +506,6 @@ namespace GestionColegios.Controllers
 
             return RedirectToAction("Index");
         }
-
-
-        [HttpGet]
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Login(Usuario model)
-        {
-            var usuario = db.Usuarios.SingleOrDefault(u => u.NombreUsuario == model.NombreUsuario && u.ClaveHash == model.ClaveHash);
-            if (usuario != null)
-            {
-                Session["Usuario"] = usuario.NombreUsuario;
-                Session["Rol"] = usuario.Rol.Nombre; // Guarda el rol en la sesión
-                return RedirectToAction("Index", "Home"); // Redirige después de iniciar sesión
-            }
-            ViewBag.Error = "Usuario o contraseña incorrectos.";
-            return View();
-        }
-
-        public ActionResult Logout()
-        {
-            Session.Clear(); // Limpia la sesión al cerrar sesión
-            return RedirectToAction("Login", "UsuarioWeb");
-        }
-
-        // GET: UsuarioWeb/OlvidasteContrasena
-        public ActionResult OlvidasteContrasena()
-        {
-            var model = new Usuario(); // Inicializa el modelo de Usuario
-            return View(model); // Muestra la vista para ingresar el nombre de usuario
-        }
-
-        // POST: UsuarioWeb/OlvidasteContrasena
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult OlvidasteContrasena(Usuario model)
-        {
-            if (ModelState.IsValid)
-            {
-                // Busca el usuario por el nombre de usuario ingresado
-                var usuario = db.Usuarios.FirstOrDefault(u => u.NombreUsuario == model.NombreUsuario);
-
-                if (usuario != null)
-                {
-                    // Redirige a la vista para cambiar la contraseña con el id del usuario
-                    return RedirectToAction("CambiarContrasena", new { usuarioId = usuario.Id });
-                }
-                else
-                {
-                    ModelState.AddModelError("", "No se encontró un usuario con ese nombre.");
-                }
-            }
-
-            return View(model); // Si hay errores, se muestra la misma vista
-        }
-
-        // GET: UsuarioWeb/CambiarContrasena
-        public ActionResult CambiarContrasena(int usuarioId)
-        {
-            var usuario = db.Usuarios.Find(usuarioId);
-
-            if (usuario == null)
-            {
-                return HttpNotFound();
-            }
-
-            // Enviamos el usuario encontrado a la vista
-            return View(usuario);
-        }
-
-        // POST: UsuarioWeb/CambiarContrasena
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CambiarContrasena(Usuario model)
-        {
-            if (ModelState.IsValid)
-            {
-                var usuario = db.Usuarios.Find(model.Id);
-
-                if (usuario != null)
-                {
-                    // Actualizamos la contraseña del usuario
-                    usuario.ClaveHash = model.ClaveHash; // Asegúrate de encriptarla si es necesario
-                    db.SaveChanges();
-
-                    TempData["SuccessMessage"] = "Tu contraseña ha sido cambiada exitosamente.";
-                    return RedirectToAction("Login");
-                }
-            }
-
-            return View(model); // Si hay errores, se muestra la misma vista
-        }
-
 
         protected override void Dispose(bool disposing)
         {
