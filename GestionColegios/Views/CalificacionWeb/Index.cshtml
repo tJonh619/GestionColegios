@@ -1,6 +1,19 @@
 ﻿@model GestionColegios.ViewModels.VMCalificaciones
 
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["SuccessMessage"]
+    </div>}
+
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger mt-3">
+        @TempData["ErrorMessage"]
+    </div>
+}
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -37,14 +50,14 @@
             <tbody id="tableBody">
                 @foreach (var estudiante in Model.Estudiantes.Where(e => e.CursoAcademicoEstudiante.Any(c => c.CursoAcademico.Id == ViewBag.idCurso && c.EstudianteId == e.Id)))
                 {
-                <tr>
-                    <td>@estudiante.Nombres</td>
-                    <td>@estudiante.Apellidos</td>
-                    <td class="text-center">
-                        @Html.ActionLink("Registrar Notas", "SeleccionarParciales", "CalificacionWeb", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-success me-2" })
-                        @Html.ActionLink("Pruebas de Eficiencia Física", "PruebasEficiencia", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-info" })
-                    </td>
-                </tr>
+                    <tr>
+                        <td>@estudiante.Nombres</td>
+                        <td>@estudiante.Apellidos</td>
+                        <td class="text-center">
+                            @Html.ActionLink("Registrar Notas", "SeleccionarParciales", "CalificacionWeb", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-success me-2" })
+                            @Html.ActionLink("Pruebas de Eficiencia Física", "PruebasEficiencia", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-info" })
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>

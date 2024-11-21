@@ -664,8 +664,20 @@ namespace GestionColegios.Controllers
         {
             if (estudiantesSeleccionados != null && estudiantesSeleccionados.Any())
             {
+                bool estudiantesAgregados = false;
+
                 foreach (var estudianteId in estudiantesSeleccionados)
                 {
+                    // Verifica si el estudiante ya está asociado al curso académico
+                    var cursoAcademicoEstudianteExistente = db.CursosAcademicosEstudiantes
+                                                              .FirstOrDefault(cae => cae.EstudianteId == estudianteId && cae.CursoAcademicoId == id);
+                    if (cursoAcademicoEstudianteExistente != null)
+                    {
+                        // Si el estudiante ya está en ese curso académico, mostrar mensaje
+                        TempData["ErrorMessage"] = $"El estudiante con ID {estudianteId} ya está asociado a este curso académico.";
+                        return RedirectToAction("GestionAcademica");
+                    }
+
                     // Lógica para asociar los estudiantes seleccionados con el curso académico
                     var estudiante = db.Estudiantes.Find(estudianteId);
                     if (estudiante != null)
@@ -673,18 +685,27 @@ namespace GestionColegios.Controllers
                         var cursoAcademicoEstudiante = new CursoAcademicoEstudiante
                         {
                             EstudianteId = estudianteId,
-                            CursoAcademicoId = id, /* Aquí debes definir el curso académico al que se asocia */
+                            CursoAcademicoId = id,
                             Estado = "Activo", // O el valor adecuado según tu lógica
                             FechaModificacion = DateTime.Now,
                             Activo = true
                         };
 
                         db.CursosAcademicosEstudiantes.Add(cursoAcademicoEstudiante);
+                        estudiantesAgregados = true; // Indicar que al menos un estudiante fue agregado
                     }
                 }
 
-                db.SaveChanges();
-                TempData["SuccessMessage"] = "Los estudiantes se han agregado correctamente.";
+                // Solo guardar los cambios si algún estudiante fue agregado
+                if (estudiantesAgregados)
+                {
+                    db.SaveChanges();
+                    TempData["SuccessMessage"] = "Los estudiantes se han agregado correctamente.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "No se seleccionaron estudiantes válidos para agregar.";
+                }
             }
             else
             {
@@ -692,8 +713,8 @@ namespace GestionColegios.Controllers
             }
 
             return RedirectToAction("GestionAcademica");
-
         }
+
 
 
 
