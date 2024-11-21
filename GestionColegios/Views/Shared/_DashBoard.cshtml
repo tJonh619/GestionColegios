@@ -45,7 +45,10 @@
 
         @Html.Partial("~/Views/Shared/_Nav.cshtml");
         @Html.Partial("~/Views/Shared/_Side.cshtml")
-        @RenderBody();
+        <div class="vh-100">
+            @RenderBody();
+        </div>
+        
 
 
         <script>

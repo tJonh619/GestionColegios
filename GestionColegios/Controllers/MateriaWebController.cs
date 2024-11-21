@@ -18,6 +18,10 @@ namespace GestionColegios.Controllers
         // GET: MateriaWeb
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMMateria
             {
                 Materias = db.Materias.ToList(),
@@ -33,6 +37,10 @@ namespace GestionColegios.Controllers
         // GET: MateriaWeb/Create
         public ActionResult Create()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMMateria
             {
                 Materia = new Materia(),
@@ -50,6 +58,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(VMMateria model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 model.Materia.Activo = true;
@@ -68,6 +80,10 @@ namespace GestionColegios.Controllers
         // GET: MateriaWeb/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -96,6 +112,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(VMMateria model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 var materia = db.Materias.Find(model.Materia.Id);
@@ -122,6 +142,10 @@ namespace GestionColegios.Controllers
         // GET: MateriaWeb/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -142,6 +166,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var materia = db.Materias.Find(id);
             if (materia != null)
             {

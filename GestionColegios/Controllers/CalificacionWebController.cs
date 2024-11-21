@@ -19,51 +19,43 @@ namespace GestionColegios.Controllers
         // GET: CalificacionWeb
         public ActionResult Index(int id)
         {
-            ViewBag.idCurso = id;
-
-            // Obtener el estudiante por el id
-            var estudiante = db.Estudiantes.Find(id);
-            if (estudiante == null)
+            // Verificar si el usuario está autenticado
+            if (!User.Identity.IsAuthenticated)
             {
-                return HttpNotFound();
+                // Si no está autenticado, redirigir a la página de inicio de sesión
+                return RedirectToAction("Login", "Account");
             }
 
-            // Obtener la última matrícula del estudiante, ordenando por fecha (descendente)
-            var ultimaMatricula = db.Matriculas
-                                    .Where(m => m.EstudianteId == estudiante.Id)
-                                    .OrderByDescending(m => m.FechaMatricula) // Ordenamos por fecha para obtener la más reciente
-                                    .FirstOrDefault(); // Tomamos la primera, es decir, la más reciente
+            ViewBag.idCurso = id; // Almacenar el ID del curso en ViewBag para utilizarlo en la vista
 
-            if (ultimaMatricula == null)
-            {
-                return HttpNotFound(); // Si no existe una matrícula, devolvemos un error
-            }
+            var curso = db.CursosAcademicos.Where(c => c.Id == id).FirstOrDefault(); // Buscar el curso académico correspondiente al ID proporcionado
 
-            // Obtener el año académico asociado a esa última matrícula
-            var cursoAcademicoId = ultimaMatricula.AñoAcademicoId;
 
-            
+            var Año = curso.AñoAcademico.Id; // Obtener el ID del año académico asociado al curso
+            var matriculas = db.Matriculas.Where(m => m.AñoAcademicoId == Año && m.Periodos.AñoId == curso.AñoId).ToList(); // Buscar todas las matrículas que correspondan al año académico y periodo del curso
 
-            // Obtener las materias que pertenecen al año académico de la última matrícula
-            var materiasDelCurso = db.Materias
-                                      .Where(m => m.AñoAcademicoId == cursoAcademicoId) // Filtramos las materias según el curso académico
-                                      .ToList();
 
-            // Obtener la lista de años académicos (asegúrate de que tienes esta tabla en tu base de datos)
-            var aniosAcademicos = db.AñosAcademicos.ToList();
+            // Obtener la lista de estudiantes asociados a esas matrículas
+            var estudiantesMatriculados = matriculas.Select(m => m.Estudiante).ToList();
 
-            // Crear un ViewModel y asignar los datos necesarios
+            // Crear un ViewModel y asignar los datos necesarios para la vista
             var vm = new VMCalificaciones
             {
-                Estudiantes = db.Estudiantes.ToList(),
-                Materias = materiasDelCurso, // Solo las materias del curso académico actual
-                Parciales = db.Parciales.ToList(),
-                CursosAcademicos = db.CursosAcademicos.ToList(),
-                AñoAcademicos = aniosAcademicos // Agregar la lista de años académicos
+                Estudiantes = db.Estudiantes.ToList(), // Lista de estudiantes seleccionados
+                Matriculas = matriculas,
+                Materias = db.Materias
+                                      .Where(m => m.AñoAcademicoId == curso.AñoAcademicoId) // Filtrar materias según el curso académico
+                                      .ToList(), // Convertir a lista para enviar a la vista
+                Parciales = db.Parciales.ToList(), // Obtener todos los parciales
+                CursosAcademicos = db.CursosAcademicos.ToList(), // Obtener todos los cursos académicos
+                CursoAcademico = curso,
+                AñoAcademicos = db.AñosAcademicos.ToList() // Obtener todos los años académicos
             };
 
-            return View(vm); // Retornamos la vista con el ViewModel
+            // Retornar la vista con el ViewModel generado
+            return View(vm);
         }
+
 
 
 
@@ -668,7 +660,7 @@ namespace GestionColegios.Controllers
 
 
         [HttpPost]
-        public ActionResult AgregarEstudiantes(List<int> estudiantesSeleccionados,VMCalificaciones vm)
+        public ActionResult AgregarEstudiantes(List<int> estudiantesSeleccionados, int id)
         {
             if (estudiantesSeleccionados != null && estudiantesSeleccionados.Any())
             {
@@ -681,7 +673,7 @@ namespace GestionColegios.Controllers
                         var cursoAcademicoEstudiante = new CursoAcademicoEstudiante
                         {
                             EstudianteId = estudianteId,
-                            CursoAcademicoId = 1, /* Aquí debes definir el curso académico al que se asocia */
+                            CursoAcademicoId = id, /* Aquí debes definir el curso académico al que se asocia */
                             Estado = "Activo", // O el valor adecuado según tu lógica
                             FechaModificacion = DateTime.Now,
                             Activo = true

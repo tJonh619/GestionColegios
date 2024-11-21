@@ -18,6 +18,10 @@ namespace GestionColegios.Controllers
         // GET: InventarioAlimentoWeb
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMInventarioAlimento
             {
                 InventarioAlimentos = db.InventariosAlimentos.Where(a => a.Activo).ToList(),
@@ -31,6 +35,10 @@ namespace GestionColegios.Controllers
         // GET: InventarioAlimentoWeb/Create
         public ActionResult Create()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMInventarioAlimento
             {
                 InventarioAlimento = new InventarioAlimento()
@@ -45,6 +53,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(VMInventarioAlimento model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 var alimentoExistente = db.InventariosAlimentos
@@ -76,6 +88,10 @@ namespace GestionColegios.Controllers
         // GET: InventarioAlimentoWeb/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -101,6 +117,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(VMInventarioAlimento model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 var inventarioAlimento = db.InventariosAlimentos.Find(model.InventarioAlimento.Id);
@@ -127,6 +147,10 @@ namespace GestionColegios.Controllers
         // GET: InventarioAlimentoWeb/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -151,6 +175,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var inventarioAlimento = db.InventariosAlimentos.Find(id);
             if (inventarioAlimento != null)
             {

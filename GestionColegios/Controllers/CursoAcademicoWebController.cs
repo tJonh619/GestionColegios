@@ -18,6 +18,10 @@ namespace GestionColegios.Controllers
         // GET: CursoAcademicoWeb
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var cursosAcademicos = db.CursosAcademicos
                 .Include(c => c.Maestro)
                 .Include(c => c.Seccion)
@@ -45,6 +49,10 @@ namespace GestionColegios.Controllers
         // GET: CursoAcademicoWeb/Details/5
         public ActionResult Details(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -91,6 +99,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(VMCursoAcademico viewModel)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 var cursoAcademico = viewModel.CursoAcademico;
@@ -107,6 +119,10 @@ namespace GestionColegios.Controllers
         // GET: CursoAcademicoWeb/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -138,6 +154,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(VMCursoAcademico viewModel)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 var cursoAcademico = viewModel.CursoAcademico;
@@ -159,6 +179,10 @@ namespace GestionColegios.Controllers
         // GET: CursoAcademicoWeb/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -186,6 +210,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             CursoAcademico cursoAcademico = db.CursosAcademicos.Find(id);
             db.CursosAcademicos.Remove(cursoAcademico);
             db.SaveChanges();
@@ -195,6 +223,10 @@ namespace GestionColegios.Controllers
         // Función para actualizar los campos cuando se edita un curso
         public ActionResult UpdateCursoAcademico(int id, CursoAcademico cursoAcademico)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id != cursoAcademico.Id)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -212,6 +244,10 @@ namespace GestionColegios.Controllers
         // Función para activar la edición
         public ActionResult ActivateEdit(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var cursoAcademico = db.CursosAcademicos.Find(id);
             if (cursoAcademico == null)
             {

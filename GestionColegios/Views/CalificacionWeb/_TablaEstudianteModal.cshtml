@@ -1,4 +1,4 @@
-﻿@model List<GestionColegios.Models.Estudiante>
+﻿@model GestionColegios.ViewModels.VMCalificaciones
 
 <table class="table table-bordered" id="tablaEstudiantes">
     <thead>
@@ -10,21 +10,16 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var estudiante in Model)
+        @foreach (var estudiante in Model.Estudiantes.Where(e => Model.Matriculas.Select(m => m.EstudianteId).Contains(e.Id)))
         {
-            var ultimaMatricula = estudiante.Matricula
-                .OrderByDescending(m => m.FechaMatricula)
-                .FirstOrDefault();
-
-            if (ultimaMatricula != null)
+            if (estudiante != null)
             {
                 <tr>
                     <td><input type="checkbox" name="estudiantesSeleccionados" value="@estudiante.Id" /></td>
-                    <td>@estudiante.Nombres</td>
-                    <td>@ultimaMatricula.AñoAcademico.Nombre</td>
-                    <td>@ultimaMatricula.FechaMatricula.ToString("yyyy-MM-dd")</td>
+                    <td>@($"{estudiante.Nombres} {estudiante.Apellidos}")</td>
                 </tr>
             }
         }
     </tbody>
 </table>
+

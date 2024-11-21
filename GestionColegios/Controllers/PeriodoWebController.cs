@@ -15,6 +15,10 @@ namespace GestionColegios.Controllers
         // GET: PeriodoWeb
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMAñosPeriodosSemestres
             {
                 Años = db.Años.ToList(),
@@ -33,6 +37,10 @@ namespace GestionColegios.Controllers
         // GET: PeriodoWeb/CreateAño
         public ActionResult CreateAño()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMAñosPeriodosSemestres { Año = new Año() };
             ViewBag.EsEdicion = false;
             return View("_AñosCreate", viewModel);
@@ -43,6 +51,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateAño(VMAñosPeriodosSemestres model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 db.Años.Add(model.Año);
@@ -59,6 +71,10 @@ namespace GestionColegios.Controllers
         // GET: PeriodoWeb/EditAño/5
         public ActionResult EditAño(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var año = db.Años.Find(id);
@@ -74,6 +90,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditAño(VMAñosPeriodosSemestres model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(model.Año).State = EntityState.Modified;
@@ -91,6 +111,10 @@ namespace GestionColegios.Controllers
         // GET: PeriodoWeb/CreatePeriodo
         public ActionResult CreatePeriodo()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMAñosPeriodosSemestres
             {
                 Años = db.Años.ToList(), // Aquí inicializas Años
@@ -105,6 +129,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreatePeriodo(VMAñosPeriodosSemestres model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 model.Periodo.Activo = true;
@@ -123,6 +151,10 @@ namespace GestionColegios.Controllers
         // GET: PeriodoWeb/EditPeriodo/5
         public ActionResult EditPeriodo(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var periodo = db.Periodos.Find(id);
@@ -145,6 +177,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditPeriodo(VMAñosPeriodosSemestres model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(model.Periodo).State = EntityState.Modified;               
@@ -163,6 +199,10 @@ namespace GestionColegios.Controllers
         // GET: PeriodoWeb/CreateSemestre
         public ActionResult CreateSemestre()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMAñosPeriodosSemestres { Semestre = new Semestre() };
             ViewBag.EsEdicion = false;
             return View("_SemestresCreate", viewModel);
@@ -173,6 +213,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateSemestre(VMAñosPeriodosSemestres model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 db.Semestres.Add(model.Semestre);
@@ -189,6 +233,10 @@ namespace GestionColegios.Controllers
         // GET: PeriodoWeb/EditSemestre/5
         public ActionResult EditSemestre(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var semestre = db.Semestres.Find(id);
@@ -204,6 +252,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditSemestre(VMAñosPeriodosSemestres model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(model.Semestre).State = EntityState.Modified;

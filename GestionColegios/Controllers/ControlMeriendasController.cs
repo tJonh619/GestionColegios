@@ -18,6 +18,10 @@ namespace GestionColegios.Controllers
         // GET: ControlMeriendas
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var controlesMeriendas = db.ControlesMeriendas
                 .Include(c => c.CursoAcademico)
                 .Include(c => c.RAceite)
@@ -44,6 +48,10 @@ namespace GestionColegios.Controllers
         // GET: ControlMeriendas/Create
         public ActionResult Create()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var viewModel = new VMControlMerienda
             {
                 CursosAcademicos = db.CursosAcademicos.ToList(),
@@ -59,6 +67,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(VMControlMerienda viewModel, string[] Codigo, DateTime[] FechaEntrega, int[] AsistenciaEsperadaMujeres, int[] AsistenciaEsperadaTotal, int[] AsistenciaRealMujeres, int[] AsistenciaRealTotal, decimal[] SAceite, decimal[] SArroz, decimal[] SCereal, decimal[] SFrijoles, decimal[] SMaiz, string[] FirmaDocente, string[] CedulaTutor, string[] FirmaTutor, int[] CursoAcademicoId, int[] EstudianteId)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 if (Codigo != null && Codigo.Length > 0)
@@ -129,6 +141,10 @@ namespace GestionColegios.Controllers
         // GET: ControlMeriendas/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -156,6 +172,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, VMControlMerienda viewModel)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 var controlMerienda = db.ControlesMeriendas.Find(id);
@@ -211,6 +231,10 @@ namespace GestionColegios.Controllers
         // GET: ControlMeriendas/Historico
         public ActionResult Historico(DateTime? fecha)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var controlesMeriendas = db.ControlesMeriendas
                 .Include(c => c.CursoAcademico)
                 .Include(c => c.Estudiante)

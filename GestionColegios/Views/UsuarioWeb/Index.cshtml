@@ -41,62 +41,53 @@
         </div>
     }
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="listar-usuarios-tab" data-bs-toggle="tab" data-bs-target="#listar-usuarios" type="button" role="tab" aria-controls="listar-usuarios" aria-selected="true">Listar Usuarios</button>
-    </li>
-
-    <li class="nav-item" role="presentation">
-        <button class="nav-link " id="agregar-usuario-tab" data-bs-toggle="tab" data-bs-target="#agregar-usuario" type="button" role="tab" aria-controls="agregar-usuario" aria-selected="false">Agregar Usuario</button>
-    </li>
-
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="listar-roles-tab" data-bs-toggle="tab" data-bs-target="#listar-roles" type="button" role="tab" aria-controls="listar-roles" aria-selected="false">Listar Roles</button>
-    </li>
-
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="agregar-rol-tab" data-bs-toggle="tab" data-bs-target="#agregar-rol" type="button" role="tab" aria-controls="agregar-rol" aria-selected="false">Agregar Rol</button>
-    </li>
-
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="listar-permisos-tab" data-bs-toggle="tab" data-bs-target="#listar-permisos" type="button" role="tab" aria-controls="listar-permisos" aria-selected="false">Listar Permisos</button>
-    </li>
-
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="agregar-permiso-tab" data-bs-toggle="tab" data-bs-target="#agregar-permiso" type="button" role="tab" aria-controls="agregar-permiso" aria-selected="false">Agregar Permiso</button>
-    </li>
-
-</ul>
-
-    <div class="tab-content" id="myTabContent">
-
-
-        <div class="tab-pane fade show active" id="listar-usuarios" role="tabpanel" aria-labelledby="listar-usuarios-tab">
-            @Html.Partial("_ListarUsuarios", Model)
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="listar-usuarios-tab" data-bs-toggle="tab" data-bs-target="#listar-usuarios" type="button" role="tab" aria-controls="listar-usuarios" aria-selected="true">Listar Usuarios</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="agregar-usuario-tab" data-bs-toggle="tab" data-bs-target="#agregar-usuario" type="button" role="tab" aria-controls="agregar-usuario" aria-selected="false">Agregar Usuario</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="listar-roles-tab" data-bs-toggle="tab" data-bs-target="#listar-roles" type="button" role="tab" aria-controls="listar-roles" aria-selected="false">Listar Roles</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="agregar-rol-tab" data-bs-toggle="tab" data-bs-target="#agregar-rol" type="button" role="tab" aria-controls="agregar-rol" aria-selected="false">Agregar Rol</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="listar-permisos-tab" data-bs-toggle="tab" data-bs-target="#listar-permisos" type="button" role="tab" aria-controls="listar-permisos" aria-selected="false">Listar Permisos</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="agregar-permiso-tab" data-bs-toggle="tab" data-bs-target="#agregar-permiso" type="button" role="tab" aria-controls="agregar-permiso" aria-selected="false">Agregar Permiso</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="listar-usuarios" role="tabpanel" aria-labelledby="listar-usuarios-tab">
+                        @Html.Partial("_ListarUsuarios", Model)
+                    </div>
+                    <div class="tab-pane fade" id="agregar-usuario" role="tabpanel" aria-labelledby="agregar-usuario-tab">
+                        @Html.Partial("_AgregarUsuario", Model)
+                    </div>
+                    <div class="tab-pane fade" id="listar-roles" role="tabpanel" aria-labelledby="listar-roles-tab">
+                        @Html.Partial("_ListarRoles", Model)
+                    </div>
+                    <div class="tab-pane fade" id="agregar-rol" role="tabpanel" aria-labelledby="agregar-rol-tab">
+                        @Html.Partial("_AgregarRol", Model)
+                    </div>
+                    <div class="tab-pane fade" id="listar-permisos" role="tabpanel" aria-labelledby="listar-permisos-tab">
+                        @Html.Partial("_ListarPermisos", Model)
+                    </div>
+                    <div class="tab-pane fade" id="agregar-permiso" role="tabpanel" aria-labelledby="agregar-permiso-tab">
+                        @Html.Partial("_AgregarPermiso", Model)
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="tab-pane fade " id="agregar-usuario" role="tabpanel" aria-labelledby="agregar-usuario-tab">
-            @Html.Partial("_AgregarUsuario", Model)
-        </div>
-
-        <div class="tab-pane fade" id="listar-roles" role="tabpanel" aria-labelledby="listar-roles-tab">
-            @Html.Partial("_ListarRoles", Model)
-        </div>
-
-
-        <div class="tab-pane fade" id="agregar-rol" role="tabpanel" aria-labelledby="agregar-rol-tab">
-            @Html.Partial("_AgregarRol", Model)
-        </div>
-
-        <div class="tab-pane fade" id="listar-permisos" role="tabpanel" aria-labelledby="listar-permisos-tab">
-            @Html.Partial("_ListarPermisos", Model)
-        </div>
-
-        <div class="tab-pane fade" id="agregar-permiso" role="tabpanel" aria-labelledby="agregar-permiso-tab">
-            @Html.Partial("_AgregarPermiso", Model)
-        </div>
-
-
     </div>
+
 </div>

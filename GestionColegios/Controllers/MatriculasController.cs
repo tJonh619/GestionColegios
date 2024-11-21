@@ -18,6 +18,10 @@ namespace GestionColegios.Controllers
         // GET: Matriculas
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var matriculas = db.Matriculas.Include(m => m.Estudiante).Include(m => m.Tutor).Include(m => m.Periodos).Include(m => m.AñoAcademico);
             return View(matriculas.ToList());
 
@@ -27,6 +31,10 @@ namespace GestionColegios.Controllers
         // GET: Matriculas/Details/5
         public ActionResult Details(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -41,6 +49,10 @@ namespace GestionColegios.Controllers
         // GET: Matriculas/Create
         public ActionResult Create(int? estudianteId)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (estudianteId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -92,6 +104,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Codigo,Descripcion,Continuidad,Traslado,Repitente,FechaMatricula,FechaModificacion,Activo,EstudianteId,TutorId,PeriodosId,AñoAcademicoId,Aprobado,Grado")] Matricula matricula)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 
@@ -113,6 +129,10 @@ namespace GestionColegios.Controllers
         // GET: Matriculas/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -136,6 +156,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Codigo,Descripcion,Continuidad,Traslado,Repitente,FechaModificacion,Activo,EstudianteId,TutorId,PeriodosId,AñoAcademicoId,Aprobad,Grado")] Matricula matricula)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (ModelState.IsValid)
             {
                 // Mantener la FechaMatricula original del registro en la base de datos
@@ -165,6 +189,10 @@ namespace GestionColegios.Controllers
         // GET: Matriculas/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -182,6 +210,10 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             Matricula matricula = db.Matriculas.Find(id);
             db.Matriculas.Remove(matricula);
             db.SaveChanges();
@@ -191,6 +223,10 @@ namespace GestionColegios.Controllers
         // GET: Matriculas/Historial
         public ActionResult Historial(int? estudianteId)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (estudianteId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -211,6 +247,10 @@ namespace GestionColegios.Controllers
         // GET: Matriculas/Edit/5
         public ActionResult EditMatricula(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -232,6 +272,10 @@ namespace GestionColegios.Controllers
 
         public ActionResult ImprimirMatricula(int? AñoAcademicoId, DateTime? FechaInicio, DateTime? FechaFin)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             // Obtener todas las matrículas, aplicando filtros si son proporcionados
             var matriculas = db.Matriculas.Include(m => m.Estudiante)
                                           .Include(m => m.Tutor)

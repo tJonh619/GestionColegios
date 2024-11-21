@@ -37,14 +37,14 @@
             <tbody id="tableBody">
                 @foreach (var estudiante in Model.Estudiantes.Where(e => e.CursoAcademicoEstudiante.Any(c => c.CursoAcademico.Id == ViewBag.idCurso && c.EstudianteId == e.Id)))
                 {
-                    <tr>
-                        <td>@estudiante.Nombres</td>
-                        <td>@estudiante.Apellidos</td>
-                        <td class="text-center">
-                            @Html.ActionLink("Registrar Notas", "SeleccionarParciales", "CalificacionWeb", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-success me-2" })
-                            @Html.ActionLink("Pruebas de Eficiencia Física", "PruebasEficiencia", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-info" })
-                        </td>
-                    </tr>
+                <tr>
+                    <td>@estudiante.Nombres</td>
+                    <td>@estudiante.Apellidos</td>
+                    <td class="text-center">
+                        @Html.ActionLink("Registrar Notas", "SeleccionarParciales", "CalificacionWeb", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-success me-2" })
+                        @Html.ActionLink("Pruebas de Eficiencia Física", "PruebasEficiencia", new { estudianteId = estudiante.Id }, new { @class = "btn btn-sm btn-info" })
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -85,12 +85,13 @@
 
                         <!-- Contenedor para la tabla de estudiantes filtrados -->
                         <div id="tablaEstudiantesContainer">
-                            @Html.Partial("_TablaEstudianteModal", Model.Estudiantes)
+                            @Html.Partial("_TablaEstudianteModal", Model)
                         </div>
 
                         <!-- Formulario para guardar los estudiantes seleccionados -->
                         @using (Html.BeginForm("AgregarEstudiantes", "CalificacionWeb", FormMethod.Post, new { id = "formGuardarSeleccion" }))
                         {
+                            @Html.Hidden("id", Model.CursoAcademico.Id)
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success">
                                     Guardar Selección

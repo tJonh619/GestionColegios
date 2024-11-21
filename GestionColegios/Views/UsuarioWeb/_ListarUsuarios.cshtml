@@ -1,40 +1,45 @@
-﻿
-@model GestionColegios.ViewModels.VMUsuario
+﻿@model GestionColegios.ViewModels.VMUsuario
 
-<div class="panel panel-default mt-2">
-    <div class="panel-heading">
-        <h3 class="panel-title">Lista de Usuarios</h3>
+<div class="card mt-3 shadow">
+    <div class="card-header bg-primary text-white">
+        <h3 class="card-title mb-0">Lista de Usuarios</h3>
     </div>
-    <div class="panel-body">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.Usuarios.First().CodigoUsuario)</th>
-                    <th>@Html.DisplayNameFor(model => model.Usuarios.First().NombreUsuario)</th>
-                    <th>@Html.DisplayNameFor(model => model.Usuarios.First().ClaveHash)</th>
-                    <th>@Html.DisplayNameFor(model => model.Usuarios.First().CorreoRecuperacion)</th>
-                    <th>@Html.DisplayNameFor(model => model.Usuarios.First().FechaModificacion)</th>
-                    <th>Nombre del rol</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var usuario in Model.Usuarios)
-                {
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
                     <tr>
-                        <td>@Html.DisplayFor(modelItem => usuario.CodigoUsuario)</td>
-                        <td>@Html.DisplayFor(modelItem => usuario.NombreUsuario)</td>
-                        <td>@Html.DisplayFor(modelItem => usuario.ClaveHash)</td>
-                        <td>@Html.DisplayFor(modelItem => usuario.CorreoRecuperacion)</td>
-                        <td>@Html.DisplayFor(modelItem => usuario.FechaModificacion)</td>
-                        <td>@Html.DisplayFor(modelItem => usuario.Rol.Nombre)</td>
-                        <td>
-                            @Html.ActionLink("Editar", "Edit", new { id = usuario.Id }, new { @class = "btn btn-warning" }) |
-                            @Html.ActionLink("Desactivar", "Delete", new { id = usuario.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este usuario?');" })
-                        </td>
+                        <th>@Html.DisplayNameFor(model => model.Usuarios.First().CodigoUsuario)</th>
+                        <th>@Html.DisplayNameFor(model => model.Usuarios.First().NombreUsuario)</th>
+                        <th>@Html.DisplayNameFor(model => model.Usuarios.First().ClaveHash)</th>
+                        <th>@Html.DisplayNameFor(model => model.Usuarios.First().CorreoRecuperacion)</th>
+                        <th>@Html.DisplayNameFor(model => model.Usuarios.First().FechaModificacion)</th>
+                        <th>Nombre del rol</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var usuario in Model.Usuarios)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => usuario.CodigoUsuario)</td>
+                            <td>@Html.DisplayFor(modelItem => usuario.NombreUsuario)</td>
+                            <td>@Html.DisplayFor(modelItem => usuario.ClaveHash)</td>
+                            <td>@Html.DisplayFor(modelItem => usuario.CorreoRecuperacion)</td>
+                            <td>@Html.DisplayFor(modelItem => usuario.FechaModificacion)</td>
+                            <td>@Html.DisplayFor(modelItem => usuario.Rol.Nombre)</td>
+                            <td>
+                                <a href="@Url.Action("Edit", new { id = usuario.Id })" class="btn btn-sm btn-warning me-2">
+                                    <i class="bi bi-pencil-square"></i> Editar
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = usuario.Id })" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                                    <i class="bi bi-trash3-fill"></i> Desactivar
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
