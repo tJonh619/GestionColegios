@@ -15,30 +15,33 @@
     var rolUsuario = claimsIdentity?.FindFirst(ClaimTypes.Role)?.Value;
     int idUsuario = int.Parse(claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 }
-<div class="panel panel-default mt-2">
-    <div class="panel-heading">
-        <h3 class="panel-title">Mis Cursos Asignados</h3>
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            @foreach (var curso in Model.CursosAcademicos.Where(c => c.Maestro.UsuarioId == idUsuario))
-            {
-                <div class="col-md-4">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">@Html.DisplayFor(modelItem => curso.Nombre)</h5>
-                            <p class="card-text">
-                                <strong>Año Académico:</strong> @Html.DisplayFor(modelItem => curso.AñoAcademico.Nombre)<br />
-                                <strong>Año:</strong> @Html.DisplayFor(modelItem => curso.Año.Nombre)
-                            </p>
-                            <div>
-                                <a href="@Url.Action("index", "CalificacionWeb", new { id = curso.Id })" class="btn btn-sm btn-warning">Detalles</a>
-
+<div class="container mt-4">
+    <div class="card fs-5">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title m-0">Mis Cursos Asignados</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @foreach (var curso in Model.CursosAcademicos.Where(c => c.Maestro.UsuarioId == idUsuario))
+                {
+                    <div class="col-md-4">
+                        <div class="card mb-3 shadow">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">@Html.DisplayFor(modelItem => curso.Nombre)</h5>
+                                <p class="card-text">
+                                    <strong>Año Académico:</strong> @Html.DisplayFor(modelItem => curso.AñoAcademico.Nombre)<br />
+                                    <strong>Año:</strong> @Html.DisplayFor(modelItem => curso.Año.Nombre)
+                                </p>
+                                <div>
+                                    <a href="@Url.Action("index", "CalificacionWeb", new { id = curso.Id })" class="btn btn-sm btn-warning fs-5">
+                                        Detalles
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
     </div>
 </div>

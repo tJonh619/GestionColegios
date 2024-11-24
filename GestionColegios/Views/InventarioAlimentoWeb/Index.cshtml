@@ -7,21 +7,26 @@
 <h2>Gestión de Inventario de Alimentos</h2>
 
 <div class="container mt-1">
-
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="listar-alimentos-tab" data-bs-toggle="tab" data-bs-target="#listar-alimentos" type="button" role="tab" aria-controls="listar-alimentos" aria-selected="false">Listar Alimentos</button>
-        </li>
-
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="agregar-alimento-tab" data-bs-toggle="tab" data-bs-target="#agregar-alimento" type="button" role="tab" aria-controls="agregar-alimento" aria-selected="true">Agregar Alimento</button>
-        </li>
-
-    </ul>
-
-    <div class="tab-content" id="myTabContent">
-        @Html.Partial("_AgregarAlimento", Model)
-        @Html.Partial("_ListarAlimentos", Model)
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active fs-4" id="listar-alimentos-tab" data-bs-toggle="tab" data-bs-target="#listar-alimentos" type="button" role="tab" aria-controls="listar-alimentos" aria-selected="true">Listar Alimentos</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fs-4" id="agregar-alimento-tab" data-bs-toggle="tab" data-bs-target="#agregar-alimento" type="button" role="tab" aria-controls="agregar-alimento" aria-selected="false">Agregar Alimento</button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="listar-alimentos" role="tabpanel" aria-labelledby="listar-alimentos-tab">
+                    @Html.Partial("_ListarAlimentos", Model)
+                </div>
+                <div class="tab-pane fade" id="agregar-alimento" role="tabpanel" aria-labelledby="agregar-alimento-tab">
+                    @Html.Partial("_AgregarAlimento", Model)
+                </div>
+            </div>
+        </div>
     </div>
 </div>

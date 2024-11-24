@@ -8,105 +8,122 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
-<h2 class="text-center text-primary my-4">Registrar Notas - Parcial III <span class="text-muted">@Model.Estudiante.Nombres @Model.Estudiante.Apellidos</span></h2>
+<div class="container mt-4">
+    <!-- Mensajes de éxito o errores -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success mt-3">
+            @TempData["SuccessMessage"]
+        </div>
+    }
 
-@if (TempData["SuccessMessage"] != null)
-{
-<div class="alert alert-success mt-3">
-    @TempData["SuccessMessage"]
-</div>}
+    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+    {
+        <div class="alert alert-danger">
+            @error.ErrorMessage
+        </div>
+    }
 
-@foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-{
-<div class="alert alert-danger">
-    @error.ErrorMessage
-</div>}
+    <!-- Formulario -->
+    @using (Html.BeginForm("Create", "CalificacionWeb", FormMethod.Post, new { id = "formCalificaciones" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Estudiante.Id)
 
-@using (Html.BeginForm("Create", "CalificacionWeb", FormMethod.Post, new { id = "formCalificaciones" }))
-{
-@Html.AntiForgeryToken()
-                @Html.HiddenFor(model => model.Estudiante.Id)
+        <!-- Card principal -->
+        <div class="card shadow-sm">
+            <!-- Título principal -->
+            <div class="card-header bg-primary text-white">
+                <h2 class="text-center mb-0 fs-3 text-white">
+                    Registrar Notas - Parcial III De: 
+                    <span class="text-muted">@Model.Estudiante.Nombres @Model.Estudiante.Apellidos</span>
+                </h2>
+            </div>
 
+            <div class="card-body">
+                <!-- Tabla de calificaciones -->
+                <table class="table table-bordered table-striped table-hover fs-5">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Materia</th>
+                            <th>Parcial</th>
+                            <th>Nota Cuantitativa</th>
+                            <th>Nota Cualitativa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Calificaciones.Count; i++)
+                        {
+                            var materiaNombre = Model.Materias.FirstOrDefault(m => m.Id == Model.Calificaciones[i].MateriaId)?.Nombre ?? "Materia no encontrada";
 
-                                <div class="container">
-                                    <div class="card shadow-lg p-4">
-                                        <div class="card-body">
-                                            <table class="table table-bordered table-striped table-hover">
-                                                <thead class="bg-primary text-white">
-                                                    <tr>
-                                                        <th>Materia</th>
-                                                        <th>Parcial</th>
-                                                        <th>Nota Cuantitativa</th>
-                                                        <th>Nota Cualitativa</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @for (int i = 0; i < Model.Calificaciones.Count; i++)
-                                                    {
-                                                        var materiaNombre = Model.Materias.FirstOrDefault(m => m.Id == Model.Calificaciones[i].MateriaId)?.Nombre ?? "Materia no encontrada";
+                            <tr>
+                                <td>
+                                    @Html.HiddenFor(m => Model.Calificaciones[i].MateriaId)
+                                    <strong>@materiaNombre</strong>
+                                </td>
 
-                                    <tr>
-                                        <td>
-                                            @Html.HiddenFor(m => Model.Calificaciones[i].MateriaId)
-                                            <strong>@materiaNombre</strong>
-                                        </td>
+                                <td>
+                                    @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, new { Value = 3 }) <!-- Parcial III -->
+                                    <span class="badge bg-info fs-5">Parcial III</span>
+                                </td>
 
-                                        <td>
-                                            @Html.HiddenFor(m => Model.Calificaciones[i].ParcialId, new { Value = 3 }) <!-- Parcial I -->
-                                            <span class="badge bg-info">Parcial III</span>
-                                        </td>
-
-                                        <td>
-                                            @if (Model.Calificaciones[i].NCuantitativa != 0 && Model.Calificaciones[i].NCuantitativa != null)
-                                            {
-                                    <span class="form-control" readonly>@Model.Calificaciones[i].NCuantitativa</span> }
-                                else
-                                {
-                                    @Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new
+                                <td>
+                                    @if (Model.Calificaciones[i].NCuantitativa != 0)
                                     {
-                                        @class = "form-control",
-                                        type = "number",
-                                        step = "0.01",
-                                        min = "0",
-                                        max = "100",
-                                        oninput = "updateCualitativa(this, " + i + ")",
-                                        placeholder = "Ingrese la nota cuantitativa",
-                                        required = "required",
-                                        id = "calificacion_" + i
-                                    })}
-                                        </td>
-
-                                        <td>
-                                            @if (Model.Calificaciones[i].NCualitativa != null)
-                                            {
-                                    <span class="form-control" readonly>@Model.Calificaciones[i].NCualitativa</span> }
-                                else
-                                {
-                                    @Html.TextBoxFor(m => Model.Calificaciones[i].NCualitativa, new
+                                        <span class="form-control fs-5" readonly>@Model.Calificaciones[i].NCuantitativa</span>
+                                    }
+                                    else
                                     {
-                                        @class = "form-control",
-                                        @readonly = "readonly",
-                                        placeholder = "Nota cualitativa",
-                                        required = "required"
-                                    })}
-                                        </td>
-                                    </tr>}
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        @Html.TextBoxFor(m => Model.Calificaciones[i].NCuantitativa, new
+                                       {
+                                           @class = "form-control fs-5",
+                                           type = "number",
+                                           step = "0.01",
+                                           min = "0",
+                                           max = "100",
+                                           oninput = "updateCualitativa(this, " + i + ")",
+                                           placeholder = "Ingrese la nota cuantitativa",
+                                           required = "required",
+                                           id = "calificacion_" + i
+                                       })
+                                    }
+                                </td>
 
-                                        <div class="d-flex justify-content-center mt-4">
-                                            <button type="button" class="btn btn-success btn-lg px-5 py-3" onclick="showConfirmationModal()">Guardar Notas</button>
-                                        </div>
+                                <td>
+                                    @if (Model.Calificaciones[i].NCualitativa != null)
+                                    {
+                                        <span class="form-control fs-5" readonly>@Model.Calificaciones[i].NCualitativa</span>
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => Model.Calificaciones[i].NCualitativa, new
+                                       {
+                                           @class = "form-control fs-5",
+                                           @readonly = "readonly",
+                                           placeholder = "Nota cualitativa",
+                                           required = "required"
+                                       })
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
-                                        <!-- Botón Editar -->
-                                        <div class="d-flex justify-content-center mt-4">
-                                            <a href="@Url.Action("Edit3", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="btn btn-warning btn-lg px-5 py-3">
-                                                Editar Notas
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>}
+            <!-- Botones de acciones -->
+            <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-success btn-lg px-5 py-3 fs-5" onclick="showConfirmationModal()">Guardar Notas</button>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4">
+                <a href="@Url.Action("Edit3", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="btn btn-warning btn-lg px-5 py-3 fs-5">
+                    Editar Notas
+                </a>
+            </div>
+        </div>
+    }
+</div>
 
 <!-- Modal de confirmación antes de guardar -->
 <div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-labelledby="confirmSaveModalLabel" aria-hidden="true">

@@ -6,24 +6,62 @@
 
 <h2>Gestión de Cursos Académicos</h2>
 
-<div class="container mt-1">
-    <!-- Tabs -->
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="listar-cursos-tab" data-bs-toggle="tab" data-bs-target="#listar-cursos" type="button" role="tab" aria-controls="listar-cursos" aria-selected="false">Listar Cursos</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link " id="agregar-curso-tab" data-bs-toggle="tab" data-bs-target="#agregar-curso" type="button" role="tab" aria-controls="agregar-curso" aria-selected="true">Agregar Curso</button>
-        </li>
-    </ul>
+<style>
+    .tooltip {
+        display: none;
+        position: absolute;
+        background-color: #f9d6a8;
+        border: 1px solid #f0ad4e;
+        padding: 5px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
 
-    <!-- Tab Content -->
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade  show active" id="listar-cursos" role="tabpanel" aria-labelledby="listar-cursos-tab">
-            @Html.Partial("_ListarCursos", Model)
+    .has-error {
+        position: relative;
+    }
+
+        .has-error .tooltip {
+            display: block;
+        }
+</style>
+
+<div class="container mt-1">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["SuccessMessage"]
         </div>
-        <div class="tab-pane fade" id="agregar-curso" role="tabpanel" aria-labelledby="agregar-curso-tab">
-            @Html.Partial("_AgregarCursos", Model)
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active fs-4" id="listar-cursos-tab" data-bs-toggle="tab" data-bs-target="#listar-cursos" type="button" role="tab" aria-controls="listar-cursos" aria-selected="true">Listar Cursos</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fs-4" id="agregar-curso-tab" data-bs-toggle="tab" data-bs-target="#agregar-curso" type="button" role="tab" aria-controls="agregar-curso" aria-selected="false">Agregar Curso</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="listar-cursos" role="tabpanel" aria-labelledby="listar-cursos-tab">
+                        @Html.Partial("_ListarCursos", Model)
+                    </div>
+                    <div class="tab-pane fade" id="agregar-curso" role="tabpanel" aria-labelledby="agregar-curso-tab">
+                        @Html.Partial("_AgregarCursos", Model)
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -9,31 +9,31 @@
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th>@Html.DisplayNameFor(model => model.Usuarios.First().CodigoUsuario)</th>
-                        <th>@Html.DisplayNameFor(model => model.Usuarios.First().NombreUsuario)</th>
-                        <th>@Html.DisplayNameFor(model => model.Usuarios.First().ClaveHash)</th>
-                        <th>@Html.DisplayNameFor(model => model.Usuarios.First().CorreoRecuperacion)</th>
-                        <th>@Html.DisplayNameFor(model => model.Usuarios.First().FechaModificacion)</th>
-                        <th>Nombre del rol</th>
-                        <th>Acciones</th>
+                        <th class="fs-5">@Html.DisplayNameFor(model => model.Usuarios.First().CodigoUsuario)</th>
+                        <th class="fs-5">@Html.DisplayNameFor(model => model.Usuarios.First().NombreUsuario)</th>
+                        <th class="fs-5">@Html.DisplayNameFor(model => model.Usuarios.First().ClaveHash)</th>
+                        <th class="fs-5">@Html.DisplayNameFor(model => model.Usuarios.First().CorreoRecuperacion)</th>
+                        <th class="fs-5">@Html.DisplayNameFor(model => model.Usuarios.First().FechaModificacion)</th>
+                        <th class="fs-5">Nombre del rol</th>
+                        <th class="fs-5">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var usuario in Model.Usuarios)
                     {
                         <tr>
-                            <td>@Html.DisplayFor(modelItem => usuario.CodigoUsuario)</td>
-                            <td>@Html.DisplayFor(modelItem => usuario.NombreUsuario)</td>
-                            <td>@Html.DisplayFor(modelItem => usuario.ClaveHash)</td>
-                            <td>@Html.DisplayFor(modelItem => usuario.CorreoRecuperacion)</td>
-                            <td>@Html.DisplayFor(modelItem => usuario.FechaModificacion)</td>
-                            <td>@Html.DisplayFor(modelItem => usuario.Rol.Nombre)</td>
-                            <td>
+                            <td class="fs-5">@Html.DisplayFor(modelItem => usuario.CodigoUsuario)</td>
+                            <td class="fs-5">@Html.DisplayFor(modelItem => usuario.NombreUsuario)</td>
+                            <td class="fs-5">@Html.DisplayFor(modelItem => usuario.ClaveHash)</td>
+                            <td class="fs-5">@Html.DisplayFor(modelItem => usuario.CorreoRecuperacion)</td>
+                            <td class="fs-5">@Html.DisplayFor(modelItem => usuario.FechaModificacion)</td>
+                            <td class="fs-5">@Html.DisplayFor(modelItem => usuario.Rol.Nombre)</td>
+                            <td class="fs-5">
                                 <a href="@Url.Action("Edit", new { id = usuario.Id })" class="btn btn-sm btn-warning me-2">
-                                    <i class="bi bi-pencil-square"></i> Editar
+                                    <i class="bi bi-pencil-square"></i> <span class="fs-5">Detalles</span>
                                 </a>
-                                <a href="@Url.Action("Delete", new { id = usuario.Id })" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
-                                    <i class="bi bi-trash3-fill"></i> Desactivar
+                                <a href="@Url.Action("Delete", new { id = usuario.Id })" class="btn btn-sm btn-danger px-4 py-2" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                                    <i class="bi bi-trash3-fill"></i> <span class="fs-5">Desactivar</span>
                                 </a>
                             </td>
                         </tr>

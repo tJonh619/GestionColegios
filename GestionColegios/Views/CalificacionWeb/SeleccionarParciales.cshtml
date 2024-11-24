@@ -18,53 +18,61 @@
 </div>}
 
 <div class="container mt-4">
-    <!-- Título principal con nombre del estudiante -->
-    <h2 class="text-center mb-4">Seleccionar Parcial para el Estudiante: <span class="text-primary">@Model.Estudiante.Nombres @Model.Estudiante.Apellidos</span></h2>
+    <!-- Card principal -->
+    <div class="card shadow-sm">
+        <!-- Cabecera de la card -->
+        <div class="card-header bg-primary text-white">
+            <h2 class="text-center mb-0 fs-3">
+                Seleccionar Parcial para el Estudiante:
+                <span class="text-warning fs-3">@Model.Estudiante.Nombres @Model.Estudiante.Apellidos</span>
+            </h2>
+        </div>
 
-    <!-- Descripción -->
-    <p class="text-center mb-5">Seleccione el parcial para registrar las notas del estudiante.</p>
+        <!-- Cuerpo de la card -->
+        <div class="card-body">
+            <!-- Lista de opciones -->
+            <div class="list-group">
+                <!-- Enlace para el Parcial I -->
+                <a href="@Url.Action("Create", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action rounded-3 mb-2 shadow-sm hover-btn fs-5">
+                    <div class="d-flex justify-content-between">
+                        <span>Registrar Parcial I</span>
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+                </a>
 
-    <!-- Lista de opciones -->
-    <div class="list-group">
-        <!-- Enlace para el Parcial I -->
-        <a href="@Url.Action("Create", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action rounded-3 mb-2 shadow-sm hover-btn">
-            <div class="d-flex justify-content-between">
-                <span>Registrar Parcial I</span>
-                <i class="bi bi-pencil-square"></i> <!-- Icono para indicar que es de edición -->
+                <!-- Enlace para el Parcial II -->
+                <a href="@Url.Action("Parcial2", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action rounded-3 mb-2 shadow-sm hover-btn fs-5">
+                    <div class="d-flex justify-content-between">
+                        <span>Registrar Parcial II</span>
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+                </a>
+
+                <!-- Enlace para el Parcial III -->
+                <a href="@Url.Action("Parcial3", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action rounded-3 mb-2 shadow-sm hover-btn fs-5">
+                    <div class="d-flex justify-content-between">
+                        <span>Registrar Parcial III</span>
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+                </a>
+
+                <!-- Enlace para el Parcial IV -->
+                <a href="@Url.Action("Parcial4", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action rounded-3 mb-2 shadow-sm hover-btn fs-5">
+                    <div class="d-flex justify-content-between">
+                        <span>Registrar Parcial IV</span>
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+                </a>
+
+                <!-- Enlace para ver calificaciones -->
+                <a href="@Url.Action("VerCalificaciones", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action rounded-3 mb-2 shadow-sm hover-btn fs-5">
+                    <div class="d-flex justify-content-between">
+                        <span>Ver Calificaciones</span>
+                        <i class="bi bi-eye"></i>
+                    </div>
+                </a>
             </div>
-        </a>
-
-        <!-- Enlace para el Parcial II -->
-        <a href="@Url.Action("Parcial2", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action rounded-3 mb-2 shadow-sm hover-btn">
-            <div class="d-flex justify-content-between">
-                <span>Registrar Parcial II</span>
-                <i class="bi bi-pencil-square"></i>
-            </div>
-        </a>
-
-        <!-- Enlace para el Parcial III -->
-        <a href="@Url.Action("Parcial3", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action rounded-3 mb-2 shadow-sm hover-btn">
-            <div class="d-flex justify-content-between">
-                <span>Registrar Parcial III</span>
-                <i class="bi bi-pencil-square"></i>
-            </div>
-        </a>
-
-        <!-- Enlace para el Parcial IV -->
-        <a href="@Url.Action("Parcial4", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action rounded-3 mb-2 shadow-sm hover-btn">
-            <div class="d-flex justify-content-between">
-                <span>Registrar Parcial IV</span>
-                <i class="bi bi-pencil-square"></i>
-            </div>
-        </a>
-
-        <!-- Enlace para ver calificaciones -->
-        <a href="@Url.Action("VerCalificaciones", "CalificacionWeb", new { estudianteId = Model.Estudiante.Id })" class="list-group-item list-group-item-action rounded-3 mb-2 shadow-sm hover-btn">
-            <div class="d-flex justify-content-between">
-                <span>Ver Calificaciones</span>
-                <i class="bi bi-eye"></i> <!-- Icono para visualización -->
-            </div>
-        </a>
+        </div>
     </div>
 </div>
 

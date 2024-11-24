@@ -13,116 +13,85 @@
     }
 }
 
-<div class="panel panel-default mt-2">
-    <div class="panel-heading bg-primary text-white">
-        <h3 class="panel-title p-2">
-            <i class="fa fa-user-plus mr-2"></i>
-            @(ViewBag.EsEdicion ? "Editar Usuario" : "Agregar Usuario")
-        </h3>
-    </div>
-    <div class="panel-body">
-        @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "UsuarioWeb", FormMethod.Post,
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow border-0">
+                <!-- Cabecera de la tarjeta -->
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fa fa-user-plus me-2"></i>
+                        @(ViewBag.EsEdicion ? "Editando Usuario" : "Agregar Usuario")
+                    </h3>
+                </div>
+
+                @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "UsuarioWeb", FormMethod.Post,
                        new { @class = "form-horizontal", @role = "form" }))
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.Usuario.Id)
+                {
+                    <div class="card-body fs-3">
 
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.Usuario.Id)
 
-            <!-- Código de Usuario -->
-            @*<div class="form-group">
-                @Html.LabelFor(m => m.Usuario.CodigoUsuario, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.Usuario.CodigoUsuario,
-                                  ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" }, { "required", "required" }, { "placeholder", "Introduce el código del usuario" }
-                          }, esSoloLectura))
-                    @Html.ValidationMessageFor(m => m.Usuario.CodigoUsuario, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <!-- Nombre de Usuario -->
-            <div class="form-group">
-                @Html.LabelFor(m => m.Usuario.NombreUsuario, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.Usuario.NombreUsuario,
-                                  ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" }, { "required", "required" }, { "placeholder", "Introduce el nombre del usuario" }
-                          }, esSoloLectura))
-                    @Html.ValidationMessageFor(m => m.Usuario.NombreUsuario, "", new { @class = "text-danger" })
-                </div>
-            </div>
+                        <!-- Nombre de Usuario -->
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Usuario.NombreUsuario, "Nombre de Usuario", new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Usuario.NombreUsuario, new
+                       { @class = "form-control fs-5", @required = "required", @placeholder = "Introduce el nombre del usuario", autocomplete = "new-name", name = "" })
+                            @Html.ValidationMessageFor(m => m.Usuario.NombreUsuario, "", new { @class = "text-danger" })
+                        </div>
 
-            <!-- Contraseña -->
-            <div class="form-group">
-                @Html.LabelFor(m => m.Usuario.ClaveHash, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.PasswordFor(m => m.Usuario.ClaveHash,
-                                  ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" }, { "required", "required" }, { "placeholder", "Introduce la contraseña" }
-                          }, esSoloLectura))
-                    @Html.ValidationMessageFor(m => m.Usuario.ClaveHash, "", new { @class = "text-danger" })
-                </div>
-            </div>
+                        <!-- Contraseña -->
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Usuario.ClaveHash, "Contraseña", new { @class = "form-label" })
+                            @Html.PasswordFor(m => m.Usuario.ClaveHash,
+                             new { @class = "form-control  fs-5", @required = "required", @placeholder = "Introduce la contraseña", autocomplete = "new-password", name = "" })
+                            @Html.ValidationMessageFor(m => m.Usuario.ClaveHash, "", new { @class = "text-danger" })
+                        </div>
 
-            <!-- Correo de Recuperación -->
-            <div class="form-group">
-                @Html.LabelFor(m => m.Usuario.CorreoRecuperacion, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.Usuario.CorreoRecuperacion,
-                                  ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" }, { "required", "required" }, { "placeholder", "Introduce el correo para recuperación" }
-                          }, esSoloLectura))
-                    @Html.ValidationMessageFor(m => m.Usuario.CorreoRecuperacion, "", new { @class = "text-danger" })
-                </div>
-            </div>
+                        <!-- Correo de Recuperación -->
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Usuario.CorreoRecuperacion, "Correo de Recuperación", new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Usuario.CorreoRecuperacion,
+                             new { @class = "form-control  fs-5", @required = "required", @placeholder = "Introduce el correo para recuperación" })
+                            @Html.ValidationMessageFor(m => m.Usuario.CorreoRecuperacion, "", new { @class = "text-danger" })
+                        </div>
 
-            <!-- Rol -->
-            <div class="form-group">
-                @Html.LabelFor(m => m.Usuario.RolId, "Rol", new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(m => m.Usuario.RolId,
-                                  new SelectList(Model.Roles, "Id", "Descripcion", Model.Usuario.RolId),
-                                  "Selecciona un rol",
-                                  ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" }, { "required", "required" }
-                          }, esSoloLectura))
-                    @Html.ValidationMessageFor(m => m.Usuario.RolId, "", new { @class = "text-danger" })
-                </div>
-            </div>
+                        <!-- Rol -->
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Usuario.RolId, "Rol", new { @class = "form-label" })
+                            @Html.DropDownListFor(m => m.Usuario.RolId,
+                             new SelectList(Model.Roles, "Id", "Descripcion", Model.Usuario.RolId),
+                             "Selecciona un rol", new { @class = "form-select fs-5", @required = "required" })
+                            @Html.ValidationMessageFor(m => m.Usuario.RolId, "", new { @class = "text-danger" })
+                        </div>
+                        
+                    </div>
 
-
-
-
-            <!-- Botones de Acción -->
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
-                            style="@(ViewBag.EsEdicion ? "" : "display:none;")"
-                            onclick="activateEdit()">
-                        Editar
-                    </button>
-                    <button type="submit" id="btn-save" class="btn btn-primary m-1"
-                            style="@(ViewBag.EsEdicion ? "display:none;" : "")">
-                        @(Model.Usuario.Id == 0 ? "Registrar" : "Guardar Cambios")
-                    </button>
-                    @if (ViewBag.EsEdicion)
-                    {
-                        <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
-                                onclick="deleteRecord()">
-                            Eliminar
+                    <!-- Footer de la tarjeta con botones de acción -->
+                    <div class="card-footer text-center fs-4">
+                        <button type="submit" id="btn-save" class="btn btn-primary me-2">
+                            <i class="fa fa-save me-1"></i> @(ViewBag.EsEdicion ? "Guardar Cambios" : "Registrar")
                         </button>
-                    }
-                    <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
-                            onclick="cancelOrReturn()">
-                        Regresar
-                    </button>
+                        @if (ViewBag.EsEdicion)
+                        {
+                            <button type="button" id="btn-delete" class="btn btn-danger me-2" onclick="deleteRecord()">
+                                <i class="fa fa-trash-alt me-1"></i> Eliminar
+                            </button>
+                        }
+                        <a href="@Url.Action("Index", "UsuarioWeb")" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left me-1"></i> Cancelar
+                        </a>
+                    </div>
+
+                }
                 </div>
-            </div>
-        }
+        </div>
     </div>
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 

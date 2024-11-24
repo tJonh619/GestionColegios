@@ -28,7 +28,6 @@
 <h2>Gestionar Estudiantes</h2>
 
 <div class="container mt-1">
-
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success" role="alert">
@@ -42,28 +41,31 @@
         </div>
     }
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="true">Lista Estudiantes</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="crear-editar-tab" data-bs-toggle="tab" data-bs-target="#crear-editar" type="button" role="tab" aria-controls="crear-editar" aria-selected="false">Nuevo Estudiante</button>
-        </li>
-
-    </ul>
-
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="listar" role="tabpanel" aria-labelledby="listar-tab">
-            @Html.Partial("_List", Model)
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active fs-4" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="true">Lista Estudiantes</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fs-4" id="crear-editar-tab" data-bs-toggle="tab" data-bs-target="#crear-editar" type="button" role="tab" aria-controls="crear-editar" aria-selected="false">Nuevo Estudiante</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="listar" role="tabpanel" aria-labelledby="listar-tab">
+                        @Html.Partial("_List", Model)
+                    </div>
+                    <div class="tab-pane fade" id="crear-editar" role="tabpanel" aria-labelledby="crear-editar-tab">
+                        @Html.Partial("_Create_Edit", Model)
+                    </div>
+                </div>
+            </div>
         </div>
-
-
-        <div class="tab-pane fade" id="crear-editar" role="tabpanel" aria-labelledby="crear-editar-tab">
-            @Html.Partial("_Create_Edit", Model)
-        </div>
-
-
     </div>
 </div>
+
 
 

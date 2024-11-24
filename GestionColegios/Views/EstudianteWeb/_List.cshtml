@@ -4,11 +4,14 @@
     ViewBag.Title = "_List";
 }
 
-<div class="row mt-4">
-    <div class="container">
+<div class="card mt-4 shadow">
+    <div class="card-header bg-primary text-white">
+        <h3 class="card-title mb-0">Lista de Estudiantes</h3>
+    </div>
+    <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="form-group">
-                <label for="searchType">Buscar por:</label>
+                <label for="searchType" class="fs-5">Buscar por:</label>
                 <select id="searchType" class="form-select">
                     <option value="nombres">Nombre Estudiante</option>
                     <option value="apellidos">Apellido Estudiante</option>
@@ -26,41 +29,48 @@
             </div>
         </div>
 
-        <table style="width: 100%;" class="table-responsive table-striped table-hover table-bordered align-middle">
-            <thead style="background-color: #001c7d; color: white;">
-                <tr>
-                    <th scope="col">Código</th>
-                    <th scope="col">Nombres</th>
-                    <th scope="col">Apellidos</th>
-                    <th scope="col">Barrio</th>
-                    <th scope="col">Fecha de Nacimiento</th>
-                    <th scope="col">Edad</th>
-                    <th scope="col">Sexo</th>
-                    <th scope="col">Dirección</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                @foreach (var estudiante in Model.Estudiantes)
-                {
-                <tr>
-                    <td>@estudiante.CodigoEstudiante</td>
-                    <td>@estudiante.Nombres</td>
-                    <td>@estudiante.Apellidos</td>
-                    <td>@estudiante.Barrio</td>
-                    <td>@estudiante.FechaNacimiento.ToString("yyyy-MM-dd")</td>
-                    <td>@estudiante.Edad</td>
-                    <td>@estudiante.Sexo</td>
-                    <td>@estudiante.Direccion</td>
-                    <td>
-                        <a href="@Url.Action("Edit", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-warning">Detalles</a>
-
-                        <a href="@Url.Action("Create", "Matriculas", new { estudianteId = estudiante.Id, tutorId = Model.Tutor?.Id })" class="btn btn-sm btn-success">Matricular</a>
-                        <a href="@Url.Action("Historial", "Matriculas", new { estudianteId = estudiante.Id })" class="btn btn-sm btn-primary">Historial de Matrículas</a>
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" class="fs-5">Código</th>
+                        <th scope="col" class="fs-5">Nombres</th>
+                        <th scope="col" class="fs-5">Apellidos</th>
+                        <th scope="col" class="fs-5">Barrio</th>
+                        <th scope="col" class="fs-5">Fecha de Nacimiento</th>
+                        <th scope="col" class="fs-5">Edad</th>
+                        <th scope="col" class="fs-5">Sexo</th>
+                        <th scope="col" class="fs-5">Dirección</th>
+                        <th scope="col" class="fs-5">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    @foreach (var estudiante in Model.Estudiantes)
+                    {
+                        <tr>
+                            <td class="fs-5">@estudiante.CodigoEstudiante</td>
+                            <td class="fs-5">@estudiante.Nombres</td>
+                            <td class="fs-5">@estudiante.Apellidos</td>
+                            <td class="fs-5">@estudiante.Barrio</td>
+                            <td class="fs-5">@estudiante.FechaNacimiento.ToString("yyyy-MM-dd")</td>
+                            <td class="fs-5">@estudiante.Edad</td>
+                            <td class="fs-5">@estudiante.Sexo</td>
+                            <td class="fs-5">@estudiante.Direccion</td>
+                            <td class="fs-5">
+                                <a href="@Url.Action("Edit", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-warning me-2">
+                                    <i class="bi bi-pencil-square"></i> Detalles
+                                </a>
+                                <a href="@Url.Action("Create", "Matriculas", new { estudianteId = estudiante.Id, tutorId = Model.Tutor?.Id })" class="btn btn-sm btn-success me-2">
+                                    <i class="bi bi-plus-square-fill"></i> Matricular
+                                </a>
+                                <a href="@Url.Action("Historial", "Matriculas", new { estudianteId = estudiante.Id })" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-folder-fill"></i> Historial de Matrículas
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
