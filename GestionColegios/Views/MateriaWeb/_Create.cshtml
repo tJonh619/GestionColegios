@@ -13,108 +13,118 @@
     }
 }
 
-<div class="row mt-2">
-    <div class="col-md-12">
-        @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "MateriaWeb", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(model => model.Materia.Id)
-
-            <div class="row">
-                <div class="col-md-5 card">
-                    <div class="row card" style="background-color: #001c7d">
-                        <label class="m-md-1" style="color: white">
-                            <i class="fa fa-book me-2" aria-hidden="true"></i> Información de la Materia
-                        </label>
-                    </div>
-
-                    <!-- Código de Materia -->
-                    <div class="form-group mb-3 has-error">
-                        <label for="CodigoMateria">Código de Materia</label>
-                        @Html.TextBoxFor(model => model.Materia.CodigoMateria,
-                            ObtenerAtributos(new Dictionary<string, object> {
-                                { "class", "form-control" },
-                                { "placeholder", "Ingrese el código de la materia" },
-                                { "required", "required" }
-                            }, esSoloLectura))
-                        @Html.ValidationMessageFor(model => model.Materia.CodigoMateria, "", new { @class = "text-danger" })
-                    </div>
-
-                    <!-- Nombre de la Materia -->
-                    <div class="form-group mb-3 has-error">
-                        <label for="Nombre">Nombre</label>
-                        @Html.TextBoxFor(model => model.Materia.Nombre,
-                            ObtenerAtributos(new Dictionary<string, object> {
-                                { "class", "form-control" },
-                                { "placeholder", "Ingrese el nombre de la materia" },
-                                { "required", "required" }
-                            }, esSoloLectura))
-                        @Html.ValidationMessageFor(model => model.Materia.Nombre, "", new { @class = "text-danger" })
-                    </div>
-
-                    <!-- Descripción -->
-                    <div class="form-group mb-3 has-error">
-                        <label for="Nombre">Nombre</label>
-                        @Html.TextBoxFor(model => model.Materia.Descripcion,
-                            ObtenerAtributos(new Dictionary<string, object> {
-                                { "class", "form-control" },
-                                { "placeholder", "Ingrese el nombre de la materia" },
-                                { "required", "required" }
-                            }, esSoloLectura))
-                        @Html.ValidationMessageFor(model => model.Materia.Descripcion, "", new { @class = "text-danger" })
-                    </div>
-
-                    <!-- Año Académico -->
-                    <div class="form-group mb-3 has-error">
-                        <label for="AñoAcademicoId">Año Académico</label>
-                        @Html.DropDownListFor(model => model.Materia.AñoAcademicoId,
-                            new SelectList(Model.AñosAcademicos, "Id", "Nombre"),
-                            "Seleccione el Año Académico",
-                            ObtenerAtributos(new Dictionary<string, object> {
-                                { "class", "form-control" }
-                            }, esSoloLectura))
-                        @Html.ValidationMessageFor(model => model.Materia.AñoAcademicoId, "", new { @class = "text-danger" })
-                    </div>
-
-                    <!-- Mostrar Fecha de Modificación solo en la edición -->
-                    @if (ViewBag.EsEdicion != null && ViewBag.EsEdicion.Equals(true))
-                    {
-                        <div class="form-group mb-3">
-                            <label for="FechaModificacion">Fecha de Modificación</label>
-                            <input type="text" id="FechaModificacion" class="form-control" value="@Model.Materia.FechaModificacion.ToString("dd/MM/yyyy HH:mm:ss")" readonly />
-                        </div>
-                    }
-
-          
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow border-0">
+                <!-- Cabecera de la tarjeta -->
+                <div class="card-header bg-primary text-white fs-5">
+                    <h3 class="card-title mb-0" id="titulo-materia">
+                        <i class="fa fa-book me-2"></i>
+                        @(ViewBag.EsEdicion ? "Editar Materia" : "Agregar Materia")
+                    </h3>
                 </div>
 
-                <!-- Botones de acción -->
-                <div class="form-group col-md-2 mt-4">
-                    <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
-                            style="@(ViewBag.EsEdicion ? "" : "display:none;")"
-                            onclick="activateEdit()">
-                        Editar
-                    </button>
+                <!-- Cuerpo de la tarjeta -->
+                <div class="card-body fs-5">
+                    @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "MateriaWeb", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.Materia.Id)
 
-                    <button type="submit" id="btn-save" class="btn btn-primary m-1"
-                            style="@(ViewBag.EsEdicion ? "display:none;" : "")">
-                        @(Model.Materia.Id == 0 ? "Registrar" : "Guardar Cambios")
-                    </button>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger", @aria_live = "polite" })
 
-                    <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
-                            onclick="cancelOrReturn()">
-                        Regresar
-                    </button>
+                        <!-- Código de Materia -->
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Materia.CodigoMateria, "Código de Materia", new { @class = "form-label", @aria_hidden = "true" })
+                            @Html.TextBoxFor(model => model.Materia.CodigoMateria,
+                                 ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control fs-5" },
+                                    { "aria-label", "Código de materia" },
+                                    { "required", "required" },
+                                    { "placeholder", "Ingrese el código de la materia" }
+                                 }, esSoloLectura))
+                        </div>
+
+                        <!-- Nombre de la Materia -->
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Materia.Nombre, "Nombre", new { @class = "form-label", @id = "nombre-materia-label" })
+                            @Html.TextBoxFor(model => model.Materia.Nombre,
+                                 ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control fs-5" },
+                                    { "aria-labelledby", "nombre-materia-label" },
+                                    { "required", "required" },
+                                    { "placeholder", "Ingrese el nombre de la materia" }
+                                 }, esSoloLectura))
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Materia.Descripcion, "Descripción", new { @class = "form-label", @id = "descripcion-materia-label" })
+                            @Html.TextBoxFor(model => model.Materia.Descripcion,
+                                 ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control fs-5" },
+                                    { "aria-labelledby", "descripcion-materia-label" },
+                                    { "required", "required" },
+                                    { "placeholder", "Ingrese la descripción de la materia" }
+                                 }, esSoloLectura))
+                        </div>
+
+                        <!-- Año Académico -->
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Materia.AñoAcademicoId, "Año Académico", new { @class = "form-label", @id = "anio-academico-label" })
+                            @Html.DropDownListFor(model => model.Materia.AñoAcademicoId,
+                                 new SelectList(Model.AñosAcademicos, "Id", "Nombre"),
+                                 "Seleccione el Año Académico",
+                                 ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-select fs-5" },
+                                    { "aria-labelledby", "anio-academico-label" }
+                                 }, esSoloLectura))
+                        </div>
+
+                        <!-- Mostrar Fecha de Modificación solo en la edición -->
+                        if (ViewBag.EsEdicion != null && ViewBag.EsEdicion.Equals(true))
+                        {
+                            <div class="mb-3">
+                                <label for="FechaModificacion" class="form-label">Fecha de Modificación</label>
+                                <input type="text" id="FechaModificacion" class="form-control fs-5" value="@Model.Materia.FechaModificacion.ToString("dd/MM/yyyy HH:mm:ss")" readonly />
+                            </div>
+                        }
+
+
+                    <!-- Footer de la tarjeta con botones de acción -->
+                    <div class="card-footer text-center fs-5">
+                        <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1" style="@(ViewBag.EsEdicion ? "" : "display:none;")" onclick="activateEdit()" aria-label="Editar registro de materia">
+                            Editar
+                        </button>
+                        <button type="submit" id="btn-save" class="btn btn-primary m-1" style="@(ViewBag.EsEdicion ? "display:none;" : "")">
+                            @(Model.Materia.Id == 0 ? "Registrar" : "Guardar Cambios")
+                        </button>
+                        @if (ViewBag.EsEdicion)
+                        {
+                            <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1" onclick="deleteRecord()" aria-label="Eliminar materia">
+                                Eliminar
+                            </button>
+                        }
+                        <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1" onclick="cancelOrReturn()" aria-label="Cancelar edición y regresar">
+                            Regresar
+                        </button>
+                    </div>
+                    }
                 </div>
             </div>
-        }
+        </div>
     </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
-<script>
+
+
+
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+    <script>
     function activateEdit() {
         $('input, select').each(function () {
             $(this).prop('readonly', false);
@@ -147,4 +157,4 @@
             window.location.href = deleteUrl;
         }
     }
-</script>
+    </script>

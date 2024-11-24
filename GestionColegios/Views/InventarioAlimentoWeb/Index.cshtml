@@ -4,25 +4,33 @@
     ViewBag.Title = "Gestión de Inventario de Alimentos";
 }
 
-<h2>Gestión de Inventario de Alimentos</h2>
+<div class="container mt-2">
+    <h2 class="text-center mb-4">Gestión de Inventario de Alimentos</h2>
 
-<div class="container mt-1">
-    <div class="card">
-        <div class="card-header">
+    <!-- Tarjeta con pestañas -->
+    <div class="card shadow border-0">
+        <div class="card-header text-white">
             <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active fs-4" id="listar-alimentos-tab" data-bs-toggle="tab" data-bs-target="#listar-alimentos" type="button" role="tab" aria-controls="listar-alimentos" aria-selected="true">Listar Alimentos</button>
+                    <button class="nav-link active fs-4" id="listar-alimentos-tab" data-bs-toggle="tab" data-bs-target="#listar-alimentos" type="button" role="tab" aria-controls="listar-alimentos" aria-selected="true">
+                        <i class="bi bi-list me-2"></i>Listar Alimentos
+                    </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link fs-4" id="agregar-alimento-tab" data-bs-toggle="tab" data-bs-target="#agregar-alimento" type="button" role="tab" aria-controls="agregar-alimento" aria-selected="false">Agregar Alimento</button>
+                    <button class="nav-link fs-4" id="agregar-alimento-tab" data-bs-toggle="tab" data-bs-target="#agregar-alimento" type="button" role="tab" aria-controls="agregar-alimento" aria-selected="false">
+                        <i class="bi bi-plus-square me-2"></i>Agregar Alimento
+                    </button>
                 </li>
             </ul>
         </div>
         <div class="card-body">
             <div class="tab-content" id="myTabContent">
+                <!-- Pestaña Listar Alimentos -->
                 <div class="tab-pane fade show active" id="listar-alimentos" role="tabpanel" aria-labelledby="listar-alimentos-tab">
                     @Html.Partial("_ListarAlimentos", Model)
                 </div>
+
+                <!-- Pestaña Agregar Alimento -->
                 <div class="tab-pane fade" id="agregar-alimento" role="tabpanel" aria-labelledby="agregar-alimento-tab">
                     @Html.Partial("_AgregarAlimento", Model)
                 </div>
@@ -30,3 +38,24 @@
         </div>
     </div>
 </div>
+
+<style>
+    .tooltip {
+        display: none;
+        position: absolute;
+        background-color: #f9d6a8;
+        border: 1px solid #f0ad4e;
+        padding: 5px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
+
+    .has-error {
+        position: relative;
+    }
+
+        .has-error .tooltip {
+            display: block;
+        }
+</style>
+

@@ -4,50 +4,83 @@
     ViewBag.Title = "_ListMaterias";
 }
 
-<div class="row mt-4">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="form-group">
-                <label for="searchType">Buscar por:</label>
-                <select id="searchType" class="form-select">
-                    <option value="nombre">Nombre Materia</option>
-                    <option value="codigo">Código Materia</option>
-                    <option value="docente">Nombre Docente</option>
-                </select>
+<div class="container mt-3">
+    <!-- Card principal que incluye filtros y tabla -->
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title mb-0">
+                <i class="bi bi-journal-bookmark-fill me-2"></i>Gestión de Materias
+            </h3>
+        </div>
+        <div class="card-body">
+            <!-- Filtros y barra de búsqueda -->
+            <div class="row g-3 align-items-center mb-4">
+                <!-- Filtro de búsqueda -->
+                <div class="col-md-4">
+                    <label for="searchType" class="form-label">Buscar por:</label>
+                    <select id="searchType" class="form-select">
+                        <option value="nombre">Nombre Materia</option>
+                        <option value="codigo">Código Materia</option>
+                        <option value="docente">Nombre Docente</option>
+                    </select>
+                </div>
+
+                <!-- Barra de búsqueda -->
+                <div class="col-md-6">
+                    <label for="search" class="visually-hidden">Buscar</label>
+                    <input type="text" id="search" class="form-control" placeholder="Ingrese el texto a buscar...">
+                </div>
+
+                <!-- Spinner de carga -->
+                <div class="col-md-2 text-center">
+                    <div id="spinner" class="spinner-border text-primary" role="status" style="display: none;">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <input type="text" id="search" class="form-control" placeholder="Buscar...">
-            </div>
-
-            <div id="spinner" class="spinner-border text-primary" role="status" style="display: none;">
-                <span class="visually-hidden">Cargando...</span>
+            <!-- Tabla de datos -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col" class="fs-5">Código</th>
+                            <th scope="col" class="fs-5">Nombre</th>
+                            <th scope="col" class="fs-5">Descripción</th>
+                            <th scope="col" class="fs-5">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        @if (Model.Materias != null && Model.Materias.Any())
+                        {
+                            foreach (var materia in Model.Materias)
+                            {
+                                <tr>
+                                    <td class="fs-5">@materia.CodigoMateria</td>
+                                    <td class="fs-5">@materia.Nombre</td>
+                                    <td class="fs-5">@materia.Descripcion</td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "MateriaWeb", new { id = materia.Id })" class="btn btn-sm btn-warning me-2">
+                                            <i class="bi bi-pencil-square"></i> Detalles
+                                        </a>
+                                        <a href="@Url.Action("EstudiantesInscritos", "MateriaWeb", new { materiaId = materia.Id })" class="btn btn-sm btn-primary">
+                                            <i class="bi bi-person-lines-fill"></i> Estudiantes
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center fs-5 text-muted">
+                                    <i class="bi bi-info-circle me-2"></i>No hay materias registradas.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
-
-        <table style="width: 100%;" class="table-responsive table-striped table-hover table-bordered align-middle">
-            <thead style="background-color: #001c7d; color: white;">
-                <tr>
-                    <th scope="col">Código</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                @foreach (var materia in Model.Materias)
-                {
-                    <tr>
-                        <td>@materia.CodigoMateria</td>
-                        <td>@materia.Nombre</td>
-                        <td>@materia.Descripcion</td>
-                        <td>
-                            <a href="@Url.Action("Edit", "MateriaWeb", new { id = materia.Id })" class="btn btn-sm btn-warning">Detalles</a>
-                            <a href="@Url.Action("EstudiantesInscritos", "MateriaWeb", new { materiaId = materia.Id })" class="btn btn-sm btn-primary">Estudiantes</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
     </div>
 </div>

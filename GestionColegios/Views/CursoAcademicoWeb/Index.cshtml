@@ -4,7 +4,54 @@
     ViewBag.Title = "Gestión de Cursos Académicos";
 }
 
-<h2>Gestión de Cursos Académicos</h2>
+<div class="container mt-2">
+    <h2 class="text-center mb-4">Gestión de Cursos Académicos</h2>
+
+    <!-- Mensajes de éxito y error -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+        </div>
+    }
+
+    <!-- Tarjeta con pestañas -->
+    <div class="card shadow border-0">
+        <div class="card-header text-white">
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active fs-4" id="listar-cursos-tab" data-bs-toggle="tab" data-bs-target="#listar-cursos" type="button" role="tab" aria-controls="listar-cursos" aria-selected="true">
+                        <i class="bi bi-list me-2"></i>Listar Cursos
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fs-4" id="agregar-curso-tab" data-bs-toggle="tab" data-bs-target="#agregar-curso" type="button" role="tab" aria-controls="agregar-curso" aria-selected="false">
+                        <i class="bi bi-plus-square me-2"></i>Agregar Curso
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+                <!-- Pestaña Listar Cursos -->
+                <div class="tab-pane fade show active" id="listar-cursos" role="tabpanel" aria-labelledby="listar-cursos-tab">
+                    @Html.Partial("_ListarCursos", Model)
+                </div>
+
+                <!-- Pestaña Agregar Curso -->
+                <div class="tab-pane fade" id="agregar-curso" role="tabpanel" aria-labelledby="agregar-curso-tab">
+                    @Html.Partial("_AgregarCursos", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
     .tooltip {
@@ -25,43 +72,3 @@
             display: block;
         }
 </style>
-
-<div class="container mt-1">
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success" role="alert">
-            @TempData["SuccessMessage"]
-        </div>
-    }
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger" role="alert">
-            @TempData["ErrorMessage"]
-        </div>
-    }
-
-    <div class="container mt-4">
-        <div class="card">
-            <div class="card-header">
-                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active fs-4" id="listar-cursos-tab" data-bs-toggle="tab" data-bs-target="#listar-cursos" type="button" role="tab" aria-controls="listar-cursos" aria-selected="true">Listar Cursos</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link fs-4" id="agregar-curso-tab" data-bs-toggle="tab" data-bs-target="#agregar-curso" type="button" role="tab" aria-controls="agregar-curso" aria-selected="false">Agregar Curso</button>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-body">
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="listar-cursos" role="tabpanel" aria-labelledby="listar-cursos-tab">
-                        @Html.Partial("_ListarCursos", Model)
-                    </div>
-                    <div class="tab-pane fade" id="agregar-curso" role="tabpanel" aria-labelledby="agregar-curso-tab">
-                        @Html.Partial("_AgregarCursos", Model)
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

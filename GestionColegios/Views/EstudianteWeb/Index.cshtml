@@ -5,6 +5,55 @@
 }
 
 
+<div class="container mt-2">
+    <h2 class="text-center mb-4">Gestionar Estudiantes</h2>
+
+    <!-- Mensajes de éxito y error -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+        </div>
+    }
+
+    <!-- Tarjeta con pestañas -->
+    <div class="card shadow border-0">
+        <div class="card-header text-white">
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active fs-4" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="true">
+                        <i class="bi bi-list me-2"></i>Lista Estudiantes
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fs-4" id="crear-editar-tab" data-bs-toggle="tab" data-bs-target="#crear-editar" type="button" role="tab" aria-controls="crear-editar" aria-selected="false">
+                        <i class="bi bi-person-plus me-2"></i>Nuevo Estudiante
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+                <!-- Pestaña Lista Estudiantes -->
+                <div class="tab-pane fade show active" id="listar" role="tabpanel" aria-labelledby="listar-tab">
+                    @Html.Partial("_List", Model)
+                </div>
+
+                <!-- Pestaña Nuevo Estudiante -->
+                <div class="tab-pane fade" id="crear-editar" role="tabpanel" aria-labelledby="crear-editar-tab">
+                    @Html.Partial("_Create_Edit", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .tooltip {
         display: none;
@@ -25,47 +74,6 @@
         }
 </style>
 
-<h2>Gestionar Estudiantes</h2>
-
-<div class="container mt-1">
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success" role="alert">
-            @TempData["SuccessMessage"]
-        </div>
-    }
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger" role="alert">
-            @TempData["ErrorMessage"]
-        </div>
-    }
-
-    <div class="container mt-4">
-        <div class="card">
-            <div class="card-header">
-                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active fs-4" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="true">Lista Estudiantes</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link fs-4" id="crear-editar-tab" data-bs-toggle="tab" data-bs-target="#crear-editar" type="button" role="tab" aria-controls="crear-editar" aria-selected="false">Nuevo Estudiante</button>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-body">
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="listar" role="tabpanel" aria-labelledby="listar-tab">
-                        @Html.Partial("_List", Model)
-                    </div>
-                    <div class="tab-pane fade" id="crear-editar" role="tabpanel" aria-labelledby="crear-editar-tab">
-                        @Html.Partial("_Create_Edit", Model)
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 

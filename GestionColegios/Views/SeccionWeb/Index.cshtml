@@ -6,22 +6,38 @@
 
 @using GestionColegios.ViewModels
 
-<h2>Gestionar Secciones</h2>
+<div class="container mt-1">
+    <h2 class="text-center mb-4">Gestionar Secciones</h2>
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="true">Listar Secciones</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="agregar-tab" data-bs-toggle="tab" data-bs-target="#agregar" type="button" role="tab" aria-controls="agregar" aria-selected="false">Agregar Sección</button>
-    </li>
-</ul>
+    <!-- Tarjeta contenedora -->
+    <div class="card shadow border-0">
+        <div class="card-header text-white">
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active fs-5" id="listar-tab" data-bs-toggle="tab" data-bs-target="#listar" type="button" role="tab" aria-controls="listar" aria-selected="true">
+                        <i class="bi bi-list-ul me-2"></i>Listar Secciones
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fs-5" id="agregar-tab" data-bs-toggle="tab" data-bs-target="#agregar" type="button" role="tab" aria-controls="agregar" aria-selected="false">
+                        <i class="bi bi-plus-circle me-2"></i>Agregar Sección
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+                <!-- Listar Secciones -->
+                <div class="tab-pane fade show active" id="listar" role="tabpanel" aria-labelledby="listar-tab">
+                    @Html.Partial("_ListarSecciones", Model)
+                </div>
 
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="listar" role="tabpanel" aria-labelledby="listar-tab">
-        @Html.Partial("_ListarSecciones", Model)
-    </div>
-    <div class="tab-pane fade" id="agregar" role="tabpanel" aria-labelledby="agregar-tab">
-        @Html.Partial("_AgregarSecciones", new VMSeccion())
+                <!-- Agregar Sección -->
+                <div class="tab-pane fade" id="agregar" role="tabpanel" aria-labelledby="agregar-tab">
+                    @Html.Partial("_AgregarSecciones", new VMSeccion())
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+

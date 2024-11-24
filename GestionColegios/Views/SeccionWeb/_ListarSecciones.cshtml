@@ -5,22 +5,26 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Capacidad Estudiantes</th>
-                    <th>Acciones</th>
+                    <th class="fs-5">Nombre</th>
+                    <th class="fs-5">Capacidad Estudiantes</th>
+                    <th class="fs-5">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var seccion in Model)
                 {
-                    <tr>
-                        <td>@seccion.Nombre</td>
-                        <td>@seccion.CapacidadEstudiantes</td>
-                        <td>
-                            <a href="@Url.Action("Edit", "SeccionWeb", new { id = seccion.Id })" class="btn btn-warning">Editar</a>
-                            <a href="@Url.Action("Delete", "SeccionWeb", new { id = seccion.Id })" class="btn btn-danger">Eliminar</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="fs-5">@Html.DisplayFor(modelItem => seccion.Nombre)</td>
+                    <td class="fs-5">@Html.DisplayFor(modelItem => seccion.CapacidadEstudiantes)</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "SeccionWeb", new { id = seccion.Id })" class="btn btn-warning btn-sm">
+                            Editar
+                        </a>
+                        <a href="@Url.Action("Delete", "SeccionWeb", new { id = seccion.Id })" class="btn btn-danger btn-sm">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

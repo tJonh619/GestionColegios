@@ -1,68 +1,92 @@
 ﻿@model  GestionColegios.ViewModels.VMMaestros
 
-<div class="row mt-2">
-    <div class="container">
-        <!-- Filtros y barra de búsqueda -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="row col-md-5">
-                <label class="col-md-6" for="searchType">Buscar por:</label>
-                <select id="searchType" class="form-select col-md-6">
-                    <option value="nombres">Nombres</option>
-                    <option value="apellidos">Apellidos</option>
-                    <option value="cedula">Cédula</option>
-                    <option value="especialidad">Especialidad</option>
-                    <option value="nivel">Nivel</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <input type="text" id="search" class="form-control" placeholder="Buscar...">
-            </div>
-
-            <div id="spinner" class="spinner-border text-primary" role="status" style="display: none;">
-                <span class="visually-hidden">Cargando...</span>
-            </div>
+<div class="container mt-3">
+    <!-- Card principal que incluye filtros y tabla -->
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title mb-0">
+                <i class="bi bi-person-badge-fill me-2"></i>Gestión de Maestros
+            </h3>
         </div>
+        <div class="card-body">
+            <!-- Filtros y barra de búsqueda -->
+            <div class="row g-3 align-items-center mb-4">
+                <!-- Filtro de búsqueda -->
+                <div class="col-md-4">
+                    <label for="searchType" class="form-label">Buscar por:</label>
+                    <select id="searchType" class="form-select">
+                        <option value="nombres">Nombres</option>
+                        <option value="apellidos">Apellidos</option>
+                        <option value="cedula">Cédula</option>
+                        <option value="especialidad">Especialidad</option>
+                        <option value="nivel">Nivel</option>
+                    </select>
+                </div>
 
-        <!-- Tabla de datos -->
-        <div>
-            <table style="width:100%" class="table-responsive table-striped table-hover table-bordered align-middle">
-                <thead style="background-color: #001c7d; color: white;">
-                    <tr>
-                        <th scope="col">Código</th>
-                        <th scope="col">Cédula</th>
-                        <th scope="col">Nombres</th>
-                        <th scope="col">Apellidos</th>
-                        <th scope="col">Especialidad</th>
-                        <th scope="col">Fecha de Contratación</th>
-                        <th scope="col">Nivel</th>
-                        <th scope="col">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    @foreach (var maestro in Model.Maestros)
-                    {
+                <!-- Barra de búsqueda -->
+                <div class="col-md-6">
+                    <label for="search" class="visually-hidden">Buscar</label>
+                    <input type="text" id="search" class="form-control" placeholder="Ingrese el texto a buscar...">
+                </div>
+
+                <!-- Spinner de carga -->
+                <div class="col-md-2 text-center">
+                    <div id="spinner" class="spinner-border text-primary" role="status" style="display: none;">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de datos -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle table-bordered">
+                    <thead class="table-dark">
                         <tr>
-                            <td>@maestro.Codigo</td>
-                            <td>@maestro.Cedula</td>
-                            <td>@maestro.Nombres</td>
-                            <td>@maestro.Apellidos</td>
-                            <td>@maestro.Especialidad</td>
-                            <td>@maestro.FechaContratacion.ToString("yyyy-MM-dd")</td>
-                            <td>@maestro.Nivel</td>
-                            <td>
-                                <a href="@Url.Action("Edit", "MaestrosWeb", new { id = maestro.Id })" class="btn btn-sm btn-warning">
-                                    <i class="fas fa-edit"></i> Editar
-                                </a>
-                                <a href="@Url.Action("Delete", "MaestrosWeb", new { id = maestro.Id })" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash-alt"></i> Eliminar
-                                </a>
-                            </td>
+                            <th scope="col" class="fs-5">Código</th>
+                            <th scope="col" class="fs-5">Cédula</th>
+                            <th scope="col" class="fs-5">Nombres</th>
+                            <th scope="col" class="fs-5">Apellidos</th>
+                            <th scope="col" class="fs-5">Especialidad</th>
+                            <th scope="col" class="fs-5">Fecha de Contratación</th>
+                            <th scope="col" class="fs-5">Nivel</th>
+                            <th scope="col" class="fs-5">Acciones</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody id="tableBody">
+                        @if (Model.Maestros != null && Model.Maestros.Any())
+                        {
+                            foreach (var maestro in Model.Maestros)
+                            {
+                                <tr>
+                                    <td class="fs-5">@maestro.Codigo</td>
+                                    <td class="fs-5">@maestro.Cedula</td>
+                                    <td class="fs-5">@maestro.Nombres</td>
+                                    <td class="fs-5">@maestro.Apellidos</td>
+                                    <td class="fs-5">@maestro.Especialidad</td>
+                                    <td class="fs-5">@maestro.FechaContratacion.ToString("yyyy-MM-dd")</td>
+                                    <td class="fs-5">@maestro.Nivel</td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "MaestrosWeb", new { id = maestro.Id })" class="btn btn-sm btn-warning me-2">
+                                            <i class="bi bi-pencil-square"></i> Editar
+                                        </a>
+                                        <a href="@Url.Action("Delete", "MaestrosWeb", new { id = maestro.Id })" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este maestro?');">
+                                            <i class="bi bi-trash3"></i> Eliminar
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center fs-5 text-muted">
+                                    <i class="bi bi-info-circle me-2"></i>No hay maestros registrados.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-
