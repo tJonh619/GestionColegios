@@ -83,13 +83,7 @@
                             <!-- Formulario de filtros -->
                             @using (Html.BeginForm("SeleccionarEstudiantes", "CalificacionWeb", FormMethod.Post, new { @class = "form-inline", id = "formFiltrarEstudiantes" }))
                             {
-                                <div class="form-group">
-                                    <label for="anioAcademico">Año Académico</label>
-                                    @Html.DropDownList("anioAcademico",
-                                        new SelectList(Model.AñoAcademicos, "Id", "Nombre"),
-                                        "Seleccione el Año Académico",
-                                        new { @class = "form-control fs-5" })
-                                </div>
+                                
 
                                 <div class="form-group">
                                     <label for="fechaMatricula">Fecha de Matrícula</label>

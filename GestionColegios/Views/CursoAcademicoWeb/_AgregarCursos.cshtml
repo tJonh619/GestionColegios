@@ -37,57 +37,81 @@
 
                         <!-- Nombre del Curso -->
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.CursoAcademico.Nombre, "Nombre del Curso", new { @class = "form-label fs-5" })
+                            @Html.Label("Nombre del Curso", new { @class = "form-label fs-5", @for = "Nombre" })
                             @Html.TextBoxFor(m => m.CursoAcademico.Nombre,
-                                new { @class = "form-control fs-5", @placeholder = "Introduce el nombre del curso", @required = "required" })
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control fs-5" },
+                                    { "placeholder", "Introduce el nombre del curso" },
+                                    { "required", "required" }
+                                }, esSoloLectura))
                             @Html.ValidationMessageFor(m => m.CursoAcademico.Nombre, "", new { @class = "text-danger fs-5" })
                         </div>
 
                         <!-- Maestro -->
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.CursoAcademico.MaestroId, "Maestro", new { @class = "form-label fs-5" })
+                            @Html.Label("Maestro", new { @class = "form-label fs-5", @for = "MaestroId" })
                             @Html.DropDownListFor(m => m.CursoAcademico.MaestroId,
                                 new SelectList(Model.Maestros, "Id", "Nombres", Model.CursoAcademico.MaestroId),
                                 "Seleccione un maestro",
-                                new { @class = "form-select fs-5", @required = "required" })
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-select fs-5" },
+                                    { "required", "required" }
+                                }, esSoloLectura))
                             @Html.ValidationMessageFor(m => m.CursoAcademico.MaestroId, "", new { @class = "text-danger fs-5" })
                         </div>
 
                         <!-- Sección -->
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.CursoAcademico.SeccionId, "Sección", new { @class = "form-label fs-5" })
+                            @Html.Label("Sección", new { @class = "form-label fs-5", @for = "SeccionId" })
                             @Html.DropDownListFor(m => m.CursoAcademico.SeccionId,
                                 new SelectList(Model.Secciones, "Id", "Nombre", Model.CursoAcademico.SeccionId),
                                 "Seleccione una sección",
-                                new { @class = "form-select fs-5", @required = "required" })
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-select fs-5" },
+                                    { "required", "required" }
+                                }, esSoloLectura))
                             @Html.ValidationMessageFor(m => m.CursoAcademico.SeccionId, "", new { @class = "text-danger fs-5" })
                         </div>
 
                         <!-- Año Académico -->
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.CursoAcademico.AñoAcademicoId, "Año Académico", new { @class = "form-label fs-5" })
+                            @Html.Label("Año Académico", new { @class = "form-label fs-5", @for = "AñoAcademicoId" })
                             @Html.DropDownListFor(m => m.CursoAcademico.AñoAcademicoId,
                                 new SelectList(Model.AñosAcademicos, "Id", "Nombre", Model.CursoAcademico.AñoAcademicoId),
                                 "Seleccione un año académico",
-                                new { @class = "form-select fs-5", @required = "required" })
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-select fs-5" },
+                                    { "required", "required" }
+                                }, esSoloLectura))
                             @Html.ValidationMessageFor(m => m.CursoAcademico.AñoAcademicoId, "", new { @class = "text-danger fs-5" })
                         </div>
 
                         <!-- Año -->
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.CursoAcademico.AñoId, "Año", new { @class = "form-label fs-5" })
+                            @Html.Label("Año", new { @class = "form-label fs-5", @for = "AñoId" })
                             @Html.DropDownListFor(m => m.CursoAcademico.AñoId,
                                 new SelectList(Model.Años, "Id", "Nombre", Model.CursoAcademico.AñoId),
                                 "Seleccione un año",
-                                new { @class = "form-select fs-5", @required = "required" })
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-select fs-5" },
+                                    { "required", "required" }
+                                }, esSoloLectura))
                             @Html.ValidationMessageFor(m => m.CursoAcademico.AñoId, "", new { @class = "text-danger fs-5" })
                         </div>
+
                     </div>
 
                     <!-- Footer de la tarjeta con botones de acción -->
-                    <div class="card-footer text-center fs-5">
-                        <button type="submit" id="btn-save" class="btn btn-primary me-2">
-                            <i class="fa fa-save me-1"></i> @(ViewBag.EsEdicion ? "Guardar Cambios" : "Registrar")
+                    <div class="card-footer text-center fs-4">
+                        <button type="button" id="btn-edit" class="btn btn-success me-2"
+                                style="@(ViewBag.EsEdicion ? "" : "display:none;")"
+                                onclick="activateEdit()">
+                            <i class="fa fa-edit me-1"></i> Editar
+                        </button>
+
+                        <button type="submit" id="btn-save" class="btn btn-primary me-2"
+                                style="@(ViewBag.EsEdicion ? "display:none;" : "")">
+                            <i class="fa fa-save me-1"></i> @(Model.CursoAcademico.Id == 0 ? "Registrar" : "Guardar Cambios")
                         </button>
                         @if (ViewBag.EsEdicion)
                         {
@@ -95,9 +119,11 @@
                                 <i class="fa fa-trash-alt me-1"></i> Eliminar
                             </button>
                         }
-                        <a href="@Url.Action("Index", "CursoAcademicoWeb")" class="btn btn-secondary">
-                            <i class="fa fa-arrow-left me-1"></i> Cancelar
-                        </a>
+
+
+                        <button type="button" id="btn-cancel-edit" class="btn btn-secondary me-2" onclick="cancelOrReturn()">
+                            <i class="fa fa-arrow-left me-1"></i> Regresar
+                        </button>
                     </div>
                 }
             </div>
