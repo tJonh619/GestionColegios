@@ -163,6 +163,7 @@ namespace GestionColegios.Controllers
                 maestro.Nivel = model.Maestro.Nivel;
                 maestro.FechaModificacion = DateTime.Now;
                 maestro.Activo = model.Maestro.Activo;
+                maestro.UsuarioId = model.Maestro.UsuarioId;  // Actualiza el UsuarioId
 
                 // Marca el maestro como modificado y guarda los cambios
                 db.Entry(maestro).State = EntityState.Modified;

@@ -172,6 +172,20 @@
                                     })
                                     @Html.ValidationMessageFor(model => model.Maestro.Nivel, "", new { @class = "text-danger" })
                                 </div>
+
+                                <!-- Usuario del maestro -->
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.Maestro.UsuarioId, "Usuario", new { @class = "form-label" })
+                                    @Html.DropDownListFor(
+                                        m => m.Maestro.UsuarioId,
+                                        new SelectList(Model.Usuarios, "Id", "NombreUsuario", Model.Maestro.UsuarioId),
+                                        "Selecciona un usuario",
+                                        new { @class = "form-select fs-5", @required = "required" }
+                                    )
+                                    @Html.ValidationMessageFor(m => m.Maestro.UsuarioId, "", new { @class = "text-danger" })
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
