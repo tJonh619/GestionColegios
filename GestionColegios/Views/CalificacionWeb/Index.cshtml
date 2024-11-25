@@ -16,15 +16,15 @@
                     <select id="searchType" class="form-select fs-5">
                         <option value="nombres">Nombre Estudiante</option>
                         <option value="apellidos">Apellido Estudiante</option>
-                        <option value="codigo">Código Estudiante</option>
-                        <option value="direccion">Dirección</option>
+                        <option value="codigo">Codigo Estudiante</option>
+                        <option value="direccion">Direccion</option>
                     </select>
                 </div>
 
                 <!-- Campo de búsqueda -->
                 <div class="form-group w-50">
                     <label for="search" class="form-label fs-5">Buscar</label>
-                    <input type="text" id="search" class="form-control fs-5" placeholder="Ingrese su búsqueda..." />
+                    <input type="text" id="search" class="form-control fs-5" placeholder="Ingrese su busqueda..." />
                 </div>
 
                 <!-- Spinner de carga -->
@@ -83,13 +83,14 @@
                             <!-- Formulario de filtros -->
                             @using (Html.BeginForm("SeleccionarEstudiantes", "CalificacionWeb", FormMethod.Post, new { @class = "form-inline", id = "formFiltrarEstudiantes" }))
                             {
-                                <div class="form-group">
+                                @*<div class="form-group">
                                     <label for="anioAcademico">Año Académico</label>
                                     @Html.DropDownList("anioAcademico",
                                         new SelectList(Model.AñoAcademicos, "Id", "Nombre"),
                                         "Seleccione el Año Académico",
                                         new { @class = "form-control fs-5" })
-                                </div>
+
+                                </div>*@
 
                                 <div class="form-group">
                                     <label for="fechaMatricula">Fecha de Matrícula</label>

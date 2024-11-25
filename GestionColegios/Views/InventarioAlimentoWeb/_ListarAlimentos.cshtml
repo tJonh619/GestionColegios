@@ -41,10 +41,10 @@
                                     <td class="fs-5">@Html.DisplayFor(modelItem => alimento.UnidadDeMedida)</td>
                                     <td class="fs-5">@Html.DisplayFor(modelItem => alimento.FechaModificacion)</td>
                                     <td class="fs-5">
-                                        <a href="@Url.Action("Edit", "InventarioAlimentos", new { id = alimento.Id })" class="btn btn-sm btn-warning me-2">
+                                        <a href="@Url.Action("Edit", "InventarioAlimentoWeb", new { id = alimento.Id })" class="btn btn-sm btn-warning me-2">
                                             <i class="bi bi-pencil-square"></i> Editar
                                         </a>
-                                        <a href="@Url.Action("Delete", "InventarioAlimentos", new { id = alimento.Id })" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas desactivar este alimento?');">
+                                        <a href="@Url.Action("Delete", "InventarioAlimentoWeb", new { id = alimento.Id })" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas desactivar este alimento?');">
                                             <i class="bi bi-x-circle"></i> Desactivar
                                         </a>
                                     </td>
