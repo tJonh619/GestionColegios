@@ -346,10 +346,6 @@
     <Compile Include="ViewModels\VMUsuario.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-GestionColegios-20240830053851.mdf" />
-    <Content Include="App_Data\aspnet-GestionColegios-20240830053851_log.ldf">
-      <DependentUpon>aspnet-GestionColegios-20240830053851.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -634,7 +630,9 @@
     <Content Include="Views\CalificacionWeb\Edit4.cshtml" />
     <Content Include="Views\CalificacionWeb\_TablaEstudianteModal.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
     <Content Include="Content\bootstrap.rtl.css.map" />

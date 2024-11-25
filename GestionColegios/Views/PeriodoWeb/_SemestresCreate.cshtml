@@ -19,7 +19,7 @@
             @using (Html.BeginForm(ViewBag.EsEdicion ? "EditSemestre" : "CreateSemestre", "PeriodoWeb", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
-                @Html.HiddenFor(model => model.Periodo.Id)
+                @Html.HiddenFor(model => model.Semestre.Id)
 
                 <div class="row">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -29,56 +29,23 @@
                         <div class="card shadow border-0">
                             <div class="card-header bg-primary text-white fs-5">
                                 <label class="m-md-1">
-                                    <i class="fa fa-calendar-alt me-2" aria-hidden="true"></i> Información del Periodo
+                                    <i class="fa fa-calendar-alt me-2" aria-hidden="true"></i> Información del Semestre
                                 </label>
                             </div>
 
                             <div class="card-body">
                                 <!-- Nombre del Periodo -->
                                 <div class="mb-3">
-                                    @Html.LabelFor(model => model.Periodo.Nombre, "Nombre del Periodo", new { @class = "form-label" })
-                                    @Html.TextBoxFor(model => model.Periodo.Nombre,
+                                    @Html.LabelFor(model => model.Semestre.Nombre, "Nombre del Semestre", new { @class = "form-label" })
+                                    @Html.TextBoxFor(model => model.Semestre.Nombre,
                                         ObtenerAtributos(new Dictionary<string, object> {
                                             { "class", "form-control fs-5" },
-                                            { "placeholder", "Ingrese el nombre del periodo" }
+                                            { "placeholder", "Ingrese el nombre del Semestre" }
                                         }, esSoloLectura))
-                                    @Html.ValidationMessageFor(model => model.Periodo.Nombre, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(model => model.Semestre.Nombre, "", new { @class = "text-danger" })
                                 </div>
 
-                                <!-- Número del Periodo -->
-                                <div class="mb-3">
-                                    @Html.LabelFor(model => model.Periodo.Numero, "Número del Periodo", new { @class = "form-label" })
-                                    @Html.TextBoxFor(model => model.Periodo.Numero,
-                                        ObtenerAtributos(new Dictionary<string, object> {
-                                            { "class", "form-control fs-5" },
-                                            { "placeholder", "Ingrese el número del periodo" }
-                                        }, esSoloLectura))
-                                    @Html.ValidationMessageFor(model => model.Periodo.Numero, "", new { @class = "text-danger" })
-                                </div>
-
-                                <!-- Año Académico -->
-                                <div class="mb-3">
-                                    @Html.LabelFor(model => model.Periodo.AñoId, "Año Académico", new { @class = "form-label" })
-                                    @Html.DropDownListFor(model => model.Periodo.AñoId,
-                                        new SelectList(Model.Años, "Id", "Nombre", Model.Periodo.AñoId),
-                                        "Seleccione un año",
-                                        ObtenerAtributos(new Dictionary<string, object> {
-                                            { "class", "form-control fs-5" }
-                                        }, esSoloLectura))
-                                    @Html.ValidationMessageFor(model => model.Periodo.AñoId, "", new { @class = "text-danger" })
-                                </div>
-
-                                <!-- Fecha de Modificación -->
-                                <div class="mb-3">
-                                    @Html.LabelFor(model => model.Periodo.FechaModificacion, "Fecha de Modificación", new { @class = "form-label" })
-                                    @Html.TextBoxFor(model => model.Periodo.FechaModificacion, "{0:yyyy-MM-dd}",
-                                        ObtenerAtributos(new Dictionary<string, object> {
-                                            { "class", "form-control fs-5" },
-                                            { "type", "date" },
-                                            { "required", "required" }
-                                        }, esSoloLectura))
-                                    @Html.ValidationMessageFor(model => model.Periodo.FechaModificacion, "", new { @class = "text-danger" })
-                                </div>
+                             
                             </div>
 
                             <div class="card-footer text-center fs-5">
@@ -92,7 +59,7 @@
                                 <!-- Botón Guardar/Registrar dependiendo del estado -->
                                 <button type="submit" id="btn-save" class="btn btn-primary m-1"
                                         style="@(ViewBag.EsEdicion ? "display:none;" : "")">
-                                    @(Model.Periodo.Id == 0 ? "Registrar" : "Guardar Cambios")
+                                    @(Model.Semestre.Id == 0 ? "Registrar" : "Guardar Cambios")
                                 </button>
 
                                 <!-- Botón Regresar -->
