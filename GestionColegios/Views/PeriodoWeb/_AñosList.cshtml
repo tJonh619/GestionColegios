@@ -1,28 +1,54 @@
 ﻿@model GestionColegios.ViewModels.VMAñosPeriodosSemestres
 
-<div class="row mt-4">
-    <div class="col-md-12">
-        <h4>Lista de Años Académicos</h4>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var año in Model.Años)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => año.Nombre)</td>
-                        <td>
-                            @Html.ActionLink("Editar", "EditAño", new { id = año.Id }, new { @class = "btn btn-warning" }) |
-                            @Html.ActionLink("Eliminar", "DeleteAño", new { id = año.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este año académico?');" })
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="container mt-3">
+    <!-- Card principal que incluye la lista de años académicos -->
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title mb-0">
+                <i class="bi bi-calendar3 me-2"></i>Lista de Año
+            </h3>
+        </div>
+        <div class="card-body">
+            <!-- Tabla de años académicos -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col" class="fs-5">Nombre</th>
+                            <th scope="col" class="fs-5">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Años != null && Model.Años.Any())
+                        {
+                            foreach (var año in Model.Años)
+                            {
+                                <tr>
+                                    <td class="fs-5">@Html.DisplayFor(modelItem => año.Nombre)</td>
+                                    <td>
+                                        <a href="@Url.Action("EditAño", new { id = año.Id })" class="btn btn-sm btn-warning me-2">
+                                            <i class="bi bi-pencil-square"></i> Editar
+                                        </a>
+                                        <a href="@Url.Action("DeleteAño", new { id = año.Id })" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este año académico?');">
+                                            <i class="bi bi-trash-fill"></i> Eliminar
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="2" class="text-center fs-5 text-muted">
+                                    <i class="bi bi-info-circle me-2"></i>No hay años académicos registrados.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
 

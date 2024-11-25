@@ -1,28 +1,32 @@
 ﻿@model GestionColegios.ViewModels.VMAñosPeriodosSemestres
 
 
-<div class="row mt-4">
+<div class="row mt-3">
     <div class="col-md-12">
-        <h4>Lista de Periodos</h4>
-        <table class="table table-bordered">
-            <thead>
+        <h4 class="fs-5">Lista de Periodos</h4>
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
                 <tr>
-                    <th>Nombre</th>
-                    <th>Número</th>
-                    <th>Año Académico</th>
-                    <th>Acciones</th>
+                    <th class="fs-5">Nombre</th>
+                    <th class="fs-5">Número</th>
+                    <th class="fs-5">Año Académico</th>
+                    <th class="fs-5">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var periodo in Model.Periodos)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(modelItem => periodo.Nombre)</td>
-                        <td>@Html.DisplayFor(modelItem => periodo.Numero)</td>
-                        <td>@Html.DisplayFor(modelItem => periodo.Año.Nombre)</td>
+                        <td class="fs-5">@Html.DisplayFor(modelItem => periodo.Nombre)</td>
+                        <td class="fs-5">@Html.DisplayFor(modelItem => periodo.Numero)</td>
+                        <td class="fs-5">@Html.DisplayFor(modelItem => periodo.Año.Nombre)</td>
                         <td>
-                            @Html.ActionLink("Editar", "EditPeriodo", new { id = periodo.Id }, new { @class = "btn btn-warning" }) |
-                            @Html.ActionLink("Desactivar", "Desactivar", new { id = periodo.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este periodo?');" })
+                            <a href="@Url.Action("EditPeriodo", new { id = periodo.Id })" class="btn btn-sm btn-warning me-2">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+                            <a href="@Url.Action("Desactivar", new { id = periodo.Id })" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este periodo?');">
+                                <i class="bi bi-x-circle"></i> Desactivar
+                            </a>
                         </td>
                     </tr>
                 }
@@ -30,4 +34,5 @@
         </table>
     </div>
 </div>
+
 

@@ -1,32 +1,37 @@
 ﻿@model GestionColegios.ViewModels.VMUsuario
 
-<div class="panel panel-default mt-2">
-    <div class="panel-heading">
-        <h3 class="panel-title">Lista de Permisos</h3>
+<div class="card mt-3 shadow">
+    <div class="card-header bg-primary text-white">
+        <h3 class="card-title mb-0">Lista de Permisos</h3>
     </div>
-    <div class="panel-body">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.Permisos.First().Nombre)</th>
-                    <th>@Html.DisplayNameFor(model => model.Permisos.First().Descripcion)</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var permiso in Model.Permisos)
-                {
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
                     <tr>
-                        <td>@Html.DisplayFor(modelItem => permiso.Nombre)</td>
-                        <td>@Html.DisplayFor(modelItem => permiso.Descripcion)</td>
-                        <td>
-                            @Html.ActionLink("Editar", "EditPermiso", new { id = permiso.Id }, new { @class = "btn btn-warning" }) |
-                            @Html.ActionLink("Desactivar", "DeletePermiso", new { id = permiso.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas eliminar este permiso?');" })
-                        </td>
+                        <th class="fs-5">@Html.DisplayNameFor(model => model.Permisos.First().Nombre)</th>
+                        <th class="fs-5">@Html.DisplayNameFor(model => model.Permisos.First().Descripcion)</th>
+                        <th class="fs-5">Acciones</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var permiso in Model.Permisos)
+                    {
+                        <tr>
+                            <td class="fs-5">@Html.DisplayFor(modelItem => permiso.Nombre)</td>
+                            <td class="fs-5">@Html.DisplayFor(modelItem => permiso.Descripcion)</td>
+                            <td class="fs-5">
+                                <a href="@Url.Action("EditPermiso", new { id = permiso.Id })" class="btn btn-sm btn-warning me-2">
+                                    <i class="bi bi-pencil-square"></i> <span class="fs-5">Detalles</span>
+                                </a>
+                                <a href="@Url.Action("DeletePermiso", new { id = permiso.Id })" class="btn btn-sm btn-danger px-4 py-2" onclick="return confirm('¿Estás seguro de que deseas eliminar este permiso?');">
+                                    <i class="bi bi-trash3-fill"></i> <span class="fs-5">Desactivar</span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-

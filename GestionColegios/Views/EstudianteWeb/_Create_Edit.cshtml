@@ -12,224 +12,231 @@
         return atributosBase.Concat(soloLectura).ToDictionary(k => k.Key, v => v.Value);
     }
 }
+<div class="container mt-3">
+    @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "EstudianteWeb", FormMethod.Post, new { @id = "form-estudiante" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Estudiante.Id)
 
-<div class="row mt-2">
-    <div class="col-md-12">
-        @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "EstudianteWeb", FormMethod.Post, new { @id = "form-estudiante" }))
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(model => model.Estudiante.Id)
-
-        <div class="row">
-            <div class="col-md-5 card">
-                <div class="row card" style="background-color: #001c7d">
-                    <label class="m-md-1" style="color:white">Información Personal</label>
-                </div>
-
-                <!-- Codigo -->
-                <div class="form-group mb-3 has-error">
-                    <label for="Codigo Estudiantil">Codigo Estudiantil</label>
-                    @Html.TextBoxFor(model => model.Estudiante.CodigoEstudiante,
-                        ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" },
-                            { "placeholder", "Ingrese el codigo de estudiante" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Estudiante.CodigoEstudiante, "", new { @class = "text-danger" })
-                </div>
-
-                <!-- Nombres -->
-                <div class="form-group mb-3 has-error">
-                    <label for="Nombres">Nombres</label>
-                    @Html.TextBoxFor(model => model.Estudiante.Nombres,
-                        ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" },
-                            { "placeholder", "Ingrese los nombres" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Estudiante.Nombres, "", new { @class = "text-danger" })
-                </div>
-
-                <!-- Apellidos -->
-                <div class="form-group mb-3 has-error">
-                    <label for="Apellidos">Apellidos</label>
-                    @Html.TextBoxFor(model => model.Estudiante.Apellidos,
-                        ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" },
-                            { "placeholder", "Ingrese los apellidos" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Estudiante.Apellidos, "", new { @class = "text-danger" })
-                </div>
-
-                <!-- Barrios -->
-                <div class="form-group mb-3 has-error">
-                    <label for="Barrio">Barrio</label>
-                    @Html.TextBoxFor(model => model.Estudiante.Barrio,
-                        ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" },
-                            { "placeholder", "Ingrese el Bario" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Estudiante.Barrio, "", new { @class = "text-danger" })
-                </div>
-
-
-                <!-- Fecha de nacimiento -->
-                <div class="form-group mb-3 has-error">
-                    <label for="FechaNacimiento">Fecha de Nacimiento</label>
-                    @Html.TextBoxFor(model => model.Estudiante.FechaNacimiento, "{0:yyyy-MM-dd}",
-                        ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" },
-                            { "type", "date" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Estudiante.FechaNacimiento, "", new { @class = "text-danger" })
-                </div>
-
-                <!-- Sexo -->
-                <div class="form-group mb-3 has-error">
-                    <label for="Sexo">Sexo</label>
-                    @Html.DropDownListFor(model => model.Estudiante.Sexo,
-                        new SelectList(new List<string> { "Masculino", "Femenino" }),
-                        "Seleccione el sexo",
-                        ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Estudiante.Sexo, "", new { @class = "text-danger" })
-                </div>
-
-                <!-- Dirección -->
-                <div class="form-group mb-3 has-error">
-                    <label for="Direccion">Dirección</label>
-                    @Html.TextBoxFor(model => model.Estudiante.Direccion,
-                        ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" },
-                            { "placeholder", "Ingrese la dirección" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Estudiante.Direccion, "", new { @class = "text-danger" })
-                </div>
-
-     
-
-
-            </div>
-
-            <!-- Información del tutor -->
-            @Html.HiddenFor(model => model.Tutor.Id)
-            <div class="col-md-5 card">
-                <div class="row card" style="background-color: #001c7d">
-                    <label class="m-md-1" style="color:white">Información del tutor</label>
-                </div>
-
-                <!-- Nombres del Tutor -->
-                <div class="form-group mb-3 has-error">
-                    <label for="TutorNombres">Nombres del Tutor</label>
-                    @Html.TextBoxFor(model => model.Tutor.Nombres,
-                        ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" },
-                            { "placeholder", "Ingrese los nombres del tutor" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Tutor.Nombres, "", new { @class = "text-danger" })
-                </div>
-
-                <!-- Apellidos del Tutor -->
-                <div class="form-group mb-3 has-error">
-                    <label for="TutorApellidos">Apellidos del Tutor</label>
-                    @Html.TextBoxFor(model => model.Tutor.Apellidos,
-                        ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" },
-                            { "placeholder", "Ingrese los apellidos del tutor" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Tutor.Apellidos, "", new { @class = "text-danger" })
-                </div>
-
-                <!-- Cédula del Tutor -->
-                <div class="form-group mb-3 has-error">
-                    <label for="TutorCedula">Cédula del Tutor</label>
-                    @Html.TextBoxFor(model => model.Tutor.Cedula,
-                        ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" },
-                            { "placeholder", "Ingrese la cédula del tutor" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Tutor.Cedula, "", new { @class = "text-danger" })
-                </div>
-
-                <!-- Relación del Tutor -->
-                <div class="form-group mb-3 has-error">
-                    <label for="TutorRelacion">Relación con el Estudiante</label>
-                    @Html.TextBoxFor(model => model.Tutor.RelacionConElEstudiante,
-                        ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" },
-                            { "placeholder", "Ingrese la relación con el estudiante" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Tutor.RelacionConElEstudiante, "", new { @class = "text-danger" })
-                </div>
-
-                <!-- Dirección del Tutor -->
-                <div class="form-group mb-3 has-error">
-                    <label for="TutorDireccion">Dirección del Tutor</label>
-                    @Html.TextBoxFor(model => model.Tutor.Direccion,
-                        ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" },
-                            { "placeholder", "Ingrese la dirección del tutor" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Tutor.Direccion, "", new { @class = "text-danger" })
-                </div>
-
-                <!-- Celular del Tutor -->
-                <div class="form-group mb-3 has-error">
-                    <label for="TutorCelular">Celular del Tutor</label>
-                    @Html.TextBoxFor(model => model.Tutor.Celular,
-                        ObtenerAtributos(new Dictionary<string, object> {
-                            { "class", "form-control" },
-                            { "placeholder", "Ingrese el celular del tutor" },
-                            { "required", "required" }
-                        }, esSoloLectura))
-                    @Html.ValidationMessageFor(model => model.Tutor.Celular, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-           
-
-
-            <div class="form-group col-md-2 mt-4">
-                <!-- Botón Guardar Cambios -->
-                <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
-                        style="@(ViewBag.EsEdicion ? "" : "display:none;")" onclick="activateEdit()">
-                    Editar
-                </button>
-
-                @if (ViewBag.EsEdicion)
-                {
-                    <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1" onclick="deleteRecord()">
-                        Eliminar
-                    </button>
-                }
-
-                <!-- Botón Guardar Cambios, oculto inicialmente si está en modo edición -->
-                <button type="submit" id="btn-save" class="btn btn-primary m-1"
-                        style="@(ViewBag.EsEdicion ? "display:none;" : "")">
-                    @(Model.Estudiante.Id == 0 ? "Registrar" : "Guardar Cambios")
-                </button>
-
-                <!-- Botón Cancelar, oculto inicialmente -->
-                <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1" onclick="cancelOrReturn()">
-                    Regresar
-                </button>
-            </div>
+        <!-- Card Principal -->
+    <div class="card shadow border-0">
+        <!-- Cabecera de la Card Principal -->
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title mb-0">
+                <i class="fa fa-user me-2"></i>
+                Información del Estudiante y Tutor
+            </h3>
         </div>
-        }
-    </div>
-</div>
 
+        <div class="card-body">
+            <div class="row">
+                <!-- Card de Información Personal del Estudiante -->
+                <div class="col-md-6">
+                    <div class="card shadow border-0">
+                        <div class="card-header bg-secondary text-white">
+                            <h4 class="card-title mb-0">
+                                <i class="fa fa-info-circle me-2"></i>
+                                Información Personal
+                            </h4>
+                        </div>
+                        <div class="card-body fs-3">
+                            <!-- Código Estudiantil -->
+                            <div class="mb-3">
+                                <label for="CodigoEstudiantil" class="form-label">Código Estudiantil</label>
+                                @Html.TextBoxFor(model => model.Estudiante.CodigoEstudiante, new
+                                {
+                                    @class = "form-control fs-5",
+                                    @placeholder = "Ingrese el código de estudiante",
+                                    @required = "required"
+                                })
+                                @Html.ValidationMessageFor(model => model.Estudiante.CodigoEstudiante, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Nombres -->
+                            <div class="mb-3">
+                                <label for="Nombres" class="form-label">Nombres</label>
+                                @Html.TextBoxFor(model => model.Estudiante.Nombres, new
+                                {
+                                    @class = "form-control fs-5",
+                                    @placeholder = "Ingrese los nombres",
+                                    @required = "required"
+                                })
+                                @Html.ValidationMessageFor(model => model.Estudiante.Nombres, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Apellidos -->
+                            <div class="mb-3">
+                                <label for="Apellidos" class="form-label">Apellidos</label>
+                                @Html.TextBoxFor(model => model.Estudiante.Apellidos, new
+                                {
+                                    @class = "form-control fs-5",
+                                    @placeholder = "Ingrese los apellidos",
+                                    @required = "required"
+                                })
+                                @Html.ValidationMessageFor(model => model.Estudiante.Apellidos, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Fecha de Nacimiento -->
+                            <div class="mb-3">
+                                <label for="FechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                                @Html.TextBoxFor(model => model.Estudiante.FechaNacimiento, "{0:yyyy-MM-dd}", new
+                                {
+                                    @class = "form-control fs-5",
+                                    @type = "date",
+                                    @required = "required"
+                                })
+                                @Html.ValidationMessageFor(model => model.Estudiante.FechaNacimiento, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Barrio -->
+                            <div class="mb-3">
+                                <label for="Barrio" class="form-label">Barrio</label>
+                                @Html.TextBoxFor(model => model.Estudiante.Barrio, new
+                                {
+                                    @class = "form-control fs-5",
+                                    @placeholder = "Ingrese el barrio",
+                                    @required = "required"
+                                })
+                                @Html.ValidationMessageFor(model => model.Estudiante.Barrio, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Sexo -->
+                            <div class="mb-3">
+                                <label for="Sexo" class="form-label">Sexo</label>
+                                @Html.DropDownListFor(model => model.Estudiante.Sexo, new SelectList(new List<string> { "Masculino", "Femenino" }), "Seleccione el sexo", new
+                                {
+                                    @class = "form-select fs-5",
+                                    @required = "required"
+                                })
+                                @Html.ValidationMessageFor(model => model.Estudiante.Sexo, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Dirección -->
+                            <div class="mb-3">
+                                <label for="Direccion" class="form-label">Dirección</label>
+                                @Html.TextBoxFor(model => model.Estudiante.Direccion, new
+                                {
+                                    @class = "form-control fs-5",
+                                    @placeholder = "Ingrese la dirección",
+                                    @required = "required"
+                                })
+                                @Html.ValidationMessageFor(model => model.Estudiante.Direccion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card de Información del Tutor -->
+                <div class="col-md-6">
+                    <div class="card shadow border-0">
+                        <div class="card-header bg-secondary text-white">
+                            <h4 class="card-title mb-0">
+                                <i class="fa fa-user-friends me-2"></i>
+                                Información del Tutor
+                            </h4>
+                        </div>
+                        <div class="card-body fs-3">
+                            <!-- Nombres del Tutor -->
+                            <div class="mb-3">
+                                <label for="TutorNombres" class="form-label">Nombres del Tutor</label>
+                                @Html.TextBoxFor(model => model.Tutor.Nombres, new
+                                {
+                                    @class = "form-control fs-5",
+                                    @placeholder = "Ingrese los nombres del tutor",
+                                    @required = "required"
+                                })
+                                @Html.ValidationMessageFor(model => model.Tutor.Nombres, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Apellidos del Tutor -->
+                            <div class="mb-3">
+                                <label for="TutorApellidos" class="form-label">Apellidos del Tutor</label>
+                                @Html.TextBoxFor(model => model.Tutor.Apellidos, new
+                                {
+                                    @class = "form-control fs-5",
+                                    @placeholder = "Ingrese los apellidos del tutor",
+                                    @required = "required"
+                                })
+                                @Html.ValidationMessageFor(model => model.Tutor.Apellidos, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Cédula del Tutor -->
+                            <div class="mb-3">
+                                <label for="TutorCedula" class="form-label">Cédula del Tutor</label>
+                                @Html.TextBoxFor(model => model.Tutor.Cedula, new
+                                {
+                                    @class = "form-control fs-5",
+                                    @placeholder = "Ingrese la cédula del tutor",
+                                    @required = "required"
+                                })
+                                @Html.ValidationMessageFor(model => model.Tutor.Cedula, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Relación con el Estudiante -->
+                            <div class="mb-3">
+                                <label for="TutorRelacion" class="form-label">Relación con el Estudiante</label>
+                                @Html.TextBoxFor(model => model.Tutor.RelacionConElEstudiante, new
+                                {
+                                    @class = "form-control fs-5",
+                                    @placeholder = "Ingrese la relación con el estudiante",
+                                    @required = "required"
+                                })
+                                @Html.ValidationMessageFor(model => model.Tutor.RelacionConElEstudiante, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Dirección del Tutor -->
+                            <div class="mb-3">
+                                <label for="TutorDireccion" class="form-label">Dirección del Tutor</label>
+                                @Html.TextBoxFor(model => model.Tutor.Direccion, new
+                                {
+                                    @class = "form-control fs-5",
+                                    @placeholder = "Ingrese la dirección del tutor",
+                                    @required = "required"
+                                })
+                                @Html.ValidationMessageFor(model => model.Tutor.Direccion, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Celular del Tutor -->
+                            <div class="mb-3">
+                                <label for="TutorCelular" class="form-label">Celular del Tutor</label>
+                                @Html.TextBoxFor(model => model.Tutor.Celular, new
+                                {
+                                    @class = "form-control fs-5",
+                                    @placeholder = "Ingrese el celular del tutor",
+                                    @required = "required"
+                                })
+                                @Html.ValidationMessageFor(model => model.Tutor.Celular, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="card-footer mt-3 text-center fs-4">
+            <button type="submit" id="btn-save" class="btn btn-primary me-2"
+                    style="@(ViewBag.EsEdicion ? "display:none;" : "")">
+                <i class="fa fa-save me-1"></i> @(Model.Estudiante.Id == 0 ? "Registrar" : "Guardar Cambios")
+            </button>
+
+            @if (ViewBag.EsEdicion)
+            {
+                <button type="button" id="btn-delete" class="btn btn-danger me-2" onclick="deleteRecord()">
+                    <i class="fa fa-trash-alt me-1"></i> Eliminar
+                </button>
+            }
+
+            <!-- Botón de cancelar edición -->
+            <a href="@Url.Action("Index", "AñoAcademicoWeb")" class="btn btn-secondary">
+                <i class="fa fa-arrow-left me-1"></i> Cancelar
+            </a>
+        </div>
+    </div>
+    }
+</div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

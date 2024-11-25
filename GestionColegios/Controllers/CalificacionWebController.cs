@@ -61,6 +61,12 @@ namespace GestionColegios.Controllers
 
         public ActionResult GestionAcademica()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                // Si no está autenticado, redirigir a la página de inicio de sesión
+                return RedirectToAction("Login", "Account");
+            }
+
             var vm = new VMCalificaciones
             {
                 Calificaciones = db.Calificaciones.Include(c => c.Estudiante).Include(c => c.Materia).ToList(),

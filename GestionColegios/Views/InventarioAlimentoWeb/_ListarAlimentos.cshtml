@@ -1,41 +1,67 @@
 ﻿
 @model GestionColegios.ViewModels.VMInventarioAlimento
 
-<div class="tab-pane fade" id="listar-alimentos" role="tabpanel" aria-labelledby="listar-alimentos-tab">
-    <div class="panel panel-default mt-2">
-        <div class="panel-heading">
-            <h3 class="panel-title">Lista de Alimentos</h3>
-        </div>
-        <div class="panel-body">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Codigo</th>
-                        <th>Nombre del Alimento</th>
-                        <th>Stock</th>
-                        <th>Unidad de Medida</th>
-                        <th>Fecha de Reabastecimiento</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var alimento in Model.InventarioAlimentos)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(modelItem => alimento.Codigo)</td>
-                            <td>@Html.DisplayFor(modelItem => alimento.NombreAlimento)</td>
-                            <td>@Html.DisplayFor(modelItem => alimento.Stock)</td>
-                            <td>@Html.DisplayFor(modelItem => alimento.UnidadDeMedida)</td>
-                            <td>@Html.DisplayFor(modelItem => alimento.FechaModificacion)</td>
 
-                            <td>
-                                @Html.ActionLink("Editar", "Edit", new { id = alimento.Id }, new { @class = "btn btn-warning" }) |
-                                @Html.ActionLink("Desactivar", "Delete", new { id = alimento.Id }, new { @class = "btn btn-danger", onclick = "return confirm('¿Estás seguro de que deseas desactivar este alimento?');" })
-                            </td>
+<div class="container mt-4">
+    <!-- Tarjeta principal -->
+    <div class="card shadow-lg">
+        <!-- Encabezado de la tarjeta -->
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="card-title mb-0">
+                <i class="bi bi-box-seam me-2"></i>Lista de Alimentos
+            </h3>
+            <a href="@Url.Action("Create", "InventarioAlimentos")" class="btn btn-light">
+                <i class="bi bi-plus-circle me-1"></i>Agregar Alimento
+            </a>
+        </div>
+
+        <!-- Cuerpo de la tarjeta -->
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="fs-5">Código</th>
+                            <th scope="col" class="fs-5">Nombre del Alimento</th>
+                            <th scope="col" class="fs-5">Stock</th>
+                            <th scope="col" class="fs-5">Unidad de Medida</th>
+                            <th scope="col" class="fs-5">Fecha de Reabastecimiento</th>
+                            <th scope="col" class="fs-5">Acciones</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @if (Model.InventarioAlimentos != null && Model.InventarioAlimentos.Any())
+                        {
+                            foreach (var alimento in Model.InventarioAlimentos)
+                            {
+                                <tr>
+                                    <td class="fs-5">@Html.DisplayFor(modelItem => alimento.Codigo)</td>
+                                    <td class="fs-5">@Html.DisplayFor(modelItem => alimento.NombreAlimento)</td>
+                                    <td class="fs-5">@Html.DisplayFor(modelItem => alimento.Stock)</td>
+                                    <td class="fs-5">@Html.DisplayFor(modelItem => alimento.UnidadDeMedida)</td>
+                                    <td class="fs-5">@Html.DisplayFor(modelItem => alimento.FechaModificacion)</td>
+                                    <td class="fs-5">
+                                        <a href="@Url.Action("Edit", "InventarioAlimentos", new { id = alimento.Id })" class="btn btn-sm btn-warning me-2">
+                                            <i class="bi bi-pencil-square"></i> Editar
+                                        </a>
+                                        <a href="@Url.Action("Delete", "InventarioAlimentos", new { id = alimento.Id })" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas desactivar este alimento?');">
+                                            <i class="bi bi-x-circle"></i> Desactivar
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center fs-5 text-muted">
+                                    <i class="bi bi-info-circle me-2"></i>No hay alimentos registrados actualmente.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

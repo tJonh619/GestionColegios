@@ -36,117 +36,113 @@
 }
 
 
-
-<div class="tab-pane fade show active" id="agregar-alimento" role="tabpanel" aria-labelledby="agregar-alimento-tab">
-    <div class="panel panel-default mt-2">
-        <div class="panel-heading bg-primary text-white">
-            <h3 class="panel-title p-2">
-                <i class="fa fa-leaf mr-2"></i>
-                @(ViewBag.EsEdicion ? "Editar Alimento" : "Agregar Alimento")
-            </h3>
-        </div>
-        <div class="panel-body">
-            @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "InventarioAlimentoWeb", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                @Html.HiddenFor(m => m.InventarioAlimento.Id)
-
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                <!-- Código de Alimento -->
-                <div class="form-group" style="display:none;">
-                    @Html.LabelFor(m => m.InventarioAlimento.Codigo, new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.InventarioAlimento.Codigo,
-                            ObtenerAtributos(new Dictionary<string, object> {
-                                { "class", "form-control" }, { "required", "required" }, { "placeholder", "Código del alimento" }
-                            }, esSoloLectura))
-                        @Html.ValidationMessageFor(m => m.InventarioAlimento.Codigo, "", new { @class = "text-danger" })
-                    </div>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow border-0">
+                <!-- Cabecera de la tarjeta -->
+                <div class="card-header bg-primary text-white fs-5">
+                    <h3 class="card-title mb-0" id="titulo-alimento">
+                        <i class="fa fa-leaf me-2"></i>
+                        @(ViewBag.EsEdicion ? "Editar Alimento" : "Agregar Alimento")
+                    </h3>
                 </div>
 
+                <!-- Cuerpo de la tarjeta -->
+                <div class="card-body fs-5">
+                    @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "InventarioAlimentoWeb", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.InventarioAlimento.Id)
 
-                <!-- Nombre de Alimento -->
-                <div class="form-group">
-                    @Html.LabelFor(m => m.InventarioAlimento.NombreAlimento, new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(m => m.InventarioAlimento.NombreAlimento,
-                            new SelectList(new List<SelectListItem> {
-                                new SelectListItem { Value = "Arroz", Text = "Arroz" },
-                                new SelectListItem { Value = "Aceite", Text = "Aceite" },
-                                new SelectListItem { Value = "Cereal", Text = "Cereal" },
-                                new SelectListItem { Value = "Frijoles", Text = "Frijoles" },
-                                new SelectListItem { Value = "Maíz", Text = "Maíz" }
-                            }, "Value", "Text", Model.InventarioAlimento.NombreAlimento),
-                            "Seleccione un alimento",
-                            ObtenerAtributos(new Dictionary<string, object> {
-                                { "class", "form-control" }, { "required", "required" }
-                            }, esSoloLectura))
-                        @Html.ValidationMessageFor(m => m.InventarioAlimento.NombreAlimento, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger", @aria_live = "polite" })
 
-                <!-- Stock -->
-                <div class="form-group">
-                    @Html.LabelFor(m => m.InventarioAlimento.Stock, new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.InventarioAlimento.Stock,
-                            ObtenerAtributos(new Dictionary<string, object> {
-                                { "class", "form-control" }, { "required", "required" }, { "placeholder", "Introduce el stock" }
-                            }, esSoloLectura))
-                        @Html.ValidationMessageFor(m => m.InventarioAlimento.Stock, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+                        <!-- Código de Alimento (oculto) -->
+                        <div class="mb-3" style="display:none;">
+                            @Html.LabelFor(m => m.InventarioAlimento.Codigo, "Código del Alimento", new { @class = "form-label", @aria_hidden = "true" })
+                            @Html.TextBoxFor(m => m.InventarioAlimento.Codigo,
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control fs-5" },
+                                    { "aria-label", "Código del alimento" },
+                                    { "required", "required" },
+                                    { "placeholder", "Código del alimento" }
+                                }, esSoloLectura))
+                        </div>
 
-                <!-- Unidad de Medida -->
-                <div class="form-group">
-                    @Html.LabelFor(m => m.InventarioAlimento.UnidadDeMedida, new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(m => m.InventarioAlimento.UnidadDeMedida,
-                            new SelectList(new List<SelectListItem> {
-                                new SelectListItem { Value = "Libras", Text = "Libras" },
-                                new SelectListItem { Value = "Cuartas", Text = "Cuartas" }
-                            }, "Value", "Text", Model.InventarioAlimento.UnidadDeMedida),
-                            "Seleccione una unidad",
-                            ObtenerAtributos(new Dictionary<string, object> {
-                                { "class", "form-control" }, { "required", "required" }
-                            }, esSoloLectura))
-                        @Html.ValidationMessageFor(m => m.InventarioAlimento.UnidadDeMedida, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+                        <!-- Nombre de Alimento -->
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.InventarioAlimento.NombreAlimento, "Nombre del Alimento", new { @class = "form-label", @id = "nombre-alimento-label" })
+                            @Html.DropDownListFor(m => m.InventarioAlimento.NombreAlimento,
+                                new SelectList(new List<SelectListItem> {
+                                    new SelectListItem { Value = "Arroz", Text = "Arroz" },
+                                    new SelectListItem { Value = "Aceite", Text = "Aceite" },
+                                    new SelectListItem { Value = "Cereal", Text = "Cereal" },
+                                    new SelectListItem { Value = "Frijoles", Text = "Frijoles" },
+                                    new SelectListItem { Value = "Maíz", Text = "Maíz" }
+                                }, "Value", "Text", Model.InventarioAlimento.NombreAlimento),
+                                "Seleccione un alimento",
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-select fs-5" },
+                                    { "aria-labelledby", "nombre-alimento-label" },
+                                    { "required", "required" }
+                                }, esSoloLectura))
+                        </div>
 
+                        <!-- Stock -->
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.InventarioAlimento.Stock, "Stock", new { @class = "form-label", @id = "stock-label" })
+                            @Html.TextBoxFor(m => m.InventarioAlimento.Stock,
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control fs-5" },
+                                    { "aria-labelledby", "stock-label" },
+                                    { "required", "required" },
+                                    { "placeholder", "Introduce el stock" }
+                                }, esSoloLectura))
+                        </div>
 
+                        <!-- Unidad de Medida -->
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.InventarioAlimento.UnidadDeMedida, "Unidad de Medida", new { @class = "form-label", @id = "unidad-medida-label" })
+                            @Html.DropDownListFor(m => m.InventarioAlimento.UnidadDeMedida,
+                                new SelectList(new List<SelectListItem> {
+                                    new SelectListItem { Value = "Libras", Text = "Libras" },
+                                    new SelectListItem { Value = "Cuartas", Text = "Cuartas" }
+                                }, "Value", "Text", Model.InventarioAlimento.UnidadDeMedida),
+                                "Seleccione una unidad",
+                                ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-select fs-5" },
+                                    { "aria-labelledby", "unidad-medida-label" },
+                                    { "required", "required" }
+                                }, esSoloLectura))
+                        </div>
 
-
-                <!-- Botones de Acción -->
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
-                                style="@(ViewBag.EsEdicion ? "" : "display:none;")"
-                                onclick="activateEdit()">
-                            Editar
-                        </button>
-                        <button type="submit" id="btn-save" class="btn btn-primary m-1"
-                                style="@(ViewBag.EsEdicion ? "display:none;" : "")">
-                            @(Model.InventarioAlimento.Id == 0 ? "Registrar" : "Guardar Cambios")
-                        </button>
-                        @if (ViewBag.EsEdicion)
-                        {
-                            <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
-                                    onclick="deleteRecord()">
-                                Eliminar
+                        <!-- Footer de la tarjeta con botones de acción -->
+                        <div class="card-footer text-center fs-5">
+                            <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1" style="@(ViewBag.EsEdicion ? "" : "display:none;")" onclick="activateEdit()" aria-label="Editar registro de alimento">
+                                Editar
                             </button>
-                        }
-                        <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
-                                onclick="cancelOrReturn()">
-                            Regresar
-                        </button>
-                    </div>
+                            <button type="submit" id="btn-save" class="btn btn-primary m-1" style="@(ViewBag.EsEdicion ? "display:none;" : "")">
+                                @(Model.InventarioAlimento.Id == 0 ? "Registrar" : "Guardar Cambios")
+                            </button>
+                            @if (ViewBag.EsEdicion)
+                            {
+                                <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1" onclick="deleteRecord()" aria-label="Eliminar alimento">
+                                    Eliminar
+                                </button>
+                            }
+                            <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1" onclick="cancelOrReturn()" aria-label="Cancelar edición y regresar">
+                                Regresar
+                            </button>
+                        </div>
+                    }
                 </div>
-            }
+            </div>
         </div>
     </div>
 </div>
+
+
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
