@@ -38,43 +38,67 @@
 
                         <!-- Nombre de Usuario -->
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.Usuario.NombreUsuario, "Nombre de Usuario", new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.Usuario.NombreUsuario, new
-                       { @class = "form-control fs-5", @required = "required", @placeholder = "Introduce el nombre del usuario", autocomplete = "new-name", name = "" })
+                            @Html.Label("Nombre de Usuario", new { @class = "form-label", @for = "NombreUsuario" })
+                            @Html.TextBoxFor(m => m.Usuario.NombreUsuario,
+                             ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control fs-5" },
+                                    { "placeholder", "Introduce el nombre del usuario" },
+                                    { "required", "required" },
+                                    { "autocomplete", "new-name" }
+                             }, esSoloLectura))
                             @Html.ValidationMessageFor(m => m.Usuario.NombreUsuario, "", new { @class = "text-danger" })
                         </div>
 
                         <!-- Contraseña -->
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.Usuario.ClaveHash, "Contraseña", new { @class = "form-label" })
+                            @Html.Label("Contraseña", new { @class = "form-label", @for = "ClaveHash" })
                             @Html.PasswordFor(m => m.Usuario.ClaveHash,
-                             new { @class = "form-control  fs-5", @required = "required", @placeholder = "Introduce la contraseña", autocomplete = "new-password", name = "" })
+                             ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control fs-5" },
+                                    { "placeholder", "Introduce la contraseña" },
+                                    { "required", "required" },
+                                    { "autocomplete", "new-password" }
+                             }, esSoloLectura))
                             @Html.ValidationMessageFor(m => m.Usuario.ClaveHash, "", new { @class = "text-danger" })
                         </div>
 
                         <!-- Correo de Recuperación -->
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.Usuario.CorreoRecuperacion, "Correo de Recuperación", new { @class = "form-label" })
+                            @Html.Label("Correo de Recuperación", new { @class = "form-label", @for = "CorreoRecuperacion" })
                             @Html.TextBoxFor(m => m.Usuario.CorreoRecuperacion,
-                             new { @class = "form-control  fs-5", @required = "required", @placeholder = "Introduce el correo para recuperación" })
+                             ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-control fs-5" },
+                                    { "placeholder", "Introduce el correo para recuperación" },
+                                    { "required", "required" }
+                             }, esSoloLectura))
                             @Html.ValidationMessageFor(m => m.Usuario.CorreoRecuperacion, "", new { @class = "text-danger" })
                         </div>
 
                         <!-- Rol -->
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.Usuario.RolId, "Rol", new { @class = "form-label" })
+                            @Html.Label("Rol", new { @class = "form-label", @for = "RolId" })
                             @Html.DropDownListFor(m => m.Usuario.RolId,
                              new SelectList(Model.Roles, "Id", "Descripcion", Model.Usuario.RolId),
-                             "Selecciona un rol", new { @class = "form-select fs-5", @required = "required" })
+                             ObtenerAtributos(new Dictionary<string, object> {
+                                    { "class", "form-select fs-5" },
+                                    { "required", "required" }
+                             }, esSoloLectura))
                             @Html.ValidationMessageFor(m => m.Usuario.RolId, "", new { @class = "text-danger" })
                         </div>
-                        
+
                     </div>
 
                     <!-- Footer de la tarjeta con botones de acción -->
                     <div class="card-footer text-center fs-4">
-                        <button type="submit" id="btn-save" class="btn btn-primary me-2">
-                            <i class="fa fa-save me-1"></i> @(ViewBag.EsEdicion ? "Guardar Cambios" : "Registrar")
+                        <button type="button" id="btn-edit" class="btn btn-success me-2"
+                                style="@(ViewBag.EsEdicion ? "" : "display:none;")"
+                                onclick="activateEdit()">
+                            <i class="fa fa-edit me-1"></i> Editar
+                        </button>
+
+                        <button type="submit" id="btn-save" class="btn btn-primary me-2"
+                                style="@(ViewBag.EsEdicion ? "display:none;" : "")">
+                            <i class="fa fa-save me-1"></i> @(Model.Usuario.Id == 0 ? "Registrar" : "Guardar Cambios")
                         </button>
                         @if (ViewBag.EsEdicion)
                         {
@@ -82,13 +106,15 @@
                                 <i class="fa fa-trash-alt me-1"></i> Eliminar
                             </button>
                         }
-                        <a href="@Url.Action("Index", "UsuarioWeb")" class="btn btn-secondary">
-                            <i class="fa fa-arrow-left me-1"></i> Cancelar
-                        </a>
+
+
+                        <button type="button" id="btn-cancel-edit" class="btn btn-secondary me-2" onclick="cancelOrReturn()">
+                            <i class="fa fa-arrow-left me-1"></i> Regresar
+                        </button>
                     </div>
 
                 }
-                </div>
+            </div>
         </div>
     </div>
 </div>

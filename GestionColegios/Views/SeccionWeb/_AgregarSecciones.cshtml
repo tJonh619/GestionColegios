@@ -22,27 +22,41 @@
 
                             <div class="card-body">
                                 <!-- Nombre de la Sección -->
+                                <!-- Nombre de la Sección -->
                                 <div class="mb-3">
-                                    @Html.LabelFor(model => model.Nombre, "Nombre de la Sección", new { @class = "form-label" })
-                                    @Html.TextBoxFor(model => model.Nombre,
-                                        new { @class = "form-control fs-5", placeholder = "Ingrese el nombre de la sección" })
-                                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                                    @Html.LabelFor(model => model.Nombre, "Nombre de la Sección", new { @class = "form-label fs-5" })
+                                    @Html.TextBoxFor(model => model.Nombre, new
+                                    {
+                                        @class = "form-control fs-5",
+                                        @placeholder = "Ingrese el nombre de la sección",
+                                        @required = "required"
+                                    })
+                                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger fs-5" })
                                 </div>
 
                                 <!-- Capacidad de Estudiantes -->
                                 <div class="mb-3">
-                                    @Html.LabelFor(model => model.CapacidadEstudiantes, "Capacidad de Estudiantes", new { @class = "form-label" })
-                                    @Html.TextBoxFor(model => model.CapacidadEstudiantes,
-                                        new { @class = "form-control fs-5", type = "number" })
-                                    @Html.ValidationMessageFor(model => model.CapacidadEstudiantes, "", new { @class = "text-danger" })
+                                    @Html.LabelFor(model => model.CapacidadEstudiantes, "Capacidad de Estudiantes", new { @class = "form-label fs-5" })
+                                    @Html.TextBoxFor(model => model.CapacidadEstudiantes, new
+                                    {
+                                        @class = "form-control fs-5",
+                                        @type = "number",
+                                        @min = "1",
+                                        @required = "required"
+                                    })
+                                    @Html.ValidationMessageFor(model => model.CapacidadEstudiantes, "", new { @class = "text-danger fs-5" })
                                 </div>
 
                                 <!-- Fecha de Modificación -->
                                 <div class="mb-3">
-                                    @Html.LabelFor(model => model.FechaModificacion, "Fecha de Modificación", new { @class = "form-label" })
-                                    @Html.TextBoxFor(model => model.FechaModificacion, "{0:yyyy-MM-dd}",
-                                        new { @class = "form-control fs-5", type = "date" })
-                                    @Html.ValidationMessageFor(model => model.FechaModificacion, "", new { @class = "text-danger" })
+                                    @Html.LabelFor(model => model.FechaModificacion, "Fecha de Modificación", new { @class = "form-label fs-5" })
+                                    @Html.TextBoxFor(model => model.FechaModificacion, "{0:yyyy-MM-dd}", new
+                                    {
+                                        @class = "form-control fs-5",
+                                        @type = "date",
+                                        @required = "required"
+                                    })
+                                    @Html.ValidationMessageFor(model => model.FechaModificacion, "", new { @class = "text-danger fs-5" })
                                 </div>
                             </div>
                             <div class="card-footer text-center fs-5">
