@@ -232,21 +232,9 @@ namespace GestionColegios.Controllers
                 estudiante.Activo = false; // Desactivar estudiante
                 estudiante.FechaModificacion = DateTime.Now; // Actualiza la fecha de modificación
 
-                // Si el estudiante tiene un tutor, desactivarlo también
-                if (estudiante.Tutor != null)
-                {
-                    Tutor tutor = db.Tutores.Find(estudiante.TutorId);
-                    if (tutor != null)
-                    {
-                        tutor.Activo = false; // Desactivar tutor
-                        tutor.FechaModificacion = DateTime.Now; // Actualiza la fecha de modificación
-                    }
-                }
-
                 // Guardar cambios en la base de datos
                 db.SaveChanges();
             }
-
             return RedirectToAction("Index");
         }
 

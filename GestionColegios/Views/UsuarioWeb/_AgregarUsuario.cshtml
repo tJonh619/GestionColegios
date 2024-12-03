@@ -15,6 +15,13 @@
 
 
 <div class="container mt-3">
+    <!-- Modal de borrado -->
+    @if (ViewBag.EsEdicion)
+    {
+        @Html.Partial("_ModalConfirmarBorrar")
+    }
+
+
     <div class="row">
         <div class="col-lg-8 col-md-10">
             <div class="card shadow border-0">
@@ -102,7 +109,7 @@
                         </button>
                         @if (ViewBag.EsEdicion)
                         {
-                            <button type="button" id="btn-delete" class="btn btn-danger me-2" onclick="deleteRecord()">
+                            <button type="button" id="btn-delete" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                 <i class="fa fa-trash-alt me-1"></i> Eliminar
                             </button>
                         }
@@ -149,10 +156,4 @@
         }
     }
 
-    function deleteRecord() {
-        const deleteUrl = '@Url.Action("Delete", "UsuarioWeb", new { id = Model.Usuario.Id })';
-        if (confirm("¿Estás seguro de que deseas eliminar este Usuario?")) {
-            window.location.href = deleteUrl;
-        }
-    }
 </script>

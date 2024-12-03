@@ -4,6 +4,7 @@
     Layout = Layout;
 }
 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -91,7 +92,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Registro de Meriendas</h5>
+                        <h4>Registro de Meriendas</h4>
                     </div>
                     <div class="card-body">
                         <form action="@Url.Action("Create", "ControlMeriendas")" method="post" id="form-tablas">
@@ -101,44 +102,32 @@
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>Curso Académico</th>
-                                                <th>Estudiante</th>
-                                                <th>Código</th>
-                                                <th>Fecha Entrega</th>
-                                                <th>Asistencia Esperada Mujeres</th>
-                                                <th>Asistencia Esperada Total</th>
-                                                <th>Asistencia Real Mujeres</th>
-                                                <th>Asistencia Real Total</th>
-                                                <th>SAceite</th>
-                                                <th>SArroz</th>
-                                                <th>SCereal</th>
-                                                <th>SFrijoles</th>
-                                                <th>SMaiz</th>
-                                                <th>Firma Docente</th>
-                                                <th>Cédula Tutor</th>
-                                                <th>Firma Tutor</th>
-                                                <th>Acciones</th>
+                                                <th class="fs-5">Curso Académico</th>
+                                                <th class="fs-5">Estudiante</th>
+                                                <th class="fs-5">Fecha Entrega</th>
+                                                <th class="fs-5">Asistencia Esperada Mujeres</th>
+                                                <th class="fs-5">Asistencia Esperada Total</th>
+                                                <th class="fs-5">SAceite</th>
+                                                <th class="fs-5">SArroz</th>
+                                                <th class="fs-5">SCereal</th>
+                                                <th class="fs-5">SFrijoles</th>
+                                                <th class="fs-5">SMaiz</th>
+                                                <th class="fs-5">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tabla-body">
                                             <tr>
-                                                <td>@Html.DropDownList("CursoAcademicoId[]", new SelectList(Model.CursosAcademicos, "Id", "Nombre"), "Seleccione un Curso Académico", new { @class = "form-control" })</td>
-                                                <td>@Html.DropDownList("EstudianteId[]", new SelectList(Model.Estudiantes, "Id", "Nombres"), "Seleccione un Estudiante", new { @class = "form-control" })</td>
-                                                <td><input type="text" name="Codigo[]" class="form-control" /></td>
-                                                <td><input type="date" name="FechaEntrega[]" class="form-control" /></td>
-                                                <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
-                                                <td><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
-                                                <td><input type="number" name="AsistenciaRealMujeres[]" class="form-control" /></td>
-                                                <td><input type="number" name="AsistenciaRealTotal[]" class="form-control" /></td>
-                                                <td><input type="number" name="SAceite[]" class="form-control" /></td>
-                                                <td><input type="number" name="SArroz[]" class="form-control" /></td>
-                                                <td><input type="number" name="SCereal[]" class="form-control" /></td>
-                                                <td><input type="number" name="SFrijoles[]" class="form-control" /></td>
-                                                <td><input type="number" name="SMaiz[]" class="form-control" /></td>
-                                                <td><input type="text" name="FirmaDocente[]" class="form-control" /></td>
-                                                <td><input type="text" name="CedulaTutor[]" class="form-control" /></td>
-                                                <td><input type="text" name="FirmaTutor[]" class="form-control" /></td>
-                                                <td><button type="button" class="btn btn-danger btn-delete-row">Eliminar</button></td>
+                                                <td class="fs-5">@Html.DropDownList("CursoAcademicoId[]", new SelectList(Model.CursosAcademicos, "Id", "Nombre"), "Seleccione un Curso Académico", new { @class = "form-control" })</td>
+                                                <td class="fs-5">@Html.DropDownList("EstudianteId[]", new SelectList(Model.Estudiantes, "Id", "Nombres"), "Seleccione un Estudiante", new { @class = "form-control" })</td>
+                                                <td class="fs-5"><input type="date" name="FechaEntrega[]" class="form-control" /></td>
+                                                <td class="fs-5"><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
+                                                <td class="fs-5"><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
+                                                <td class="fs-5"><input type="number" name="SAceite[]" class="form-control" /></td>
+                                                <td class="fs-5"><input type="number" name="SArroz[]" class="form-control" /></td>
+                                                <td class="fs-5"><input type="number" name="SCereal[]" class="form-control" /></td>
+                                                <td class="fs-5"><input type="number" name="SFrijoles[]" class="form-control" /></td>
+                                                <td class="fs-5"><input type="number" name="SMaiz[]" class="form-control" /></td>
+                                                <td class="fs-5"><button type="button" class="btn btn-danger btn-delete-row">Eliminar</button></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -146,7 +135,7 @@
                                 </div>
                             </div>
                             <div class="form-group text-center">
-                                <button type="submit" class="btn btn-primary btn-custom">Guardar</button>
+                                <button id="btn-save" type="submit" class="btn btn-primary btn-custom">Guardar</button>
                                 <a href="@Url.Action("Historico", "ControlMeriendas")" class="btn btn-info btn-custom">Historial de Control de Meriendas</a>
                             </div>
                         </form>
@@ -158,15 +147,15 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Inventario de Alimentos</h5>
+                        <h4>Inventario de Alimentos</h4>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered table-inventario">
                             <thead>
                                 <tr>
-                                    <th>Nombre del Alimento</th>
-                                    <th>Stock U</th>
-                                    
+                                    <th class="fs-5">Nombre del Alimento</th>
+                                    <th class="fs-5">Stock U</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -174,21 +163,21 @@
                                 {
                                     foreach (var alimento in Model.InventarioAlimentos)
                                     {
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => alimento.NombreAlimento)</td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => alimento.Stock)
-                                        
-                                        @Html.DisplayFor(modelItem => alimento.UnidadDeMedida)
-                                    </td>
+                                        <tr>
+                                            <td class="fs-5">@Html.DisplayFor(modelItem => alimento.NombreAlimento)</td>
+                                            <td class="fs-5">
+                                                @Html.DisplayFor(modelItem => alimento.Stock)
 
-                                </tr>
+                                                @Html.DisplayFor(modelItem => alimento.UnidadDeMedida)
+                                            </td>
+
+                                        </tr>
                                     }
                                 }
                                 else
                                 {
                                     <tr>
-                                        <td colspan="3" class="text-center">No hay alimentos en el inventario.</td>
+                                        <td colspan="3" class="fs-5 text-center">No hay alimentos en el inventario.</td>
                                     </tr>
                                 }
                             </tbody>
@@ -206,23 +195,17 @@
         $(document).on('click', '.btn-add-row', function () {
             var nuevaFila = `
                 <tr>
-                    <td><select name="CursoAcademicoId[]" class="form-control">@foreach (var curso in Model.CursosAcademicos) { <option value="@curso.Id">@curso.Nombre</option> }</select></td>
-                    <td><select name="EstudianteId[]" class="form-control">@foreach (var estudiante in Model.Estudiantes) { <option value="@estudiante.Id">@estudiante.Nombres</option> }</select></td>
-                    <td><input type="text" name="Codigo[]" class="form-control" /></td>
-                    <td><input type="date" name="FechaEntrega[]" class="form-control" /></td>
-                    <td><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
-                    <td><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
-                    <td><input type="number" name="AsistenciaRealMujeres[]" class="form-control" /></td>
-                    <td><input type="number" name="AsistenciaRealTotal[]" class="form-control" /></td>
-                    <td><input type="number" name="SAceite[]" class="form-control" /></td>
-                    <td><input type="number" name="SArroz[]" class="form-control" /></td>
-                    <td><input type="number" name="SCereal[]" class="form-control" /></td>
-                    <td><input type="number" name="SFrijoles[]" class="form-control" /></td>
-                    <td><input type="number" name="SMaiz[]" class="form-control" /></td>
-                    <td><input type="text" name="FirmaDocente[]" class="form-control" /></td>
-                    <td><input type="text" name="CedulaTutor[]" class="form-control" /></td>
-                    <td><input type="text" name="FirmaTutor[]" class="form-control" /></td>
-                    <td><button type="button" class="btn btn-danger btn-delete-row">Eliminar</button></td>
+                    <td class="fs-5"><select name="CursoAcademicoId[]" class="form-control">@foreach (var curso in Model.CursosAcademicos) { <option value="@curso.Id">@curso.Nombre</option> }</select></td>
+                    <td class="fs-5"><select name="EstudianteId[]" class="form-control">@foreach (var estudiante in Model.Estudiantes) { <option value="@estudiante.Id">@estudiante.Nombres</option> }</select></td>
+                    <td class="fs-5"><input type="date" name="FechaEntrega[]" class="form-control" /></td>
+                    <td class="fs-5"><input type="number" name="AsistenciaEsperadaMujeres[]" class="form-control" /></td>
+                    <td class="fs-5"><input type="number" name="AsistenciaEsperadaTotal[]" class="form-control" /></td>
+                    <td class="fs-5"><input type="number" name="SAceite[]" class="form-control" /></td>
+                    <td class="fs-5"><input type="number" name="SArroz[]" class="form-control" /></td>
+                    <td class="fs-5"><input type="number" name="SCereal[]" class="form-control" /></td>
+                    <td class="fs-5"><input type="number" name="SFrijoles[]" class="form-control" /></td>
+                    <td class="fs-5"><input type="number" name="SMaiz[]" class="form-control" /></td>
+                    <td class="fs-5"><button type="button" class="btn btn-danger btn-delete-row">Eliminar</button></td>
                 </tr>`;
 
             $('#tabla-body').append(nuevaFila);

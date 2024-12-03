@@ -22,7 +22,8 @@ namespace GestionColegios.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            return View(db.Secciones.ToList());
+            ViewBag.EsEdicion = false;
+            return View(db.Secciones.Where(s => s.Activo == true).ToList());
         }
 
         // GET: SeccionWeb/Details/5
@@ -83,7 +84,7 @@ namespace GestionColegios.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(vmSeccion);
+            return View("_AgregarSecciones", vmSeccion);
         }
         public ActionResult Edit(int? id)
         {
@@ -111,7 +112,7 @@ namespace GestionColegios.Controllers
                 
             };
             ViewBag.EsEdicion = true;
-            return View(vmSeccion);
+            return View("_AgregarSecciones", vmSeccion);
         }
 
         // POST: SeccionWeb/Edit/5
@@ -156,8 +157,13 @@ namespace GestionColegios.Controllers
                 return RedirectToAction("Login", "Account");
             }
             Seccion seccion = db.Secciones.Find(id);
-            db.Secciones.Remove(seccion);
-            db.SaveChanges();
+            if (seccion != null)
+            {
+                seccion.Activo = false;
+                seccion.FechaModificacion = DateTime.Now;
+                db.Entry(seccion).State = EntityState.Modified;
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 

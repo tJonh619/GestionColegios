@@ -36,11 +36,8 @@
                         <th scope="col" class="fs-5">Código</th>
                         <th scope="col" class="fs-5">Nombres</th>
                         <th scope="col" class="fs-5">Apellidos</th>
-                        <th scope="col" class="fs-5">Barrio</th>
-                        <th scope="col" class="fs-5">Fecha de Nacimiento</th>
                         <th scope="col" class="fs-5">Edad</th>
                         <th scope="col" class="fs-5">Sexo</th>
-                        <th scope="col" class="fs-5">Dirección</th>
                         <th scope="col" class="fs-5">Acciones</th>
                     </tr>
                 </thead>
@@ -51,11 +48,8 @@
                             <td class="fs-5">@estudiante.CodigoEstudiante</td>
                             <td class="fs-5">@estudiante.Nombres</td>
                             <td class="fs-5">@estudiante.Apellidos</td>
-                            <td class="fs-5">@estudiante.Barrio</td>
-                            <td class="fs-5">@estudiante.FechaNacimiento.ToString("yyyy-MM-dd")</td>
                             <td class="fs-5">@estudiante.Edad</td>
                             <td class="fs-5">@estudiante.Sexo</td>
-                            <td class="fs-5">@estudiante.Direccion</td>
                             <td class="fs-5">
                                 <a href="@Url.Action("Edit", "EstudianteWeb", new { id = estudiante.Id })" class="btn btn-sm btn-warning me-2">
                                     <i class="bi bi-pencil-square"></i> Detalles

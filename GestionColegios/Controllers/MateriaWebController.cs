@@ -24,10 +24,10 @@ namespace GestionColegios.Controllers
             }
             var viewModel = new VMMateria
             {
-                Materias = db.Materias.ToList(),
+                Materias = db.Materias.Where(u => u.Activo == true).ToList(),
                 Materia = new Materia(),
                 AñoAcademico = new AñoAcademico(),
-                AñosAcademicos = db.AñosAcademicos.ToList()
+                AñosAcademicos = db.AñosAcademicos.Where(u => u.Activo == true).ToList()
 
             };
             ViewBag.EsEdicion = false;
@@ -178,8 +178,6 @@ namespace GestionColegios.Controllers
                 db.Entry(materia).State = EntityState.Modified;
                 db.SaveChanges();
             }
-
-            TempData["SuccessMessage"] = "Materia desactivada correctamente.";
             return RedirectToAction("Index");
         }
 

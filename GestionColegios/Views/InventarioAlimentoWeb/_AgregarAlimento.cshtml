@@ -21,22 +21,11 @@
     }
 }
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
-
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
-}
-
 
 <div class="container mt-3">
+    <!-- Modal de borrado -->
+    @Html.Partial("_ModalConfirmarBorrar")
+
     <div class="row">
         <div class="col-lg-8 col-md-10">
             <div class="card shadow border-0">
@@ -117,23 +106,23 @@
                         </div>
 
                         <!-- Footer de la tarjeta con botones de acción -->
-                        <div class="card-footer text-center fs-5">
-                            <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1" style="@(ViewBag.EsEdicion ? "" : "display:none;")" onclick="activateEdit()" aria-label="Editar registro de alimento">
-                                Editar
-                            </button>
-                            <button type="submit" id="btn-save" class="btn btn-primary m-1" style="@(ViewBag.EsEdicion ? "display:none;" : "")">
-                                @(Model.InventarioAlimento.Id == 0 ? "Registrar" : "Guardar Cambios")
-                            </button>
-                            @if (ViewBag.EsEdicion)
-                            {
-                                <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1" onclick="deleteRecord()" aria-label="Eliminar alimento">
-                                    Eliminar
-                                </button>
-                            }
-                            <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1" onclick="cancelOrReturn()" aria-label="Cancelar edición y regresar">
-                                Regresar
-                            </button>
-                        </div>
+                <div class="card-footer text-center fs-5">
+                    <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1" style="@(ViewBag.EsEdicion ? "" : "display:none;")" onclick="activateEdit()" aria-label="Editar registro de alimento">
+                        Editar
+                    </button>
+                    <button type="submit" id="btn-save" class="btn btn-primary m-1" style="@(ViewBag.EsEdicion ? "display:none;" : "")">
+                        @(Model.InventarioAlimento.Id == 0 ? "Registrar" : "Guardar Cambios")
+                    </button>
+                    @if (ViewBag.EsEdicion)
+                    {
+                        <button type="button" id="btn-delete" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="fa fa-trash-alt me-1"></i> Eliminar
+                        </button>
+                    }
+                    <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1" onclick="cancelOrReturn()" aria-label="Cancelar edición y regresar">
+                        Regresar
+                    </button>
+                </div>
                     }
                 </div>
             </div>
@@ -174,12 +163,6 @@
         }
     }
 
-    function deleteRecord() {
-        const deleteUrl = '@Url.Action("Delete", "InventarioAlimentoWeb", new { id = Model.InventarioAlimento.Id })';
-        if (confirm("¿Estás seguro de que deseas eliminar este Alimento?")) {
-            window.location.href = deleteUrl;
-        }
-    }
 
     document.addEventListener('DOMContentLoaded', function () {
         const dropdown = document.getElementById('InventarioAlimento_NombreAlimento');

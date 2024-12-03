@@ -184,11 +184,8 @@ namespace GestionColegios.Controllers
             {
                 inventarioAlimento.Activo = false;
                 inventarioAlimento.FechaModificacion = DateTime.Now;
-                db.Entry(inventarioAlimento).State = EntityState.Modified;
                 db.SaveChanges();
             }
-
-            TempData["SuccessMessage"] = "Alimento desactivado correctamente.";
             return RedirectToAction("Index");
         }
 

@@ -1,0 +1,26 @@
+﻿<div class="modal fade" id="deleteSuccessModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Proceso de Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <!-- Contenedor dinámico para la animación -->
+                <div id="loadingState">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="spinner-border text-danger" role="status" style="width: 3rem; height: 3rem;"></div>
+                        <p class="fs-5 mt-3 ms-3">Eliminando el registro, por favor espera...</p>
+                    </div>
+                </div>
+                <div id="successState" class="d-none">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <i class="bi bi-trash-fill text-success" style="font-size: 3rem;"></i>
+                        <p class="fs-5 mt-3 ms-3 text-success">¡Eliminación exitosa!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

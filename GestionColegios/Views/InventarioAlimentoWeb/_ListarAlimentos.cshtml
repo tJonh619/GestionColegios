@@ -10,9 +10,6 @@
             <h3 class="card-title mb-0">
                 <i class="bi bi-box-seam me-2"></i>Lista de Alimentos
             </h3>
-            <a href="@Url.Action("Create", "InventarioAlimentos")" class="btn btn-light">
-                <i class="bi bi-plus-circle me-1"></i>Agregar Alimento
-            </a>
         </div>
 
         <!-- Cuerpo de la tarjeta -->
@@ -42,10 +39,7 @@
                                     <td class="fs-5">@Html.DisplayFor(modelItem => alimento.FechaModificacion)</td>
                                     <td class="fs-5">
                                         <a href="@Url.Action("Edit", "InventarioAlimentoWeb", new { id = alimento.Id })" class="btn btn-sm btn-warning me-2">
-                                            <i class="bi bi-pencil-square"></i> Editar
-                                        </a>
-                                        <a href="@Url.Action("Delete", "InventarioAlimentoWeb", new { id = alimento.Id })" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas desactivar este alimento?');">
-                                            <i class="bi bi-x-circle"></i> Desactivar
+                                            <i class="bi bi-pencil-square"></i> Detalles
                                         </a>
                                     </td>
                                 </tr>

@@ -22,7 +22,7 @@ namespace GestionColegios.Controllers
             var viewModel = new VMAñosPeriodosSemestres
             {
                 Años = db.Años.ToList(),
-                Periodos = db.Periodos.ToList(),
+                Periodos = db.Periodos.Where(u => u.Activo == true).ToList(),
                 Semestres = db.Semestres.ToList(),
                 Año = new Año(),
                 Periodo = new Periodo(),
@@ -194,6 +194,25 @@ namespace GestionColegios.Controllers
             return View("_PeriodosCreate", model);
         }
 
+        // POST: MateriaWeb/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var periodo = db.Periodos.Find(id);
+            if (periodo != null)
+            {
+                periodo.Activo = false;
+                periodo.FechaModificacion = DateTime.Now;
+                db.Entry(periodo).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
         // CRUD para Semestres
 
         // GET: PeriodoWeb/CreateSemestre

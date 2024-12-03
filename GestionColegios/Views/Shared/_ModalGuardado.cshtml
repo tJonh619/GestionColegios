@@ -1,0 +1,24 @@
+﻿<div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <!-- Contenedor dinámico para la animación -->
+                <div id="loadingState">
+                    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+                    <p class="fs-5 mt-3">Procesando la solicitud, por favor espera...</p>
+                </div>
+                <div id="successState" class="d-none">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                    <p class="fs-5 mt-3 text-success">¡Guardado exitosamente!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Suaviza las transiciones entre los estados */
+    #loadingState, #successState {
+        transition: opacity 0.5s ease-in-out;
+    }
+</style>

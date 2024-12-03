@@ -25,9 +25,9 @@ namespace GestionColegios.Controllers
             }
             var viewModel = new VMUsuario
             {
-                Usuarios = db.Usuarios.Include(u => u.Rol).ToList(),
-                Roles = db.Roles.ToList(),
-                Permisos = db.Permisos.ToList(),
+                Usuarios = db.Usuarios.Include(u => u.Rol).Where(u => u.Activo==true).ToList(),
+                Roles = db.Roles.Where(r => r.Activo == true).ToList(),
+                Permisos = db.Permisos.Where(p => p.Activo == true).ToList(),
                 Usuario = new Usuario(), // Nuevo usuario para el formulario
                 Rol = new Rol(),
                 Permiso = new Permiso()
@@ -102,6 +102,7 @@ namespace GestionColegios.Controllers
                 Roles = db.Roles.ToList()
             };
             ViewBag.EsEdicion = true;
+            ViewBag.Edit = "usuario";
             return View("_AgregarUsuario", viewModel);
         }
 
@@ -272,6 +273,7 @@ namespace GestionColegios.Controllers
                 Roles = db.Roles.ToList()
             };
             ViewBag.EsEdicion = true;
+            ViewBag.Edit = "rol";
             return View("_AgregarRol", viewModel);
         }
 
@@ -420,6 +422,7 @@ namespace GestionColegios.Controllers
                 Roles = db.Roles.ToList() // Cargar roles disponibles
             };
             ViewBag.EsEdicion = true;
+            ViewBag.Edit = "permiso";
             return View("_AgregarPermiso", viewModel); // Usar la vista compartida
         }
 

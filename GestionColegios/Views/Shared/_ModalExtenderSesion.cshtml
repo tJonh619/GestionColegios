@@ -1,0 +1,32 @@
+﻿<div class="modal fade" id="extendSessionModal" tabindex="-1" aria-labelledby="extendSessionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-primary">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fs-4" id="extendSessionModalLabel">
+                    <!-- Tamaño de fuente aumentado -->
+                    <i class="bi bi-hourglass-split me-2"></i> Extender Sesión
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p class="fs-5 mb-3">
+                    <!-- Tamaño de fuente aumentado -->
+                    Tu sesión está a punto de expirar. ¿Deseas continuar conectado?
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <button id="btn-extend-session" class="btn btn-success px-4">
+                        <i class="bi bi-check-circle-fill me-2"></i> Sí, continuar
+                    </button>
+                    <button id="btn-logout" class="btn btn-danger px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-box-arrow-right me-2"></i> No, cerrar sesión
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center small text-muted">
+                <span class="fs-5">Tu sesión se cerrará en:</span>
+                <span id="sessionTimer" class="text-danger fw-bold fs-5"></span> <!-- Solo el tiempo en rojo -->
+                <span class="fs-5">minutos.</span>
+            </div>
+        </div>
+    </div>
+</div>

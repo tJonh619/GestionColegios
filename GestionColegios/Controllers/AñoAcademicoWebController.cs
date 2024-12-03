@@ -165,7 +165,6 @@ namespace GestionColegios.Controllers
                 db.SaveChanges();
             }
 
-            TempData["SuccessMessage"] = "Año académico desactivado correctamente.";
             return RedirectToAction("Index");
         }
 

@@ -68,14 +68,6 @@
                                     Regresar
                                 </button>
 
-                                <!-- Botón Eliminar visible solo en modo edición -->
-                                @if (ViewBag.EsEdicion)
-                                {
-                                    <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
-                                            onclick="deleteRecord()">
-                                        Eliminar
-                                    </button>
-                                }
                             </div>
 
                         </div>
@@ -86,29 +78,6 @@
     </div>
 </div>
 
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        function activateEdit() {
-            $('input').prop('readonly', false).prop('disabled', false);
-            $('#btn-save').show();
-            $('#btn-cancel-edit').text("Cancelar");
-            $('#btn-edit').hide();
-        }
-
-        function cancelOrReturn() {
-            if ($('#btn-cancel-edit').text() === "Cancelar") {
-                $('input').prop('readonly', true).prop('disabled', true);
-                $('#btn-save').hide();
-                $('#btn-edit').show();
-                $('#btn-cancel-edit').text("Regresar");
-            } else {
-                window.location.href = '@Url.Action("Index", "PeriodoWeb")';
-            }
-        }
-    </script>
-}
 <script>
     function activateEdit() {
         $('input, select').each(function () {
@@ -136,10 +105,4 @@
         }
     }
 
-    function deleteRecord() {
-        const deleteUrl = '@Url.Action("DeleteSemestre", "PeriodoWeb", new { id = Model.Semestre.Id })';
-        if (confirm("¿Estás seguro de que deseas eliminar este Semestre?")) {
-            window.location.href = deleteUrl;
-        }
-    }
 </script>

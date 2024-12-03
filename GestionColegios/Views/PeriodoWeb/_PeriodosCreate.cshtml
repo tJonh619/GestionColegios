@@ -14,6 +14,8 @@
 }
 
 <div class="container mt-3">
+    <!-- Modal de borrado -->
+    @Html.Partial("_ModalConfirmarBorrar")
     <div class="row">
         <div class="col-md-12">
             @using (Html.BeginForm(ViewBag.EsEdicion ? "EditPeriodo" : "CreatePeriodo", "PeriodoWeb", FormMethod.Post))
@@ -103,9 +105,8 @@
                                 <!-- Botón Eliminar visible solo en modo edición -->
                                 @if (ViewBag.EsEdicion)
                                 {
-                                    <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
-                                            onclick="deleteRecord()">
-                                        Eliminar
+                                    <button type="button" id="btn-delete" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                        <i class="fa fa-trash-alt me-1"></i> Eliminar
                                     </button>
                                 }
                             </div>
@@ -145,13 +146,6 @@
             $('#btn-delete').show();
         } else {
             window.location.href = '@Url.Action("Index", "PeriodoWeb")';
-        }
-    }
-
-    function deleteRecord() {
-        const deleteUrl = '@Url.Action("DeletePeriodo", "PeriodoWeb", new { id = Model.Periodo.Id })';
-        if (confirm("¿Estás seguro de que deseas eliminar este Periodo?")) {
-            window.location.href = deleteUrl;
         }
     }
 </script>

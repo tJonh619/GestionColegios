@@ -13,7 +13,7 @@ namespace GestionColegios.Controllers
 {
     public class ControlMeriendasController : Controller
     {
-        private BDColegioContainer db = new BDColegioContainer();
+        private readonly BDColegioContainer db = new BDColegioContainer();
 
         // GET: ControlMeriendas
         public ActionResult Index()
@@ -41,7 +41,11 @@ namespace GestionColegios.Controllers
                 InventarioAlimentos = db.InventariosAlimentos.ToList(),
                 Estudiante = new Estudiante()
             };
+            var estudiantesPorCurso = db.CursosAcademicosEstudiantes
+                            .GroupBy(cae => cae.CursoAcademicoId)
+                            .ToDictionary(g => g.Key, g => g.Select(cae => cae.Estudiante).ToList());
 
+            ViewBag.EstududiantesPorCurso = estudiantesPorCurso;
             return View(viewModel);
         }
 
@@ -65,7 +69,7 @@ namespace GestionColegios.Controllers
         // POST: ControlMeriendas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(VMControlMerienda viewModel, string[] Codigo, DateTime[] FechaEntrega, int[] AsistenciaEsperadaMujeres, int[] AsistenciaEsperadaTotal, int[] AsistenciaRealMujeres, int[] AsistenciaRealTotal, decimal[] SAceite, decimal[] SArroz, decimal[] SCereal, decimal[] SFrijoles, decimal[] SMaiz, string[] FirmaDocente, string[] CedulaTutor, string[] FirmaTutor, int[] CursoAcademicoId, int[] EstudianteId)
+        public ActionResult Create(VMControlMerienda viewModel, DateTime[] FechaEntrega, int[] AsistenciaEsperadaMujeres, int[] AsistenciaEsperadaTotal, decimal[] SAceite, decimal[] SArroz, decimal[] SCereal, decimal[] SFrijoles, decimal[] SMaiz, int[] CursoAcademicoId, int[] EstudianteId)
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -73,7 +77,7 @@ namespace GestionColegios.Controllers
             }
             if (ModelState.IsValid)
             {
-                if (Codigo != null && Codigo.Length > 0)
+                if (EstudianteId != null && EstudianteId.Length > 0)
                 {
                     var aceite = db.InventariosAlimentos.SingleOrDefault(a => a.NombreAlimento == "Aceite");
                     var arroz = db.InventariosAlimentos.SingleOrDefault(a => a.NombreAlimento == "Arroz");
@@ -81,26 +85,26 @@ namespace GestionColegios.Controllers
                     var frijoles = db.InventariosAlimentos.SingleOrDefault(a => a.NombreAlimento == "Frijoles");
                     var maiz = db.InventariosAlimentos.SingleOrDefault(a => a.NombreAlimento == "Maíz");
 
-                    for (int i = 0; i < Codigo.Length; i++)
+                    for (int i = 0; i < EstudianteId.Length; i++)
                     {
                         if (CursoAcademicoId[i] != 0 && EstudianteId[i] != 0) // Validar que no sean nulos
                         {
                             var controlMerienda = new ControlMerienda
                             {
-                                Codigo = Codigo[i],
+                                Codigo = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper(),
                                 FechaEntrega = FechaEntrega[i],
                                 AsistenciaEsperadaMujeres = AsistenciaEsperadaMujeres[i],
                                 AsistenciaEsperadaTotal = AsistenciaEsperadaTotal[i],
-                                AsistenciaRealMujeres = AsistenciaRealMujeres[i],
-                                AsistenciaRealTotal = AsistenciaRealTotal[i],
+                                AsistenciaRealMujeres = null,
+                                AsistenciaRealTotal = null,
                                 SAceite = SAceite[i],
                                 SArroz = SArroz[i],
                                 SCereal = SCereal[i],
                                 SFrijoles = SFrijoles[i],
                                 SMaiz = SMaiz[i],
-                                FirmaDocente = FirmaDocente[i],
-                                CedulaTutor = CedulaTutor[i],
-                                FirmaTutor = FirmaTutor[i],
+                                FirmaDocente = null,
+                                CedulaTutor = null,
+                                FirmaTutor = null,
                                 CursoAcademicoId = CursoAcademicoId[i],
                                 EstudianteId = EstudianteId[i],
                                 AceiteId = aceite.Id,
@@ -135,7 +139,7 @@ namespace GestionColegios.Controllers
 
             viewModel.CursosAcademicos = db.CursosAcademicos.ToList();
             viewModel.Estudiantes = db.Estudiantes.ToList();
-            return View(viewModel);
+            return View("Index", viewModel);
         }
 
         // GET: ControlMeriendas/Edit/5

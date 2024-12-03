@@ -1,0 +1,34 @@
+﻿<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-danger">
+            <!-- Encabezado del modal -->
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fs-4" id="deleteModalLabel">
+                    <i class="bi bi-trash-fill me-2"></i> Confirmar Eliminación
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <!-- Cuerpo del modal -->
+            <div class="modal-body text-center">
+                <p class="fs-5 mb-3">
+                    ¿Estás seguro de que deseas eliminar este Grado Asignado? Esta acción no puede deshacerse.
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i> Cancelar
+                    </button>
+                    <form id="deleteForm" method="post" action="@Url.Action("Delete", "CursoAcademicoWeb", new { id = Model.CursoAcademico.Id })">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" id="btn-confirm-delete" class="btn btn-danger px-4">
+                            <i class="bi bi-trash-fill me-2"></i> Eliminar
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <!-- Pie del modal -->
+            <div class="modal-footer justify-content-center small text-muted">
+                <span class="fs-6">Esta acción marcará este grado asingado como inactivo en el sistema.</span>
+            </div>
+        </div>
+    </div>
+</div>

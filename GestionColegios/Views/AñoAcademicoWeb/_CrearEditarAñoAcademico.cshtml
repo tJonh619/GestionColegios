@@ -14,7 +14,10 @@
 }
 
 
+
 <div class="container mt-3">
+    <!-- Modal de borrado -->
+    @Html.Partial("_ModalConfirmarBorrar")
     <div class="row">
         <div class="col-lg-8 col-md-10">
             <div class="card shadow border-0">
@@ -35,7 +38,6 @@
 
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                        <!-- Nombre del Año Académico -->
                         <!-- Nombre del Año Académico -->
                         <div class="mb-3">
                             @Html.Label("Nombre del Año Académico", new { @class = "form-label", @for = "Nombre" })
@@ -88,7 +90,7 @@
                         </button>
                         @if (ViewBag.EsEdicion)
                         {
-                            <button type="button" id="btn-delete" class="btn btn-danger me-2" onclick="deleteRecord()">
+                            <button type="button" id="btn-delete" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                 <i class="fa fa-trash-alt me-1"></i> Eliminar
                             </button>
                         }
@@ -134,10 +136,4 @@
         }
     }
 
-    function deleteRecord() {
-        const deleteUrl = '@Url.Action("Delete", "AñoAcademicoWeb", new { id = Model.AñoAcademico.Id })';
-        if (confirm("¿Estás seguro de que deseas eliminar este Año Academico?")) {
-            window.location.href = deleteUrl;
-        }
-    }
 </script>

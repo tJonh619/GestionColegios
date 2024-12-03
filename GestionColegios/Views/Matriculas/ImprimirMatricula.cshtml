@@ -14,22 +14,27 @@
                 <div class="card-body">
                     <!-- Filtros para búsqueda -->
                     <form method="get" action="@Url.Action("ImprimirMatricula", "Matriculas")">
-                        <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label for="AñoAcademicoId">Año Académico</label>
-                                @Html.DropDownList("AñoAcademicoId", new SelectList(ViewBag.AñosAcademicos, "Id", "Nombre"), "Seleccione un Año", new { @class = "form-control" })
+                        <div class="row mt-2">
+                            <div class="col-md-3 mb-3">
+                                <div class="form-group">
+                                    <label for="AñoAcademicoId">Año Académico</label>
+                                    @Html.DropDownList("AñoAcademicoId", new SelectList(ViewBag.AñosAcademicos, "Id", "Nombre"), "Seleccione un Año", new { @class = "form-control" })
+                                </div>
                             </div>
-                            <div class="form-group col-md-3">
-                                <label for="FechaInicio">Fecha de Inicio</label>
-                                @Html.TextBox("FechaInicio", null, new { @class = "form-control", type = "date" })
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="FechaInicio">Fecha de Inicio</label>
+                                    @Html.TextBox("FechaInicio", null, new { @class = "form-control", type = "date" })
+                                </div>
                             </div>
-                            <div class="form-group col-md-3">
-                                <label for="FechaFin">Fecha de Fin</label>
-                                @Html.TextBox("FechaFin", null, new { @class = "form-control", type = "date" })
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="FechaFin">Fecha de Fin</label>
+                                    @Html.TextBox("FechaFin", null, new { @class = "form-control", type = "date" })
+                                </div>
                             </div>
-                            <div class="form-group col-md-3">
-                                <label>&nbsp;</label>
-                                <button type="submit" class="btn btn-primary form-control">Filtrar</button>
+                            <div class="col-md-3 align-items-end align-content-end mb-3">
+                                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
                             </div>
                         </div>
                     </form>

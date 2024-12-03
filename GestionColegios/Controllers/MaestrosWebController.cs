@@ -22,7 +22,7 @@ namespace GestionColegios.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            var viewModel = new VMMaestros { Maestros = db.Maestros.ToList(), Maestro = new Maestro(), Usuarios = db.Usuarios.ToList() };
+            var viewModel = new VMMaestros { Maestros = db.Maestros.Where(u => u.Activo == true).ToList(), Maestro = new Maestro(), Usuarios = db.Usuarios.Where(u => u.Activo == true).ToList() };
             ViewBag.EsEdicion = false;
             return View(viewModel);
         }
@@ -38,7 +38,7 @@ namespace GestionColegios.Controllers
             var viewModel = new VMMaestros
             {
                 Maestro = new Maestro(),
-                Usuarios = db.Usuarios.ToList() // Aquí cargamos la lista de usuarios
+                Usuarios = db.Usuarios.Where(u => u.Activo == true).ToList() // Aquí cargamos la lista de usuarios
 
             };
             ViewBag.EsEdicion = false;
@@ -207,8 +207,12 @@ namespace GestionColegios.Controllers
                 return RedirectToAction("Login", "Account");
             }
             Maestro maestro = db.Maestros.Find(id);
-            db.Maestros.Remove(maestro);
-            db.SaveChanges();
+            if (maestro != null)
+            {
+                maestro.Activo = false;
+                maestro.FechaModificacion = DateTime.Now;
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 

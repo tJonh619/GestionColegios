@@ -77,10 +77,6 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home");
-            }
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -118,43 +114,35 @@ namespace GestionColegios.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExtendSession()
         {
-            if (!User.Identity.IsAuthenticated)
+
+            try
             {
-                return RedirectToAction("Index", "Home");
-            }
-            if (Request.IsAuthenticated)
-            {
-                try
+                // Obtiene la identidad actual
+                var identity = (ClaimsIdentity)User.Identity;
+
+                // Configura nuevas propiedades para la cookie de autenticación
+                var authProperties = new AuthenticationProperties
                 {
-                    // Obtiene la identidad del usuario actual
-                    var identity = (ClaimsIdentity)User.Identity;
+                    IsPersistent = true, // La cookie es persistente
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(60) // Extiende la sesión 60 minutos
+                };
 
-                    // Configura nuevas propiedades para la cookie de autenticación
-                    var authProperties = new AuthenticationProperties
-                    {
-                        IsPersistent = true, // La cookie será persistente
-                        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(60) // Extiende la sesión por 60 minutos
-                    };
+                // Renueva la cookie de autenticación
+                AuthenticationManager.SignIn(authProperties, identity);
 
-                    // Renueva la cookie de autenticación
-                    AuthenticationManager.SignIn(authProperties, identity);
-
-                    TempData["Success"] = "La sesión ha sido extendida exitosamente.";
-                }
-                catch (Exception ex)
-                {
-                    TempData["Error"] = "Error al extender la sesión: " + ex.Message;
-                }
+                return Json(new { success = true, message = "Sesión extendida exitosamente." });
             }
-            else
+            catch
             {
-                TempData["Error"] = "No estás autenticado.";
+                // Devuelve el mensaje de sesión cerrada y redirige al cliente al login
+                return Json(new
+                {
+                    success = false,
+                    message = "Se cerró su sesión. Ingrese nuevamente.",
+                    redirect = Url.Action("Login", "Account") // Cambia "Login" y "Account" por tu controlador/acción de login
+                });
             }
-
-            // Redirige al usuario a la página principal o a una página específica
-            return RedirectToAction("Index", "Home");
         }
-
 
         //
         // GET: /Account/VerifyCode

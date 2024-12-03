@@ -13,6 +13,7 @@
     }
 }
 
+
 <div class="container mt-3">
     <div class="row">
         <div class="col-md-12">
@@ -55,7 +56,7 @@
                                 </button>
 
                                 <!-- Botón Guardar/Registrar dependiendo del estado -->
-                                <button type="submit" id="btn-save" class="btn btn-primary m-1"
+                                <button type="submit" id="btn-save" onclick="showSaveModal()" class="btn btn-primary m-1"
                                         style="@(ViewBag.EsEdicion ? "display:none;" : "")">
                                     @(Model.Año.Id == 0 ? "Registrar" : "Guardar Cambios")
                                 </button>
@@ -66,14 +67,6 @@
                                     Regresar
                                 </button>
 
-                                <!-- Botón Eliminar visible solo en modo edición -->
-                                @if (ViewBag.EsEdicion)
-                                {
-                                    <button type="button" id="btn-delete" class="btn btn-sm btn-danger m-1"
-                                            onclick="deleteRecord()">
-                                        Eliminar
-                                    </button>
-                                }
                             </div>
                         </div>
                     </div>
@@ -115,10 +108,4 @@
         }
     }
 
-    function deleteRecord() {
-        const deleteUrl = '@Url.Action("DeleteAño", "PeriodoWeb", new { id = Model.Año.Id })';
-        if (confirm("¿Estás seguro de que deseas eliminar este Año?")) {
-            window.location.href = deleteUrl;
-        }
-    }
 </script>

@@ -27,17 +27,18 @@ namespace GestionColegios.Controllers
                 .Include(c => c.Seccion)
                 .Include(c => c.AñoAcademico)
                 .Include(c => c.Año)
+                .Where(c => c.Activo == true)
                 .ToList();
 
             var viewModel = new VMCursoAcademico
             {
                 CursoAcademicos = cursosAcademicos,
                 CursoAcademico = new CursoAcademico(),
-                Maestros = db.Maestros.ToList(),
+                Maestros = db.Maestros.Where(u => u.Activo == true).ToList(),
                 Maestro = new Maestro(),
-                Secciones = db.Secciones.ToList(),
+                Secciones = db.Secciones.Where(u => u.Activo == true).ToList(),
                 Seccion = new Seccion(),
-                AñosAcademicos = db.AñosAcademicos.ToList(),
+                AñosAcademicos = db.AñosAcademicos.Where(u => u.Activo == true).ToList(),
                 AñoAcademico = new AñoAcademico(),
                 Años = db.Años.ToList(),
                 Año = new Año()
@@ -46,35 +47,7 @@ namespace GestionColegios.Controllers
             return View(viewModel);
         }
 
-        // GET: CursoAcademicoWeb/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CursoAcademico cursoAcademico = db.CursosAcademicos.Find(id);
-            if (cursoAcademico == null)
-            {
-                return HttpNotFound();
-            }
-
-            var viewModel = new VMCursoAcademico
-            {
-                CursoAcademico = cursoAcademico,
-                Maestros = db.Maestros.ToList(),
-                Secciones = db.Secciones.ToList(),
-                AñosAcademicos = db.AñosAcademicos.ToList(),
-                Años = db.Años.ToList()
-            };
-
-            return View(viewModel);
-        }
-
+      
         // GET: CursoAcademicoWeb/Create
         public ActionResult Create()
         {
@@ -140,9 +113,9 @@ namespace GestionColegios.Controllers
             var viewModel = new VMCursoAcademico
             {
                 CursoAcademico = cursoAcademico,
-                Maestros = db.Maestros.ToList(),
-                Secciones = db.Secciones.ToList(),
-                AñosAcademicos = db.AñosAcademicos.ToList(),
+                Maestros = db.Maestros.Where(u => u.Activo == true).ToList(),
+                Secciones = db.Secciones.Where(u => u.Activo == true).ToList(),
+                AñosAcademicos = db.AñosAcademicos.Where(u => u.Activo == true).ToList(),
                 Años = db.Años.ToList()
             };
 
@@ -215,8 +188,12 @@ namespace GestionColegios.Controllers
                 return RedirectToAction("Login", "Account");
             }
             CursoAcademico cursoAcademico = db.CursosAcademicos.Find(id);
-            db.CursosAcademicos.Remove(cursoAcademico);
-            db.SaveChanges();
+            if (cursoAcademico != null)
+            {
+                cursoAcademico.Activo = false;
+                cursoAcademico.FechaModificacion = DateTime.Now;
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
@@ -241,31 +218,6 @@ namespace GestionColegios.Controllers
             return View(cursoAcademico);
         }
 
-        // Función para activar la edición
-        public ActionResult ActivateEdit(int id)
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            var cursoAcademico = db.CursosAcademicos.Find(id);
-            if (cursoAcademico == null)
-            {
-                return HttpNotFound();
-            }
-
-            ViewBag.EsEdicion = true;
-            var viewModel = new VMCursoAcademico
-            {
-                CursoAcademico = cursoAcademico,
-                Maestros = db.Maestros.ToList(),
-                Secciones = db.Secciones.ToList(),
-                AñosAcademicos = db.AñosAcademicos.ToList(),
-                Años = db.Años.ToList()
-            };
-
-            return View("Edit", viewModel);
-        }
 
         protected override void Dispose(bool disposing)
         {

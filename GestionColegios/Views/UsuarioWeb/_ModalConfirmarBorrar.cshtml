@@ -1,0 +1,84 @@
+﻿<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-danger">
+            <!-- Encabezado del modal -->
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fs-4" id="deleteModalLabel">
+                    <i class="bi bi-trash-fill me-2"></i> Confirmar Eliminación
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <!-- Cuerpo del modal -->
+            <div class="modal-body text-center">
+                @if (ViewBag.Edit == "usuario")
+                {
+                    <p class="fs-5 mb-3">
+
+                        ¿Estás seguro de que deseas eliminar este usuario? Esta acción no puede deshacerse.
+                    </p>
+                }
+                @if (ViewBag.Edit == "rol")
+                {
+                    <p class="fs-5 mb-3">
+
+                        ¿Estás seguro de que deseas eliminar este rol? Esta acción no puede deshacerse.
+                    </p>
+                }
+                @if (ViewBag.Edit == "permiso")
+                {
+                    <p class="fs-5 mb-3">
+
+                        ¿Estás seguro de que deseas eliminar este permiso? Esta acción no puede deshacerse.
+                    </p>
+                }
+            <div class="d-flex justify-content-center gap-3">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i> Cancelar
+                </button>
+                @if (ViewBag.Edit == "usuario")
+                {
+                    <form id="deleteForm" method="post" action="@Url.Action("Delete", "UsuarioWeb", new { id = Model.Usuario.Id })">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" id="btn-confirm-delete" class="btn btn-danger px-4">
+                            <i class="bi bi-trash-fill me-2"></i> Eliminar
+                        </button>
+                    </form>
+                }
+                @if (ViewBag.Edit == "rol")
+                {
+                    <form id="deleteForm" method="post" action="@Url.Action("DeleteRole", "UsuarioWeb", new { id = Model.Rol.Id })">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" id="btn-confirm-delete" class="btn btn-danger px-4">
+                            <i class="bi bi-trash-fill me-2"></i> Eliminar
+                        </button>
+                    </form>
+                }
+                @if (ViewBag.Edit == "permiso")
+                {
+                    <form id="deleteForm" method="post" action="@Url.Action("DeletePermiso", "UsuarioWeb", new { id = Model.Permiso.Id })">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" id="btn-confirm-delete" class="btn btn-danger px-4">
+                            <i class="bi bi-trash-fill me-2"></i> Eliminar
+                        </button>
+                    </form>
+                }
+            </div>
+            </div>
+            <!-- Pie del modal -->
+            <div class="modal-footer justify-content-center small text-muted">
+                @if (ViewBag.Edit == "usuario")
+                {
+                    <span class="fs-6">Esta acción marcara este usuario como inactivo en el sistema.</span>
+                }
+                @if (ViewBag.Edit == "rol")
+                {
+                    <span class="fs-6">Esta acción marcara este rol como inactivo en el sistema.</span>
+                }
+                @if (ViewBag.Edit == "permiso")
+                {
+                    <span class="fs-6">Esta acción marcara este permiso como inactivo en el sistema.</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>

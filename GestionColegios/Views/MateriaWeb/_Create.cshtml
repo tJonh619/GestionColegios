@@ -14,6 +14,9 @@
 }
 
 <div class="container mt-3">
+    <!-- Modal de borrado -->
+    @Html.Partial("_ModalConfirmarBorrar")
+
     <div class="row">
         <div class="col-lg-8 col-md-10">
             <div class="card shadow border-0">
@@ -93,29 +96,29 @@
 
 
                         <!-- Footer de la tarjeta con botones de acción -->
-                        <div class="card-footer text-center fs-4">
-                            <button type="button" id="btn-edit" class="btn btn-success me-2"
-                                    style="@(ViewBag.EsEdicion ? "" : "display:none;")"
-                                    onclick="activateEdit()">
-                                <i class="fa fa-edit me-1"></i> Editar
-                            </button>
+                <div class="card-footer text-center fs-4">
+                    <button type="button" id="btn-edit" class="btn btn-success me-2"
+                            style="@(ViewBag.EsEdicion ? "" : "display:none;")"
+                            onclick="activateEdit()">
+                        <i class="fa fa-edit me-1"></i> Editar
+                    </button>
 
-                            <button type="submit" id="btn-save" class="btn btn-primary me-2"
-                                    style="@(ViewBag.EsEdicion ? "display:none;" : "")">
-                                <i class="fa fa-save me-1"></i> @(Model.Materia.Id == 0 ? "Registrar" : "Guardar Cambios")
-                            </button>
-                            @if (ViewBag.EsEdicion)
-                            {
-                                <button type="button" id="btn-delete" class="btn btn-danger me-2" onclick="deleteRecord()">
-                                    <i class="fa fa-trash-alt me-1"></i> Eliminar
-                                </button>
-                            }
+                    <button type="submit" id="btn-save" class="btn btn-primary me-2"
+                            style="@(ViewBag.EsEdicion ? "display:none;" : "")">
+                        <i class="fa fa-save me-1"></i> @(Model.Materia.Id == 0 ? "Registrar" : "Guardar Cambios")
+                    </button>
+                    @if (ViewBag.EsEdicion)
+                    {
+                        <button type="button" id="btn-delete" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="fa fa-trash-alt me-1"></i> Eliminar
+                        </button>
+                    }
 
 
-                            <button type="button" id="btn-cancel-edit" class="btn btn-secondary me-2" onclick="cancelOrReturn()">
-                                <i class="fa fa-arrow-left me-1"></i> Regresar
-                            </button>
-                        </div>
+                    <button type="button" id="btn-cancel-edit" class="btn btn-secondary me-2" onclick="cancelOrReturn()">
+                        <i class="fa fa-arrow-left me-1"></i> Regresar
+                    </button>
+                </div>
                     }
                 </div>
             </div>
@@ -127,10 +130,10 @@
 
 
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
-    <script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
     function activateEdit() {
         $('input, select').each(function () {
             $(this).prop('readonly', false);
@@ -157,10 +160,4 @@
         }
     }
 
-    function deleteRecord() {
-        const deleteUrl = '@Url.Action("Delete", "MateriaWeb", new { id = Model.Materia.Id })';
-        if (confirm("¿Estás seguro de que deseas eliminar esta Materia?")) {
-            window.location.href = deleteUrl;
-        }
-    }
-    </script>
+</script>

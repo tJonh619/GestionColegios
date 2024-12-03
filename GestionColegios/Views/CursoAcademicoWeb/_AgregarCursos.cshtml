@@ -14,7 +14,11 @@
     }
 }
 
+
+
 <div class="container mt-3 fs-5">
+    <!-- Modal de borrado -->
+    @Html.Partial("_ModalConfirmarBorrar")
     <div class="row">
         <div class="col-lg-8 col-md-10">
             <div class="card shadow border-0">
@@ -115,7 +119,7 @@
                         </button>
                         @if (ViewBag.EsEdicion)
                         {
-                            <button type="button" id="btn-delete" class="btn btn-danger me-2" onclick="deleteRecord()">
+                            <button type="button" id="btn-delete" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                 <i class="fa fa-trash-alt me-1"></i> Eliminar
                             </button>
                         }
@@ -150,12 +154,6 @@
                 $('#btn-cancel-edit').text("Regresar");
             } else {
                 window.location.href = '@Url.Action("Index", "CursoAcademicoWeb")';
-            }
-        }
-
-        function deleteRecord() {
-            if (confirm("¿Deseas eliminar este curso?")) {
-                window.location.href = '@Url.Action("Delete", "CursoAcademicoWeb", new { id = Model.CursoAcademico.Id })';
             }
         }
     </script>

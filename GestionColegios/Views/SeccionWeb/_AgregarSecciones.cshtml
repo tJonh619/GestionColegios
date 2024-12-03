@@ -1,9 +1,24 @@
 ﻿@model GestionColegios.ViewModels.VMSeccion
 
+@{
+    var esSoloLectura = ViewBag.EsEdicion ?? false
+        ? new Dictionary<string, object> { { "readonly", "readonly" }, { "disabled", "disabled" } }
+        : new Dictionary<string, object>();
+}
+
+@functions {
+    IDictionary<string, object> ObtenerAtributos(Dictionary<string, object> atributosBase, Dictionary<string, object> soloLectura)
+    {
+        return atributosBase.Concat(soloLectura).ToDictionary(k => k.Key, v => v.Value);
+    }
+}
+
 <div class="container mt-3">
+    <!-- Modal de borrado -->
+    @Html.Partial("_ModalConfirmarBorrar")
     <div class="row">
         <div class="col-md-12">
-            @using (Html.BeginForm(ViewBag.EsEdicion ?? false ? "Edit" : "Create", "SeccionWeb", FormMethod.Post, new { @id = "form-seccion" }))
+            @using (Html.BeginForm(ViewBag.EsEdicion ? "Edit" : "Create", "SeccionWeb", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model => model.Id)
@@ -22,53 +37,60 @@
 
                             <div class="card-body">
                                 <!-- Nombre de la Sección -->
-                                <!-- Nombre de la Sección -->
                                 <div class="mb-3">
                                     @Html.LabelFor(model => model.Nombre, "Nombre de la Sección", new { @class = "form-label fs-5" })
-                                    @Html.TextBoxFor(model => model.Nombre, new
-                                    {
-                                        @class = "form-control fs-5",
-                                        @placeholder = "Ingrese el nombre de la sección",
-                                        @required = "required"
-                                    })
+                                    @Html.TextBoxFor(model => model.Nombre,
+                                        ObtenerAtributos(new Dictionary<string, object> {
+                                            { "class", "form-control fs-5" },
+                                            { "placeholder", "Ingrese el nombre de la sección" },
+                                            { "required", "required" }
+                                        }, esSoloLectura))
                                     @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger fs-5" })
                                 </div>
 
                                 <!-- Capacidad de Estudiantes -->
                                 <div class="mb-3">
                                     @Html.LabelFor(model => model.CapacidadEstudiantes, "Capacidad de Estudiantes", new { @class = "form-label fs-5" })
-                                    @Html.TextBoxFor(model => model.CapacidadEstudiantes, new
-                                    {
-                                        @class = "form-control fs-5",
-                                        @type = "number",
-                                        @min = "1",
-                                        @required = "required"
-                                    })
+                                    @Html.TextBoxFor(model => model.CapacidadEstudiantes,
+                                        ObtenerAtributos(new Dictionary<string, object> {
+                                            { "class", "form-control fs-5" },
+                                            { "type", "number" },
+                                            { "min", "1" },
+                                            { "required", "required" }
+                                        }, esSoloLectura))
                                     @Html.ValidationMessageFor(model => model.CapacidadEstudiantes, "", new { @class = "text-danger fs-5" })
                                 </div>
 
-                                <!-- Fecha de Modificación -->
-                                <div class="mb-3">
-                                    @Html.LabelFor(model => model.FechaModificacion, "Fecha de Modificación", new { @class = "form-label fs-5" })
-                                    @Html.TextBoxFor(model => model.FechaModificacion, "{0:yyyy-MM-dd}", new
-                                    {
-                                        @class = "form-control fs-5",
-                                        @type = "date",
-                                        @required = "required"
-                                    })
-                                    @Html.ValidationMessageFor(model => model.FechaModificacion, "", new { @class = "text-danger fs-5" })
-                                </div>
                             </div>
+
                             <div class="card-footer text-center fs-5">
+                                <!-- Botón Editar visible solo en modo edición -->
+                                <button type="button" id="btn-edit" class="btn btn-sm btn-success m-1"
+                                        style="@(ViewBag.EsEdicion ? "" : "display:none;")"
+                                        onclick="activateEdit()">
+                                    Editar
+                                </button>
+
                                 <!-- Botón Guardar/Registrar dependiendo del estado -->
-                                <button type="submit" class="btn btn-primary m-1">
+                                <button type="submit" id="btn-save" class="btn btn-primary m-1"
+                                        style="@(ViewBag.EsEdicion ? "display:none;" : "")">
                                     @(Model.Id == 0 ? "Registrar" : "Guardar Cambios")
                                 </button>
 
-                                <!-- Botón Cancelar -->
-                                <button type="button" class="btn btn-secondary m-1" onclick="window.history.back()">Cancelar</button>
-                            </div>
+                                <!-- Botón Regresar -->
+                                <button type="button" id="btn-cancel-edit" class="btn btn-sm btn-secondary m-1"
+                                        onclick="cancelOrReturn()">
+                                    Regresar
+                                </button>
 
+                                <!-- Botón Eliminar visible solo en modo edición -->
+                                @if (ViewBag.EsEdicion)
+                                {
+                                    <button type="button" id="btn-delete" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                        <i class="fa fa-trash-alt me-1"></i> Eliminar
+                                    </button>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -77,3 +99,33 @@
     </div>
 </div>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    function activateEdit() {
+        $('input, select').each(function () {
+            $(this).prop('readonly', false);
+            $(this).prop('disabled', false);
+        });
+        $('#btn-save').show();
+        $('#btn-cancel-edit').text("Cancelar");
+        $('#btn-edit').hide();
+        $('#btn-delete').hide();
+    }
+
+    function cancelOrReturn() {
+        if ($('#btn-cancel-edit').text() === "Cancelar") {
+            $('input, select').each(function () {
+                $(this).prop('readonly', true);
+                $(this).prop('disabled', true);
+            });
+            $('#btn-save').hide();
+            $('#btn-edit').show();
+            $('#btn-cancel-edit').text("Regresar");
+            $('#btn-delete').show();
+        } else {
+            window.location.href = '@Url.Action("Index", "SeccionWeb")';
+        }
+    }
+</script>

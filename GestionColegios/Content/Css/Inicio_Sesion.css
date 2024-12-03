@@ -1,0 +1,105 @@
+﻿.fondo-colegio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Asegúrate de ocupar el alto total de la pantalla */
+    width: 100vw;
+    background-image: url('/Content/Images/Colegio.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+.A-25 {
+    transform: scale(1.25); /* Escala la card y su contenido un 25% */
+    transform-origin: center;
+    transition: transform 0.3s ease; /* Agrega una transición suave */
+    margin: auto; /* Centra automáticamente en el contenedor */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    width: 100%; /* Ocupará todo el ancho disponible */
+    max-width: 400px; /* Limitar ancho máximo */
+    border-radius: 10px;
+    z-index: 1; /* Asegúrate de que esté en la parte superior */
+}
+
+    .A-25:hover {
+        transform: scale(1.20);
+    }
+
+/* Opcional: Fondo de la tarjeta ligeramente opaco para destacar el borde */
+.A-25-body {
+    border-radius: 10px;
+    align-content: center;
+    justify-content: center;
+    margin: 20px;
+}
+.A-25-header {
+    text-align: center;
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+    .A-25-header h3 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .A-25-header i {
+        margin-top: 10px;
+    }
+
+/* Estilos para el logo */
+    .A-25-header img {
+        max-width: 80px; /* Ajuste del logo */
+        margin-bottom: 10px;
+    }
+
+
+.A-25 .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s, border-color 0.3s;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+    .A-25 .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+.A-25 .form-control {
+    border-radius: 5px;
+    border: 2px solid #d1d1d1;
+    transition: border-color 0.3s;
+}
+
+    .A-25 .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+.A-25 .form-group label {
+    font-weight: bold;
+}
+
+.A-25-footer {
+    background-color: #f1f1f1;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 10px;
+}
+
+.A-25 .footer-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+    .A-25 .footer-link:hover {
+        text-decoration: underline;
+    }

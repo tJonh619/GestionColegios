@@ -1,37 +1,37 @@
-﻿@using GestionColegios.Models
-@using Microsoft.AspNet.Identity
+﻿@using Microsoft.AspNet.Identity
 <!DOCTYPE html>
+
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @Styles.Render("~/Styles/css")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+
 </head>
-<body>
-    <!-- Comprueba si esta autenticado -->
+<body class="@(Request.IsAuthenticated ? "authenticated" : "login-page")" data-success-message="@TempData["SuccessMessage"]"
+      data-error-message="@TempData["ErrorMessage"]">
     @if (Request.IsAuthenticated)
     {
-        <!-- Barra de navegacion Superior -->
-        @Html.Partial("_NavBar")
-        <div class="row">
-            <!-- Sidebar -->
-            @Html.Partial("_SideBar")
-            <!-- Contenido principal -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 vh-100 custom-scroll-main">
-                @RenderBody()
-            </main>
+        <!-- Modales de Guardado, borrado y de extender sesion -->
+        @Html.Partial("_ModalGuardado")
+        @Html.Partial("_ModalBorrado")
+        @Html.Partial("_ModalExtenderSesion")
+
+
+        @Html.Partial("_Header");
+        @Html.Partial("_SideBar")
+        <div class="vh-100">
+            @RenderBody();
         </div>
-
-
     }
     else
     {
-        @Html.Partial("_NavBar")
-        @RenderBody()
+        @RenderBody();
     }
 
     @Scripts.Render("~/bundles/jquery")
@@ -39,37 +39,3 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
-
-<style>
-    /* Contenedor del sidebar */
-    .custom-scrollbar, .custom-scroll-main {
-        overflow: hidden; /* Ocultar el scroll por defecto */
-        height: 100%; /* Asegurarse que el contenedor tenga altura completa */
-        position: relative; /* Para que funcione el efecto del hover */
-    }
-
-        /* Mostrar el scroll cuando se pasa el cursor sobre el contenedor */
-        .custom-scrollbar:hover, .custom-scroll-main:hover {
-            overflow-y: scroll; /* Activar el scroll solo al pasar el mouse */
-        }
-
-        /* Estilo de la barra de desplazamiento en navegadores WebKit (Chrome, Safari) */
-        .custom-scrollbar::-webkit-scrollbar, .custom-scroll-main::-webkit-scrollbar {
-            width: 8px; /* Ancho del scroll */
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb, .custom-scroll-main::-webkit-scrollbar-thumb {
-            background-color: rgba(255, 255, 255, 0.4); /* Color con opacidad */
-            border-radius: 4px; /* Bordes redondeados */
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-track, .custom-scroll-main::-webkit-scrollbar-track {
-            background-color: transparent; /* Fondo transparente */
-        }
-
-    /* Compatibilidad con Firefox para el estilo del scroll */
-    .custom-scrollbar, .custom-scroll-main {
-        scrollbar-width: thin; /* Scroll delgado */
-        scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
-    }
-</style>
