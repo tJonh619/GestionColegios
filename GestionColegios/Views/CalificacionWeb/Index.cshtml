@@ -46,7 +46,7 @@
                     <tbody id="tableBody">
                         @foreach (var estudiante in Model.Estudiantes.Where(e => e.CursoAcademicoEstudiante.Any(c => c.CursoAcademico.Id == ViewBag.idCurso && c.EstudianteId == e.Id)))
                         {
-                            <tr>
+                            <tr data-id="@estudiante.Id">
                                 <td class="fs-5">@estudiante.Nombres</td>
                                 <td class="fs-5">@estudiante.Apellidos</td>
                                 <td class="fs-5 text-center">
@@ -63,6 +63,10 @@
                 </table>
                 <button type="button" class="btn btn-success" id="openModalButton">
                     <i class="fa fa-plus"></i> <span class="fs-5">Agregar Estudiantes</span>
+                </button>
+
+                <button type="button" class="btn btn-primary" id="printReportButton">
+                    <i class="fa fa-print"></i> <span class="fs-5">Imprimir Notas Parciales</span>
                 </button>
             </div>
 
@@ -84,13 +88,13 @@
                             @using (Html.BeginForm("SeleccionarEstudiantes", "CalificacionWeb", FormMethod.Post, new { @class = "form-inline", id = "formFiltrarEstudiantes" }))
                             {
                                 @*<div class="form-group">
-                                    <label for="anioAcademico">Año Académico</label>
-                                    @Html.DropDownList("anioAcademico",
-                                        new SelectList(Model.AñoAcademicos, "Id", "Nombre"),
-                                        "Seleccione el Año Académico",
-                                        new { @class = "form-control fs-5" })
+                                        <label for="anioAcademico">Año Académico</label>
+                                        @Html.DropDownList("anioAcademico",
+                                            new SelectList(Model.AñoAcademicos, "Id", "Nombre"),
+                                            "Seleccione el Año Académico",
+                                            new { @class = "form-control fs-5" })
 
-                                </div>*@
+                                    </div>*@
 
                                 <div class="form-group">
                                     <label for="fechaMatricula">Fecha de Matrícula</label>
@@ -115,6 +119,9 @@
                                     </button>
                                 </div>
                             }
+
+
+
                         </div>
 
                         <!-- Pie del modal -->
@@ -127,8 +134,7 @@
         </div>
     </div>
 </div>
-
-
+@Html.Partial("_TablaImpresion")
 
 <script>
     // Funcionalidad para seleccionar todos los estudiantes

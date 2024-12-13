@@ -588,6 +588,7 @@
     <Content Include="Views\PeriodoWeb\_ModalConfirmarBorrar.cshtml" />
     <Content Include="Views\SeccionWeb\_ModalConfirmarBorrar.cshtml" />
     <Content Include="Views\UsuarioWeb\_ModalConfirmarBorrar.cshtml" />
+    <Content Include="Views\CalificacionWeb\_TablaImpresion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

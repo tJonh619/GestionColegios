@@ -15,6 +15,19 @@
         </div>
         <!-- Cuerpo de la tarjeta principal -->
         <div class="card-body">
+            <!-- Botones de impresión -->
+            <div class="d-flex justify-content-center mb-3">
+                @for (int i = 1; i <= 4; i++)
+                {
+                    <button class="btn btn-outline-primary mx-2" onclick="printParcial(@i, '@Model.Estudiante.Nombres', '@Model.Estudiante.Apellidos', '@Model.Materias[0].AñoAcademico.Nombre')">
+                        Imprimir Parcial @i
+                    </button>
+                }
+                <!-- Botón para imprimir todas las notas -->
+                <button class="btn btn-outline-success mx-2" onclick="printAllNotas('@Model.Estudiante.Nombres', '@Model.Estudiante.Apellidos', '@Model.Materias[0].AñoAcademico.Nombre')">
+                    Imprimir Todas las Notas
+                </button>
+            </div>
             <!-- Tarjeta interna -->
             <div class="card shadow-sm">
                 <!-- Encabezado interno -->
@@ -36,35 +49,54 @@
                                     <th>Parcial III (Cualitativa)</th>
                                     <th>Parcial IV (Cuantitativa)</th>
                                     <th>Parcial IV (Cualitativa)</th>
-                                    <th>Nota Final</th>
+                                    <th>Nota Final Total</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var materia in Model.Materias)
                                 {
-                                    var calificacionParcial1 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 1);
-                                    var calificacionParcial2 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 2);
-                                    var calificacionParcial3 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 3);
-                                    var calificacionParcial4 = Model.Calificaciones.FirstOrDefault(c => c.MateriaId == materia.Id && c.ParcialId == 4);
+                                    var calificaciones = Model.Calificaciones
+                                        .Where(c => c.MateriaId == materia.Id)
+                                        .OrderBy(c => c.ParcialId)
+                                        .ToList();
 
-                                    // Cálculo de la Nota Final
-                                    decimal? notaFinal = null;
-                                    if (calificacionParcial1 != null && calificacionParcial2 != null && calificacionParcial3 != null && calificacionParcial4 != null)
+                                    decimal sumaNotas = 0;
+                                    int parcialesNoNulos = 0;
+
+                                    // Variables para notas finales por cada parcial
+                                    decimal?[] notasFinalesParciales = new decimal?[4];
+
+                                    // Calcula la suma de notas acumulada y las notas finales por parcial
+                                    for (int i = 0; i < 4; i++)
                                     {
-                                        notaFinal = (calificacionParcial1.NCuantitativa + calificacionParcial2.NCuantitativa + calificacionParcial3.NCuantitativa + calificacionParcial4.NCuantitativa) / 4;
+                                        var calificacionParcial = calificaciones.FirstOrDefault(c => c.ParcialId == i + 1);
+                                        if (calificacionParcial?.NCuantitativa != null)
+                                        {
+                                            sumaNotas += decimal.Parse(calificacionParcial.NCuantitativa.ToString());
+                                            parcialesNoNulos++;
+                                        }
+
+                                        // Calcula la nota final hasta el parcial actual
+                                        notasFinalesParciales[i] = parcialesNoNulos > 0 ? (decimal?)sumaNotas / parcialesNoNulos : null;
                                     }
+
+                                    // Calcula la nota final total
+                                    decimal? notaFinalTotal = parcialesNoNulos > 0 ? (decimal?)sumaNotas / parcialesNoNulos : null;
 
                                     <tr>
                                         <td>@materia.Nombre</td>
-                                        <td class="@((calificacionParcial1 == null) ? "bg-light" : "")">@((calificacionParcial1 != null) ? calificacionParcial1.NCuantitativa.ToString() : "N/A")</td>
-                                        <td class="@((calificacionParcial1 == null) ? "bg-light" : "")">@((calificacionParcial1 != null) ? calificacionParcial1.NCualitativa : "N/A")</td>
-                                        <td class="@((calificacionParcial2 == null) ? "bg-light" : "")">@((calificacionParcial2 != null) ? calificacionParcial2.NCuantitativa.ToString() : "N/A")</td>
-                                        <td class="@((calificacionParcial2 == null) ? "bg-light" : "")">@((calificacionParcial2 != null) ? calificacionParcial2.NCualitativa : "N/A")</td>
-                                        <td class="@((calificacionParcial3 == null) ? "bg-light" : "")">@((calificacionParcial3 != null) ? calificacionParcial3.NCuantitativa.ToString() : "N/A")</td>
-                                        <td class="@((calificacionParcial3 == null) ? "bg-light" : "")">@((calificacionParcial3 != null) ? calificacionParcial3.NCualitativa : "N/A")</td>
-                                        <td class="@((calificacionParcial4 == null) ? "bg-light" : "")">@((calificacionParcial4 != null) ? calificacionParcial4.NCuantitativa.ToString() : "N/A")</td>
-                                        <td class="@((calificacionParcial4 == null) ? "bg-light" : "")">@((calificacionParcial4 != null) ? calificacionParcial4.NCualitativa : "N/A")</td>
-                                        <td>@(notaFinal.HasValue ? notaFinal.Value.ToString("0.00") : "N/A")</td>
+                                        @for (int i = 1; i <= 4; i++)
+                                        {
+                                            var calificacionParcial = calificaciones.FirstOrDefault(c => c.ParcialId == i);
+
+                                            <td class="@((calificacionParcial == null) ? "bg-light" : "")">
+                                                @((calificacionParcial != null) ? calificacionParcial.NCuantitativa.ToString("0.00") : "N/A")
+                                            </td>
+                                            <td class="@((calificacionParcial == null) ? "bg-light" : "")">
+                                                @(calificacionParcial?.NCualitativa ?? "N/A")
+                                            </td>
+                                        }
+                                        <td>@(notaFinalTotal?.ToString("0.00") ?? "N/A")</td>
                                     </tr>
                                 }
                             </tbody>
@@ -75,6 +107,288 @@
         </div>
     </div>
 </div>
+
+<script>
+    function printParcial(parcialId, nombres, apellidos, curso) {
+        const table = document.querySelector(".table");
+        const rows = table.querySelectorAll("tr");
+        let popup = window.open("width=800,height=1000");
+
+        const primerNombre = nombres.split(" ")[0]; // Primer nombre
+        const primerApellido = apellidos.split(" ")[0]; // Primer apellido
+
+        // Cabecera personalizada del reporte
+        popup.document.write(`
+            
+                <style>
+                    /* Estilo general del cuerpo */
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0; /* Eliminar margen general */
+                        font-size: 26px; /* Aumentar tamaño general */
+                        width: 100%;
+                    }
+                    /* Encabezado del informe */
+                    .report-header {
+                        text-align: center;
+                        margin-bottom: 5px; /* Reducir margen debajo del encabezado */
+                    }
+                    .report-header h2 {
+                        font-size: 30px; /* Reducir tamaño del nombre del colegio */
+                        margin: 3px;
+                    }
+                    .report-header h3 {
+                        font-size: 24px; /* Reducir tamaño del subtítulo */
+                        margin: 2px;
+                    }
+                    .inline-container {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-top: 5px; /* Reducir margen superior */
+                        font-size: 24px; /* Ajustar tamaño del texto */
+                    }
+                    .inline-container h3 {
+                        margin: 0;
+
+                    }
+                    .inline-container span {
+                        text-decoration: underline; /* Subrayar después del : */
+                    }
+                    .single-line {
+                        text-align: left;
+                        margin: 2px 0; /* Reducir margen de línea */
+                        font-size: 24px; /* Ajustar tamaño del texto */
+                        font-weight: bold;
+                    }
+                    .single-line span {
+                        text-decoration: underline; /* Subrayar después del : */
+                    }
+                    /* Tabla */
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 8px; /* Reducir espacio superior de la tabla */
+                        font-size: 24px; /* Aumentar tamaño de fuente de la tabla */
+                    }
+                    th, td {
+                        border: 1px solid black;
+                        padding: 2px 3px; /* Reducir aún más el espacio dentro de las celdas */
+                        text-align: center;
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                        font-size: 24px; /* Aumentar tamaño de los encabezados */
+                    }
+                    /* Establecer anchos de las columnas */
+                    th:nth-child(1), td:nth-child(1) {
+                        width: 70%; /* 70% de la página para la columna 'Disciplina' */
+                    }
+                    td:nth-child(1) {
+                        text-align: left; /* Alinear a la izquierda */
+                    }
+                    th:nth-child(2), td:nth-child(2) {
+                        width: 30%; /* 30% de la página para la columna 'IC' */
+                    }
+                    /* Asegurar que la tabla no se salga de los márgenes */
+                    table, th, td {
+                        table-layout: fixed;
+                        word-wrap: break-word;
+                    }
+                </style>
+            <body>
+                <div class="report-header">
+                    <h3>COLEGIO FIDEL COLOMA GONZÁLEZ</h3>
+                    <h3>MINED</h3>
+                    <h3>Informe Evaluativo ${parcialId}do Corte</h3>
+                    <div class="single-line">
+                        NOMBRE: <span>${primerNombre} ${primerApellido}</span>
+                    </div>
+                    <div class="inline-container">
+                        <h3>GRADO: <span>${curso}</span></h3>
+                        <h3>TURNO: <span>Matutino</span></h3>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Disciplina</th>
+                            <th>IC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `);
+
+        rows.forEach((row, rowIndex) => {
+            const cells = row.querySelectorAll("th, td");
+            if (rowIndex > 0) {
+                const materia = cells[0].innerHTML;
+                const ic = cells[(parcialId - 1) * 2 + 1]?.innerHTML || "N/A";
+
+                popup.document.write(`
+                    <tr>
+                        <td>${materia}</td>
+                        <td>${ic}</td>
+                    </tr>
+                `);
+            }
+        });
+
+        popup.document.write(`
+                    </tbody>
+                </table>
+            </body>
+        `);
+
+        popup.document.close();
+        popup.print();
+    }
+</script>
+<script>
+    function printAllNotas(nombres, apellidos, curso) {
+        const table = document.querySelector(".table");
+        const rows = table.querySelectorAll("tr");
+        let popup = window.open("width=800,height=1000");
+
+        const primerNombre = nombres.split(" ")[0]; // Primer nombre
+        const primerApellido = apellidos.split(" ")[0]; // Primer apellido
+
+        // Cabecera personalizada del reporte
+        popup.document.write(`
+            <html>
+            <head>
+                <title>Informe Evaluativo Total</title> <!-- Título de la ventana emergente -->
+                <style>
+                    /* Estilos similares a los utilizados en printParcial */
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        font-size: 26px;
+                        width: 100%;
+                    }
+                    .report-header {
+                        text-align: center;
+                        margin-bottom: 5px;
+                    }
+                    .report-header h2 {
+                        font-size: 30px;
+                        margin: 3px;
+                    }
+                    .report-header h3 {
+                        font-size: 24px;
+                        margin: 2px;
+                    }
+                    .inline-container {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-top: 5px;
+                        font-size: 24px;
+                    }
+                    .single-line {
+                        text-align: left;
+                        margin: 2px 0;
+                        font-size: 24px;
+                        font-weight: bold;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 8px;
+                        font-size: 24px;
+                    }
+                    th, td {
+                        border: 1px solid black;
+                        padding: 2px 3px;
+                        text-align: center;
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                    }
+                    th:nth-child(1), td:nth-child(1) {
+                        text-align: left;
+                    }
+                    table, th, td {
+                        table-layout: fixed;
+                        word-wrap: break-word;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="report-header">
+                    <h3>COLEGIO FIDEL COLOMA GONZÁLEZ</h3>
+                    <h3>MINED</h3>
+                    <h3>Informe Evaluativo Total</h3>
+                    <div class="single-line">
+                        NOMBRE: <span>${primerNombre} ${primerApellido}</span>
+                    </div>
+                    <div class="inline-container">
+                        <h3>GRADO: <span>${curso}</span></h3>
+                        <h3>TURNO: <span>Matutino</span></h3>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Disciplina</th>
+                            <th>IC (Parcial I)</th>
+                            <th>IC (Parcial II)</th>
+                            <th>IC (Parcial III)</th>
+                            <th>IC (Parcial IV)</th>
+                            <th>Nota Final Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `);
+
+        rows.forEach((row, rowIndex) => {
+            const cells = row.querySelectorAll("th, td");
+            if (rowIndex > 0) {
+                const materia = cells[0].innerHTML;
+
+                let allNotas = [];
+                let sumaNotas = 0;
+                let parcialesNoNulos = 0;
+                
+                // Recopilar las calificaciones de los 4 parciales
+                for (let i = 1; i <= 4; i++) {
+                    const calificacionParcial = cells[(i - 1) * 2 + 1].innerHTML;
+                    allNotas.push(calificacionParcial === "N/A" ? "N/A" : calificacionParcial);
+
+                    if (calificacionParcial !== "N/A") {
+                        sumaNotas += parseFloat(calificacionParcial);
+                        parcialesNoNulos++;
+                    }
+                }
+
+                const notaFinalTotal = parcialesNoNulos > 0 ? (sumaNotas / parcialesNoNulos).toFixed(2) : "N/A";
+                
+                popup.document.write(`
+                    <tr>
+                        <td>${materia}</td>
+                        <td>${allNotas[0]}</td>
+                        <td>${allNotas[1]}</td>
+                        <td>${allNotas[2]}</td>
+                        <td>${allNotas[3]}</td>
+                        <td>${notaFinalTotal}</td>
+                    </tr>
+                `);
+            }
+        });
+
+        popup.document.write(`
+                    </tbody>
+                </table>
+            </body>
+            </html>
+        `);
+
+        popup.document.close();
+        popup.print();
+    }
+</script>
+
+
+
+
 
 <!-- Iconos Bootstrap para mostrar íconos junto al título -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>

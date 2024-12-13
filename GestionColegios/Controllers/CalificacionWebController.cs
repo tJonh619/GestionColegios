@@ -16,7 +16,6 @@ namespace GestionColegios.Controllers
     {
         private readonly BDColegioContainer db = new BDColegioContainer();
 
-        // GET: CalificacionWeb
         public ActionResult Index(int id)
         {
             // Verificar si el usuario está autenticado
@@ -28,34 +27,80 @@ namespace GestionColegios.Controllers
 
             ViewBag.idCurso = id; // Almacenar el ID del curso en ViewBag para utilizarlo en la vista
 
-            var curso = db.CursosAcademicos.Where(c => c.Id == id).FirstOrDefault(); // Buscar el curso académico correspondiente al ID proporcionado
+            // Verificar si el curso existe
+            var curso = db.CursosAcademicos
+                          .Include(c => c.AñoAcademico)
+                          .FirstOrDefault(c => c.Id == id);
 
 
-            var Año = curso.AñoAcademico.Id; // Obtener el ID del año académico asociado al curso
-            var matriculas = db.Matriculas.Where(m => m.AñoAcademicoId == Año && m.Periodos.AñoId == curso.AñoId).ToList(); // Buscar todas las matrículas que correspondan al año académico y periodo del curso
+            var añoAcademicoId = curso.AñoAcademico.Id;
 
+            // Filtrar las matrículas correspondientes al año académico y periodo del curso
+            var matriculas = db.Matriculas
+                               .Include(m => m.Estudiante)
+                               .Include(m => m.Periodos)
+                               .Where(m => m.AñoAcademicoId == añoAcademicoId && m.Periodos.AñoId == curso.AñoId)
+                               .ToList();
 
             // Obtener la lista de estudiantes asociados a esas matrículas
             var estudiantesMatriculados = matriculas.Select(m => m.Estudiante).ToList();
 
-            // Crear un ViewModel y asignar los datos necesarios para la vista
+            // Obtener las materias y los parciales asociados al curso académico
+            var materias = db.Materias
+                             .Where(m => m.AñoAcademicoId == añoAcademicoId)
+                             .ToList();
+            var parciales = db.Parciales.ToList();
+
+            // Crear una lista para almacenar todas las calificaciones
+            var calificaciones = new List<Calificacion>();
+
+            // Iterar por cada estudiante, cada materia y cada parcial para obtener las calificaciones
+            foreach (var estudiante in estudiantesMatriculados)
+            {
+                foreach (var materia in materias)
+                {
+                    foreach (var parcial in parciales)
+                    {
+                        // Buscar calificación existente
+                        var calificacion = db.Calificaciones
+                                             .FirstOrDefault(c => c.EstudianteId == estudiante.Id
+                                                               && c.MateriaId == materia.Id
+                                                               && c.ParcialId == parcial.Id);
+
+                        // Si no existe, crear una calificación con valores iniciales
+                        if (calificacion == null)
+                        {
+                            calificacion = new Calificacion
+                            {
+                                EstudianteId = estudiante.Id,
+                                MateriaId = materia.Id,
+                                ParcialId = parcial.Id,
+                                NCuantitativa = 0, // Inicializar con 0 o según lo requerido
+                                NCualitativa = null // Inicializar como null o según lo requerido
+                            };
+                        }
+
+                        calificaciones.Add(calificacion);
+                    }
+                }
+            }
+
+            // Crear el ViewModel y asignar los datos necesarios para la vista
             var vm = new VMCalificaciones
             {
-                Estudiantes = db.Estudiantes.ToList(), // Lista de estudiantes seleccionados
+                Estudiantes = db.Estudiantes.ToList(),
                 Matriculas = matriculas,
-                Materias = db.Materias
-                                      .Where(m => m.AñoAcademicoId == curso.AñoAcademicoId) // Filtrar materias según el curso académico
-                                      .ToList(), // Convertir a lista para enviar a la vista
-                Parciales = db.Parciales.ToList(), // Obtener todos los parciales
-                CursosAcademicos = db.CursosAcademicos.ToList(), // Obtener todos los cursos académicos
+                Materias = materias,
+                Parciales = parciales,
+                Calificaciones = calificaciones,
+                CursosAcademicos = db.CursosAcademicos.ToList(),
                 CursoAcademico = curso,
-                AñoAcademicos = db.AñosAcademicos.ToList() // Obtener todos los años académicos
+                AñoAcademicos = db.AñosAcademicos.ToList()
             };
 
             // Retornar la vista con el ViewModel generado
             return View(vm);
         }
-
 
 
 
@@ -218,7 +263,7 @@ namespace GestionColegios.Controllers
                 {
                     TempData["SuccessMessage"] = "Calificaciones registradas exitosamente.";
                     db.SaveChanges();
-                    return RedirectToAction("Create", new { estudianteId = vm.Estudiante.Id });
+                    return RedirectToAction("+", new { estudianteId = vm.Estudiante.Id });
                 }
 
                 CargarDatos(vm);
@@ -721,7 +766,29 @@ namespace GestionColegios.Controllers
             return RedirectToAction("GestionAcademica");
         }
 
+        public JsonResult GenerarInformeEstudiante(int estudianteId)
+        {
+            try
+            {
+                var estudiante = db.Estudiantes
+                    .Include(e => e.CursoAcademicoEstudiante)
+                    .FirstOrDefault(e => e.Id == estudianteId);
 
+                if (estudiante == null)
+                {
+                    return Json(new { success = false, message = "Estudiante no encontrado." });
+                }
+
+                // Generar lógica de informe aquí
+                // ...
+
+                return Json(new { success = true, message = "Informe generado con éxito." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
 
 
 

@@ -1,0 +1,284 @@
+﻿@model GestionColegios.ViewModels.VMCalificaciones
+
+@{
+    // Obtener el idCurso desde ViewBag
+    var idCurso = ViewBag.idCurso;
+
+    // Buscar el curso correspondiente en Model.CursosAcademicos
+    var curso = Model.CursosAcademicos.FirstOrDefault(c => c.Id == idCurso);
+    var cursoNombre = curso != null ? curso.Nombre : "Curso no encontrado";  // Asignar nombre del curso o mensaje por defecto
+}
+
+@foreach (var estudiante in Model.Estudiantes.Where(e => e.CursoAcademicoEstudiante.Any(c => c.CursoAcademico.Id == ViewBag.idCurso && c.EstudianteId == e.Id)))
+{
+
+    <div class="table-responsive" style="display:none">
+        <h5>Estudiante: @estudiante.Nombres @estudiante.Apellidos</h5>
+        <table class="table table-striped table-bordered table-hover align-middle">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Materia</th>
+                    <th>Parcial I (Cuantitativa)</th>
+                    <th>Parcial I (Cualitativa)</th>
+                    <th>Parcial II (Cuantitativa)</th>
+                    <th>Parcial II (Cualitativa)</th>
+                    <th>Parcial III (Cuantitativa)</th>
+                    <th>Parcial III (Cualitativa)</th>
+                    <th>Parcial IV (Cuantitativa)</th>
+                    <th>Parcial IV (Cualitativa)</th>
+                    <th>Promedio Final</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var materia in Model.Materias)
+                {
+                    var calificaciones = Model.Calificaciones
+                        .Where(c => c.EstudianteId == estudiante.Id && c.MateriaId == materia.Id)
+                        .OrderBy(c => c.ParcialId)
+                        .ToList();
+
+                    decimal cero = 0;
+                    decimal sumaNotas = 0;
+                    int parcialesNoNulos = 0;
+
+                    // Calcular promedio final
+                    foreach (var calificacion in calificaciones)
+                    {
+                        if (calificacion.NCuantitativa != cero)
+                        {
+                            sumaNotas = sumaNotas + decimal.Parse(calificacion.NCuantitativa.ToString());
+                            parcialesNoNulos++;
+                        }
+                    }
+                    decimal? promedioFinal = parcialesNoNulos > 0 ? (decimal?)sumaNotas / parcialesNoNulos : null;
+
+                    <tr>
+                        <td>@materia.Nombre</td>
+                        @for (int i = 1; i <= 4; i++)
+                        {
+                            var calificacion = calificaciones.FirstOrDefault(c => c.ParcialId == i);
+                            <td>@(calificacion?.NCuantitativa.ToString("0.00") ?? "N/A")</td>
+                            <td>@(calificacion?.NCualitativa ?? "N/A")</td>
+                        }
+                        <td>@(promedioFinal?.ToString("0.00") ?? "N/A")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script>
+    // Modal HTML para elegir el parcial
+    const modalHTML = `
+<div class="modal" id="parcialSelectionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Seleccionar Parcial</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Por favor selecciona el parcial para generar el reporte:</p>
+                <select id="parcialSelect" class="form-control">
+                    <option value="1">Parcial I</option>
+                    <option value="2">Parcial II</option>
+                    <option value="3">Parcial III</option>
+                    <option value="4">Parcial IV</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="generateReportButton">Generar Reporte</button>
+            </div>
+        </div>
+    </div>
+</div>`;
+
+    // Insertar el modal en el cuerpo del documento
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
+
+    async function printParcial(parcialId, grado) {
+        const tables = document.querySelectorAll(".table-responsive");
+
+        // Crear una nueva ventana para la impresión
+        const printWindow = window.open("height=800,width=600");
+
+        // Asignar el sufijo en base al valor de parcialId
+        let suffix = '';
+        if (parcialId === 1 || parcialId === 3) {
+            suffix = 'er';
+        } else if (parcialId === 2) {
+            suffix = 'do';
+        } else if (parcialId === 4) {
+            suffix = 'to';
+        }
+
+        // Construir el HTML con estilos inline
+        printWindow.document.write(`
+    <html>
+        <head>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    font-size: 24px; /* Aumenté el tamaño de la fuente global */
+                    width: 100%;
+                }
+                .header {
+                    text-align: center;
+                    margin-bottom: 10px;
+                }
+                .header h2, .header h3, .header h4 {
+                    margin: 2px 0;
+                    font-weight: bold;
+                    font-size: 32px; /* Aumenté el tamaño de los encabezados */
+                }
+                .student-info {
+                    margin: 20px 0;
+                    font-size: 26px; /* Aumenté el tamaño del texto del estudiante */
+                    font-weight: bold;
+                }
+                .student-info span {
+                    text-transform: uppercase;
+                }
+                .student-info .underline {
+                    font-weight: normal;
+                    text-decoration: underline;
+                }
+                .grade-turn {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 20px;
+                    font-size: 26px; /* Aumenté el tamaño de la información del grado */
+                    font-weight: bold;
+                }
+                .grade-turn span .underline {
+                    font-weight: normal;
+                    text-decoration: underline;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                    font-size: 28px; /* Aumenté el tamaño de las celdas de la tabla */
+                }
+                table th, table td {
+                    padding: 18px; /* Aumenté el padding */
+                    border: 2px solid black;
+                    text-align: center;
+                    font-weight: bold;
+                }
+                table th {
+                    background-color: #f2f2f2;
+                    text-align: center;
+                }
+                .page {
+                    page-break-after: always;
+                    padding: 20px;
+                }
+            </style>
+        </head>
+        <body>
+`);
+
+        tables.forEach((tableDiv, index) => {
+            const studentNameElement = tableDiv.querySelector("h5");
+            const table = tableDiv.querySelector("table");
+
+            if (!studentNameElement || !table) {
+                console.error(`Error: Elementos requeridos no encontrados en tableDiv ${index}.`);
+                return;
+            }
+
+            const studentName = studentNameElement.innerText.replace("Estudiante: ", "");
+            const rows = table.querySelectorAll("tbody tr");
+
+            // Filtrar y mostrar solo las columnas correspondientes al parcial seleccionado
+            const filteredRows = Array.from(rows).map((row) => {
+                const cells = row.querySelectorAll("td");
+                const materia = cells[0]?.innerText || "N/A";
+                const cuantitativaIndex = (parcialId - 1) * 2 + 1; // Índice de la columna cuantitativa
+
+                const cuantitativa = cells[cuantitativaIndex]?.innerText || "N/A";
+
+                return cuantitativa !== "N/A"
+                    ? `<tr>
+            <td style="text-align: left;">${materia}</td>
+            <td>${cuantitativa}</td>
+        </tr>`
+                    : "";
+            }).join("");
+
+            const tableHTML = `
+    <table>
+        <thead>
+            <tr>
+                <th>Disciplina</th>
+                <th>IC</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${filteredRows}
+        </tbody>
+    </table>
+`;
+
+            // Añadir contenido de cada estudiante con estilos
+            printWindow.document.write(`
+    <div class="page">
+        <div class="header">
+            <h2>COLEGIO FIDEL COLOMA GONZÁLEZ</h2>
+            <h3>MINED</h3>
+            <h3>Informe Evaluativo ${parcialId}${suffix} Corte</h3>
+        </div>
+        <div class="student-info">
+            <span>NOMBRE: <span class="underline">${studentName}</span></span>
+            <div class="grade-turn">
+                <span>GRADO: <span class="underline">${grado}</span></span>
+                <span>TURNO: <span class="underline">Matutino</span></span>
+            </div>
+        </div>
+        ${tableHTML}
+    </div>
+`);
+        });
+
+        // Cerrar el cuerpo del documento y ejecutar impresión
+        printWindow.document.write(`
+    </body>
+</html>
+`);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+    }
+
+
+    // Mostrar el modal al hacer clic en el botón de impresión
+   window.addEventListener("DOMContentLoaded", () => {
+    const printButton = document.getElementById("printReportButton");
+    if (printButton) {
+        printButton.addEventListener("click", () => {
+            $("#parcialSelectionModal").modal("show");
+        });
+    }
+
+    const nombreCurso = '@cursoNombre';  // Usamos la constante 'cursoNombre' que se definió en Razor
+
+    console.log(nombreCurso);  // Verifica el nombre del curso en la consola
+
+    // Generar el reporte cuando se selecciona el parcial
+    const generateReportButton = document.getElementById("generateReportButton");
+    if (generateReportButton) {
+        generateReportButton.addEventListener("click", () => {
+            const parcialId = parseInt(document.getElementById("parcialSelect").value, 10);
+            $("#parcialSelectionModal").modal("hide");
+            printParcial(parcialId, nombreCurso);  // Pasar directamente el nombre del curso
+        });
+    }
+});
+</script>
