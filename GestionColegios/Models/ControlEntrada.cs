@@ -12,39 +12,27 @@ namespace GestionColegios.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ControlMerienda
+    public partial class ControlEntrada
     {
         public int Id { get; set; }
-        public string Codigo { get; set; }
-        public System.DateTime FechaEntrega { get; set; }
-        public int AsistenciaEsperadaMujeres { get; set; }
-        public int AsistenciaEsperadaTotal { get; set; }
-        public Nullable<int> AsistenciaRealMujeres { get; set; }
-        public Nullable<int> AsistenciaRealTotal { get; set; }
-        public decimal SAceite { get; set; }
-        public decimal SArroz { get; set; }
-        public decimal SCereal { get; set; }
-        public decimal SFrijoles { get; set; }
-        public decimal SMaiz { get; set; }
-        public string FirmaDocente { get; set; }
-        public string CedulaTutor { get; set; }
-        public string FirmaTutor { get; set; }
-        public System.DateTime FechaModificacion { get; set; }
-        public bool Activo { get; set; }
-        public int CursoAcademicoId { get; set; }
+        public string FechaAbastecimiento { get; set; }
+        public string NombreReceptor { get; set; }
+        public string EAceite { get; set; }
+        public string EArroz { get; set; }
+        public string ECereal { get; set; }
+        public string EFrijoles { get; set; }
+        public string EMaiz { get; set; }
+        public string Activo { get; set; }
         public int AceiteId { get; set; }
         public int ArrozId { get; set; }
         public int CerealId { get; set; }
         public int FrijolesId { get; set; }
         public int MaizId { get; set; }
-        public int EstudianteId { get; set; }
     
-        public virtual CursoAcademico CursoAcademico { get; set; }
         public virtual InventarioAlimento RAceite { get; set; }
         public virtual InventarioAlimento RArroz { get; set; }
         public virtual InventarioAlimento RCereal { get; set; }
         public virtual InventarioAlimento RFrijoles { get; set; }
         public virtual InventarioAlimento RMaiz { get; set; }
-        public virtual Estudiante Estudiante { get; set; }
     }
 }

@@ -60,11 +60,6 @@ namespace GestionColegios.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Establecer las fechas a valores válidos si no se proporcionan
-                if (inventarioAlimento.FechaReabastecimiento == default(DateTime))
-                {
-                    inventarioAlimento.FechaReabastecimiento = DateTime.Now; // o cualquier fecha válida predeterminada
-                }
 
                 inventarioAlimento.FechaModificacion = DateTime.Now;
                 inventarioAlimento.Activo = true;

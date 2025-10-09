@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 10/04/2024 16:14:42
--- Generated from EDMX file: C:\Users\Moises\source\repos\GestionColegios\GestionColegios\Models\BDColegio.edmx
+-- Date Created: 10/08/2025 23:50:11
+-- Generated from EDMX file: C:\Users\tjonh\Escritorio\Proyecto Sistema web de colegios publicos de Nicaragua\Proyecto\GestionColegios\GestionColegios\Models\BDColegio.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -396,7 +396,6 @@ CREATE TABLE [dbo].[InventariosAlimentos] (
     [NombreAlimento] nvarchar(max)  NOT NULL,
     [Stock] decimal(18,0)  NOT NULL,
     [UnidadDeMedida] nvarchar(max)  NOT NULL,
-    [FechaReabastecimiento] datetime  NOT NULL,
     [FechaModificacion] datetime  NOT NULL,
     [Activo] bit  NOT NULL
 );
@@ -410,24 +409,23 @@ CREATE TABLE [dbo].[ControlesMeriendas] (
     [AsistenciaEsperadaMujeres] int  NOT NULL,
     [AsistenciaEsperadaTotal] int  NOT NULL,
     [AsistenciaRealMujeres] int  NULL,
-    [AsistenciaRealTotal] int  NOT NULL,
-    [EAceite] decimal(18,0)  NOT NULL,
-    [EArroz] decimal(18,0)  NOT NULL,
-    [ECereal] decimal(18,0)  NOT NULL,
-    [EFrijoles] decimal(18,0)  NOT NULL,
-    [EMaiz] decimal(18,0)  NOT NULL,
-    [FirmaDocente] nvarchar(max)  NOT NULL,
-    [CedulaTutor] nvarchar(max)  NOT NULL,
-    [FirmaTutor] nvarchar(max)  NOT NULL,
+    [AsistenciaRealTotal] int  NULL,
+    [SAceite] decimal(18,0)  NOT NULL,
+    [SArroz] decimal(18,0)  NOT NULL,
+    [SCereal] decimal(18,0)  NOT NULL,
+    [SFrijoles] decimal(18,0)  NOT NULL,
+    [SMaiz] decimal(18,0)  NOT NULL,
+    [FirmaDocente] nvarchar(max)  NULL,
+    [CedulaTutor] nvarchar(max)  NULL,
+    [FirmaTutor] nvarchar(max)  NULL,
     [FechaModificacion] datetime  NOT NULL,
     [Activo] bit  NOT NULL,
     [CursoAcademicoId] int  NOT NULL,
-    [InventarioAlimentoId] int  NOT NULL,
-    [InventarioAlimentoId2] int  NOT NULL,
-    [InventarioAlimentoId1] int  NOT NULL,
-    [InventarioAlimentoId3] int  NOT NULL,
-    [InventarioAlimentoId4] int  NOT NULL,
-    [InventarioAlimentoId5] int  NOT NULL,
+    [AceiteId] int  NOT NULL,
+    [ArrozId] int  NOT NULL,
+    [CerealId] int  NOT NULL,
+    [FrijolesId] int  NOT NULL,
+    [MaizId] int  NOT NULL,
     [EstudianteId] int  NOT NULL
 );
 GO
@@ -446,7 +444,6 @@ CREATE TABLE [dbo].[Matriculas] (
     [EstudianteId] int  NOT NULL,
     [TutorId] int  NOT NULL,
     [PeriodosId] int  NOT NULL,
-    [AñoId] int  NOT NULL,
     [AñoAcademicoId] int  NOT NULL,
     [Aprobado] bit  NOT NULL
 );
@@ -496,6 +493,25 @@ GO
 CREATE TABLE [dbo].[Años] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Nombre] int  NOT NULL
+);
+GO
+
+-- Creating table 'ControlEntradas'
+CREATE TABLE [dbo].[ControlEntradas] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [FechaAbastecimiento] nvarchar(max)  NOT NULL,
+    [NombreReceptor] nvarchar(max)  NOT NULL,
+    [EAceite] nvarchar(max)  NOT NULL,
+    [EArroz] nvarchar(max)  NOT NULL,
+    [ECereal] nvarchar(max)  NOT NULL,
+    [EFrijoles] nvarchar(max)  NOT NULL,
+    [EMaiz] nvarchar(max)  NOT NULL,
+    [Activo] nvarchar(max)  NOT NULL,
+    [AceiteId] int  NOT NULL,
+    [ArrozId] int  NOT NULL,
+    [CerealId] int  NOT NULL,
+    [FrijolesId] int  NOT NULL,
+    [MaizId] int  NOT NULL
 );
 GO
 
@@ -593,10 +609,10 @@ ADD CONSTRAINT [PK_InventariosAlimentos]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id], [AsistenciaRealTotal] in table 'ControlesMeriendas'
+-- Creating primary key on [Id] in table 'ControlesMeriendas'
 ALTER TABLE [dbo].[ControlesMeriendas]
 ADD CONSTRAINT [PK_ControlesMeriendas]
-    PRIMARY KEY CLUSTERED ([Id], [AsistenciaRealTotal] ASC);
+    PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
 -- Creating primary key on [Id] in table 'Matriculas'
@@ -632,6 +648,12 @@ GO
 -- Creating primary key on [Id] in table 'Años'
 ALTER TABLE [dbo].[Años]
 ADD CONSTRAINT [PK_Años]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ControlEntradas'
+ALTER TABLE [dbo].[ControlEntradas]
+ADD CONSTRAINT [PK_ControlEntradas]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -864,10 +886,10 @@ ON [dbo].[ControlesMeriendas]
     ([CursoAcademicoId]);
 GO
 
--- Creating foreign key on [InventarioAlimentoId1] in table 'ControlesMeriendas'
+-- Creating foreign key on [ArrozId] in table 'ControlesMeriendas'
 ALTER TABLE [dbo].[ControlesMeriendas]
 ADD CONSTRAINT [FK_InventarioAlimentoControlMerienda]
-    FOREIGN KEY ([InventarioAlimentoId1])
+    FOREIGN KEY ([ArrozId])
     REFERENCES [dbo].[InventariosAlimentos]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -876,13 +898,13 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_InventarioAlimentoControlMerienda'
 CREATE INDEX [IX_FK_InventarioAlimentoControlMerienda]
 ON [dbo].[ControlesMeriendas]
-    ([InventarioAlimentoId1]);
+    ([ArrozId]);
 GO
 
--- Creating foreign key on [InventarioAlimentoId2] in table 'ControlesMeriendas'
+-- Creating foreign key on [AceiteId] in table 'ControlesMeriendas'
 ALTER TABLE [dbo].[ControlesMeriendas]
 ADD CONSTRAINT [FK_InventarioAlimentoControlMerienda1]
-    FOREIGN KEY ([InventarioAlimentoId2])
+    FOREIGN KEY ([AceiteId])
     REFERENCES [dbo].[InventariosAlimentos]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -891,13 +913,13 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_InventarioAlimentoControlMerienda1'
 CREATE INDEX [IX_FK_InventarioAlimentoControlMerienda1]
 ON [dbo].[ControlesMeriendas]
-    ([InventarioAlimentoId2]);
+    ([AceiteId]);
 GO
 
--- Creating foreign key on [InventarioAlimentoId3] in table 'ControlesMeriendas'
+-- Creating foreign key on [CerealId] in table 'ControlesMeriendas'
 ALTER TABLE [dbo].[ControlesMeriendas]
 ADD CONSTRAINT [FK_InventarioAlimentoControlMerienda2]
-    FOREIGN KEY ([InventarioAlimentoId3])
+    FOREIGN KEY ([CerealId])
     REFERENCES [dbo].[InventariosAlimentos]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -906,13 +928,13 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_InventarioAlimentoControlMerienda2'
 CREATE INDEX [IX_FK_InventarioAlimentoControlMerienda2]
 ON [dbo].[ControlesMeriendas]
-    ([InventarioAlimentoId3]);
+    ([CerealId]);
 GO
 
--- Creating foreign key on [InventarioAlimentoId4] in table 'ControlesMeriendas'
+-- Creating foreign key on [FrijolesId] in table 'ControlesMeriendas'
 ALTER TABLE [dbo].[ControlesMeriendas]
 ADD CONSTRAINT [FK_InventarioAlimentoControlMerienda3]
-    FOREIGN KEY ([InventarioAlimentoId4])
+    FOREIGN KEY ([FrijolesId])
     REFERENCES [dbo].[InventariosAlimentos]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -921,13 +943,13 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_InventarioAlimentoControlMerienda3'
 CREATE INDEX [IX_FK_InventarioAlimentoControlMerienda3]
 ON [dbo].[ControlesMeriendas]
-    ([InventarioAlimentoId4]);
+    ([FrijolesId]);
 GO
 
--- Creating foreign key on [InventarioAlimentoId5] in table 'ControlesMeriendas'
+-- Creating foreign key on [MaizId] in table 'ControlesMeriendas'
 ALTER TABLE [dbo].[ControlesMeriendas]
 ADD CONSTRAINT [FK_InventarioAlimentoControlMerienda4]
-    FOREIGN KEY ([InventarioAlimentoId5])
+    FOREIGN KEY ([MaizId])
     REFERENCES [dbo].[InventariosAlimentos]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -936,7 +958,7 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_InventarioAlimentoControlMerienda4'
 CREATE INDEX [IX_FK_InventarioAlimentoControlMerienda4]
 ON [dbo].[ControlesMeriendas]
-    ([InventarioAlimentoId5]);
+    ([MaizId]);
 GO
 
 -- Creating foreign key on [EstudianteId] in table 'Matriculas'
@@ -1147,6 +1169,81 @@ GO
 CREATE INDEX [IX_FK_TutorEstudiante]
 ON [dbo].[Estudiantes]
     ([TutorId]);
+GO
+
+-- Creating foreign key on [AceiteId] in table 'ControlEntradas'
+ALTER TABLE [dbo].[ControlEntradas]
+ADD CONSTRAINT [FK_InventarioAlimentoControlEntrada]
+    FOREIGN KEY ([AceiteId])
+    REFERENCES [dbo].[InventariosAlimentos]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_InventarioAlimentoControlEntrada'
+CREATE INDEX [IX_FK_InventarioAlimentoControlEntrada]
+ON [dbo].[ControlEntradas]
+    ([AceiteId]);
+GO
+
+-- Creating foreign key on [ArrozId] in table 'ControlEntradas'
+ALTER TABLE [dbo].[ControlEntradas]
+ADD CONSTRAINT [FK_InventarioAlimentoControlEntrada1]
+    FOREIGN KEY ([ArrozId])
+    REFERENCES [dbo].[InventariosAlimentos]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_InventarioAlimentoControlEntrada1'
+CREATE INDEX [IX_FK_InventarioAlimentoControlEntrada1]
+ON [dbo].[ControlEntradas]
+    ([ArrozId]);
+GO
+
+-- Creating foreign key on [CerealId] in table 'ControlEntradas'
+ALTER TABLE [dbo].[ControlEntradas]
+ADD CONSTRAINT [FK_InventarioAlimentoControlEntrada2]
+    FOREIGN KEY ([CerealId])
+    REFERENCES [dbo].[InventariosAlimentos]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_InventarioAlimentoControlEntrada2'
+CREATE INDEX [IX_FK_InventarioAlimentoControlEntrada2]
+ON [dbo].[ControlEntradas]
+    ([CerealId]);
+GO
+
+-- Creating foreign key on [FrijolesId] in table 'ControlEntradas'
+ALTER TABLE [dbo].[ControlEntradas]
+ADD CONSTRAINT [FK_InventarioAlimentoControlEntrada3]
+    FOREIGN KEY ([FrijolesId])
+    REFERENCES [dbo].[InventariosAlimentos]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_InventarioAlimentoControlEntrada3'
+CREATE INDEX [IX_FK_InventarioAlimentoControlEntrada3]
+ON [dbo].[ControlEntradas]
+    ([FrijolesId]);
+GO
+
+-- Creating foreign key on [MaizId] in table 'ControlEntradas'
+ALTER TABLE [dbo].[ControlEntradas]
+ADD CONSTRAINT [FK_InventarioAlimentoControlEntrada4]
+    FOREIGN KEY ([MaizId])
+    REFERENCES [dbo].[InventariosAlimentos]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_InventarioAlimentoControlEntrada4'
+CREATE INDEX [IX_FK_InventarioAlimentoControlEntrada4]
+ON [dbo].[ControlEntradas]
+    ([MaizId]);
 GO
 
 -- --------------------------------------------------

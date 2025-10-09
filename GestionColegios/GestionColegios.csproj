@@ -199,7 +199,6 @@
     <Compile Include="Controllers\AñoAcademicoWebController.cs" />
     <Compile Include="Controllers\CalificacionWebController.cs" />
     <Compile Include="Controllers\ConsolidadoEficienciaFisicaWebController.cs" />
-    <Compile Include="Controllers\ControlMeriendaWebController.cs" />
     <Compile Include="Controllers\CursoAcademicoEstudianteWebController.cs" />
     <Compile Include="Controllers\CursoAcademicoWebController.cs" />
     <Compile Include="Controllers\EficienciaFisicaEstudianteWebController.cs" />
@@ -244,6 +243,9 @@
       <DependentUpon>BDColegio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ConsolidadoEficienciaFisica.cs">
+      <DependentUpon>BDColegio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ControlEntrada.cs">
       <DependentUpon>BDColegio.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ControlMerienda.cs">
@@ -422,11 +424,6 @@
     <Content Include="Views\ConsolidadoEficienciaFisicaWeb\Details.cshtml" />
     <Content Include="Views\ConsolidadoEficienciaFisicaWeb\Edit.cshtml" />
     <Content Include="Views\ConsolidadoEficienciaFisicaWeb\Index.cshtml" />
-    <Content Include="Views\ControlMeriendaWeb\Create.cshtml" />
-    <Content Include="Views\ControlMeriendaWeb\Delete.cshtml" />
-    <Content Include="Views\ControlMeriendaWeb\Details.cshtml" />
-    <Content Include="Views\ControlMeriendaWeb\Edit.cshtml" />
-    <Content Include="Views\ControlMeriendaWeb\Index.cshtml" />
     <Content Include="Views\CursoAcademicoWeb\Create.cshtml" />
     <Content Include="Views\CursoAcademicoWeb\Delete.cshtml" />
     <Content Include="Views\CursoAcademicoWeb\Details.cshtml" />
